@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* OpenSea color palette */
+  --opensea-blue: 32 129 226; /* #2081E2 - Primary color - Sea Blue */
+  --opensea-dark-blue: 24 104 183; /* #1868B7 - Secondary color - Dark Sea */
+  --opensea-marina: 21 178 229; /* #15B2E5 - Accent color - Marina Blue */
+  --opensea-aqua: 43 205 228; /* #2BCDE4 - Aqua */
+  --opensea-fog: 229 232 235; /* #E5E8EB - Border/Background - Fog */
+  --opensea-black: 4 17 29; /* #04111D - Text primary/Dark background */
+  --opensea-dark-gray: 112 122 131; /* #707A83 - Text secondary */
+  --opensea-light-gray: 138 147 155; /* #8A939B - Placeholder text */
+  --opensea-dark-border: 21 28 34; /* #151C22 - Dark border/background */
+  --opensea-success: 52 211 153; /* #34D399 - Green */
+  --opensea-warning: 245 158 11; /* #F59E0B - Amber */
+  --opensea-error: 239 68 68; /* #EF4444 - Red */
+
+  /* Base colors - Dark theme by default */
+  --foreground-rgb: 255, 255, 255;
+  --background-rgb: var(--opensea-black);
+
+  /* Border radius */
+  --radius: 0.5rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+}
+
+body {
+  background: rgb(var(--background-rgb));
+  color: rgb(var(--foreground-rgb));
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(var(--opensea-dark-border));
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--opensea-light-gray));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--opensea-dark-gray));
+}
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@layer components {
+  /* OpenSea utility classes */
+  .opensea-card {
+    @apply bg-opensea-darkBorder border border-opensea-darkBorder rounded-lg overflow-hidden transition-shadow;
+  }
+
+  .opensea-card:hover {
+    @apply shadow-md;
+  }
+
+  .opensea-button-primary {
+    @apply bg-opensea-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-opensea-darkBlue transition-colors;
+  }
+
+  .opensea-button-secondary {
+    @apply bg-opensea-darkBorder text-white border border-opensea-blue px-4 py-2 rounded-lg font-medium hover:bg-opensea-black transition-colors;
+  }
+
+  .opensea-input {
+    @apply border border-opensea-darkBorder bg-opensea-darkBorder text-white rounded-md px-3 py-2 focus:border-opensea-blue focus:outline-none focus:ring-2 focus:ring-opensea-blue/20 placeholder:text-opensea-lightGray;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-opensea-darkBorder outline-opensea-blue/20;
+  }
+  body {
+    @apply bg-opensea-black text-white;
+  }
+}
