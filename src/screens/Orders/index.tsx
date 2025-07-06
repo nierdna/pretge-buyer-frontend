@@ -1,7 +1,7 @@
 'use client';
 
 import OrderItem from '@/components/OrderItem';
-import { useOrders } from '@/hooks/queries/useOrderQueries';
+import { useOrders } from '@/queries/useOrderQueries';
 import { Order } from '@/types/order';
 import Link from 'next/link';
 

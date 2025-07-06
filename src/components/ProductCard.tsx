@@ -7,7 +7,7 @@ import { formatDate } from '@/utils/parseDate';
 import { Star, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { AspectRatio } from './ui/aspect-ratio';
+import { Separator } from './ui/separator';
 
 interface ProductCardProps {
   product: Product;
@@ -41,10 +41,10 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
   const isEnded = endTime && new Date() > new Date(endTime);
 
   return (
-    <div className="group rounded-lg hover:shadow-lg hover:scale-105 transition-all duration-200 overflow-hidden bg-opensea-darkBorder border border-opensea-darkBorder">
+    <div className="group rounded-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200 overflow-hidden bg-card-gradient shadow-dark">
       <Link href={`/products/${product.id}`} className="block">
         {/* Header with Token Info and Status */}
-        <div className="p-3 border-b border-opensea-darkBorder">
+        <div className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {tokenInfo?.icon && (
@@ -59,9 +59,12 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
                 </div>
               )}
               <div>
-                <h3 className="font-semibold text-white text-sm">{tokenInfo?.symbol || name}</h3>
-                <p className="text-xs text-opensea-lightGray">#{id}</p>
+                <h3 className="font-semibold text-primary text-sm">{tokenInfo?.symbol || name}</h3>
+                <p className="text-xs text-gray-a">#{id}</p>
               </div>
+            </div>
+            <div>
+              <p className="font-semibold text-primary">${formatNumberShort(price)}</p>
             </div>
             {/* <Badge
               variant={isActive ? 'default' : 'secondary'}
@@ -73,61 +76,31 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
             </Badge> */}
           </div>
         </div>
+        <Separator />
         {/* <div className="group-hover:h-0 overflow-hidden"> */}
-        <AspectRatio ratio={16 / 9}>
+        {/* <AspectRatio ratio={16 / 9}>
           <Image
             src={images?.[0]?.url || 'https://via.placeholder.com/400x225'}
             alt={name}
             fill
             className="object-cover"
           />
-        </AspectRatio>
+        </AspectRatio> */}
         {/* </div> */}
 
         {/* Product Info */}
-        <div className="p-3 space-y-3">
+        <div className="p-4 space-y-3">
           {/* Price and Amount */}
           <div className="flex justify-between items-center">
             <div>
-              <p className="text-xs text-opensea-lightGray">Price</p>
-              <p className="font-bold text-white">{formatNumberShort(price)}</p>
+              <p className="text-xs text-gray-a">Chain</p>
+              <p className="font-bold text-primary">Ethereum</p>
             </div>
             <div className="text-right">
-              <p className="text-xs text-opensea-lightGray">Amount</p>
-              <p className="font-bold text-white">{formatNumberShort(amount || 0)}</p>
+              <p className="text-xs text-gray-a">Amount</p>
+              <p className="font-bold text-primary">{formatNumberShort(amount || 0)}</p>
             </div>
           </div>
-
-          {/* Seller Info - Compact */}
-          {sellerInfo && (
-            <div className="flex items-center gap-2 py-2 bg-opensea-darkBg rounded-md border border-opensea-darkBorder">
-              <div className="w-6 h-6 rounded-full overflow-hidden bg-opensea-marina flex-shrink-0">
-                {sellerInfo.avatar ? (
-                  <Image
-                    src={sellerInfo.avatar}
-                    alt={sellerInfo.name}
-                    width={24}
-                    height={24}
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <User className="w-3 h-3 text-white" />
-                  </div>
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-white text-xs truncate">{sellerInfo.name}</p>
-                <p className="text-xs text-opensea-lightGray truncate">
-                  {truncateAddress(sellerInfo.address)}
-                </p>
-              </div>
-              <div className="flex items-center gap-1 flex-shrink-0">
-                <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                <span className="text-xs text-white">{sellerInfo.rating.toFixed(1)}</span>
-              </div>
-            </div>
-          )}
 
           {/* Time Info - Compact */}
           <div className="space-y-1">
@@ -137,9 +110,9 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
             </div> */}
             <div className="grid grid-cols-1 gap-2 text-xs">
               {startTime && (
-                <div className="flex items-center gap-1 text-xs text-opensea-lightGray">
-                  <p className="text-opensea-lightGray">Start</p>
-                  <p className="text-white font-medium">
+                <div className="flex items-center gap-1 text-xs text-gray-a">
+                  <p className="">Start:</p>
+                  <p className="text-primary font-medium">
                     {startTime
                       ? formatDate(startTime, {
                           month: 'short',
@@ -152,9 +125,9 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
                 </div>
               )}
               {endTime && (
-                <div className="flex items-center gap-1 text-xs text-opensea-lightGray">
-                  <p className="text-opensea-lightGray">Ended</p>
-                  <p className="text-white font-medium">
+                <div className="flex items-center gap-1 text-xs text-gray-a">
+                  <p className="">Ended:</p>
+                  <p className="text-primary font-medium">
                     {formatDate(endTime, {
                       month: 'short',
                       day: 'numeric',
@@ -164,24 +137,12 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
                   </p>
                 </div>
               )}
-              <div>
-                <p className="text-opensea-lightGray">End</p>
-                <p className="text-white font-medium">
-                  {endTime
-                    ? formatDate(endTime, {
-                        month: 'short',
-                        day: 'numeric',
-                        hour: '2-digit',
-                        minute: '2-digit',
-                      })
-                    : 'TBA'}
-                </p>
-              </div>
             </div>
           </div>
+          {/* Seller Info - Compact */}
 
           {/* Action Button */}
-          <button
+          {/* <button
             className={`w-full py-2 px-3 rounded-md text-sm font-medium transition-colors ${
               isOutOfStock || !isActive
                 ? 'bg-opensea-lightGray text-opensea-darkGray cursor-not-allowed'
@@ -190,8 +151,36 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
             disabled={isOutOfStock || !isActive}
           >
             {isOutOfStock ? 'Out of Stock' : !isActive ? 'Ended' : 'Buy Now'}
-          </button>
+          </button> */}
         </div>
+        <Separator />
+        {sellerInfo && (
+          <div className="flex items-center gap-2 p-4 rounded-md">
+            <div className="w-6 h-6 rounded-full overflow-hidden bg-opensea-marina flex-shrink-0">
+              {sellerInfo.avatar ? (
+                <Image
+                  src={sellerInfo.avatar}
+                  alt={sellerInfo.name}
+                  width={24}
+                  height={24}
+                  className="object-cover"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <User className="w-3 h-3 text-white" />
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="font-medium text-white text-xs truncate">{sellerInfo.name}</p>
+              <p className="text-xs text-gray-a truncate">{truncateAddress(sellerInfo.address)}</p>
+            </div>
+            <div className="flex items-center gap-1 flex-shrink-0">
+              <Star className="w-3 h-3 text-yellow-400 fill-current" />
+              <span className="text-xs text-primary">{sellerInfo.rating.toFixed(1)}</span>
+            </div>
+          </div>
+        )}
       </Link>
     </div>
   );

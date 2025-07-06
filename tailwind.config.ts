@@ -21,54 +21,51 @@ const config: Config = {
     },
     extend: {
       colors: {
-        opensea: {
-          blue: 'rgb(var(--opensea-blue) / <alpha-value>)',
-          darkBlue: 'rgb(var(--opensea-dark-blue) / <alpha-value>)',
-          marina: 'rgb(var(--opensea-marina) / <alpha-value>)',
-          aqua: 'rgb(var(--opensea-aqua) / <alpha-value>)',
-          fog: 'rgb(var(--opensea-fog) / <alpha-value>)',
-          black: 'rgb(var(--opensea-black) / <alpha-value>)',
-          darkGray: 'rgb(var(--opensea-dark-gray) / <alpha-value>)',
-          lightGray: 'rgb(var(--opensea-light-gray) / <alpha-value>)',
-          darkBorder: 'rgb(var(--opensea-dark-border) / <alpha-value>)',
-          success: 'rgb(var(--opensea-success) / <alpha-value>)',
-          warning: 'rgb(var(--opensea-warning) / <alpha-value>)',
-          error: 'rgb(var(--opensea-error) / <alpha-value>)',
-        },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'rgb(var(--opensea-blue) / <alpha-value>)',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'rgb(var(--opensea-dark-blue) / <alpha-value>)',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'rgb(var(--opensea-error) / <alpha-value>)',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'rgb(var(--opensea-fog) / <alpha-value>)',
-          foreground: 'rgb(var(--opensea-dark-gray) / <alpha-value>)',
-        },
-        accent: {
-          DEFAULT: 'rgb(var(--opensea-marina) / <alpha-value>)',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+        btn: {
+          primary: {
+            default: 'rgb(var(--button-primary))',
+            hover: 'rgb(var(--button-primary-hover))',
+          },
+          secondary: {
+            default: 'rgb(var(--button-secondary))',
+            hover: 'rgb(var(--button-secondary-hover))',
+          },
         },
       },
+      backgroundColor: {
+        body: 'rgb(var(--background-body))',
+        card: 'rgb(var(--background-card))',
+        deep: {
+          green: 'rgb(var(--background-deep-green))',
+          pine: 'rgb(var(--background-deep-pine))',
+          card: 'rgb(var(--background-deep-card))',
+          navy: 'rgb(var(--background-deep-navy))',
+        },
+        inverse: 'rgb(var(--background-inverse))',
+        muted: 'var(--background-muted)',
+      },
+      textColor: {
+        primary: 'rgb(var(--text-primary))',
+        secondary: 'rgb(var(--text-secondary))',
+        gray: {
+          a: 'rgb(var(--text-gray-a))',
+          b: 'rgb(var(--text-gray-b))',
+          c: 'rgb(var(--text-gray-c))',
+          d: 'rgb(var(--text-gray-d))',
+        },
+        cyan: 'rgb(var(--text-cyan))',
+        avocado: 'rgb(var(--text-avocado))',
+        inverse: 'rgb(var(--text-inverse))',
+      },
+      borderColor: {
+        hairline: 'rgb(var(--border-hairline-green))',
+        deep: {
+          card: 'rgb(var(--border-deep-card))',
+        },
+        avocado: 'rgb(var(--border-avocado))',
+        muted: 'var(--border-muted)',
+      },
+
       borderRadius: {
         lg: 'var(--radius-lg)',
         md: 'var(--radius-md)',

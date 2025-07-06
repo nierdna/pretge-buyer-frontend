@@ -1,9 +1,9 @@
 import { Footer, Header } from '@/components/layouts';
 import { Separator } from '@/components/ui/separator';
+import Provider from '@/providers';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import Providers from './providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body className={`${inter.className} min-h-screen flex flex-col`}>
-        <Providers>
+        <Provider>
           <div className="flex flex-col min-h-screen">
             <Header />
             <Separator />
@@ -30,7 +30,7 @@ export default function RootLayout({
             <Separator />
             <Footer />
           </div>
-        </Providers>
+        </Provider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useProducts } from '@/hooks/queries/useProductQueries';
+import { useProducts } from '@/queries/useProductQueries';
 import FlashSaleList from '@/screens/FlashSale/components/FlashSaleList';
 import FlashSaleBanner from '@/screens/Home/components/FlashSaleBanner';
 import type { Product } from '@/types/product';

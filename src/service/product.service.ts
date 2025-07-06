@@ -437,7 +437,7 @@ export class ProductService {
    * @param filters Product filters
    * @returns Products response
    */
-  static async getProducts(filters?: ProductFilter) {
+  async getProducts(filters?: ProductFilter) {
     // Return mock data instead of API call
     return { data: mockProducts };
   }
@@ -447,7 +447,7 @@ export class ProductService {
    * @param id Product id
    * @returns Product response
    */
-  static async getProductById(id: string) {
+  async getProductById(id: string) {
     // Return mock data for a single product
     const product = mockProducts.find((p) => p.id === id);
     return { data: product };
@@ -457,7 +457,7 @@ export class ProductService {
    * Get featured products
    * @returns Featured products response
    */
-  static async getFeaturedProducts() {
+  async getFeaturedProducts() {
     // Return mock featured products
     const featured = mockProducts.filter((p) => p.isFeatured);
     return { data: featured };
@@ -468,7 +468,7 @@ export class ProductService {
    * @param productId Product id
    * @returns Related products response
    */
-  static async getRelatedProducts(productId: string) {
+  async getRelatedProducts(productId: string) {
     // For mock data, just return other products in the same category
     const product = mockProducts.find((p) => p.id === productId);
     if (!product) return { data: [] };
@@ -486,7 +486,7 @@ export class ProductService {
    * @param data Product data
    * @returns Product response
    */
-  static async createProduct(data: ProductCreateInput) {
+  async createProduct(data: ProductCreateInput) {
     // Mock create product
     const newProduct: Product = {
       id: `new-${Date.now()}`,
@@ -526,7 +526,7 @@ export class ProductService {
    * @param data Product data
    * @returns Product response
    */
-  static async updateProduct(id: string, data: ProductUpdateInput) {
+  async updateProduct(id: string, data: ProductUpdateInput) {
     // Mock update product
     const index = mockProducts.findIndex((p) => p.id === id);
     if (index === -1) throw new Error('Product not found');
@@ -564,7 +564,7 @@ export class ProductService {
    * @param id Product id
    * @returns Product response
    */
-  static async deleteProduct(id: string) {
+  async deleteProduct(id: string) {
     // Mock delete product
     const index = mockProducts.findIndex((p) => p.id === id);
     if (index === -1) throw new Error('Product not found');
@@ -574,13 +574,3 @@ export class ProductService {
     return { data: deletedProduct, success: true, message: 'Product deleted successfully' };
   }
 }
-
-// Export simple functions for direct use
-export const getProducts = ProductService.getProducts;
-export const getProduct = ProductService.getProductById;
-export const getFeaturedProducts = ProductService.getFeaturedProducts;
-export const getProductsBySeller = async (sellerId: string) => {
-  // Return mock products by seller
-  const sellerProducts = mockProducts.filter((p) => p.sellerId === sellerId);
-  return { data: sellerProducts };
-};

@@ -1,6 +1,6 @@
 'use client';
 
-import { useFeaturedProducts } from '@/hooks/queries/useProductQueries';
+import { useFeaturedProducts } from '@/queries/useProductQueries';
 import { useEffect, useState } from 'react';
 import {
   ActiveFiltersList,

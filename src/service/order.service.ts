@@ -233,7 +233,7 @@ export class OrderService {
   /**
    * Get all orders for the current user
    */
-  static async getOrders(params?: { page?: number; limit?: number; status?: string }) {
+  async getOrders(params?: { page?: number; limit?: number; status?: string }) {
     // Return mock data instead of API call
     let filteredOrders = [...mockOrders];
 
@@ -253,7 +253,7 @@ export class OrderService {
   /**
    * Get a single order by ID
    */
-  static async getOrderById(id: string) {
+  async getOrderById(id: string) {
     // Return mock data for a single order
     const order = mockOrders.find((o) => o.id === id);
     return { data: order };
@@ -262,7 +262,7 @@ export class OrderService {
   /**
    * Create a new order
    */
-  static async createOrder(data: OrderCreateInput) {
+  async createOrder(data: OrderCreateInput) {
     // Mock create order
     // Find products for the items
     const orderItems = data.items.map((item, index) => {
@@ -320,7 +320,7 @@ export class OrderService {
   /**
    * Update an existing order
    */
-  static async updateOrder(id: string, data: OrderUpdateInput) {
+  async updateOrder(id: string, data: OrderUpdateInput) {
     // Mock update order
     const index = mockOrders.findIndex((o) => o.id === id);
     if (index === -1) throw new Error('Order not found');
@@ -351,7 +351,7 @@ export class OrderService {
   /**
    * Cancel an order
    */
-  static async cancelOrder(id: string) {
+  async cancelOrder(id: string) {
     // Mock cancel order
     const index = mockOrders.findIndex((o) => o.id === id);
     if (index === -1) throw new Error('Order not found');
@@ -367,12 +367,3 @@ export class OrderService {
     return { data: cancelledOrder };
   }
 }
-
-// Export simple functions for direct use
-export const getOrders = OrderService.getOrders;
-export const getOrder = OrderService.getOrderById;
-export const getUserOrders = async (userId: string) => {
-  // Return mock orders for a user
-  const userOrders = mockOrders.filter((o) => o.userId === userId);
-  return { data: userOrders };
-};

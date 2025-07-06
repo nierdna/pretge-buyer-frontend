@@ -1,8 +1,8 @@
 'use client';
 
 import ProductCard from '@/components/ProductCard';
-import { useProduct, useRelatedProducts } from '@/hooks/queries/useProductQueries';
 import { useCart } from '@/hooks/useCart';
+import { useProduct, useRelatedProducts } from '@/queries/useProductQueries';
 import ProductInfo from '@/screens/ProductDetail/components/ProductInfo';
 import Link from 'next/link';
 import { useState } from 'react';

@@ -1,5 +1,5 @@
-import { ShoppingCart, User } from 'lucide-react';
 import Link from 'next/link';
+import ButtonConnect from '../connect-wallet/ButtonConnect';
 
 export default function Header() {
   return (
@@ -34,18 +34,7 @@ export default function Header() {
 
           {/* User Actions */}
           <div className="flex items-center space-x-4 mt-4 md:mt-0">
-            <Link
-              href="/account"
-              className="text-opensea-lightGray hover:text-opensea-blue transition-colors"
-            >
-              <User className="h-6 w-6" />
-            </Link>
-            <Link
-              href="/cart"
-              className="text-opensea-lightGray hover:text-opensea-blue transition-colors"
-            >
-              <ShoppingCart className="h-6 w-6" />
-            </Link>
+            <ButtonConnect />
           </div>
         </div>
       </div>

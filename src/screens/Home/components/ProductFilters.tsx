@@ -19,7 +19,7 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
 
   return (
     <div className="w-full md:w-64 flex-shrink-0">
-      <div className="text-white p-4 rounded-lg border border-opensea-darkBorder sticky top-4">
+      <div className="text-primary p-4 rounded-lg bg-deep-green sticky top-4 shadow-dark">
         <h3 className="font-semibold text-lg mb-4">Filters</h3>
 
         {/* Status filter */}
@@ -29,7 +29,7 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded text-opensea-blue border-opensea-darkBorder bg-opensea-darkBorder"
+                className="rounded text-opensea-blue border-avocado bg-opensea-darkBorder"
                 checked={activeFilters.includes('buy-now')}
                 onChange={() => onFilterToggle('buy-now')}
               />

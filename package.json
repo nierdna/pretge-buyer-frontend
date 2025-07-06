@@ -25,11 +25,16 @@
     "@radix-ui/react-switch": "^1.2.5",
     "@radix-ui/react-tabs": "^1.1.12",
     "@radix-ui/react-tooltip": "^1.2.7",
+    "@reown/appkit": "^1.7.12",
+    "@reown/appkit-adapter-ethers": "^1.7.12",
+    "@reown/appkit-adapter-solana": "^1.7.12",
     "@tanstack/react-query": "^5.81.5",
+    "@tanstack/react-query-devtools": "^5.81.5",
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
+    "dayjs": "^1.11.13",
     "decimal.js": "^10.5.0",
     "embla-carousel-react": "^8.6.0",
     "husky": "^9.1.7",
@@ -42,7 +47,8 @@
     "react-resizable-panels": "^3.0.3",
     "sonner": "^2.0.6",
     "tailwind-merge": "^3.3.1",
-    "vaul": "^1.1.2"
+    "vaul": "^1.1.2",
+    "zustand": "^5.0.6"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",

@@ -130,7 +130,7 @@ export class SellerService {
   /**
    * Get a list of sellers with optional filtering
    */
-  static async getSellers(filters?: SellerFilter) {
+  async getSellers(filters?: SellerFilter) {
     // Return mock data instead of API call
     return { data: mockSellers };
   }
@@ -138,7 +138,7 @@ export class SellerService {
   /**
    * Get a single seller by ID
    */
-  static async getSellerById(id: string) {
+  async getSellerById(id: string) {
     // Return mock data for a single seller
     const seller = mockSellers.find((s) => s.id === id);
     return { data: seller };
@@ -147,7 +147,7 @@ export class SellerService {
   /**
    * Get products from a specific seller
    */
-  static async getSellerProducts(
+  async getSellerProducts(
     sellerId: string,
     params?: { page?: number; limit?: number; sortBy?: string }
   ) {
@@ -160,7 +160,7 @@ export class SellerService {
   /**
    * Get reviews for a specific seller
    */
-  static async getSellerReviews(
+  async getSellerReviews(
     sellerId: string,
     params?: { page?: number; limit?: number; sortBy?: string }
   ) {
@@ -198,7 +198,7 @@ export class SellerService {
   /**
    * Create a new seller (admin only)
    */
-  static async createSeller(data: SellerCreateInput) {
+  async createSeller(data: SellerCreateInput) {
     return apiRequest<SellerResponse>({
       method: 'POST',
       data,
@@ -208,7 +208,7 @@ export class SellerService {
   /**
    * Update an existing seller (admin/seller only)
    */
-  static async updateSeller(id: string, data: SellerUpdateInput) {
+  async updateSeller(id: string, data: SellerUpdateInput) {
     return apiRequest<SellerResponse>({
       method: 'PUT',
       data,
@@ -218,7 +218,7 @@ export class SellerService {
   /**
    * Delete a seller (admin only)
    */
-  static async deleteSeller(id: string) {
+  async deleteSeller(id: string) {
     return apiRequest<{ success: boolean; message: string }>({
       method: 'DELETE',
     });

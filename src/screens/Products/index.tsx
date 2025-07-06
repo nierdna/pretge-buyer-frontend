@@ -1,7 +1,7 @@
 'use client';
 
 import ProductCard from '@/components/ProductCard';
-import { useProducts } from '@/hooks/queries/useProductQueries';
+import { useProducts } from '@/queries/useProductQueries';
 import type { ProductFilter } from '@/types/product';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';

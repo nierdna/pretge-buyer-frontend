@@ -2,7 +2,7 @@
 
 import SellerProductList from '@/components/SellerProductList';
 import SellerProfile from '@/components/SellerProfile';
-import { useSeller, useSellerProducts } from '@/hooks/queries/useSellerQueries';
+import { useSeller, useSellerProducts } from '@/queries/useSellerQueries';
 
 interface SellerDetailScreenProps {
   sellerId: string;
