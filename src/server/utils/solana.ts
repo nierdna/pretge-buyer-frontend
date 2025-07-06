@@ -1,5 +1,6 @@
 import { PublicKey } from '@solana/web3.js';
 import bs58 from 'bs58';
+import nacl from 'tweetnacl';
 
 export interface SolanaLoginRequest {
   walletAddress: string;
@@ -20,19 +21,11 @@ export function verifySolanaSignature(
   message: string
 ): boolean {
   try {
-    // Validate wallet address format
-    new PublicKey(walletAddress);
-
-    // Decode signature
-    const signatureBytes = bs58.decode(signature);
-
-    // Basic validation - in production, you should use proper signature verification
-    // This is a simplified version for demonstration
-    if (signatureBytes.length !== 64) {
-      return false;
-    }
-
-    return true;
+    const pubKey = new PublicKey(walletAddress);
+    const signatureBytes = Buffer.from(signature, 'base64');
+    const messageBytes = Buffer.from(message, 'utf8');
+    // Xác thực chữ ký bằng tweetnacl
+    return nacl.sign.detached.verify(messageBytes, signatureBytes, pubKey.toBytes());
   } catch (error) {
     return false;
   }
