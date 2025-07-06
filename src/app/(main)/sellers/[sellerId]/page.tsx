@@ -2,21 +2,22 @@ import SellerDetailScreen from '@/screens/SellerDetail';
 import { Metadata } from 'next';
 
 type Props = {
-  params: {
+  params: Promise<{
     sellerId: string;
-  };
+  }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { sellerId } = await params;
   // You would typically fetch the seller here
   return {
-    title: `Seller ${params.sellerId} | Pre-Market`,
-    description: `Profile and products for seller ${params.sellerId}`,
+    title: `Seller ${sellerId} | Pre-Market`,
+    description: `Profile and products for seller ${sellerId}`,
   };
 }
 
-export default function SellerDetailPage({ params }: Props) {
-  const sellerId = params.sellerId;
+export default async function SellerDetailPage({ params }: Props) {
+  const { sellerId } = await params;
 
   return <SellerDetailScreen sellerId={sellerId} />;
 }

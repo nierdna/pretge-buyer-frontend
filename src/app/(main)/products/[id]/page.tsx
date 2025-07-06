@@ -1,7 +1,7 @@
 import ProductDetailScreen from '@/screens/ProductDetail';
 
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const productId = params.id;
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
-  return <ProductDetailScreen productId={productId} />;
+  return <ProductDetailScreen productId={id} />;
 }
