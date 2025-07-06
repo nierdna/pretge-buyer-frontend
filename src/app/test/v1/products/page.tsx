@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Link from 'next/link';
 
 interface Token {
   id: string;
@@ -14,12 +15,20 @@ interface SellerWallet {
   address: string;
 }
 
+interface Network {
+  id: string;
+  name: string;
+  symbol: string;
+  logo?: string;
+}
+
 interface ExToken {
   id: string;
   name: string;
   symbol: string;
   logo?: string;
   address?: string;
+  network?: Network;
 }
 
 interface Offer {
@@ -133,21 +142,22 @@ export default function ProductsTestPage() {
               )}
               {offer.ex_token && (
                 <div className="bg-[#232a3a] rounded p-2 mt-1 text-xs text-gray-200">
-                  <div>
-                    ExToken: <b>{offer.ex_token.name}</b> ({offer.ex_token.symbol})
-                  </div>
-                  {offer.ex_token.logo && (
-                    <img
-                      src={offer.ex_token.logo}
-                      alt={offer.ex_token.name}
-                      className="w-6 h-6 inline-block mr-2"
-                    />
+                  ExToken: <b>{offer.ex_token.name}</b> ({offer.ex_token.symbol})
+                  {offer.ex_token.network && (
+                    <span>
+                      {' '}
+                      &gt; Network: <b>{offer.ex_token.network.name}</b> (
+                      {offer.ex_token.network.symbol})
+                    </span>
                   )}
-                  <div>
-                    Address: <span className="break-all">{offer.ex_token.address}</span>
-                  </div>
                 </div>
               )}
+              <Link
+                href={`/test/v1/products/${offer.id}`}
+                className="mt-3 px-4 py-2 rounded bg-blue-600 text-white text-center font-semibold hover:bg-blue-700 transition"
+              >
+                Chi tiết & Mua
+              </Link>
             </div>
           ))}
         </div>

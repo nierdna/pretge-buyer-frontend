@@ -100,6 +100,10 @@ export default function AuthPage() {
       });
       if (loginRes.data.success) {
         setStatus('✅ Đăng nhập thành công! Xin chào ' + loginRes.data.data.user.name);
+        // Lưu wallet_id vào localStorage để các trang khác dùng
+        if (loginRes.data.data.wallet?.id) {
+          localStorage.setItem('wallet_id', loginRes.data.data.wallet.id);
+        }
       } else {
         setError('Đăng nhập thất bại: ' + loginRes.data.message);
       }
