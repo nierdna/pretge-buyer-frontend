@@ -14,6 +14,14 @@ interface SellerWallet {
   address: string;
 }
 
+interface ExToken {
+  id: string;
+  name: string;
+  symbol: string;
+  logo?: string;
+  address?: string;
+}
+
 interface Offer {
   id: string;
   price: number;
@@ -23,6 +31,8 @@ interface Offer {
   end_time: string;
   tokens: Token;
   seller_wallet: SellerWallet;
+  ex_token_id?: string;
+  ex_token?: ExToken;
 }
 
 const SORT_OPTIONS = [
@@ -118,6 +128,26 @@ export default function ProductsTestPage() {
                 Thời gian: {offer.start_time?.slice(0, 10)} - {offer.end_time?.slice(0, 10)}
               </div>
               <div className="text-gray-500 text-xs">Trạng thái: {offer.status}</div>
+              {offer.ex_token_id && (
+                <div className="text-xs text-blue-300 mt-2">ex_token_id: {offer.ex_token_id}</div>
+              )}
+              {offer.ex_token && (
+                <div className="bg-[#232a3a] rounded p-2 mt-1 text-xs text-gray-200">
+                  <div>
+                    ExToken: <b>{offer.ex_token.name}</b> ({offer.ex_token.symbol})
+                  </div>
+                  {offer.ex_token.logo && (
+                    <img
+                      src={offer.ex_token.logo}
+                      alt={offer.ex_token.name}
+                      className="w-6 h-6 inline-block mr-2"
+                    />
+                  )}
+                  <div>
+                    Address: <span className="break-all">{offer.ex_token.address}</span>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
