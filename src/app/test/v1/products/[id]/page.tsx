@@ -3,6 +3,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import axios from 'axios';
 
+function getWalletId() {
+  if (typeof window !== 'undefined') {
+    return localStorage.getItem('wallet_id') || '';
+  }
+  return '';
+}
+
 export default function ProductDetailTestPage() {
   const params = useParams();
   const id = params?.id as string;
@@ -11,7 +18,16 @@ export default function ProductDetailTestPage() {
   const [quantity, setQuantity] = useState(1);
   const [message, setMessage] = useState<string | null>(null);
   const [buying, setBuying] = useState(false);
+  const [balance, setBalance] = useState<number | null>(null);
+  const [balanceLoading, setBalanceLoading] = useState(false);
+  const [walletId, setWalletId] = useState('');
 
+  // Lấy wallet_id từ localStorage
+  useEffect(() => {
+    setWalletId(getWalletId());
+  }, []);
+
+  // Lấy thông tin offer
   useEffect(() => {
     if (!id) return;
     setLoading(true);
@@ -24,18 +40,44 @@ export default function ProductDetailTestPage() {
       .finally(() => setLoading(false));
   }, [id]);
 
+  // Lấy số dư ex_token
+  useEffect(() => {
+    if (!offer?.ex_token?.id || !walletId) return;
+    setBalanceLoading(true);
+    axios
+      .get(
+        `/api/v1/wallet-ex-tokens/balance?wallet_id=${walletId}&ex_token_id=${offer.ex_token.id}`
+      )
+      .then((res) => {
+        setBalance(res.data.balance ?? 0);
+      })
+      .catch(() => setBalance(0))
+      .finally(() => setBalanceLoading(false));
+  }, [offer?.ex_token?.id, walletId]);
+
   const handleBuy = async () => {
     if (!offer) return;
     setBuying(true);
     setMessage(null);
     try {
-      // Gọi API mua hàng (placeholder)
-      // const res = await axios.post(`/api/v1/orders`, { offer_id: id, quantity });
-      // setMessage("Mua thành công!");
-      setTimeout(() => {
-        setMessage('Mua thành công! (demo)');
-        setBuying(false);
-      }, 1000);
+      const res = await axios.post(`/api/v1/orders`, {
+        offer_id: id,
+        quantity,
+        wallet_id: walletId,
+      });
+      setMessage('Mua thành công!');
+      // Reload số dư
+      setBalanceLoading(true);
+      axios
+        .get(
+          `/api/v1/wallet-ex-tokens/balance?wallet_id=${walletId}&ex_token_id=${offer.ex_token.id}`
+        )
+        .then((res) => {
+          setBalance(res.data.balance ?? 0);
+        })
+        .catch(() => setBalance(0))
+        .finally(() => setBalanceLoading(false));
+      setBuying(false);
     } catch (e: any) {
       setMessage(e?.response?.data?.message || 'Có lỗi xảy ra khi mua hàng');
       setBuying(false);
@@ -72,6 +114,9 @@ export default function ProductDetailTestPage() {
                 &gt; Network: <b>{offer.ex_token.network.name}</b> ({offer.ex_token.network.symbol})
               </span>
             )}
+            <div className="mt-2 text-blue-300">
+              Số dư của bạn: {balanceLoading ? '...' : (balance ?? 0)} {offer.ex_token.symbol}
+            </div>
           </div>
         )}
         <form
@@ -99,7 +144,15 @@ export default function ProductDetailTestPage() {
             {buying ? 'Đang mua...' : 'Mua ngay'}
           </button>
         </form>
-        {message && <div className="mt-4 text-center text-green-400">{message}</div>}
+        {message && (
+          <div
+            className={`mt-4 text-center ${
+              message.includes('thành công') ? 'text-green-400' : 'text-red-400'
+            }`}
+          >
+            {message}
+          </div>
+        )}
       </div>
     </div>
   );
