@@ -1,8 +1,8 @@
 'use client';
 
-import SellerProductList from '@/components/SellerProductList';
+import SellerOfferList from '@/components/SellerOfferList';
 import SellerProfile from '@/components/SellerProfile';
-import { useSeller, useSellerProducts } from '@/queries/useSellerQueries';
+import { useSeller, useSellerOffers } from '@/queries/useSellerQueries';
 
 interface SellerDetailScreenProps {
   sellerId: string;
@@ -16,13 +16,13 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
     isError: isSellerError,
   } = useSeller(sellerId);
   const {
-    data: productsData,
-    isLoading: isLoadingProducts,
-    isError: isProductsError,
-  } = useSellerProducts(sellerId);
+    data: offersData,
+    isLoading: isLoadingOffers,
+    isError: isOffersError,
+  } = useSellerOffers(sellerId);
 
   const seller = sellerData?.data;
-  const products = productsData?.data || [];
+  const offers = offersData?.data || [];
 
   if (isLoadingSeller) {
     return (
@@ -53,23 +53,23 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
       {/* Seller Profile */}
       <SellerProfile seller={seller} />
 
-      {/* Seller Products */}
+      {/* Seller Offers */}
       <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4 text-white">Seller Products</h2>
-        {isLoadingProducts ? (
+        <h2 className="text-2xl font-bold mb-4 text-white">Seller Offers</h2>
+        {isLoadingOffers ? (
           <div className="flex justify-center py-12">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-opensea-blue"></div>
           </div>
-        ) : isProductsError ? (
+        ) : isOffersError ? (
           <div className="bg-opensea-darkBorder text-red-400 p-6 rounded-lg text-center border border-red-500/20">
-            <p>Error loading products. Please try again later.</p>
+            <p>Error loading offers. Please try again later.</p>
           </div>
-        ) : products.length === 0 ? (
+        ) : offers.length === 0 ? (
           <div className="bg-opensea-darkBorder p-8 rounded-lg text-center border border-opensea-darkBorder">
-            <p className="text-opensea-lightGray">This seller has no products yet.</p>
+            <p className="text-opensea-lightGray">This seller has no offers yet.</p>
           </div>
         ) : (
-          <SellerProductList products={products} />
+          <SellerOfferList offers={offers} />
         )}
       </div>
     </>

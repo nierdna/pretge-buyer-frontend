@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
-interface ProductFiltersProps {
+interface OfferFiltersProps {
   activeFilters: string[];
   onFilterToggle: (filter: string) => void;
 }
 
-export default function ProductFilters({ activeFilters, onFilterToggle }: ProductFiltersProps) {
+export default function OfferFilters({ activeFilters, onFilterToggle }: OfferFiltersProps) {
   const [priceRange, setPriceRange] = useState<{ min: string; max: string }>({ min: '', max: '' });
 
   const handlePriceChange = (type: 'min' | 'max', value: string) => {
@@ -19,17 +19,17 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
 
   return (
     <div className="w-full md:w-64 flex-shrink-0">
-      <div className="bg-card text-card-foreground p-4 rounded-lg border border-border sticky top-4">
+      <div className="text-primary p-4 rounded-lg bg-deep-green sticky top-4 shadow-dark">
         <h3 className="font-semibold text-lg mb-4">Filters</h3>
 
         {/* Status filter */}
         <div className="mb-6">
-          <h4 className="font-medium text-sm text-muted-foreground mb-2">Status</h4>
+          <h4 className="font-medium text-sm text-opensea-lightGray mb-2">Status</h4>
           <div className="space-y-2">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded text-primary border-input"
+                className="rounded text-opensea-blue border-avocado bg-opensea-darkBorder"
                 checked={activeFilters.includes('buy-now')}
                 onChange={() => onFilterToggle('buy-now')}
               />
@@ -38,7 +38,7 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded text-primary border-input"
+                className="rounded text-opensea-blue border-opensea-darkBorder bg-opensea-darkBorder"
                 checked={activeFilters.includes('auction')}
                 onChange={() => onFilterToggle('auction')}
               />
@@ -49,7 +49,7 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
 
         {/* Price filter */}
         <div className="mb-6">
-          <h4 className="font-medium text-sm text-muted-foreground mb-2">Price Range</h4>
+          <h4 className="font-medium text-sm text-opensea-lightGray mb-2">Price Range</h4>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <input
@@ -57,20 +57,20 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
                 placeholder="Min"
                 value={priceRange.min}
                 onChange={(e) => handlePriceChange('min', e.target.value)}
-                className="w-full p-2 border border-input bg-background rounded text-sm focus:ring-1 focus:ring-ring"
+                className="w-full p-2 border border-opensea-darkBorder bg-opensea-darkBorder rounded text-sm focus:ring-1 focus:ring-opensea-blue text-white placeholder:text-opensea-lightGray"
               />
-              <span className="text-muted-foreground">-</span>
+              <span className="text-opensea-lightGray">-</span>
               <input
                 type="number"
                 placeholder="Max"
                 value={priceRange.max}
                 onChange={(e) => handlePriceChange('max', e.target.value)}
-                className="w-full p-2 border border-input bg-background rounded text-sm focus:ring-1 focus:ring-ring"
+                className="w-full p-2 border border-opensea-darkBorder bg-opensea-darkBorder rounded text-sm focus:ring-1 focus:ring-opensea-blue text-white placeholder:text-opensea-lightGray"
               />
             </div>
             <button
               onClick={handleApplyPriceFilter}
-              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground py-1.5 rounded-md text-sm font-medium transition-colors"
+              className="w-full bg-opensea-blue hover:bg-opensea-blue/90 text-white py-1.5 rounded-md text-sm font-medium transition-colors"
             >
               Apply
             </button>
@@ -79,12 +79,12 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
 
         {/* Quantity filter */}
         <div className="mb-6">
-          <h4 className="font-medium text-sm text-muted-foreground mb-2">Quantity</h4>
+          <h4 className="font-medium text-sm text-opensea-lightGray mb-2">Quantity</h4>
           <div className="space-y-2">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded text-primary border-input"
+                className="rounded text-opensea-blue border-opensea-darkBorder bg-opensea-darkBorder"
                 checked={activeFilters.includes('single')}
                 onChange={() => onFilterToggle('single')}
               />
@@ -93,7 +93,7 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded text-primary border-input"
+                className="rounded text-opensea-blue border-opensea-darkBorder bg-opensea-darkBorder"
                 checked={activeFilters.includes('bundle')}
                 onChange={() => onFilterToggle('bundle')}
               />
@@ -103,13 +103,13 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
         </div>
 
         {/* Traits filter */}
-        <div className="mb-6">
-          <h4 className="font-medium text-sm text-muted-foreground mb-2">Traits</h4>
+        <div className="mb-4">
+          <h4 className="font-medium text-sm text-opensea-lightGray mb-2">Traits</h4>
           <div className="space-y-2">
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded text-primary border-input"
+                className="rounded text-opensea-blue border-opensea-darkBorder bg-opensea-darkBorder"
                 checked={activeFilters.includes('rare')}
                 onChange={() => onFilterToggle('rare')}
               />
@@ -118,7 +118,7 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
             <label className="flex items-center">
               <input
                 type="checkbox"
-                className="rounded text-primary border-input"
+                className="rounded text-opensea-blue border-opensea-darkBorder bg-opensea-darkBorder"
                 checked={activeFilters.includes('unique')}
                 onChange={() => onFilterToggle('unique')}
               />
@@ -128,7 +128,7 @@ export default function ProductFilters({ activeFilters, onFilterToggle }: Produc
         </div>
 
         <button
-          className="w-full bg-secondary hover:bg-secondary/90 text-secondary-foreground py-2 rounded-lg text-sm font-medium"
+          className="w-full bg-opensea-darkBlue hover:bg-opensea-darkBlue/90 text-white py-2 rounded-lg text-sm font-medium"
           onClick={() => {
             // Clear all filters
             activeFilters.forEach((filter) => onFilterToggle(filter));

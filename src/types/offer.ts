@@ -1,15 +1,15 @@
 /**
- * Product related type definitions
+ * Offer related type definitions
  */
 
-export interface ProductImage {
+export interface OfferImage {
   id: string;
   url: string;
   alt?: string;
   isDefault?: boolean;
 }
 
-export interface ProductVariant {
+export interface OfferVariant {
   id: string;
   name: string;
   sku: string;
@@ -19,12 +19,12 @@ export interface ProductVariant {
   options: Record<string, string>;
 }
 
-export interface ProductOption {
+export interface OfferOption {
   name: string;
   values: string[];
 }
 
-export interface ProductCategory {
+export interface OfferCategory {
   id: string;
   name: string;
   slug: string;
@@ -32,7 +32,7 @@ export interface ProductCategory {
   parentId?: string;
 }
 
-export interface ProductReview {
+export interface OfferReview {
   id: string;
   userId: string;
   userName: string;
@@ -54,7 +54,7 @@ export interface SellerInfo {
   avatar?: string;
 }
 
-export interface Product {
+export interface Offer {
   id: string;
   name: string;
   slug: string;
@@ -63,11 +63,11 @@ export interface Product {
   compareAtPrice?: number;
   sku: string;
   inventory: number;
-  images: ProductImage[];
-  categories: ProductCategory[];
-  variants: ProductVariant[];
-  options: ProductOption[];
-  reviews: ProductReview[];
+  images: OfferImage[];
+  categories: OfferCategory[];
+  variants: OfferVariant[];
+  options: OfferOption[];
+  reviews: OfferReview[];
   rating: number;
   sellerId: string;
   sellerName: string;
@@ -82,7 +82,7 @@ export interface Product {
   amount?: number;
 }
 
-export interface ProductFilter {
+export interface OfferFilter {
   search?: string;
   categoryId?: string;
   sellerId?: string;
@@ -94,7 +94,7 @@ export interface ProductFilter {
   limit?: number;
 }
 
-export interface ProductCreateInput {
+export interface OfferCreateInput {
   name: string;
   description: string;
   price: number;
@@ -102,18 +102,18 @@ export interface ProductCreateInput {
   sku: string;
   inventory: number;
   categoryIds: string[];
-  images: Omit<ProductImage, 'id'>[];
-  variants?: Omit<ProductVariant, 'id'>[];
-  options?: ProductOption[];
+  images: Omit<OfferImage, 'id'>[];
+  variants?: Omit<OfferVariant, 'id'>[];
+  options?: OfferOption[];
   isFeatured?: boolean;
 }
 
-export interface ProductUpdateInput extends Partial<ProductCreateInput> {
+export interface OfferUpdateInput extends Partial<OfferCreateInput> {
   id: string;
 }
 
-// Sample data for testing the new ProductCard design
-export const sampleProduct: Product = {
+// Sample data for testing the new OfferCard design
+export const sampleOffer: Offer = {
   id: '1',
   name: 'Sample Token',
   slug: 'sample-token',

@@ -1,3 +1,5 @@
+'use client';
+
 import { projectId } from '@/configs/env';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana/react';

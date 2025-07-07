@@ -12,8 +12,8 @@ export type OrderStatus =
 
 export interface OrderItem {
   id: string;
-  productId: string;
-  productName: string;
+  offerId: string;
+  offerName: string;
   variantId?: string;
   variantName?: string;
   sku: string;
@@ -78,7 +78,7 @@ export interface Order {
 
 export interface OrderCreateInput {
   items: Array<{
-    productId: string;
+    offerId: string;
     variantId?: string;
     quantity: number;
   }>;

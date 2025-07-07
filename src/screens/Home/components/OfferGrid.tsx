@@ -1,14 +1,14 @@
-import ProductCard from '@/components/ProductCard';
-import { Product } from '@/types/product';
+import OfferCard from '@/components/OfferCard';
+import { Offer } from '@/types/offer';
 
-interface ProductGridProps {
-  products: Product[];
+interface OfferGridProps {
+  offers: Offer[];
   isLoading: boolean;
   isError: boolean;
   viewMode: 'grid' | 'large-grid' | 'list';
 }
 
-export default function ProductGrid({ products, isLoading, isError, viewMode }: ProductGridProps) {
+export default function OfferGrid({ offers, isLoading, isError, viewMode }: OfferGridProps) {
   const getGridClasses = () => {
     switch (viewMode) {
       case 'grid':
@@ -38,17 +38,17 @@ export default function ProductGrid({ products, isLoading, isError, viewMode }: 
   if (isError) {
     return (
       <div className="bg-opensea-darkBorder text-red-400 p-4 rounded-lg border border-red-500/20">
-        Error loading products. Please try again later.
+        Error loading offers. Please try again later.
       </div>
     );
   }
 
   return (
     <div className={`grid ${getGridClasses()} gap-4`}>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
+      {offers.map((offer) => (
+        <OfferCard
+          key={offer.id}
+          offer={offer}
           variant={viewMode === 'grid' ? 'default' : viewMode === 'large-grid' ? 'grid' : 'compact'}
         />
       ))}

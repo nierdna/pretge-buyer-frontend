@@ -37,9 +37,11 @@ export default function OrdersScreen({ initialOrders = [] }: OrdersScreenProps) 
           </div>
         ) : (
           <div className="space-y-6">
-            {orders.map((order) => (
-              <OrderItem key={order.id} order={order} />
-            ))}
+            {orders.map((order) =>
+              order.items.map((item, idx) => (
+                <OrderItem key={`${order.id}-${idx}`} item={{ ...item, image: item.image || '' }} />
+              ))
+            )}
           </div>
         )}
       </div>

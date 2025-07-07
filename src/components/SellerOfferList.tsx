@@ -1,16 +1,16 @@
-import type { Product } from '@/types/product';
+import type { Offer } from '@/types/offer';
 import { useState } from 'react';
-import ProductCard from './ProductCard';
+import OfferCard from './OfferCard';
 
-interface SellerProductListProps {
-  products: Product[];
+interface SellerOfferListProps {
+  offers: Offer[];
 }
 
-export default function SellerProductList({ products }: SellerProductListProps) {
+export default function SellerOfferList({ offers }: SellerOfferListProps) {
   const [sortBy, setSortBy] = useState('newest');
 
-  // Sort products based on selected option
-  const sortedProducts = [...products].sort((a, b) => {
+  // Sort offers based on selected option
+  const sortedOffers = [...offers].sort((a, b) => {
     switch (sortBy) {
       case 'price_asc':
         return a.price - b.price;
@@ -27,7 +27,7 @@ export default function SellerProductList({ products }: SellerProductListProps) 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Products</h2>
+        <h2 className="text-2xl font-bold">Offers</h2>
         <div className="flex items-center">
           <label htmlFor="sort" className="text-sm text-gray-600 mr-2">
             Sort by:
@@ -46,15 +46,15 @@ export default function SellerProductList({ products }: SellerProductListProps) 
         </div>
       </div>
 
-      {sortedProducts.length > 0 ? (
+      {sortedOffers.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {sortedProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {sortedOffers.map((offer) => (
+            <OfferCard key={offer.id} offer={offer} />
           ))}
         </div>
       ) : (
         <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">This seller has no products yet.</p>
+          <p className="text-gray-500">This seller has no offers yet.</p>
         </div>
       )}
     </div>

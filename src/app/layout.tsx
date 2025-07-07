@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Pre-Market',
-  description: 'Pre-market exclusive products marketplace',
+  description: 'Pre-market exclusive offers marketplace',
 };
 
 export default function RootLayout({

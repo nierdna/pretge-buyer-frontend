@@ -1,15 +1,15 @@
 'use client';
 
-import { Product } from '@/types/product';
+import { Offer } from '@/types/offer';
 import { useEffect, useState } from 'react';
-import ProductCard from '../../../components/ProductCard';
+import OfferCard from '../../../components/OfferCard';
 
 export interface FlashSaleListProps {
   endDate: string;
-  products: Product[];
+  offers: Offer[];
 }
 
-export default function FlashSaleList({ endDate, products }: FlashSaleListProps) {
+export default function FlashSaleList({ endDate, offers }: FlashSaleListProps) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -19,20 +19,20 @@ export default function FlashSaleList({ endDate, products }: FlashSaleListProps)
 
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Get unique categories from products
+  // Get unique categories from offers
   const categories = Array.from(
-    new Set(products.flatMap((product) => product.categories.map((cat) => cat.id)))
+    new Set(offers.flatMap((offer) => offer.categories.map((cat) => cat.id)))
   ).map((categoryId) => {
-    // Find the first product that has this category to get the category name
-    const product = products.find((p) => p.categories.some((cat) => cat.id === categoryId));
-    const category = product?.categories.find((cat) => cat.id === categoryId);
+    // Find the first offer that has this category to get the category name
+    const offer = offers.find((o) => o.categories.some((cat) => cat.id === categoryId));
+    const category = offer?.categories.find((cat) => cat.id === categoryId);
     return { id: categoryId, name: category?.name || 'Unknown' };
   });
 
-  // Filter products by selected category
-  const filteredProducts = selectedCategory
-    ? products.filter((product) => product.categories.some((cat) => cat.id === selectedCategory))
-    : products;
+  // Filter offers by selected category
+  const filteredOffers = selectedCategory
+    ? offers.filter((offer) => offer.categories.some((cat) => cat.id === selectedCategory))
+    : offers;
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -106,7 +106,7 @@ export default function FlashSaleList({ endDate, products }: FlashSaleListProps)
                 : 'bg-opensea-darkBorder text-white hover:bg-opensea-darkBlue border border-opensea-darkBorder'
             }`}
           >
-            All Products
+            All Offers
           </button>
 
           {categories.map((category) => (
@@ -125,15 +125,15 @@ export default function FlashSaleList({ endDate, products }: FlashSaleListProps)
         </div>
       </div>
 
-      {/* Products grid */}
-      {filteredProducts.length === 0 ? (
+      {/* Offers grid */}
+      {filteredOffers.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-opensea-lightGray">No products found in this category.</p>
+          <p className="text-opensea-lightGray">No offers found in this category.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+          {filteredOffers.map((offer) => (
+            <OfferCard key={offer.id} offer={offer} />
           ))}
         </div>
       )}

@@ -1,6 +1,6 @@
+import type { Offer } from '@/types/offer';
 import type { Order, OrderCreateInput, OrderStatus, OrderUpdateInput } from '@/types/order';
-import type { Product } from '@/types/product';
-import { mockProducts } from './product.service';
+import { mockOffers } from './offer.service';
 
 interface OrderResponse {
   data: Order;
@@ -24,8 +24,8 @@ const mockOrders: Order[] = [
     items: [
       {
         id: 'item1',
-        productId: '1',
-        productName: 'Bitcoin Token',
+        offerId: '1',
+        offerName: 'Bitcoin Token',
         sku: 'BTC-001',
         price: 0.85,
         quantity: 1000,
@@ -34,8 +34,8 @@ const mockOrders: Order[] = [
       },
       {
         id: 'item2',
-        productId: '2',
-        productName: 'Ethereum Token',
+        offerId: '2',
+        offerName: 'Ethereum Token',
         sku: 'ETH-002',
         price: 0.65,
         quantity: 500,
@@ -98,8 +98,8 @@ const mockOrders: Order[] = [
     items: [
       {
         id: 'item3',
-        productId: '3',
-        productName: 'Solana Token',
+        offerId: '3',
+        offerName: 'Solana Token',
         sku: 'SOL-003',
         price: 0.45,
         quantity: 2000,
@@ -161,8 +161,8 @@ const mockOrders: Order[] = [
     items: [
       {
         id: 'item4',
-        productId: '5',
-        productName: 'Polkadot Token',
+        offerId: '5',
+        offerName: 'Polkadot Token',
         sku: 'DOT-005',
         price: 0.55,
         quantity: 1000,
@@ -171,8 +171,8 @@ const mockOrders: Order[] = [
       },
       {
         id: 'item5',
-        productId: '7',
-        productName: 'Uniswap Token',
+        offerId: '7',
+        offerName: 'Uniswap Token',
         sku: 'UNI-007',
         price: 0.4,
         quantity: 500,
@@ -263,20 +263,20 @@ export class OrderService {
    * Create a new order
    */
   async createOrder(data: OrderCreateInput) {
-    // Mock create order
-    // Find products for the items
-    const orderItems = data.items.map((item, index) => {
-      // Find the product in mockProducts
-      const product = mockProducts.find((p: Product) => p.id === item.productId);
+    // Find offers for the items
+    const orderItems = data.items.map((item) => {
+      // Find the offer in mockOffers
+      const offer = mockOffers.find((p: Offer) => p.id === item.offerId);
+
       return {
-        id: `item-${Date.now()}-${index}`,
-        productId: item.productId,
-        productName: product?.name || `Product ${item.productId}`,
-        sku: product?.sku || `SKU-${item.productId}`,
-        price: product?.price || 0,
+        id: `item${Date.now()}-${Math.random()}`,
+        offerId: item.offerId,
+        offerName: offer?.name || `Offer ${item.offerId}`,
+        sku: offer?.sku || `SKU-${item.offerId}`,
+        price: offer?.price || 0,
         quantity: item.quantity,
-        subtotal: (product?.price || 0) * item.quantity,
-        image: product?.images?.[0]?.url,
+        subtotal: (offer?.price || 0) * item.quantity,
+        image: offer?.images?.[0]?.url,
       };
     });
 

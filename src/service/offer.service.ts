@@ -1,25 +1,20 @@
-import type {
-  Product,
-  ProductCreateInput,
-  ProductFilter,
-  ProductUpdateInput,
-} from '@/types/product';
+import type { Offer, OfferCreateInput, OfferFilter, OfferUpdateInput } from '@/types/offer';
 
-interface ProductResponse {
-  data: Product;
+interface OfferResponse {
+  data: Offer | null;
   message?: string;
 }
 
-interface ProductsResponse {
-  data: Product[];
+interface OffersResponse {
+  data: Offer[];
   total?: number;
   page?: number;
   limit?: number;
   message?: string;
 }
 
-// Mock product data for pre-market trading
-export const mockProducts: Product[] = [
+// Mock offer data for pre-market trading
+export const mockOffers: Offer[] = [
   {
     id: '1',
     name: 'Bitcoin Token',
@@ -208,10 +203,10 @@ export const mockProducts: Product[] = [
     options: [],
     reviews: [],
     rating: 4.3,
-    sellerId: 'seller1',
-    sellerName: 'Crypto Exchange Pro',
-    createdAt: '2024-01-18T11:45:00Z',
-    updatedAt: '2024-01-18T11:45:00Z',
+    sellerId: 'seller4',
+    sellerName: 'Research Labs',
+    createdAt: '2024-01-18T11:15:00Z',
+    updatedAt: '2024-01-18T11:15:00Z',
     isFeatured: false,
     isPublished: true,
     tokenInfo: {
@@ -220,13 +215,13 @@ export const mockProducts: Product[] = [
       address: '0x3ee2200efb3400fabb9aacf31297cbdd1d435d47',
     },
     sellerInfo: {
-      name: 'Crypto Exchange Pro',
+      name: 'Research Labs',
       address: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
-      rating: 4.9,
-      avatar: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=100',
+      rating: 4.2,
+      avatar: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=100',
     },
-    startTime: '2024-01-28T14:00:00Z',
-    endTime: '2024-02-02T22:00:00Z',
+    startTime: '2024-01-28T09:00:00Z',
+    endTime: '2024-02-02T17:00:00Z',
     amount: 1050000,
   },
   {
@@ -237,7 +232,7 @@ export const mockProducts: Product[] = [
     price: 0.55,
     compareAtPrice: 0.65,
     sku: 'DOT-005',
-    inventory: 18000,
+    inventory: 20000,
     images: [
       {
         id: '105',
@@ -258,10 +253,10 @@ export const mockProducts: Product[] = [
     options: [],
     reviews: [],
     rating: 4.6,
-    sellerId: 'seller2',
-    sellerName: 'DeFi Ventures',
-    createdAt: '2024-01-19T16:30:00Z',
-    updatedAt: '2024-01-19T16:30:00Z',
+    sellerId: 'seller5',
+    sellerName: 'Interop Solutions',
+    createdAt: '2024-01-19T16:45:00Z',
+    updatedAt: '2024-01-19T16:45:00Z',
     isFeatured: true,
     isPublished: true,
     tokenInfo: {
@@ -270,20 +265,20 @@ export const mockProducts: Product[] = [
       address: '0x7083609fce4d1d8dc0c979aab8c869ea2c873402',
     },
     sellerInfo: {
-      name: 'DeFi Ventures',
-      address: '0x8ba1f109551bD432803012645Hac136c22C177e9',
-      rating: 4.6,
-      avatar: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=100',
+      name: 'Interop Solutions',
+      address: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+      rating: 4.5,
+      avatar: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=100',
     },
-    startTime: '2024-01-30T10:00:00Z',
-    endTime: '2024-02-05T18:00:00Z',
-    amount: 990000,
+    startTime: '2024-01-30T10:30:00Z',
+    endTime: '2024-02-05T18:30:00Z',
+    amount: 1100000,
   },
   {
     id: '6',
     name: 'Chainlink Token',
     slug: 'chainlink-token',
-    description: 'Decentralized oracle network token for smart contracts.',
+    description: 'Oracle network token providing real-world data to smart contracts.',
     price: 0.75,
     compareAtPrice: 0.85,
     sku: 'LINK-006',
@@ -291,7 +286,7 @@ export const mockProducts: Product[] = [
     images: [
       {
         id: '106',
-        url: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=1000',
+        url: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?q=80&w=1000',
         alt: 'Chainlink Token',
         isDefault: true,
       },
@@ -307,11 +302,11 @@ export const mockProducts: Product[] = [
     variants: [],
     options: [],
     reviews: [],
-    rating: 4.7,
-    sellerId: 'seller3',
-    sellerName: 'Blockchain Capital',
-    createdAt: '2024-01-20T13:15:00Z',
-    updatedAt: '2024-01-20T13:15:00Z',
+    rating: 4.4,
+    sellerId: 'seller6',
+    sellerName: 'Oracle Network',
+    createdAt: '2024-01-20T13:20:00Z',
+    updatedAt: '2024-01-20T13:20:00Z',
     isFeatured: false,
     isPublished: true,
     tokenInfo: {
@@ -320,13 +315,13 @@ export const mockProducts: Product[] = [
       address: '0x514910771af9ca656af840dff83e8264ecf986ca',
     },
     sellerInfo: {
-      name: 'Blockchain Capital',
+      name: 'Oracle Network',
       address: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
-      rating: 4.4,
-      avatar: 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?q=80&w=100',
+      rating: 4.3,
+      avatar: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=100',
     },
-    startTime: '2024-02-01T12:00:00Z',
-    endTime: '2024-02-07T20:00:00Z',
+    startTime: '2024-02-01T11:00:00Z',
+    endTime: '2024-02-07T19:00:00Z',
     amount: 900000,
   },
   {
@@ -334,14 +329,14 @@ export const mockProducts: Product[] = [
     name: 'Uniswap Token',
     slug: 'uniswap-token',
     description: 'Decentralized exchange token for automated trading.',
-    price: 0.4,
-    compareAtPrice: 0.48,
+    price: 0.6,
+    compareAtPrice: 0.7,
     sku: 'UNI-007',
-    inventory: 20000,
+    inventory: 18000,
     images: [
       {
         id: '107',
-        url: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000',
+        url: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=1000',
         alt: 'Uniswap Token',
         isDefault: true,
       },
@@ -357,11 +352,11 @@ export const mockProducts: Product[] = [
     variants: [],
     options: [],
     reviews: [],
-    rating: 4.5,
-    sellerId: 'seller1',
-    sellerName: 'Crypto Exchange Pro',
-    createdAt: '2024-01-21T10:10:00Z',
-    updatedAt: '2024-01-21T10:10:00Z',
+    rating: 4.7,
+    sellerId: 'seller7',
+    sellerName: 'DeFi Exchange',
+    createdAt: '2024-01-21T15:30:00Z',
+    updatedAt: '2024-01-21T15:30:00Z',
     isFeatured: true,
     isPublished: true,
     tokenInfo: {
@@ -370,28 +365,28 @@ export const mockProducts: Product[] = [
       address: '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984',
     },
     sellerInfo: {
-      name: 'Crypto Exchange Pro',
+      name: 'DeFi Exchange',
       address: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
-      rating: 4.9,
-      avatar: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?q=80&w=100',
+      rating: 4.6,
+      avatar: 'https://images.unsplash.com/photo-1560393464-5c69a73c5770?q=80&w=100',
     },
-    startTime: '2024-02-03T08:00:00Z',
-    endTime: '2024-02-09T16:00:00Z',
-    amount: 800000,
+    startTime: '2024-02-03T12:30:00Z',
+    endTime: '2024-02-09T20:30:00Z',
+    amount: 1080000,
   },
   {
     id: '8',
     name: 'Aave Token',
     slug: 'aave-token',
-    description: 'DeFi lending protocol token for borrowing and lending.',
-    price: 0.6,
-    compareAtPrice: 0.7,
+    description: 'Lending protocol token for decentralized borrowing and lending.',
+    price: 0.4,
+    compareAtPrice: 0.48,
     sku: 'AAVE-008',
-    inventory: 15000,
+    inventory: 22000,
     images: [
       {
         id: '108',
-        url: 'https://images.unsplash.com/photo-1621761191319-c6fb62004040?q=80&w=1000',
+        url: 'https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=1000',
         alt: 'Aave Token',
         isDefault: true,
       },
@@ -407,11 +402,11 @@ export const mockProducts: Product[] = [
     variants: [],
     options: [],
     reviews: [],
-    rating: 4.4,
-    sellerId: 'seller2',
-    sellerName: 'DeFi Ventures',
-    createdAt: '2024-01-22T09:45:00Z',
-    updatedAt: '2024-01-22T09:45:00Z',
+    rating: 4.2,
+    sellerId: 'seller8',
+    sellerName: 'Lending Protocol',
+    createdAt: '2024-01-22T10:15:00Z',
+    updatedAt: '2024-01-22T10:15:00Z',
     isFeatured: false,
     isPublished: true,
     tokenInfo: {
@@ -420,76 +415,76 @@ export const mockProducts: Product[] = [
       address: '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9',
     },
     sellerInfo: {
-      name: 'DeFi Ventures',
-      address: '0x8ba1f109551bD432803012645Hac136c22C177e9',
-      rating: 4.6,
-      avatar: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?q=80&w=100',
+      name: 'Lending Protocol',
+      address: '0x742d35Cc6634C0532925a3b8D4C9db96C4b4d8b6',
+      rating: 4.1,
+      avatar: 'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=100',
     },
-    startTime: '2024-02-05T14:00:00Z',
-    endTime: '2024-02-11T22:00:00Z',
-    amount: 900000,
+    startTime: '2024-02-05T08:45:00Z',
+    endTime: '2024-02-11T16:45:00Z',
+    amount: 880000,
   },
 ];
 
-export class ProductService {
+export class OfferService {
   /**
-   * Get all products
-   * @param filters Product filters
-   * @returns Products response
+   * Get all offers
+   * @param filters Offer filters
+   * @returns Offers response
    */
-  async getProducts(filters?: ProductFilter) {
-    // Return mock data instead of API call
-    return { data: mockProducts };
+  async getOffers(filters?: OfferFilter): Promise<OffersResponse> {
+    // For now, just return mock data
+    return { data: mockOffers };
   }
 
   /**
-   * Get product by id
-   * @param id Product id
-   * @returns Product response
+   * Get offer by id
+   * @param id Offer id
+   * @returns Offer response
    */
-  async getProductById(id: string) {
-    // Return mock data for a single product
-    const product = mockProducts.find((p) => p.id === id);
-    return { data: product };
+  async getOfferById(id: string): Promise<OfferResponse> {
+    // Return mock data for a single offer
+    const offer = mockOffers.find((p) => p.id === id) || null;
+    return { data: offer };
   }
 
   /**
-   * Get featured products
-   * @returns Featured products response
+   * Get featured offers
+   * @returns Featured offers response
    */
-  async getFeaturedProducts() {
-    // Return mock featured products
-    const featured = mockProducts.filter((p) => p.isFeatured);
+  async getFeaturedOffers(): Promise<OffersResponse> {
+    // Return mock featured offers
+    const featured = mockOffers.filter((p) => p.isFeatured);
     return { data: featured };
   }
 
   /**
-   * Get related products
-   * @param productId Product id
-   * @returns Related products response
+   * Get related offers
+   * @param offerId Offer id
+   * @returns Related offers response
    */
-  async getRelatedProducts(productId: string) {
-    // For mock data, just return other products in the same category
-    const product = mockProducts.find((p) => p.id === productId);
-    if (!product) return { data: [] };
+  async getRelatedOffers(offerId: string): Promise<OffersResponse> {
+    // For mock data, just return other offers in the same category
+    const offer = mockOffers.find((p) => p.id === offerId);
+    if (!offer) return { data: [] };
 
-    const categoryIds = product.categories.map((c) => c.id);
-    const related = mockProducts
-      .filter((p) => p.id !== productId && p.categories.some((c) => categoryIds.includes(c.id)))
+    const categoryIds = offer.categories.map((c) => c.id);
+    const related = mockOffers
+      .filter((p) => p.id !== offerId && p.categories.some((c) => categoryIds.includes(c.id)))
       .slice(0, 4);
 
     return { data: related };
   }
 
   /**
-   * Create product
-   * @param data Product data
-   * @returns Product response
+   * Create offer
+   * @param data Offer data
+   * @returns Offer response
    */
-  async createProduct(data: ProductCreateInput) {
-    // Mock create product
-    const newProduct: Product = {
-      id: `new-${Date.now()}`,
+  async createOffer(data: OfferCreateInput): Promise<OfferResponse> {
+    // Mock create offer
+    const newOffer: Offer = {
+      id: (mockOffers.length + 1).toString(),
       name: data.name,
       slug: data.name.toLowerCase().replace(/\s+/g, '-'),
       description: data.description,
@@ -497,80 +492,89 @@ export class ProductService {
       compareAtPrice: data.compareAtPrice,
       sku: data.sku,
       inventory: data.inventory,
-      images: data.images.map((img, idx) => ({
-        id: `img-${Date.now()}-${idx}`,
-        url: img.url,
-        alt: img.alt || '',
-        isDefault: img.isDefault || false,
+      images: data.images.map((img, index) => ({
+        id: (mockOffers.length * 100 + index + 1).toString(),
+        ...img,
       })),
-      categories: [],
-      variants: [],
+      categories: data.categoryIds.map((id) => ({
+        id,
+        name: 'Cryptocurrency',
+        slug: 'cryptocurrency',
+        description: 'Digital currency tokens',
+      })),
+      variants:
+        data.variants?.map((v, index) => ({
+          id: (mockOffers.length * 10 + index + 1).toString(),
+          ...v,
+        })) || [],
       options: data.options || [],
       reviews: [],
       rating: 0,
-      sellerId: 'current-user',
-      sellerName: 'Current User',
+      sellerId: 'seller1',
+      sellerName: 'Default Seller',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       isFeatured: data.isFeatured || false,
       isPublished: true,
     };
 
-    mockProducts.push(newProduct);
-    return { data: newProduct };
+    mockOffers.push(newOffer);
+    return { data: newOffer };
   }
 
   /**
-   * Update product
-   * @param id Product id
-   * @param data Product data
-   * @returns Product response
+   * Update offer
+   * @param id Offer id
+   * @param data Offer data
+   * @returns Offer response
    */
-  async updateProduct(id: string, data: ProductUpdateInput) {
-    // Mock update product
-    const index = mockProducts.findIndex((p) => p.id === id);
-    if (index === -1) throw new Error('Product not found');
+  async updateOffer(id: string, data: OfferUpdateInput): Promise<OfferResponse> {
+    // Mock update offer
+    const index = mockOffers.findIndex((p) => p.id === id);
+    if (index === -1) throw new Error('Offer not found');
 
-    // Create a new product object with updated fields
-    const currentProduct = mockProducts[index];
-    const updatedProduct: Product = {
-      ...currentProduct,
-      name: data.name || currentProduct.name,
-      description: data.description || currentProduct.description,
-      price: data.price || currentProduct.price,
-      compareAtPrice: data.compareAtPrice,
-      sku: data.sku || currentProduct.sku,
-      inventory: data.inventory !== undefined ? data.inventory : currentProduct.inventory,
+    // Create a new offer object with updated fields
+    const currentOffer = mockOffers[index];
+
+    // Handle images separately to ensure they have proper id fields
+    const updatedImages = data.images
+      ? data.images.map((img, index) => ({
+          id: `${currentOffer.id}-img-${index}`,
+          ...img,
+        }))
+      : currentOffer.images;
+
+    // Handle variants separately to ensure they have proper id fields
+    const updatedVariants = data.variants
+      ? data.variants.map((variant, index) => ({
+          id: `${currentOffer.id}-variant-${index}`,
+          ...variant,
+        }))
+      : currentOffer.variants;
+
+    const updatedOffer: Offer = {
+      ...currentOffer,
+      ...data,
+      images: updatedImages,
+      variants: updatedVariants,
       updatedAt: new Date().toISOString(),
-      isFeatured: data.isFeatured !== undefined ? data.isFeatured : currentProduct.isFeatured,
     };
 
-    // Only update images if provided
-    if (data.images) {
-      updatedProduct.images = data.images.map((img: any, idx) => ({
-        id: `img-${Date.now()}-${idx}`,
-        url: img.url,
-        alt: img.alt || '',
-        isDefault: img.isDefault || false,
-      }));
-    }
-
-    mockProducts[index] = updatedProduct;
-    return { data: updatedProduct };
+    mockOffers[index] = updatedOffer;
+    return { data: updatedOffer };
   }
 
   /**
-   * Delete product
-   * @param id Product id
-   * @returns Product response
+   * Delete offer
+   * @param id Offer id
+   * @returns Success response
    */
-  async deleteProduct(id: string) {
-    // Mock delete product
-    const index = mockProducts.findIndex((p) => p.id === id);
-    if (index === -1) throw new Error('Product not found');
+  async deleteOffer(id: string): Promise<{ success: boolean; message?: string }> {
+    // Mock delete offer
+    const index = mockOffers.findIndex((p) => p.id === id);
+    if (index === -1) throw new Error('Offer not found');
 
-    const deletedProduct = mockProducts[index];
-    mockProducts.splice(index, 1);
-    return { data: deletedProduct, success: true, message: 'Product deleted successfully' };
+    mockOffers.splice(index, 1);
+    return { success: true, message: 'Offer deleted successfully' };
   }
 }

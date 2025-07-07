@@ -9,7 +9,7 @@ export const sellerKeys = {
   list: (filters: SellerFilter = {}) => [...sellerKeys.lists(), { filters }] as const,
   details: () => [...sellerKeys.all, 'detail'] as const,
   detail: (id: string) => [...sellerKeys.details(), id] as const,
-  products: (sellerId: string) => [...sellerKeys.detail(sellerId), 'products'] as const,
+  offers: (sellerId: string) => [...sellerKeys.detail(sellerId), 'offers'] as const,
   reviews: (sellerId: string) => [...sellerKeys.detail(sellerId), 'reviews'] as const,
 };
 
@@ -30,14 +30,14 @@ export const useSeller = (id?: string) => {
   });
 };
 
-// Get seller products
-export const useSellerProducts = (
+// Get seller offers
+export const useSellerOffers = (
   sellerId?: string,
   params?: { page?: number; limit?: number; sortBy?: string }
 ) => {
   return useQuery({
-    queryKey: [...sellerKeys.products(sellerId || ''), params],
-    queryFn: () => Service.seller.getSellerProducts(sellerId || '', params),
+    queryKey: [...sellerKeys.offers(sellerId || ''), params],
+    queryFn: () => Service.seller.getSellerOffers(sellerId || '', params),
     enabled: !!sellerId,
   });
 };

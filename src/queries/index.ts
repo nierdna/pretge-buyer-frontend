@@ -1,3 +1,3 @@
+export * from './useOfferQueries';
 export * from './useOrderQueries';
-export * from './useProductQueries';
 export * from './useSellerQueries';

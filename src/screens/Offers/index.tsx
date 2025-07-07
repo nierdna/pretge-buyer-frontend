@@ -1,15 +1,15 @@
 'use client';
 
-import ProductCard from '@/components/ProductCard';
-import { useProducts } from '@/queries/useProductQueries';
-import type { ProductFilter } from '@/types/product';
+import OfferCard from '@/components/OfferCard';
+import { useOffers } from '@/queries/useOfferQueries';
+import type { OfferFilter } from '@/types/offer';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
-export default function ProductsScreen() {
+export default function OffersScreen() {
   const searchParams = useSearchParams();
 
-  const [filters, setFilters] = useState<ProductFilter>({
+  const [filters, setFilters] = useState<OfferFilter>({
     sortBy: 'newest',
     page: 1,
     limit: 12,
@@ -20,9 +20,9 @@ export default function ProductsScreen() {
     max: '',
   });
 
-  // Use React Query to fetch products
-  const { data, isLoading, isError } = useProducts(filters);
-  const products = data?.data || [];
+  // Use React Query to fetch offers
+  const { data, isLoading, isError } = useOffers(filters);
+  const offers = data?.data || [];
 
   // Categories for filtering
   const categories = [
@@ -39,13 +39,13 @@ export default function ProductsScreen() {
     const search = searchParams.get('search');
     const sort = searchParams.get('sort');
 
-    const initialFilters: ProductFilter = {
+    const initialFilters: OfferFilter = {
       ...filters,
     };
 
     if (categoryId) initialFilters.categoryId = categoryId;
     if (search) initialFilters.search = search;
-    if (sort) initialFilters.sortBy = sort as ProductFilter['sortBy'];
+    if (sort) initialFilters.sortBy = sort as OfferFilter['sortBy'];
 
     setFilters(initialFilters);
   }, [searchParams]);
@@ -60,7 +60,7 @@ export default function ProductsScreen() {
   };
 
   const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const sortBy = e.target.value as ProductFilter['sortBy'];
+    const sortBy = e.target.value as OfferFilter['sortBy'];
     setFilters((prev) => ({ ...prev, sortBy, page: 1 }));
   };
 
@@ -98,7 +98,7 @@ export default function ProductsScreen() {
 
   return (
     <>
-      <h1 className="text-3xl font-bold mb-8 text-white">All Products</h1>
+      <h1 className="text-3xl font-bold mb-8 text-white">All Offers</h1>
 
       <div className="flex flex-col md:flex-row gap-8">
         {/* Filters Sidebar */}
@@ -176,12 +176,12 @@ export default function ProductsScreen() {
           </div>
         </div>
 
-        {/* Products Grid */}
+        {/* Offers Grid */}
         <div className="flex-grow">
           {/* Sort and Results Count */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
             <p className="text-opensea-lightGray">
-              {isLoading ? 'Loading...' : `Showing ${products.length} products`}
+              {isLoading ? 'Loading...' : `Showing ${offers.length} offers`}
             </p>
             <div className="flex items-center">
               <label htmlFor="sort" className="mr-2 text-opensea-lightGray">
@@ -201,54 +201,39 @@ export default function ProductsScreen() {
             </div>
           </div>
 
-          {/* Products Grid */}
-          {isLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {/* Loading State */}
+          {isLoading && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {[...Array(8)].map((_, index) => (
                 <div
                   key={index}
-                  className="bg-opensea-darkBorder rounded-lg h-80 animate-pulse"
-                ></div>
-              ))}
-            </div>
-          ) : isError ? (
-            <div className="bg-opensea-darkBorder text-red-400 p-4 rounded-lg border border-red-500/20">
-              Error loading products. Please try again later.
-            </div>
-          ) : products.length === 0 ? (
-            <div className="bg-opensea-darkBorder text-opensea-lightGray p-8 rounded-lg text-center border border-opensea-darkBorder">
-              <p className="text-lg mb-4">No products found</p>
-              <p>Try adjusting your filters or search criteria</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                  className="bg-opensea-darkBorder rounded-lg aspect-square animate-pulse"
+                />
               ))}
             </div>
           )}
 
-          {/* Pagination */}
-          {!isLoading && products.length > 0 && (
-            <div className="mt-8 flex justify-center">
-              <nav className="flex items-center gap-1">
-                <button
-                  onClick={() =>
-                    setFilters((prev) => ({ ...prev, page: Math.max(1, (prev.page || 1) - 1) }))
-                  }
-                  disabled={currentPage <= 1}
-                  className="px-3 py-1 rounded border border-opensea-darkBorder bg-opensea-darkBorder text-white disabled:opacity-50 hover:bg-opensea-darkBlue"
-                >
-                  Previous
-                </button>
-                <span className="px-4 py-1 text-white">{currentPage}</span>
-                <button
-                  onClick={() => setFilters((prev) => ({ ...prev, page: (prev.page || 1) + 1 }))}
-                  className="px-3 py-1 rounded border border-opensea-darkBorder bg-opensea-darkBorder text-white hover:bg-opensea-darkBlue"
-                >
-                  Next
-                </button>
-              </nav>
+          {/* Error State */}
+          {isError && (
+            <div className="bg-opensea-darkBorder text-red-400 p-4 rounded-lg border border-red-500/20">
+              Error loading offers. Please try again later.
+            </div>
+          )}
+
+          {/* Offers Grid */}
+          {!isLoading && !isError && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {offers.map((offer) => (
+                <OfferCard key={offer.id} offer={offer} />
+              ))}
+            </div>
+          )}
+
+          {/* Empty State */}
+          {!isLoading && !isError && offers.length === 0 && (
+            <div className="text-center py-12">
+              <p className="text-opensea-lightGray text-lg">No offers found.</p>
+              <p className="text-opensea-lightGray">Try adjusting your filters.</p>
             </div>
           )}
         </div>

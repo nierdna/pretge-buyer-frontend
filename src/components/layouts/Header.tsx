@@ -18,8 +18,8 @@ export default function Header() {
             <Link href="/" className="text-white hover:text-opensea-blue transition-colors">
               Home
             </Link>
-            <Link href="/products" className="text-white hover:text-opensea-blue transition-colors">
-              Products
+            <Link href="/offers" className="text-white hover:text-opensea-blue transition-colors">
+              Offers
             </Link>
             <Link
               href="/flash-sale"

@@ -1,4 +1,4 @@
-import type { Product } from '@/types/product';
+import type { Offer } from '@/types/offer';
 import type { Seller, SellerCreateInput, SellerFilter, SellerUpdateInput } from '@/types/seller';
 import { apiRequest } from './axios';
 
@@ -15,8 +15,8 @@ interface SellersResponse {
   message: string;
 }
 
-interface SellerProductsResponse {
-  data: Product[];
+interface SellerOffersResponse {
+  data: Offer[];
   total: number;
   page: number;
   limit: number;
@@ -52,7 +52,7 @@ const mockSellers: Seller[] = [
       isVerified: true,
       verifiedAt: '2024-01-20T10:30:00Z',
     },
-    productsCount: 45,
+    offersCount: 45,
     rating: 4.9,
     reviews: [],
     joinedAt: '2024-01-15T08:30:00Z',
@@ -85,7 +85,7 @@ const mockSellers: Seller[] = [
       isVerified: true,
       verifiedAt: '2024-02-25T14:45:00Z',
     },
-    productsCount: 32,
+    offersCount: 32,
     rating: 4.6,
     reviews: [],
     joinedAt: '2024-02-20T10:45:00Z',
@@ -118,7 +118,7 @@ const mockSellers: Seller[] = [
       isVerified: true,
       verifiedAt: '2024-03-15T11:20:00Z',
     },
-    productsCount: 18,
+    offersCount: 18,
     rating: 4.4,
     reviews: [],
     joinedAt: '2024-03-10T09:15:00Z',
@@ -145,13 +145,13 @@ export class SellerService {
   }
 
   /**
-   * Get products from a specific seller
+   * Get offers from a specific seller
    */
-  async getSellerProducts(
+  async getSellerOffers(
     sellerId: string,
     params?: { page?: number; limit?: number; sortBy?: string }
   ) {
-    return apiRequest<SellerProductsResponse>({
+    return apiRequest<SellerOffersResponse>({
       method: 'GET',
       params,
     });

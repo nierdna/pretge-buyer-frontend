@@ -1,20 +1,19 @@
 'use client';
 
-import { Product } from '@/types/product';
+import { Offer } from '@/types/offer';
 import { formatNumberShort } from '@/utils/helpers/number';
 import { truncateAddress } from '@/utils/helpers/string';
-import { formatDate } from '@/utils/parseDate';
 import { Star, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Separator } from './ui/separator';
 
-interface ProductCardProps {
-  product: Product;
+interface OfferCardProps {
+  offer: Offer;
   variant?: 'default' | 'compact' | 'grid';
 }
 
-export default function ProductCard({ product, variant = 'default' }: ProductCardProps) {
+export default function OfferCard({ offer, variant = 'default' }: OfferCardProps) {
   const isCompact = variant === 'compact';
   const isGrid = variant === 'grid';
   const {
@@ -30,7 +29,7 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
     startTime,
     endTime,
     amount,
-  } = product;
+  } = offer;
 
   const isOutOfStock = inventory <= 0;
   const isActive =
@@ -42,29 +41,45 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
 
   return (
     <div className="group rounded-md hover:shadow-lg hover:scale-[1.02] transition-all duration-200 overflow-hidden bg-card-gradient shadow-dark">
-      <Link href={`/products/${product.id}`} className="block">
+      <Link href={`/offers/${offer.id}`} className="block">
         {/* Header with Token Info and Status */}
         <div className="p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               {tokenInfo?.icon && (
-                <div className="w-8 h-8 rounded-full overflow-hidden bg-opensea-marina">
+                <div className="w-8 h-8 relative min-w-8 rounded-full overflow-hidden bg-opensea-marina">
                   <Image
                     src={tokenInfo.icon}
                     alt={tokenInfo.symbol}
-                    width={32}
-                    height={32}
+                    fill
                     className="object-cover"
                   />
                 </div>
               )}
               <div>
-                <h3 className="font-semibold text-primary text-sm">{tokenInfo?.symbol || name}</h3>
-                <p className="text-xs text-gray-a">#{id}</p>
+                <h2 className="text-lg font-bold text-primary">{tokenInfo?.symbol || name}</h2>
+                <div className="flex items-center space-x-1.5 mt-1">
+                  <svg
+                    className="w-4 h-4 text-priamry"
+                    role="img"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <title>Ethereum</title>
+                    <path
+                      d="M11.944 17.97L4.58 13.62l7.364 4.35zm.112 0l7.365-4.35-7.365 4.35zM12 3.052L4.58 12.33l7.42-2.835L12 3.052zm0 0l7.42 9.278-7.42-2.835L12 3.052zM4.58 13.62l7.364-1.766-7.364 1.766zm7.518-.002l7.365-1.766-7.365 1.766z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <span className="text-xs font-medium text-gray-a">Ethereum</span>
+                </div>
               </div>
             </div>
-            <div>
-              <p className="font-semibold text-primary">${formatNumberShort(price)}</p>
+            <div className="text-right">
+              <p className="text-lg font-bold text-cyan">${formatNumberShort(price)}</p>
+              <p className="text-xs text-gray-a mt-1">
+                Sold: {formatNumberShort(amount || 0, { useShorterExpression: true })}
+              </p>
             </div>
             {/* <Badge
               variant={isActive ? 'default' : 'secondary'}
@@ -88,26 +103,42 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
         </AspectRatio> */}
         {/* </div> */}
 
-        {/* Product Info */}
+        {/* Offer Info */}
         <div className="p-4 space-y-3">
-          {/* Price and Amount */}
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-xs text-gray-a">Chain</p>
-              <p className="font-bold text-primary">Ethereum</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="bg-cyan-800/20 p-3 rounded-lg">
+              <span className="text-2xs font-medium text-gray-400 block">Pay with</span>
+              <div className="flex items-center space-x-2 mt-1">
+                <img
+                  src="https://assets.coingecko.com/coins/images/6319/standard/usdc.png"
+                  className="w-6 h-6 rounded-full"
+                  alt="USDC Logo"
+                />
+                <img
+                  src="https://assets.coingecko.com/coins/images/4128/standard/solana.png"
+                  className="w-6 h-6 rounded-full"
+                  alt="SOL Logo"
+                />
+              </div>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-gray-a">Amount</p>
-              <p className="font-bold text-primary">{formatNumberShort(amount || 0)}</p>
+            <div className="bg-cyan-800/20 p-3 rounded-lg">
+              <span className="text-2xs font-medium text-gray-400 block">Collateral</span>
+              <span className="font-bold text-primary mt-1 block">25%</span>
+            </div>
+            <div className="bg-cyan-800/20 p-3 rounded-lg">
+              <span className="text-2xs font-medium text-gray-400 block">Amount</span>
+              <span className="font-bold text-primary mt-1 block">
+                {formatNumberShort(amount || 0, { useShorterExpression: true })}
+              </span>
+            </div>
+            <div className="bg-cyan-800/20 p-3 rounded-lg">
+              <span className="text-2xs font-medium text-gray-400 block">Settle after TGE</span>
+              <span className="font-bold text-primary mt-1 block">4h</span>
             </div>
           </div>
 
           {/* Time Info - Compact */}
-          <div className="space-y-1">
-            {/* <div className="flex items-center gap-1 text-xs text-opensea-lightGray">
-              <Clock className="w-3 h-3" />
-              <span>Time Settings</span>
-            </div> */}
+          {/* <div className="space-y-1">
             <div className="grid grid-cols-1 gap-2 text-xs">
               {startTime && (
                 <div className="flex items-center gap-1 text-xs text-gray-a">
@@ -138,7 +169,7 @@ export default function ProductCard({ product, variant = 'default' }: ProductCar
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
           {/* Seller Info - Compact */}
 
           {/* Action Button */}

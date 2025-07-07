@@ -1,39 +1,31 @@
 'use client';
 
-import ProductCard from '@/components/ProductCard';
-import { useCart } from '@/hooks/useCart';
-import { useProduct, useRelatedProducts } from '@/queries/useProductQueries';
-import ProductInfo from '@/screens/ProductDetail/components/ProductInfo';
+import OfferCard from '@/components/OfferCard';
+import { useOffer, useRelatedOffers } from '@/queries/useOfferQueries';
+import OfferInfo from '@/screens/OfferDetail/components/OfferInfo';
 import Link from 'next/link';
 import { useState } from 'react';
 
-interface ProductDetailScreenProps {
-  productId: string;
+interface OfferDetailScreenProps {
+  offerId: string;
 }
 
-export default function ProductDetailScreen({ productId }: ProductDetailScreenProps) {
+export default function OfferDetailScreen({ offerId }: OfferDetailScreenProps) {
   // Use React Query hooks
-  const { data: productData, isLoading, isError } = useProduct(productId);
-  const { data: relatedProductsData } = useRelatedProducts(productId);
+  const { data: offerData, isLoading, isError } = useOffer(offerId);
+  const { data: relatedOffersData } = useRelatedOffers(offerId);
 
-  const product = productData?.data;
-  const relatedProducts = relatedProductsData?.data || [];
+  const offer = offerData?.data;
+  const relatedOffers = relatedOffersData?.data || [];
 
-  const { addItem } = useCart();
   const [selectedVariantId, setSelectedVariantId] = useState<string | undefined>(undefined);
   const [quantity, setQuantity] = useState(1);
 
-  // Handle adding product to cart
-  const handleAddToCart = () => {
-    if (product) {
-      const selectedVariant = selectedVariantId
-        ? product.variants.find((v) => v.id === selectedVariantId)
-        : undefined;
-
-      addItem(product, quantity, selectedVariant);
-
+  // Handle purchase offer
+  const handlePurchase = () => {
+    if (offer) {
       // Show confirmation message (could use a toast notification library)
-      alert('Product added to cart!');
+      alert('Purchase functionality coming soon!');
     }
   };
 
@@ -57,11 +49,11 @@ export default function ProductDetailScreen({ productId }: ProductDetailScreenPr
     );
   }
 
-  if (isError || !product) {
+  if (isError || !offer) {
     return (
       <div className="bg-opensea-darkBorder text-red-400 p-6 rounded-lg text-center border border-red-500/20">
-        <h2 className="text-xl font-semibold mb-2">Error Loading Product</h2>
-        <p>We couldn&apos;t find the product you&apos;re looking for. Please try again later.</p>
+        <h2 className="text-xl font-semibold mb-2">Error Loading Offer</h2>
+        <p>We couldn&apos;t find the offer you&apos;re looking for. Please try again later.</p>
       </div>
     );
   }
@@ -78,34 +70,34 @@ export default function ProductDetailScreen({ productId }: ProductDetailScreenPr
           </li>
           <li className="flex items-center">
             <span className="mx-2 text-opensea-lightGray">/</span>
-            <Link href="/products" className="text-opensea-lightGray hover:text-white">
-              Products
+            <Link href="/offers" className="text-opensea-lightGray hover:text-white">
+              Offers
             </Link>
           </li>
           <li className="flex items-center">
             <span className="mx-2 text-opensea-lightGray">/</span>
-            <span className="text-white">{product.name}</span>
+            <span className="text-white">{offer.name}</span>
           </li>
         </ol>
       </nav>
 
-      {/* Product Detail */}
-      <ProductInfo
-        product={product}
-        onAddToCart={handleAddToCart}
+      {/* Offer Detail */}
+      <OfferInfo
+        offer={offer}
+        onPurchase={handlePurchase}
         selectedVariantId={selectedVariantId}
         setSelectedVariantId={setSelectedVariantId}
         quantity={quantity}
         setQuantity={setQuantity}
       />
 
-      {/* Related Products */}
-      {relatedProducts.length > 0 && (
+      {/* Related Offers */}
+      {relatedOffers.length > 0 && (
         <div className="mt-16">
-          <h2 className="text-2xl font-bold mb-6 text-white">Related Products</h2>
+          <h2 className="text-2xl font-bold mb-6 text-white">Related Offers</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <ProductCard key={relatedProduct.id} product={relatedProduct} />
+            {relatedOffers.map((relatedOffer) => (
+              <OfferCard key={relatedOffer.id} offer={relatedOffer} />
             ))}
           </div>
         </div>

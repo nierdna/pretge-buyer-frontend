@@ -1,4 +1,4 @@
-interface ProductControlsProps {
+interface OfferControlsProps {
   sortOrder: string;
   viewMode: 'grid' | 'large-grid' | 'list';
   onSortChange: (sortOrder: string) => void;
@@ -18,14 +18,14 @@ import {
 } from '@/components/ui/select';
 import { Filter, LayoutGrid, LayoutList, Square } from 'lucide-react';
 
-export default function ProductControls({
+export default function OfferControls({
   sortOrder,
   viewMode,
   onSortChange,
   onViewModeChange,
   onFilterClick,
   isSticky = false,
-}: ProductControlsProps) {
+}: OfferControlsProps) {
   return (
     <div
       className={`flex flex-col md:flex-row justify-between items-center mb-6 gap-4 ${

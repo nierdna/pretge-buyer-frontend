@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-opensea-blue text-white shadow-xs hover:bg-opensea-blue/90',
+        default: 'bg-btn-primary text-body shadow-xs hover:bg-btn-primary-hover',
         destructive:
           'bg-opensea-error text-white shadow-xs hover:bg-opensea-error/90 bg-opensea-error/60',
         outline:

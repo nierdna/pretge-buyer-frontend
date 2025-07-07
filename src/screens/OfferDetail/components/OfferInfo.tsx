@@ -1,34 +1,34 @@
 'use client';
 
-import type { Product } from '@/types/product';
+import type { Offer } from '@/types/offer';
 import { formatPrice } from '@/utils/formatPrice';
 import Image from 'next/image';
 import { Dispatch, SetStateAction, useState } from 'react';
 
-interface ProductDetailProps {
-  product: Product;
-  onAddToCart?: () => void;
+interface OfferDetailProps {
+  offer: Offer;
+  onPurchase?: () => void;
   selectedVariantId?: string;
   setSelectedVariantId?: Dispatch<SetStateAction<string | undefined>>;
   quantity?: number;
   setQuantity?: Dispatch<SetStateAction<number>>;
 }
 
-export default function ProductInfo({
-  product,
-  onAddToCart,
+export default function OfferInfo({
+  offer,
+  onPurchase,
   selectedVariantId,
   setSelectedVariantId,
   quantity = 1,
   setQuantity,
-}: ProductDetailProps) {
+}: OfferDetailProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [localQuantity, setLocalQuantity] = useState(quantity);
 
   // Use either the controlled quantity from props or local state
   const currentQuantity = setQuantity ? quantity : localQuantity;
   const updateQuantity = (newQuantity: number) => {
-    if (newQuantity >= 1 && newQuantity <= product.inventory) {
+    if (newQuantity >= 1 && newQuantity <= offer.inventory) {
       if (setQuantity) {
         setQuantity(newQuantity);
       } else {
@@ -50,9 +50,7 @@ export default function ProductInfo({
     if (!value || !setSelectedVariantId) return;
 
     // Find variant that matches all currently selected options
-    const matchingVariant = product.variants.find(
-      (variant) => variant.options[optionName] === value
-    );
+    const matchingVariant = offer.variants.find((variant) => variant.options[optionName] === value);
 
     if (matchingVariant) {
       setSelectedVariantId(matchingVariant.id);
@@ -61,29 +59,27 @@ export default function ProductInfo({
 
   // Get the current variant if one is selected
   const currentVariant = selectedVariantId
-    ? product.variants.find((v) => v.id === selectedVariantId)
+    ? offer.variants.find((v) => v.id === selectedVariantId)
     : undefined;
 
-  // Get the price to display (variant price or product price)
-  const displayPrice = currentVariant ? currentVariant.price : product.price;
-  const displayComparePrice = currentVariant
-    ? currentVariant.compareAtPrice
-    : product.compareAtPrice;
+  // Get the price to display (variant price or offer price)
+  const displayPrice = currentVariant ? currentVariant.price : offer.price;
+  const displayComparePrice = currentVariant ? currentVariant.compareAtPrice : offer.compareAtPrice;
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
         <div className="relative aspect-square rounded-lg overflow-hidden mb-4">
           <Image
-            src={product.images[selectedImage]?.url || 'https://via.placeholder.com/600'}
-            alt={product.name}
+            src={offer.images[selectedImage]?.url || 'https://via.placeholder.com/600'}
+            alt={offer.name}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
         </div>
         <div className="grid grid-cols-5 gap-2">
-          {product.images.map((image, index) => (
+          {offer.images.map((image, index) => (
             <button
               key={image.id}
               onClick={() => setSelectedImage(index)}
@@ -93,7 +89,7 @@ export default function ProductInfo({
             >
               <Image
                 src={image.url}
-                alt={image.alt || product.name}
+                alt={image.alt || offer.name}
                 fill
                 sizes="20vw"
                 className="object-cover"
@@ -104,7 +100,7 @@ export default function ProductInfo({
       </div>
 
       <div>
-        <h1 className="text-3xl font-bold mb-2 text-white">{product.name}</h1>
+        <h1 className="text-3xl font-bold mb-2 text-white">{offer.name}</h1>
 
         <div className="flex items-center mb-4">
           <div className="flex items-center mr-4">
@@ -112,7 +108,7 @@ export default function ProductInfo({
               <svg
                 key={star}
                 className={`w-5 h-5 ${
-                  star <= Math.round(product.rating) ? 'text-yellow-400' : 'text-opensea-lightGray'
+                  star <= Math.round(offer.rating) ? 'text-yellow-400' : 'text-opensea-lightGray'
                 }`}
                 fill="currentColor"
                 viewBox="0 0 20 20"
@@ -121,7 +117,7 @@ export default function ProductInfo({
               </svg>
             ))}
           </div>
-          <span className="text-opensea-lightGray">{product.reviews.length} reviews</span>
+          <span className="text-opensea-lightGray">{offer.reviews.length} reviews</span>
         </div>
 
         <div className="mb-6">
@@ -141,12 +137,12 @@ export default function ProductInfo({
         </div>
 
         <div className="mb-6">
-          <p className="text-opensea-lightGray">{product.description}</p>
+          <p className="text-opensea-lightGray">{offer.description}</p>
         </div>
 
-        {product.options.length > 0 && (
+        {offer.options.length > 0 && (
           <div className="mb-6">
-            {product.options.map((option) => (
+            {offer.options.map((option) => (
               <div key={option.name} className="mb-4">
                 <label className="block text-sm font-medium text-white mb-1">{option.name}</label>
                 <select
@@ -181,37 +177,28 @@ export default function ProductInfo({
               onChange={handleQuantityChange}
               className="w-16 border-t border-b border-opensea-darkBorder bg-opensea-darkBorder text-center py-1 text-white"
               min="1"
-              max={product.inventory}
+              max={offer.inventory}
             />
             <button
               onClick={() => updateQuantity(currentQuantity + 1)}
               className="border border-opensea-darkBorder bg-opensea-darkBorder text-white rounded-r-md px-3 py-1 hover:bg-opensea-darkBlue"
-              disabled={currentQuantity >= product.inventory}
+              disabled={currentQuantity >= offer.inventory}
             >
               +
             </button>
-            <span className="ml-3 text-sm text-opensea-lightGray">
-              {product.inventory} available
-            </span>
+            <span className="ml-3 text-sm text-opensea-lightGray">{offer.inventory} available</span>
           </div>
         </div>
 
         <div className="flex gap-4">
           <button
-            onClick={onAddToCart}
-            className="flex-1 bg-opensea-blue text-white py-3 rounded-md hover:bg-opensea-blue/90 transition-colors"
+            onClick={onPurchase}
+            className="flex-1 bg-opensea-blue hover:bg-opensea-darkBlue text-white py-3 px-6 rounded-lg font-medium transition-colors"
           >
-            Add to Cart
+            Purchase Now
           </button>
-          <button className="px-4 border border-opensea-darkBorder bg-opensea-darkBorder text-white rounded-md hover:bg-opensea-darkBlue transition-colors">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-              />
-            </svg>
+          <button className="border border-opensea-blue text-opensea-blue hover:bg-opensea-blue hover:text-white py-3 px-6 rounded-lg font-medium transition-colors">
+            Buy Now
           </button>
         </div>
       </div>
