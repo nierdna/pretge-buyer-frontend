@@ -1,7 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 interface Token {
   id: string;
@@ -61,9 +61,7 @@ export default function ProductsTestPage() {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(
-        `/api/v1/products?page=${page}&limit=8&search=${encodeURIComponent(search)}&sort=${sort}`
-      )
+      .get(`/api/v1/offers?page=${page}&limit=8&search=${encodeURIComponent(search)}&sort=${sort}`)
       .then((res) => {
         setProducts(res.data.data || []);
         setTotalPages(res.data.totalPages || 1);

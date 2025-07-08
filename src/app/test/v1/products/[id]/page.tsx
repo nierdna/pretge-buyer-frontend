@@ -1,7 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
 import axios from 'axios';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 function getWalletId() {
   if (typeof window !== 'undefined') {
@@ -32,7 +32,7 @@ export default function ProductDetailTestPage() {
     if (!id) return;
     setLoading(true);
     axios
-      .get(`/api/v1/products?id=${id}`)
+      .get(`/api/v1/offers?id=${id}`)
       .then((res) => {
         setOffer(res.data.data?.[0] || null);
       })

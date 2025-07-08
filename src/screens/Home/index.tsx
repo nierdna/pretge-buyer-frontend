@@ -1,21 +1,21 @@
 'use client';
 
-import { useFeaturedProducts } from '@/hooks/queries/useProductQueries';
+import { useFeaturedOffers } from '@/queries/useOfferQueries';
 import { useEffect, useState } from 'react';
 import {
   ActiveFiltersList,
   FlashSaleBanner,
   MobileFilterDrawer,
+  OfferControls,
+  OfferFilters,
+  OfferGrid,
   Pagination,
-  ProductControls,
-  ProductFilters,
-  ProductGrid,
 } from './components';
 
 export default function HomeScreen() {
-  // Use React Query to fetch featured products
-  const { data, isLoading, isError } = useFeaturedProducts();
-  const products = data?.data || [];
+  // Use React Query to fetch featured offers
+  const { data, isLoading, isError } = useFeaturedOffers();
+  const offers = data?.data || [];
 
   // Filter states
   const [viewMode, setViewMode] = useState<'grid' | 'large-grid' | 'list'>('grid');
@@ -46,11 +46,11 @@ export default function HomeScreen() {
     }
   }, [isMobile]);
 
-  // Featured products
-  const featuredProducts = products.filter((product) => product.isFeatured).slice(0, 5);
+  // Featured offers
+  const featuredOffers = offers.filter((offer) => offer.isFeatured).slice(0, 5);
 
-  // Sort products based on selected order
-  const sortedProducts = [...products].sort((a, b) => {
+  // Sort offers based on selected order
+  const sortedOffers = [...offers].sort((a, b) => {
     if (sortOrder === 'price_low') return a.price - b.price;
     if (sortOrder === 'price_high') return b.price - a.price;
     if (sortOrder === 'newest') {
@@ -93,20 +93,20 @@ export default function HomeScreen() {
     <>
       {/* Flash Sale Slider */}
       <div className="mb-6">
-        <FlashSaleBanner isLoading={isLoading} products={products} />
+        <FlashSaleBanner isLoading={isLoading} offers={offers} />
       </div>
 
       {/* Main content with responsive layout */}
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Left sidebar for filters - hidden on screens below 1024px */}
         <div className="hidden lg:block">
-          <ProductFilters activeFilters={activeFilters} onFilterToggle={toggleFilter} />
+          <OfferFilters activeFilters={activeFilters} onFilterToggle={toggleFilter} />
         </div>
 
         {/* Right side content */}
         <div className="flex-1">
           {/* Search, Sort and View Controls */}
-          <ProductControls
+          <OfferControls
             sortOrder={sortOrder}
             viewMode={viewMode}
             onSortChange={handleSortChange}
@@ -117,16 +117,16 @@ export default function HomeScreen() {
           {/* Active Filters */}
           <ActiveFiltersList activeFilters={activeFilters} onFilterToggle={toggleFilter} />
 
-          {/* Products Grid */}
-          <ProductGrid
-            products={sortedProducts}
+          {/* Offers Grid */}
+          <OfferGrid
+            offers={sortedOffers}
             isLoading={isLoading}
             isError={isError}
             viewMode={viewMode}
           />
 
           {/* Pagination */}
-          {!isLoading && products.length > 0 && (
+          {!isLoading && offers.length > 0 && (
             <Pagination
               currentPage={currentPage}
               totalPages={5} // This would come from API in a real app

@@ -47,7 +47,7 @@ export interface Seller {
   address: SellerAddress;
   social: SellerSocial;
   verification: SellerVerification;
-  productsCount: number;
+  offersCount: number;
   rating: number;
   reviews: SellerReview[];
   joinedAt: string;
@@ -59,7 +59,7 @@ export interface SellerFilter {
   status?: 'active' | 'inactive' | 'suspended';
   isVerified?: boolean;
   minRating?: number;
-  sortBy?: 'rating' | 'products' | 'newest';
+  sortBy?: 'rating' | 'newest';
   limit?: number;
   page?: number;
 }

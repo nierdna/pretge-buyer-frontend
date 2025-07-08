@@ -1,20 +1,16 @@
+import { User, Wallet } from '@/types/user';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-export interface User {
-  id: string;
-  address: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface AuthState {
   user: User | null;
+  wallets: Wallet[] | null;
   accessToken: string | null;
   refreshToken: string | null;
   walletAddress: string | null;
 
   // Actions
+  setWallets: (wallets: Wallet[] | null) => void;
   setTokens: (accessToken: string, refreshToken: string) => void;
   setAccessToken: (accessToken: string) => void;
   login: (accessToken: string, refreshToken: string) => void;
@@ -28,9 +24,15 @@ export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
       user: null,
+      wallets: null,
       accessToken: null,
       refreshToken: null,
       walletAddress: null,
+
+      setWallets: (wallets) =>
+        set({
+          wallets,
+        }),
 
       setTokens: (accessToken, refreshToken) =>
         set({
@@ -54,6 +56,8 @@ export const useAuthStore = create<AuthState>()(
           accessToken: null,
           refreshToken: null,
           walletAddress: null,
+          user: null,
+          wallets: null,
         }),
 
       setUser: (user) =>

@@ -7,31 +7,36 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useCopy } from '@/hooks/use-copy';
 import { useAuth } from '@/hooks/useAuth';
 import { truncateAddress } from '@/utils/helpers/string';
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
-import { ChevronDown, LogOut, User } from 'lucide-react';
+import { ChevronDown, Copy, LogOut, User } from 'lucide-react';
+import { toast } from 'sonner';
 
 export const ButtonConnectWallet = () => {
-  const { address, isConnected } = useAppKitAccount();
+  const { address } = useAppKitAccount();
   const { open } = useAppKit();
-  const { isAuthenticated, handleLogin, handleLogout, isLoading } = useAuth();
+  const { isAuthenticated, handleLogout } = useAuth();
+
+  const { isCopied, handleCopy } = useCopy();
+
+  const handleCopyAddress = () => {
+    handleCopy(address || '');
+    toast.success('Copied to clipboard');
+  };
 
   const handleConnectWallet = async () => {
     await open();
   };
 
   const handleAuthAction = async () => {
-    if (isAuthenticated) {
-      handleLogout();
-    } else {
-      await handleLogin();
-    }
+    await handleLogout();
   };
 
   return (
     <>
-      {isConnected ? (
+      {isAuthenticated ? (
         /* User Dropdown Menu */
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -42,15 +47,19 @@ export const ButtonConnectWallet = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={handleAuthAction} disabled={isLoading}>
-              {isAuthenticated ? (
-                <>
-                  <LogOut className="h-4 w-4 mr-2" />
-                  Logout
-                </>
-              ) : (
-                'Login with Base'
-              )}
+            <DropdownMenuItem onClick={handleConnectWallet}>Switch Wallet</DropdownMenuItem>
+            <DropdownMenuItem
+              className="justify-between"
+              onClick={() => {
+                handleCopyAddress();
+              }}
+            >
+              Copy Address
+              <Copy className="h-4 w-4 ml-2" />
+            </DropdownMenuItem>
+            <DropdownMenuItem className="justify-between" onClick={handleAuthAction}>
+              Logout
+              <LogOut className="h-4 w-4 ml-2" />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

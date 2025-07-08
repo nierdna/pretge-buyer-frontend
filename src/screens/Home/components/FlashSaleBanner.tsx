@@ -10,20 +10,20 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Product } from '@/types/product';
+import { Offer } from '@/types/offer';
 import { formatPrice } from '@/utils/formatPrice';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
 
 interface FlashSaleBannerProps {
-  products: Product[];
+  offers: Offer[];
   endTime?: Date;
   isLoading?: boolean;
 }
 
 export default function FlashSaleBanner({
-  products = [],
+  offers = [],
   endTime = new Date(Date.now() + 24 * 60 * 60 * 1000),
   isLoading = false,
 }: FlashSaleBannerProps) {
@@ -75,22 +75,22 @@ export default function FlashSaleBanner({
   // Skeleton placeholders for loading state
   if (isLoading) {
     return (
-      <div className="bg-gradient-to-r from-opensea-darkBlue to-opensea-blue p-3 rounded-xl w-full">
+      <div className="bg-deep-green p-6 rounded-xl w-full shadow-dark">
         <div className="flex items-center gap-2 mb-2">
           <Badge variant="destructive" className="text-xs py-0">
             Flash Sale
           </Badge>
-          <span className="text-xs text-opensea-lightGray">Ends in</span>
+          <span className="text-xs text-secondary">Ends in</span>
           <div className="flex gap-1">
-            <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+            <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
               00
             </div>
-            <span className="text-white font-bold">:</span>
-            <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+            <span className="text-inverse font-bold">:</span>
+            <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono align-middle">
               00
             </div>
-            <span className="text-white font-bold">:</span>
-            <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+            <span className="text-inverse font-bold">:</span>
+            <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
               00
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function FlashSaleBanner({
           <CarouselContent>
             {[...Array(6)].map((_, index) => (
               <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/6">
-                <Card className="h-auto py-0">
+                <Card className="h-auto py-0 shadow-card border-0 border-t border-hairline">
                   <CardContent className="p-0">
                     <div className="p-4">
                       <Skeleton className="aspect-[4/3] rounded-lg mb-1" />
@@ -124,22 +124,22 @@ export default function FlashSaleBanner({
   }
 
   return (
-    <div className="bg-gradient-to-r from-opensea-darkBlue to-opensea-blue p-3 rounded-xl w-full">
+    <div className="bg-deep-green p-6 rounded-xl w-full shadow-dark">
       <div className="flex items-center gap-2 mb-2">
         <Badge variant="destructive" className="text-xs py-0">
           Flash Sale
         </Badge>
         <span className="text-xs text-opensea-lightGray">Ends in</span>
         <div className="flex gap-1">
-          <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+          <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
             {timeLeft.hours}
           </div>
-          <span className="text-white font-bold">:</span>
-          <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+          <span className="text-inverse font-bold">:</span>
+          <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
             {timeLeft.minutes}
           </div>
-          <span className="text-white font-bold">:</span>
-          <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+          <span className="text-inverse font-bold">:</span>
+          <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
             {timeLeft.seconds}
           </div>
         </div>
@@ -147,23 +147,21 @@ export default function FlashSaleBanner({
 
       <Carousel className="w-full">
         <CarouselContent>
-          {products.map((product) => {
+          {offers.map((offer) => {
             // Calculate discount percentage if compareAtPrice exists
-            const discountPercentage = product.compareAtPrice
-              ? Math.round(
-                  ((product.compareAtPrice - product.price) / product.compareAtPrice) * 100
-                )
+            const discountPercentage = offer.compareAtPrice
+              ? Math.round(((offer.compareAtPrice - offer.price) / offer.compareAtPrice) * 100)
               : 0;
 
             return (
-              <CarouselItem key={product.id} className="md:basis-1/5 lg:basis-1/6">
-                <Card className="h-auto py-0">
+              <CarouselItem key={offer.id} className="md:basis-1/5 lg:basis-1/6">
+                <Card className="h-auto py-0 shadow-card bg-inverse border-0 border-t border-hairline">
                   <CardContent className="p-0">
                     <div className="p-4">
                       <div className="relative aspect-[4/3] rounded-lg overflow-hidden mb-1">
                         <Image
-                          src={product.images[0]?.url || 'https://via.placeholder.com/500'}
-                          alt={product.name}
+                          src={offer.images[0]?.url || 'https://via.placeholder.com/500'}
+                          alt={offer.name}
                           fill
                           className="object-cover"
                         />
@@ -176,17 +174,17 @@ export default function FlashSaleBanner({
                           </Badge>
                         )}
                       </div>
-                      <h3 className="text-xs font-bold line-clamp-1 text-white">{product.name}</h3>
+                      <h3 className="text-xs font-bold line-clamp-1 text-inverse">{offer.name}</h3>
                       <div className="flex items-center mt-0.5">
-                        <p className="text-xs font-bold text-white">{formatPrice(product.price)}</p>
-                        {product.compareAtPrice && (
-                          <p className="ml-1 text-[10px] text-opensea-lightGray line-through">
-                            {formatPrice(product.compareAtPrice)}
+                        <p className="text-xs font-bold text-inverse">{formatPrice(offer.price)}</p>
+                        {offer.compareAtPrice && (
+                          <p className="ml-1 text-[10px] text-inverse line-through">
+                            {formatPrice(offer.compareAtPrice)}
                           </p>
                         )}
                       </div>
                       <Link
-                        href={`/products/${product.id}`}
+                        href={`/offers/${offer.id}`}
                         className="mt-1 block text-center text-[10px] bg-opensea-darkBorder hover:bg-opensea-darkBlue text-white py-0.5 px-2 rounded-md font-medium transition-colors"
                       >
                         View Deal

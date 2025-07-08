@@ -1,12 +1,15 @@
-import type { SellerReview } from '@/types/seller';
+import { useSellerReviews } from '@/queries/useSellerQueries';
 import { useState } from 'react';
 
 interface SellerReviewListProps {
-  reviews: SellerReview[];
+  sellerId: string;
 }
 
-export default function SellerReviewList({ reviews }: SellerReviewListProps) {
+export default function SellerReviewList({ sellerId }: SellerReviewListProps) {
   const [sortBy, setSortBy] = useState('newest');
+
+  const { data, isLoading, isError } = useSellerReviews(sellerId);
+  const reviews = data?.data || [];
 
   // Sort reviews based on selected option
   const sortedReviews = [...reviews].sort((a, b) => {
@@ -21,19 +24,35 @@ export default function SellerReviewList({ reviews }: SellerReviewListProps) {
     }
   });
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-opensea-blue"></div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="bg-opensea-darkBorder text-red-400 p-6 rounded-lg text-center border border-red-500/20">
+        <p>Error loading reviews. Please try again later.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">Reviews</h2>
+        <h2 className="text-2xl font-bold text-white">Reviews</h2>
         <div className="flex items-center">
-          <label htmlFor="review-sort" className="text-sm text-gray-600 mr-2">
+          <label htmlFor="review-sort" className="text-sm text-opensea-lightGray mr-2">
             Sort by:
           </label>
           <select
             id="review-sort"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="border-gray-300 rounded-md text-sm"
+            className="border-opensea-darkBorder bg-opensea-darkBorder rounded-md text-sm text-white"
           >
             <option value="newest">Newest</option>
             <option value="highest">Highest Rating</option>
@@ -45,17 +64,20 @@ export default function SellerReviewList({ reviews }: SellerReviewListProps) {
       {sortedReviews.length > 0 ? (
         <div className="space-y-6">
           {sortedReviews.map((review) => (
-            <div key={review.id} className="bg-white p-6 rounded-lg shadow-md">
+            <div
+              key={review.id}
+              className="bg-opensea-darkBorder p-6 rounded-lg shadow-md border border-opensea-darkBorder"
+            >
               <div className="flex justify-between items-start">
                 <div>
-                  <h3 className="font-semibold">{review.userName}</h3>
+                  <h3 className="font-semibold text-white">{review.userName}</h3>
                   <div className="flex items-center mt-1">
                     <div className="flex">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <svg
                           key={star}
                           className={`w-4 h-4 ${
-                            star <= review.rating ? 'text-yellow-400' : 'text-gray-300'
+                            star <= review.rating ? 'text-yellow-400' : 'text-gray-600'
                           }`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
@@ -64,19 +86,19 @@ export default function SellerReviewList({ reviews }: SellerReviewListProps) {
                         </svg>
                       ))}
                     </div>
-                    <span className="ml-2 text-sm text-gray-500">
+                    <span className="ml-2 text-sm text-opensea-lightGray">
                       {new Date(review.createdAt).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
               </div>
-              <p className="mt-4 text-gray-700">{review.comment}</p>
+              <p className="mt-4 text-opensea-lightGray">{review.comment}</p>
             </div>
           ))}
         </div>
       ) : (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500">This seller has no reviews yet.</p>
+        <div className="text-center py-12 bg-opensea-darkBorder rounded-lg border border-opensea-darkBorder">
+          <p className="text-opensea-lightGray">This seller has no reviews yet.</p>
         </div>
       )}
     </div>

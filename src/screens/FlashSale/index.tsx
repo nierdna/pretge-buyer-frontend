@@ -1,15 +1,15 @@
 'use client';
 
-import { useProducts } from '@/hooks/queries/useProductQueries';
+import { useOffers } from '@/queries/useOfferQueries';
 import FlashSaleList from '@/screens/FlashSale/components/FlashSaleList';
 import FlashSaleBanner from '@/screens/Home/components/FlashSaleBanner';
-import type { Product } from '@/types/product';
+import type { Offer } from '@/types/offer';
 import { useEffect, useState } from 'react';
 
 export default function FlashSaleScreen() {
-  const { data, isLoading, isError } = useProducts();
-  const products = data?.data || [];
-  const [flashSaleProducts, setFlashSaleProducts] = useState<Product[]>([]);
+  const { data, isLoading, isError } = useOffers();
+  const offers = data?.data || [];
+  const [flashSaleOffers, setFlashSaleOffers] = useState<Offer[]>([]);
 
   // Flash sale data
   const flashSale = {
@@ -20,44 +20,44 @@ export default function FlashSaleScreen() {
   };
 
   useEffect(() => {
-    // Filter products that have a compareAtPrice (on sale)
-    if (products.length > 0) {
-      const onSaleProducts = products.filter(
-        (product) => product.compareAtPrice && product.compareAtPrice > product.price
+    // Filter offers that have a compareAtPrice (on sale)
+    if (offers.length > 0) {
+      const onSaleOffers = offers.filter(
+        (offer) => offer.compareAtPrice && offer.compareAtPrice > offer.price
       );
-      setFlashSaleProducts(onSaleProducts);
+      setFlashSaleOffers(onSaleOffers);
     }
-  }, [products]);
+  }, [offers]);
 
   return (
     <>
       <h1 className="text-3xl font-bold mb-8 text-white">Flash Sale</h1>
 
       {/* Flash Sale Banner */}
-      {flashSaleProducts.length > 0 && (
+      {flashSaleOffers.length > 0 && (
         <div className="mb-8">
-          <FlashSaleBanner products={flashSaleProducts.slice(0, 5)} />
+          <FlashSaleBanner offers={flashSaleOffers.slice(0, 5)} />
         </div>
       )}
 
-      {/* Flash Sale Products */}
-      {isLoading && products.length === 0 ? (
+      {/* Flash Sale Offers */}
+      {isLoading && offers.length === 0 ? (
         <div className="flex justify-center py-12">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-opensea-blue"></div>
         </div>
       ) : isError ? (
         <div className="bg-opensea-darkBorder text-red-400 p-6 rounded-lg text-center border border-red-500/20">
-          <p>Error loading products. Please try again later.</p>
+          <p>Error loading offers. Please try again later.</p>
         </div>
-      ) : flashSaleProducts.length === 0 ? (
+      ) : flashSaleOffers.length === 0 ? (
         <div className="bg-opensea-darkBorder p-8 rounded-lg text-center border border-opensea-darkBorder">
-          <h2 className="text-xl font-semibold mb-2 text-white">No Flash Sale Products</h2>
+          <h2 className="text-xl font-semibold mb-2 text-white">No Flash Sale Offers</h2>
           <p className="text-opensea-lightGray">
-            There are currently no products on sale. Check back later for new deals!
+            There are currently no offers on sale. Check back later for new deals!
           </p>
         </div>
       ) : (
-        <FlashSaleList endDate={flashSale.endDate} products={flashSaleProducts} />
+        <FlashSaleList endDate={flashSale.endDate} offers={flashSaleOffers} />
       )}
     </>
   );

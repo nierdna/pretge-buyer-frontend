@@ -1,30 +1,41 @@
-import { useToast } from '@/hooks/use-toast';
+import { chainConfigs } from '@/configs/chains';
+import { ChainType } from '@/server/enums/chain';
+import { Service } from '@/service';
 import { useAuthStore } from '@/store/authStore';
-import { useAppKitAccount } from '@reown/appkit/react';
+import type { Provider as SolanaProvider } from '@reown/appkit-adapter-solana/react';
+import {
+  useAppKitAccount,
+  useAppKitNetwork,
+  useAppKitProvider,
+  useDisconnect,
+  type Provider,
+} from '@reown/appkit/react';
 import { useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 export const useAuth = () => {
   const { address, isConnected } = useAppKitAccount();
-  const { setTokens, setUser, logout, user, accessToken } = useAuthStore();
-  const { toast } = useToast();
+  const { chainId } = useAppKitNetwork();
 
-  // Determine chain type based on connected wallet
-  // For now, we'll default to EVM (Base network) since that's what we're targeting
-  const getChainType = () => {
-    // You can enhance this logic based on your needs
-    // For example, check the wallet type or network
-    return 'evm'; // Default to EVM for Base network
-  };
+  const { walletProvider: solanaWalletProvider } = useAppKitProvider<SolanaProvider>('solana');
+  const { walletProvider: evmWalletProvider } = useAppKitProvider<Provider>('eip155');
+
+  const { disconnect } = useDisconnect();
+  const { setTokens, setUser, logout, user, accessToken, setWalletAddress, walletAddress } =
+    useAuthStore();
 
   // Generate login message
   const generateLoginMessage = useMutation({
-    mutationFn: async (walletAddress: string) => {
-      const response = await axios.post('/api/auth/login-message', {
-        walletAddress,
-        chainType: getChainType(),
-      });
-      return response.data;
+    mutationFn: async ({
+      walletAddress,
+      chainType,
+    }: {
+      walletAddress: string;
+      chainType: ChainType;
+    }) => {
+      const response = await Service.auth.loginMessage(walletAddress, chainType);
+      return response;
     },
   });
 
@@ -35,126 +46,139 @@ export const useAuth = () => {
       signature,
       message,
       timestamp,
+      chainType,
     }: {
       walletAddress: string;
       signature: string;
       message: string;
       timestamp: number;
+      chainType: ChainType;
     }) => {
-      const response = await axios.post('/api/auth/login', {
+      const response = await Service.auth.login(
         walletAddress,
         signature,
         message,
         timestamp,
-        chainType: getChainType(),
-      });
-      console.log('response', response);
-      return response.data;
+        chainType
+      );
+      return response;
     },
     onSuccess: (data) => {
-      console.log('data', data);
       if (data.success && data.data) {
         setTokens(data.data.accessToken, data.data.refreshToken);
-        setUser({
-          id: data.data.user.id,
-          address: data.data.wallet.address,
-          createdAt: data.data.user.created_at,
-          updatedAt: data.data.user.updated_at,
-        });
-        toast({
-          title: 'Login successful',
-          description: 'Welcome to Pre-Market XYZ!',
-        });
-      } else {
-        toast({
-          title: 'Login failed',
-          description: data.message || 'Something went wrong',
-          variant: 'destructive',
+        setUser(data.data.user);
+        setWalletAddress(data.data.wallet.address);
+        toast.success('Login successful', {
+          description: `Welcome ${data.data.user.name || data.data.wallet.address}!`,
         });
       }
     },
     onError: (error: any) => {
-      toast({
-        title: 'Login failed',
-        description: error.response?.data?.message || 'Something went wrong',
-        variant: 'destructive',
-      });
+      console.log('error', error);
+      throw { ...error, message: error.response?.data?.message };
     },
   });
 
+  // Handle login process using direct wallet APIs
   const handleLogin = async () => {
-    if (!address || !isConnected) {
-      toast({
-        title: 'Wallet not connected',
+    if (!address || !isConnected || !chainId) {
+      toast.error('Wallet not connected', {
         description: 'Please connect your wallet first',
-        variant: 'destructive',
       });
       return;
     }
 
     try {
-      // Generate login message
-      const messageResponse = await generateLoginMessage.mutateAsync(address);
-      if (!messageResponse.success) {
-        throw new Error(messageResponse.message);
+      // 1. Generate login message
+      const chainConfig = chainConfigs.find(
+        (chain) => chain.chainId.toString() === chainId.toString()
+      );
+      const msgRes = await generateLoginMessage.mutateAsync({
+        walletAddress: address,
+        chainType: chainConfig?.chainType as ChainType,
+      });
+      if (!msgRes.success) {
+        throw new Error(msgRes.message);
       }
 
-      const { message, timestamp } = messageResponse.data;
+      const { message: loginMessage, timestamp } = msgRes;
 
-      // Sign message with wallet
-      let signature: string;
+      // 2. Sign message using direct wallet APIs
+      let signature = '';
 
-      if (getChainType() === 'sol') {
-        // For Solana, we need to use a different signing method
-        // This would need to be implemented based on your Solana wallet setup
-        throw new Error('Solana signing not implemented yet');
-      } else {
-        // For EVM chains (Base, Ethereum, etc.)
-        const provider = (window as any).ethereum;
-        if (!provider) {
-          throw new Error('No Ethereum provider found');
-        }
-
-        signature = await provider.request({
+      if (chainConfig?.chainType === ChainType.EVM) {
+        signature = await evmWalletProvider.request({
           method: 'personal_sign',
-          params: [message, address],
+          params: [loginMessage, address],
         });
+      } else if (chainConfig?.chainType === ChainType.SOLANA) {
+        // For Solana
+        const encodedMessage = new TextEncoder().encode(loginMessage);
+        const sig = await solanaWalletProvider.signMessage(encodedMessage);
+        signature = Buffer.from(sig).toString('base64');
       }
 
-      // Login with signature
+      // 3. Login with signature
       await loginWithWallet.mutateAsync({
         walletAddress: address,
         signature,
-        message,
+        message: loginMessage,
         timestamp,
+        chainType: chainConfig?.chainType as ChainType,
       });
     } catch (error: any) {
-      toast({
-        title: 'Login failed',
+      toast.error('Login failed', {
         description: error.message || 'Something went wrong',
-        variant: 'destructive',
       });
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await disconnect();
     logout();
-    toast({
-      title: 'Logged out',
+    toast.success('Logged out', {
       description: 'You have been successfully logged out',
     });
   };
 
+  // Check if wallet is available for the current chain type
+  const isWalletAvailable = (type: ChainType) => {
+    if (type === 'evm') {
+      return typeof window !== 'undefined' && !!window.ethereum;
+    } else if (type === 'sol') {
+      return typeof window !== 'undefined' && !!(window as any).solana?.isPhantom;
+    }
+    return false;
+  };
+
+  // Auto-update chain type when wallet connects
+  useEffect(() => {
+    if (isConnected && address) {
+      // You can add logic here to detect the chain type from the connected wallet
+      // For now, we'll keep the user's selection
+    }
+  }, [isConnected, address]);
+
   return {
+    // State
     address,
     isConnected,
     user,
     accessToken,
-    isAuthenticated: !!accessToken,
-    loginWithWallet,
-    generateLoginMessage,
+    isAuthenticated: !!accessToken && !!walletAddress,
+
+    // Actions
     handleLogin,
     handleLogout,
+
+    // Mutations
+    loginWithWallet,
+    generateLoginMessage,
+
+    // Utilities
+    isWalletAvailable,
+
+    // Loading states
     isLoading: loginWithWallet.isPending || generateLoginMessage.isPending,
   };
 };

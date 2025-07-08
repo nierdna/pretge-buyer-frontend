@@ -1,53 +1,49 @@
-import type { Product } from '@/types/product';
+import type { Offer } from '@/types/offer';
 import type { Seller } from '@/types/seller';
 import { useState } from 'react';
-import SellerProductList from './SellerProductList';
+import SellerOfferList from './SellerOfferList';
 import SellerReviewList from './SellerReviewList';
 
 interface SellerTabsProps {
   seller: Seller;
-  products: Product[];
+  offers: Offer[];
 }
 
-export default function SellerTabs({ seller, products }: SellerTabsProps) {
-  const [activeTab, setActiveTab] = useState('products');
+export default function SellerTabs({ seller, offers }: SellerTabsProps) {
+  const [activeTab, setActiveTab] = useState('offers');
 
   return (
-    <div className="mt-8">
-      <div className="border-b border-gray-200">
-        <nav className="-mb-px flex space-x-8">
+    <div className="bg-opensea-darkBorder rounded-lg shadow-sm border border-opensea-darkBorder">
+      {/* Tab Navigation */}
+      <div className="border-b border-opensea-darkBorder">
+        <nav className="flex space-x-8 px-6">
           <button
-            onClick={() => setActiveTab('products')}
-            className={`
-              whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm
-              ${
-                activeTab === 'products'
-                  ? 'border-primary-600 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }
-            `}
+            onClick={() => setActiveTab('offers')}
+            className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+              activeTab === 'offers'
+                ? 'border-opensea-blue text-opensea-blue'
+                : 'border-transparent text-opensea-lightGray hover:text-white hover:border-opensea-lightGray'
+            }`}
           >
-            Products ({products.length})
+            Offers ({offers.length})
           </button>
           <button
             onClick={() => setActiveTab('reviews')}
-            className={`
-              whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm
-              ${
-                activeTab === 'reviews'
-                  ? 'border-primary-600 text-primary-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }
-            `}
+            className={`py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+              activeTab === 'reviews'
+                ? 'border-opensea-blue text-opensea-blue'
+                : 'border-transparent text-opensea-lightGray hover:text-white hover:border-opensea-lightGray'
+            }`}
           >
-            Reviews ({seller.reviews.length})
+            Reviews ({seller.reviews?.length || 0})
           </button>
         </nav>
       </div>
 
-      <div className="mt-6">
-        {activeTab === 'products' && <SellerProductList products={products} />}
-        {activeTab === 'reviews' && <SellerReviewList reviews={seller.reviews} />}
+      {/* Tab Content */}
+      <div className="p-6">
+        {activeTab === 'offers' && <SellerOfferList offers={offers} />}
+        {activeTab === 'reviews' && <SellerReviewList sellerId={seller.id} />}
       </div>
     </div>
   );

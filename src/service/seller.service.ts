@@ -1,6 +1,5 @@
-import type { Product } from '@/types/product';
-import type { Seller, SellerCreateInput, SellerFilter, SellerUpdateInput } from '@/types/seller';
-import { apiRequest } from './axios';
+import type { Offer } from '@/types/offer';
+import type { Seller, SellerFilter } from '@/types/seller';
 
 interface SellerResponse {
   data: Seller;
@@ -15,8 +14,8 @@ interface SellersResponse {
   message: string;
 }
 
-interface SellerProductsResponse {
-  data: Product[];
+interface SellerOffersResponse {
+  data: Offer[];
   total: number;
   page: number;
   limit: number;
@@ -52,7 +51,7 @@ const mockSellers: Seller[] = [
       isVerified: true,
       verifiedAt: '2024-01-20T10:30:00Z',
     },
-    productsCount: 45,
+    offersCount: 45,
     rating: 4.9,
     reviews: [],
     joinedAt: '2024-01-15T08:30:00Z',
@@ -85,7 +84,7 @@ const mockSellers: Seller[] = [
       isVerified: true,
       verifiedAt: '2024-02-25T14:45:00Z',
     },
-    productsCount: 32,
+    offersCount: 32,
     rating: 4.6,
     reviews: [],
     joinedAt: '2024-02-20T10:45:00Z',
@@ -118,7 +117,7 @@ const mockSellers: Seller[] = [
       isVerified: true,
       verifiedAt: '2024-03-15T11:20:00Z',
     },
-    productsCount: 18,
+    offersCount: 18,
     rating: 4.4,
     reviews: [],
     joinedAt: '2024-03-10T09:15:00Z',
@@ -130,7 +129,7 @@ export class SellerService {
   /**
    * Get a list of sellers with optional filtering
    */
-  static async getSellers(filters?: SellerFilter) {
+  async getSellers(filters?: SellerFilter) {
     // Return mock data instead of API call
     return { data: mockSellers };
   }
@@ -138,29 +137,29 @@ export class SellerService {
   /**
    * Get a single seller by ID
    */
-  static async getSellerById(id: string) {
+  async getSellerById(id: string) {
     // Return mock data for a single seller
     const seller = mockSellers.find((s) => s.id === id);
     return { data: seller };
   }
 
   /**
-   * Get products from a specific seller
+   * Get offers from a specific seller
    */
-  static async getSellerProducts(
-    sellerId: string,
-    params?: { page?: number; limit?: number; sortBy?: string }
-  ) {
-    return apiRequest<SellerProductsResponse>({
-      method: 'GET',
-      params,
-    });
-  }
+  // async getSellerOffers(
+  //   sellerId: string,
+  //   params?: { page?: number; limit?: number; sortBy?: string }
+  // ) {
+  //   return apiRequest<SellerOffersResponse>({
+  //     method: 'GET',
+  //     params,
+  //   });
+  // }
 
   /**
    * Get reviews for a specific seller
    */
-  static async getSellerReviews(
+  async getSellerReviews(
     sellerId: string,
     params?: { page?: number; limit?: number; sortBy?: string }
   ) {
@@ -198,29 +197,4 @@ export class SellerService {
   /**
    * Create a new seller (admin only)
    */
-  static async createSeller(data: SellerCreateInput) {
-    return apiRequest<SellerResponse>({
-      method: 'POST',
-      data,
-    });
-  }
-
-  /**
-   * Update an existing seller (admin/seller only)
-   */
-  static async updateSeller(id: string, data: SellerUpdateInput) {
-    return apiRequest<SellerResponse>({
-      method: 'PUT',
-      data,
-    });
-  }
-
-  /**
-   * Delete a seller (admin only)
-   */
-  static async deleteSeller(id: string) {
-    return apiRequest<{ success: boolean; message: string }>({
-      method: 'DELETE',
-    });
-  }
 }

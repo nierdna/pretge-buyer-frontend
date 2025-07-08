@@ -4,8 +4,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useEffect, useRef } from 'react';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
-  const { address, isConnected, accessToken, loginWithWallet, handleLogin, handleLogout } =
-    useAuth();
+  const { address, isConnected, accessToken, handleLogin, handleLogout } = useAuth();
 
   const prevStateRef = useRef({ address, isConnected, accessToken });
   const isInitialMount = useRef(true);

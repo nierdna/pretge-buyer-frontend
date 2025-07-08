@@ -3,6 +3,33 @@
 @tailwind utilities;
 
 :root {
+  /* Background colors */
+  --background-body: 0 0 0; /* #000000; */
+  --background-card: 30 33 44; /* #1E212C; */
+  --background-deep-green: 6 26 28; /* #061A1C; */
+  --background-deep-pine: 4 30 24; /* #041E18; */
+  --background-deep-card: 7 39 32; /* #072720; */
+  --background-deep-navy: 0 10 30; /* #000A1E; */
+  --background-inverse: 255 255 255; /* #FFFFFF; */
+  --background-muted: rgba(255, 255, 255, 0.2); /* #FFFFFF; */
+
+  /* Text colors */
+  --text-primary: 255 255 255; /* #FFFFFF; */
+  --text-secondary: 224 224 224; /* #E0E0E0; */
+  --text-gray-a: 157 171 173; /* #9DA3AD; */
+  --text-gray-b: 153 179 173; /* #99B3AD; */
+  --text-gray-c: 151 151 162; /* #9797A2; */
+  --text-gray-d: 189 189 202; /* #BDBDCA; */
+  --text-cyan: 48 222 238; /* #30DEEE; */
+  --text-avocado: 54 244 164; /* #36F4A4; */
+  --text-inverse: 0 0 0; /* #000000; */
+
+  /* Border colors */
+  --border-hairline-green: 30 44 49; /* #1E2C31; */
+  --border-deep-card: 19 59 50; /* #133B32; */
+  --border-avocado: 54 244 164; /* #36F4A4; */
+  --border-muted: rgba(255, 255, 255, 0.2); /* #FFFFFF; */
+
   /* OpenSea color palette */
   --opensea-blue: 32 129 226; /* #2081E2 - Primary color - Sea Blue */
   --opensea-dark-blue: 24 104 183; /* #1868B7 - Secondary color - Dark Sea */
@@ -17,9 +44,11 @@
   --opensea-warning: 245 158 11; /* #F59E0B - Amber */
   --opensea-error: 239 68 68; /* #EF4444 - Red */
 
-  /* Base colors - Dark theme by default */
-  --foreground-rgb: 255, 255, 255;
-  --background-rgb: var(--opensea-black);
+  /* Button colors */
+  --button-primary: 255 255 255; /* #2081E2 - Primary color - Sea Blue */
+  --button-primary-hover: 212 212 216; /* #1868B7 - Secondary color - Dark Sea */
+  --button-secondary: transparent; /* #15B2E5 - Accent color - Marina Blue */
+  --button-secondary-hover: 255 255 255; /* #1396C7 - Accent color - Dark Marina */
 
   /* Border radius */
   --radius: 0.5rem;
@@ -27,11 +56,38 @@
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
+
+  --tw-shadow:
+    0px 8px 8px 0px rgba(0, 0, 0, 0.1), 0px 4px 4px 0px rgba(0, 0, 0, 0.1), 0px 2px 2px 0px;
+  --tw-shadow-container:
+    0px 1px 0px 0px rgba(64, 71, 77, 0.4) inset, 0px 1px 0px 0px hsla(0, 0%, 100%, 0.08);
+  --tw-ring-offset-shadow: 0 0 #0000;
+  --tw-ring-shadow: 0 0 #0000;
 }
 
 body {
-  background: rgb(var(--background-rgb));
-  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-body));
+  color: rgb(var(--text-primary));
+}
+
+.bg-ab-control {
+  background: linear-gradient(126.17deg, #5fd5b6 32.74%, #865cff 100%);
+}
+.bg-card-gradient {
+  background: linear-gradient(-45deg, #061518, #0a2c30);
+}
+
+.shadow-card,
+.shadow-cutting-edge-video {
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
+.shadow-dark,
+.shadow-dev-image-container {
+  box-shadow:
+    var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000),
+    var(--tw-shadow-container);
 }
 
 /* Custom scrollbar */
@@ -75,34 +131,8 @@ body {
   -webkit-line-clamp: 3;
 }
 
-@layer components {
-  /* OpenSea utility classes */
-  .opensea-card {
-    @apply bg-opensea-darkBorder border border-opensea-darkBorder rounded-lg overflow-hidden transition-shadow;
-  }
-
-  .opensea-card:hover {
-    @apply shadow-md;
-  }
-
-  .opensea-button-primary {
-    @apply bg-opensea-blue text-white px-4 py-2 rounded-lg font-medium hover:bg-opensea-darkBlue transition-colors;
-  }
-
-  .opensea-button-secondary {
-    @apply bg-opensea-darkBorder text-white border border-opensea-blue px-4 py-2 rounded-lg font-medium hover:bg-opensea-black transition-colors;
-  }
-
-  .opensea-input {
-    @apply border border-opensea-darkBorder bg-opensea-darkBorder text-white rounded-md px-3 py-2 focus:border-opensea-blue focus:outline-none focus:ring-2 focus:ring-opensea-blue/20 placeholder:text-opensea-lightGray;
-  }
-}
-
 @layer base {
-  * {
-    @apply border-opensea-darkBorder outline-opensea-blue/20;
-  }
   body {
-    @apply bg-opensea-black text-white;
+    @apply bg-body text-primary;
   }
 }
