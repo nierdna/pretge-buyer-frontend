@@ -9,6 +9,7 @@ export async function GET(req: NextRequest) {
     const status = searchParams.get('status') || 'open';
     const search = searchParams.get('search') || '';
     const sort = searchParams.get('sort') || 'recent';
+    const userId = searchParams.get('user_id') || '';
     const offset = (page - 1) * limit;
 
     let tokenIds: string[] | undefined = undefined;
@@ -43,6 +44,9 @@ export async function GET(req: NextRequest) {
 
     if (tokenIds) {
       query = query.in('token_id', tokenIds);
+    }
+    if (userId) {
+      query = query.eq('seller_id', userId);
     }
 
     // Sort
