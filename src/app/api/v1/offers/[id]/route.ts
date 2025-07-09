@@ -1,24 +1,56 @@
 import { supabase } from '@/server/db/supabase';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
-  const { id } = params;
+// GET /api/v1/offers/[id] - Get offer detail by ID
+export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
 
-  const query = supabase
-    .from('offers')
-    .select(
+    // Validate ID parameter
+    if (!id || id.trim() === '') {
+      return NextResponse.json(
+        { success: false, message: 'Offer ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Get offer with related data
+    const { data: offer, error } = await supabase
+      .from('offers')
+      .select(
+        `
+        *,
+        tokens:token_id (*),
+        seller_wallet:seller_wallet_id (*),
+        ex_token:ex_token_id (*, network:network_id (*))
       `
-    *,
-    tokens:token_id (*),
-    seller_wallet: seller_wallet_id (*),
-    ex_token:ex_token_id (*, network:network_id (*))
-  `
-    )
-    .eq('id', id)
-    .single();
-  const { data: offer, error } = await query;
-  if (error) {
-    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
+      )
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        // No rows returned
+        return NextResponse.json({ success: false, message: 'Offer not found' }, { status: 404 });
+      }
+      console.error('Database error:', error);
+      return NextResponse.json(
+        { success: false, message: 'Failed to fetch offer' },
+        { status: 500 }
+      );
+    }
+
+    if (!offer) {
+      return NextResponse.json({ success: false, message: 'Offer not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      success: true,
+      data: offer,
+      message: 'Offer retrieved successfully',
+    });
+  } catch (error) {
+    console.error('Unexpected error:', error);
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
-  return NextResponse.json({ success: true, data: offer });
 }
