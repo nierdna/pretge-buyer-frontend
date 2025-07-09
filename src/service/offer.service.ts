@@ -1,4 +1,6 @@
-import type { Offer, OfferCreateInput, OfferFilter, OfferUpdateInput } from '@/types/offer';
+import type { IOffer, Offer, OfferFilter } from '@/types/offer';
+import { IOrder } from '@/types/order';
+import axiosInstance from './axios';
 
 interface OfferResponse {
   data: Offer | null;
@@ -11,6 +13,51 @@ interface OffersResponse {
   page?: number;
   limit?: number;
   message?: string;
+}
+interface OffersResponseV2 {
+  data: {
+    data: IOffer[];
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    };
+  };
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+  message?: string;
+  success: boolean;
+}
+
+interface OfferByIdResponse {
+  data: IOffer;
+  message?: string;
+  success: boolean;
+}
+
+interface OrdersResponse {
+  data: {
+    data: IOrder[];
+    pagination: {
+      total: number;
+      page: number;
+      limit: number;
+      totalPages: number;
+    };
+  };
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+  message?: string;
+  success: boolean;
 }
 
 // Mock offer data for pre-market trading
@@ -476,105 +523,23 @@ export class OfferService {
     return { data: related };
   }
 
-  /**
-   * Create offer
-   * @param data Offer data
-   * @returns Offer response
-   */
-  async createOffer(data: OfferCreateInput): Promise<OfferResponse> {
-    // Mock create offer
-    const newOffer: Offer = {
-      id: (mockOffers.length + 1).toString(),
-      name: data.name,
-      slug: data.name.toLowerCase().replace(/\s+/g, '-'),
-      description: data.description,
-      price: data.price,
-      compareAtPrice: data.compareAtPrice,
-      sku: data.sku,
-      inventory: data.inventory,
-      images: data.images.map((img, index) => ({
-        id: (mockOffers.length * 100 + index + 1).toString(),
-        ...img,
-      })),
-      categories: data.categoryIds.map((id) => ({
-        id,
-        name: 'Cryptocurrency',
-        slug: 'cryptocurrency',
-        description: 'Digital currency tokens',
-      })),
-      variants:
-        data.variants?.map((v, index) => ({
-          id: (mockOffers.length * 10 + index + 1).toString(),
-          ...v,
-        })) || [],
-      options: data.options || [],
-      reviews: [],
-      rating: 0,
-      sellerId: 'seller1',
-      sellerName: 'Default Seller',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      isFeatured: data.isFeatured || false,
-      isPublished: true,
-    };
-
-    mockOffers.push(newOffer);
-    return { data: newOffer };
+  //new
+  async getOffersV2(filters?: OfferFilter): Promise<OffersResponseV2> {
+    const response = await axiosInstance.get('/offers', { params: filters });
+    console.log('response', response.data);
+    return response.data;
   }
 
-  /**
-   * Update offer
-   * @param id Offer id
-   * @param data Offer data
-   * @returns Offer response
-   */
-  async updateOffer(id: string, data: OfferUpdateInput): Promise<OfferResponse> {
-    // Mock update offer
-    const index = mockOffers.findIndex((p) => p.id === id);
-    if (index === -1) throw new Error('Offer not found');
-
-    // Create a new offer object with updated fields
-    const currentOffer = mockOffers[index];
-
-    // Handle images separately to ensure they have proper id fields
-    const updatedImages = data.images
-      ? data.images.map((img, index) => ({
-          id: `${currentOffer.id}-img-${index}`,
-          ...img,
-        }))
-      : currentOffer.images;
-
-    // Handle variants separately to ensure they have proper id fields
-    const updatedVariants = data.variants
-      ? data.variants.map((variant, index) => ({
-          id: `${currentOffer.id}-variant-${index}`,
-          ...variant,
-        }))
-      : currentOffer.variants;
-
-    const updatedOffer: Offer = {
-      ...currentOffer,
-      ...data,
-      images: updatedImages,
-      variants: updatedVariants,
-      updatedAt: new Date().toISOString(),
-    };
-
-    mockOffers[index] = updatedOffer;
-    return { data: updatedOffer };
+  async getOfferByIdV2(id: string): Promise<OfferByIdResponse> {
+    const response = await axiosInstance.get(`/offers/${id}`);
+    return response.data;
   }
 
-  /**
-   * Delete offer
-   * @param id Offer id
-   * @returns Success response
-   */
-  async deleteOffer(id: string): Promise<{ success: boolean; message?: string }> {
-    // Mock delete offer
-    const index = mockOffers.findIndex((p) => p.id === id);
-    if (index === -1) throw new Error('Offer not found');
-
-    mockOffers.splice(index, 1);
-    return { success: true, message: 'Offer deleted successfully' };
+  async getOrdersByOffer(
+    offerId: string,
+    params?: { page?: number; limit?: number }
+  ): Promise<OrdersResponse> {
+    const response = await axiosInstance.get(`/offers/${offerId}/orders`, { params });
+    return response.data;
   }
 }

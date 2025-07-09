@@ -1,6 +1,5 @@
 import type { Offer } from '@/types/offer';
-import type { Seller, SellerCreateInput, SellerFilter, SellerUpdateInput } from '@/types/seller';
-import { apiRequest } from './axios';
+import type { Seller, SellerFilter } from '@/types/seller';
 
 interface SellerResponse {
   data: Seller;
@@ -147,15 +146,15 @@ export class SellerService {
   /**
    * Get offers from a specific seller
    */
-  async getSellerOffers(
-    sellerId: string,
-    params?: { page?: number; limit?: number; sortBy?: string }
-  ) {
-    return apiRequest<SellerOffersResponse>({
-      method: 'GET',
-      params,
-    });
-  }
+  // async getSellerOffers(
+  //   sellerId: string,
+  //   params?: { page?: number; limit?: number; sortBy?: string }
+  // ) {
+  //   return apiRequest<SellerOffersResponse>({
+  //     method: 'GET',
+  //     params,
+  //   });
+  // }
 
   /**
    * Get reviews for a specific seller
@@ -198,29 +197,4 @@ export class SellerService {
   /**
    * Create a new seller (admin only)
    */
-  async createSeller(data: SellerCreateInput) {
-    return apiRequest<SellerResponse>({
-      method: 'POST',
-      data,
-    });
-  }
-
-  /**
-   * Update an existing seller (admin/seller only)
-   */
-  async updateSeller(id: string, data: SellerUpdateInput) {
-    return apiRequest<SellerResponse>({
-      method: 'PUT',
-      data,
-    });
-  }
-
-  /**
-   * Delete a seller (admin only)
-   */
-  async deleteSeller(id: string) {
-    return apiRequest<{ success: boolean; message: string }>({
-      method: 'DELETE',
-    });
-  }
 }

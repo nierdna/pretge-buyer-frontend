@@ -1,6 +1,6 @@
 import { Service } from '@/service';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { OfferCreateInput, OfferFilter, OfferUpdateInput } from '../types/offer';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import type { OfferFilter } from '../types/offer';
 
 // Query keys
 export const offerKeys = {
@@ -48,38 +48,58 @@ export const useRelatedOffers = (offerId?: string) => {
 };
 
 // Create offer mutation
-export const useCreateOffer = () => {
-  const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: (offerData: OfferCreateInput) => Service.offer.createOffer(offerData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: offerKeys.lists() });
+//new
+export const useGetOffersV2 = () => {
+  const { data, isLoading, isError } = useInfiniteQuery({
+    queryKey: ['offers'],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await Service.offer.getOffersV2({ page: pageParam, limit: 12 });
+      return response.data;
     },
+    getNextPageParam: (lastPage, pages) => {
+      console.log('lastPage', lastPage);
+      console.log('pages', pages);
+      if (lastPage.pagination.totalPages === pages.length) {
+        return undefined;
+      }
+      return pages.length + 1;
+    },
+    initialPageParam: 1,
+  });
+
+  return { data, isLoading, isError };
+};
+
+export const useGetOfferById = (id: string) => {
+  return useQuery({
+    queryKey: ['offer', id],
+    queryFn: async () => {
+      const response = await Service.offer.getOfferByIdV2(id);
+      return response.data;
+    },
+    enabled: !!id,
   });
 };
 
-// Update offer mutation
-export const useUpdateOffer = (id: string) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (offerData: OfferUpdateInput) => Service.offer.updateOffer(id, offerData),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: offerKeys.detail(id) });
-      queryClient.invalidateQueries({ queryKey: offerKeys.lists() });
+export const useGetOrdersByOffer = (offerId: string) => {
+  const { data, isLoading, isError } = useInfiniteQuery({
+    queryKey: ['orders', offerId],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await Service.offer.getOrdersByOffer(offerId, {
+        page: pageParam,
+        limit: 10,
+      });
+      return response.data;
     },
-  });
-};
-
-// Delete offer mutation
-export const useDeleteOffer = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (id: string) => Service.offer.deleteOffer(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: offerKeys.lists() });
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.pagination.totalPages === pages.length) {
+        return undefined;
+      }
+      return pages.length + 1;
     },
+    initialPageParam: 1,
   });
+
+  return { data, isLoading, isError };
 };

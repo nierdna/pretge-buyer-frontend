@@ -75,22 +75,22 @@ export default function FlashSaleBanner({
   // Skeleton placeholders for loading state
   if (isLoading) {
     return (
-      <div className="bg-deep-pine p-3 rounded-xl w-full">
+      <div className="bg-deep-green p-6 rounded-xl w-full shadow-dark">
         <div className="flex items-center gap-2 mb-2">
           <Badge variant="destructive" className="text-xs py-0">
             Flash Sale
           </Badge>
-          <span className="text-xs text-opensea-lightGray">Ends in</span>
+          <span className="text-xs text-secondary">Ends in</span>
           <div className="flex gap-1">
-            <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+            <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
               00
             </div>
-            <span className="text-white font-bold">:</span>
-            <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+            <span className="text-inverse font-bold">:</span>
+            <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono align-middle">
               00
             </div>
-            <span className="text-white font-bold">:</span>
-            <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+            <span className="text-inverse font-bold">:</span>
+            <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
               00
             </div>
           </div>
@@ -100,7 +100,7 @@ export default function FlashSaleBanner({
           <CarouselContent>
             {[...Array(6)].map((_, index) => (
               <CarouselItem key={index} className="md:basis-1/5 lg:basis-1/6">
-                <Card className="h-auto py-0">
+                <Card className="h-auto py-0 shadow-card border-0 border-t border-hairline">
                   <CardContent className="p-0">
                     <div className="p-4">
                       <Skeleton className="aspect-[4/3] rounded-lg mb-1" />
@@ -131,15 +131,15 @@ export default function FlashSaleBanner({
         </Badge>
         <span className="text-xs text-opensea-lightGray">Ends in</span>
         <div className="flex gap-1">
-          <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+          <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
             {timeLeft.hours}
           </div>
-          <span className="text-white font-bold">:</span>
-          <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+          <span className="text-inverse font-bold">:</span>
+          <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
             {timeLeft.minutes}
           </div>
-          <span className="text-white font-bold">:</span>
-          <div className="bg-opensea-darkBorder text-white px-1.5 py-0.5 rounded text-xs font-mono">
+          <span className="text-inverse font-bold">:</span>
+          <div className="bg-inverse text-inverse px-1.5 py-0.5 rounded text-xs font-mono">
             {timeLeft.seconds}
           </div>
         </div>

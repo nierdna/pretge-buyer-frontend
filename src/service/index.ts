@@ -1,3 +1,4 @@
+import AuthService from './auth.service';
 import ChainsService from './chains.service';
 import { OfferService } from './offer.service';
 import { OrderService } from './order.service';
@@ -8,4 +9,5 @@ export const Service = Object.freeze({
   chain: new ChainsService(),
   offer: new OfferService(),
   seller: new SellerService(),
+  auth: new AuthService(),
 });

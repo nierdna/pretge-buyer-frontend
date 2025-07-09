@@ -2,6 +2,9 @@
  * Offer related type definitions
  */
 
+import { IExToken, IToken } from './token';
+import { Wallet } from './user';
+
 export interface OfferImage {
   id: string;
   url: string;
@@ -149,3 +152,29 @@ export const sampleOffer: Offer = {
   endTime: '2024-01-20T18:00:00Z',
   amount: 50000,
 };
+
+//new
+
+export enum EOfferStatus {
+  OPEN = 'open',
+  CLOSED = 'closed',
+}
+export interface IOffer {
+  collateralPercent: number;
+  createdAt: string;
+  description: string | null;
+  exToken: IExToken;
+  exTokenId: string;
+  filled: number;
+  id: string;
+  price: number;
+  quantity: number;
+  sellerWallet: Wallet;
+  sellerWalletId: string;
+  settleDuration: number;
+  status: EOfferStatus;
+  title: string;
+  tokenId: string;
+  tokens: IToken;
+  updatedAt: string;
+}

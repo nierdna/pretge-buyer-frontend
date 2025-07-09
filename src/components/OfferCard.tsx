@@ -6,7 +6,7 @@ import { truncateAddress } from '@/utils/helpers/string';
 import { Star, User } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Separator } from './ui/separator';
+import Separator from './ui/separator';
 
 interface OfferCardProps {
   offer: Offer;
@@ -49,7 +49,10 @@ export default function OfferCard({ offer, variant = 'default' }: OfferCardProps
               {tokenInfo?.icon && (
                 <div className="w-8 h-8 relative min-w-8 rounded-full overflow-hidden bg-opensea-marina">
                   <Image
-                    src={tokenInfo.icon}
+                    // src={tokenInfo.icon}
+                    src={
+                      'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
+                    }
                     alt={tokenInfo.symbol}
                     fill
                     className="object-cover"

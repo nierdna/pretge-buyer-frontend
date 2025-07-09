@@ -1,0 +1,78 @@
+'use client';
+
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { useCopy } from '@/hooks/use-copy';
+import { useAuth } from '@/hooks/useAuth';
+import { truncateAddress } from '@/utils/helpers/string';
+import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
+import { ChevronDown, Copy, LogOut, User } from 'lucide-react';
+import { toast } from 'sonner';
+
+export const ButtonConnectWallet = () => {
+  const { address } = useAppKitAccount();
+  const { open } = useAppKit();
+  const { isAuthenticated, handleLogout } = useAuth();
+
+  const { isCopied, handleCopy } = useCopy();
+
+  const handleCopyAddress = () => {
+    handleCopy(address || '');
+    toast.success('Copied to clipboard');
+  };
+
+  const handleConnectWallet = async () => {
+    await open();
+  };
+
+  const handleAuthAction = async () => {
+    await handleLogout();
+  };
+
+  return (
+    <>
+      {isAuthenticated ? (
+        /* User Dropdown Menu */
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size={'sm'}>
+              <User className="h-4 w-4" />
+              {truncateAddress(address || '', 4)}
+              <ChevronDown className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={handleConnectWallet}>Switch Wallet</DropdownMenuItem>
+            <DropdownMenuItem
+              className="justify-between"
+              onClick={() => {
+                handleCopyAddress();
+              }}
+            >
+              Copy Address
+              <Copy className="h-4 w-4 ml-2" />
+            </DropdownMenuItem>
+            <DropdownMenuItem className="justify-between" onClick={handleAuthAction}>
+              Logout
+              <LogOut className="h-4 w-4 ml-2" />
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Button
+          size={'sm'}
+          onClick={() => {
+            handleConnectWallet();
+          }}
+        >
+          Connect Wallet
+        </Button>
+      )}
+    </>
+  );
+};

@@ -96,3 +96,15 @@ export interface OrderUpdateInput {
   billingAddress?: Partial<OrderAddress>;
   notes?: string;
 }
+
+//new
+
+export interface IOrder {
+  id: string;
+  offerId: string;
+  offerName: string;
+  variantId?: string;
+  variantName?: string;
+  sku: string;
+  price: number;
+}
