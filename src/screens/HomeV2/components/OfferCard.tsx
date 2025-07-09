@@ -3,9 +3,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import Separator from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 import { IOffer } from '@/types/offer';
 import { formatNumberShort } from '@/utils/helpers/number';
-import { truncateAddress } from '@/utils/helpers/string';
+import { normalizeNetworkName, truncateAddress } from '@/utils/helpers/string';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link'; // Import Link
@@ -13,6 +14,12 @@ import Link from 'next/link'; // Import Link
 interface OfferCardProps {
   offer: IOffer;
 }
+export const getColorFromCollateral = (collateral: number) => {
+  if (collateral >= 100) return 'text-green-500';
+  if (collateral >= 75) return 'text-cyan-500';
+  if (collateral >= 50) return 'text-orange-500';
+  return '';
+};
 
 export default function OfferCard({ offer }: OfferCardProps) {
   // Assuming a unique ID can be derived or passed for linking to detail page
@@ -39,24 +46,24 @@ export default function OfferCard({ offer }: OfferCardProps) {
             <div className="grid gap-1 flex-grow">
               <CardTitle className="text-xl font-bold truncate">{offer.tokens?.symbol}</CardTitle>
               <Badge variant="secondary" className="w-fit">
-                {offer.exToken?.network?.name}
+                {normalizeNetworkName(offer.exToken?.network?.name)}
               </Badge>
             </div>
           </div>
 
           {/* Right side: Price and Sold Amount */}
           <div className="flex flex-col items-end text-right flex-shrink-0">
-            <div className="mt-1 text-xl font-medium text-gray-700">
-              <span className="font-bold">
+            <div className="mt-1 text-xl font-medium">
+              <span className="font-bold text-green-500">
                 $
                 {formatNumberShort(offer.price, {
                   useShorterExpression: true,
                 })}
               </span>
             </div>
-            <div className="mt-1 text-sm font-medium text-gray-700">
+            <div className="mt-1 text-sm font-medium text-gray-500">
               Sold:{' '}
-              <span className="font-semibold">{`${formatNumberShort(offer.filled, {
+              <span className="font-semibold text-foreground">{`${formatNumberShort(offer.filled, {
                 useShorterExpression: true,
               })}`}</span>
             </div>
@@ -68,7 +75,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         {/* Block 1: Total Amount */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
           <span className="text-2xs text-gray-500">Total Amount</span>
-          <span className="text-lg font-semibold text-primary">
+          <span className="text-base font-semibold text-primary">
             {formatNumberShort(offer.quantity, {
               useShorterExpression: true,
             })}
@@ -78,7 +85,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         {/* Block 2: Payment with */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
           <span className="text-2xs text-gray-500">Payment with</span>
-          <div className="flex items-center gap-1 h-7 font-semibold">
+          <div className="flex items-end gap-1 h-6 font-semibold">
             <Image
               src={
                 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
@@ -94,13 +101,18 @@ export default function OfferCard({ offer }: OfferCardProps) {
         {/* Block 3: Collateral */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
           <span className="text-2xs text-gray-500">Collateral</span>
-          <span className="text-lg font-semibold">{`${offer.collateralPercent}%`}</span>
+          <span
+            className={cn(
+              'text-base font-semibold',
+              getColorFromCollateral(offer.collateralPercent)
+            )}
+          >{`${offer.collateralPercent}%`}</span>
         </div>
 
         {/* Block 4: Settle After TGE */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
           <span className="text-2xs text-gray-500">Settle After TGE</span>
-          <span className="text-lg font-semibold">
+          <span className="text-base font-semibold">
             {offer.settleDuration > 0
               ? `${
                   offer.settleDuration > 1
@@ -129,12 +141,12 @@ export default function OfferCard({ offer }: OfferCardProps) {
             {/* <div className="text-xs text-gray-500 truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
           </div>
           <div className="flex items-center gap-0.5 ml-auto flex-shrink-0">
-            <span className="font-semibold text-sm">{offer.sellerWallet.rating}</span>
+            <span className="font-semibold text-sm">{Number(offer.sellerWallet?.rating || 0)}</span>
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           </div>
         </div>
         <Link href={`/offers/${offerId}`} className="w-full">
-          <Button className="w-full">Buy Now</Button>
+          <Button className="w-full">View Offer</Button>
         </Link>
       </CardFooter>
     </Card>

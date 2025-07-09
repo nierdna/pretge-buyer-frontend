@@ -165,6 +165,8 @@ const config = {
           DEFAULT: 'hsl(0 0% 100%)',
           foreground: 'hsl(0 0% 9%)',
         },
+        avocado: 'hsl(var(--avocado))',
+        'cyan-0': 'hsl(var(--cyan-0))',
       },
       borderRadius: {
         lg: 'var(--radius)',

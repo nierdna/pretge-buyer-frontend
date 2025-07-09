@@ -323,8 +323,8 @@ export default function OfferList() {
         <div className="grid gap-4">
           {' '}
           {/* Using grid for consistent gap, but items will be full width */}
-          {mockOffers.map((offer, index) => (
-            <OfferListItem key={index} {...offer} />
+          {offers.map((offer, index) => (
+            <OfferListItem key={index} offer={offer} />
           ))}
         </div>
       )}
