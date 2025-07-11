@@ -83,6 +83,15 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
     enabled: !!address && !!tokenAddress,
   });
 
+  const { data: walletInfo } = useQuery({
+    queryKey: ['wallet_info', address],
+    queryFn: async () => {
+      if (!address) return;
+      const res = await axiosInstance.get(`wallets/${address}`);
+      return res.data.data;
+    },
+  });
+
   const handleApprove = async () => {
     setApproveLoading(true);
     try {
@@ -133,30 +142,12 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
     if (!offer) return;
     try {
       // Fake address for placeholder
-      const address = '0x0000000000000000000000000000000000000000';
       const orderInput = {
-        items: [
-          {
-            offerId: offer.id,
-            quantity: buyQuantity,
-          },
-        ],
-        shippingAddress: {
-          firstName: 'John',
-          lastName: 'Doe',
-          address1: address,
-          city: 'City',
-          state: 'State',
-          postalCode: '00000',
-          country: 'Country',
-        },
-        shippingMethod: 'Digital Delivery',
-        paymentMethod: 'crypto',
+        offer_id: offer.id,
+        wallet_id: walletInfo?.id,
+        quantity: buyQuantity,
       };
-      // Có thể dùng OrderService hoặc axiosInstance tuỳ ý
-      // const service = new OrderService();
-      // const res = await service.createOrder(orderInput);
-      const res = await axiosInstance.post('/api/v1/orders', orderInput);
+      const res = await axiosInstance.post('orders', orderInput);
       console.log('Order created (placeholder):', res.data);
       alert('Order placed (placeholder)');
     } catch (err) {
