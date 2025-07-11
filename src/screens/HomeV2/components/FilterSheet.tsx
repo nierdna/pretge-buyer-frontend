@@ -6,12 +6,12 @@ import FilterContent from './FilterContent'; // Import FilterContent instead of 
 
 export default function FilterSheet({
   filters,
-  handleSearch,
   setFilters,
+  hideNetworkFilter,
 }: {
   filters: IOfferFilter;
-  handleSearch: (search: string) => void;
   setFilters: (filterChange: IOfferFilter) => void;
+  hideNetworkFilter?: boolean;
 }) {
   return (
     <div className="lg:hidden flex justify-end mb-4">
@@ -30,7 +30,11 @@ export default function FilterSheet({
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
           <div className="p-0 overflow-y-auto grow">
-            <FilterContent filters={filters} handleSearch={handleSearch} setFilters={setFilters} />{' '}
+            <FilterContent
+              filters={filters}
+              setFilters={setFilters}
+              hideNetworkFilter={hideNetworkFilter}
+            />{' '}
             {/* Render FilterContent directly */}
           </div>
         </SheetContent>

@@ -10,6 +10,7 @@ export async function GET(req: NextRequest) {
     const search = searchParams.get('search') || '';
     const sort = searchParams.get('sort_field') || 'price';
     const sort_order = searchParams.get('sort_order') || 'desc';
+    const tokenId = searchParams.get('token_id') || '';
 
     // New filter parameters
     const networkIds = searchParams.get('network_ids') || '';
@@ -102,6 +103,10 @@ export async function GET(req: NextRequest) {
       if (settleDurationArray.length > 0) {
         query = query.in('settle_duration', settleDurationArray);
       }
+    }
+
+    if (tokenId) {
+      query = query.eq('token_id', tokenId);
     }
 
     // Sort

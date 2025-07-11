@@ -257,7 +257,7 @@ export default function OfferList({ offers, isLoading }: { offers: IOffer[]; isL
   }, [isMobile]);
 
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-6 h-fit">
       <div
         ref={searchBarRef}
         className={cn(

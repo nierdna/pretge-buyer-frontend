@@ -482,6 +482,7 @@ export interface IOfferFilter {
   sortField?: string;
   sortOrder?: string;
   search?: string;
+  tokenId?: string;
 }
 
 export class OfferService {
@@ -547,6 +548,7 @@ export class OfferService {
         limit: filters?.limit,
         sort_field: filters?.sortField,
         sort_order: filters?.sortOrder,
+        token_id: filters?.tokenId || undefined,
       },
     });
     console.log('response', response.data);

@@ -73,7 +73,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
       <Separator className="mx-6 bg-gray-200" />
       <CardContent className="p-6 grid grid-cols-2 gap-4 text-sm flex-grow">
         {/* Block 1: Total Amount */}
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Total Amount</span>
           <span className="text-base font-semibold text-primary">
             {formatNumberShort(offer.quantity, {
@@ -83,7 +83,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div>
 
         {/* Block 2: Payment with */}
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Payment with</span>
           <div className="flex items-end gap-1 h-6 font-semibold">
             <Image
@@ -99,7 +99,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div>
 
         {/* Block 3: Collateral */}
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Collateral</span>
           <span
             className={cn(
@@ -110,7 +110,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div>
 
         {/* Block 4: Settle After TGE */}
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Settle After TGE</span>
           <span className="text-base font-semibold">
             {offer.settleDuration > 0

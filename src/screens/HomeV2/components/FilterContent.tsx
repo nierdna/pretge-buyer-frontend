@@ -17,11 +17,11 @@ import { useChainStore } from '@/store/chainStore';
 export default function FilterContent({
   filters,
   setFilters,
-  handleSearch,
+  hideNetworkFilter = false,
 }: {
   filters: IOfferFilter;
   setFilters: (filters: IOfferFilter) => void;
-  handleSearch: (search: string) => void;
+  hideNetworkFilter?: boolean;
 }) {
   const { chains } = useChainStore();
 
@@ -79,20 +79,21 @@ export default function FilterContent({
       </CardHeader>
       <CardContent className="grid gap-6">
         <Accordion type="multiple" defaultValue={['network', 'settle-time', 'collateral']}>
-          <AccordionItem value="network">
-            <AccordionTrigger className="text-base font-semibold">Network</AccordionTrigger>
-            <AccordionContent className="grid gap-2 pt-2">
-              {chains.map((chain) => (
-                <div className="flex items-center gap-2">
-                  <Checkbox
-                    id={`network-${chain.id}`}
-                    checked={filters.networkIds?.includes(chain.id)}
-                    onCheckedChange={() => handleChangeNetwork(chain.id)}
-                  />
-                  <Label htmlFor={`network-${chain.id}`}>{chain.name}</Label>
-                </div>
-              ))}
-              {/* <div className="flex items-center gap-2">
+          {!hideNetworkFilter && (
+            <AccordionItem value="network">
+              <AccordionTrigger className="text-base font-semibold">Network</AccordionTrigger>
+              <AccordionContent className="grid gap-2 pt-2">
+                {chains.map((chain) => (
+                  <div className="flex items-center gap-2">
+                    <Checkbox
+                      id={`network-${chain.id}`}
+                      checked={filters.networkIds?.includes(chain.id)}
+                      onCheckedChange={() => handleChangeNetwork(chain.id)}
+                    />
+                    <Label htmlFor={`network-${chain.id}`}>{chain.name}</Label>
+                  </div>
+                ))}
+                {/* <div className="flex items-center gap-2">
                 <Checkbox id="network-eth" />
                 <Label htmlFor="network-eth">Ethereum</Label>
               </div>
@@ -108,8 +109,9 @@ export default function FilterContent({
                 <Checkbox id="network-sol" />
                 <Label htmlFor="network-sol">Solana</Label>
               </div> */}
-            </AccordionContent>
-          </AccordionItem>
+              </AccordionContent>
+            </AccordionItem>
+          )}
 
           <AccordionItem value="settle-time">
             <AccordionTrigger className="text-base font-semibold">

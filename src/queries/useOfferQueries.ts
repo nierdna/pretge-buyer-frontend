@@ -56,18 +56,15 @@ export const useRelatedOffers = (offerId?: string) => {
 
 //new
 
-export const useGetOffersV2 = () => {
+export const useGetOffersV2 = (queryKey: any[] = []) => {
   const [filters, setFilters] = useState<IOfferFilter>({
     limit: 12,
     page: 1,
     sortField: 'price',
     sortOrder: 'desc',
+    tokenId: '',
   });
   const [inputSearch, setInputSearch] = useState('');
-
-  const handleChangeFilter = (filterChange: IOfferFilter) => {
-    setFilters({ ...filters, ...filterChange });
-  };
 
   const debouncedSearch = useDebouncedCallback((search: string) => {
     setFilters({ ...filters, search });
@@ -78,7 +75,7 @@ export const useGetOffersV2 = () => {
     debouncedSearch(search);
   };
   const { data, isLoading, isError } = useInfiniteQuery({
-    queryKey: ['offers', filters],
+    queryKey: ['offers', filters, ...queryKey],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await Service.offer.getOffersV2({
         page: pageParam,
@@ -89,6 +86,7 @@ export const useGetOffersV2 = () => {
         networkIds: filters.networkIds,
         collateralPercents: filters.collateralPercents,
         settleDurations: filters.settleDurations,
+        tokenId: filters.tokenId,
       });
       return response.data;
     },
@@ -143,4 +141,50 @@ export const useGetOrdersByOffer = (offerId: string) => {
   });
 
   return { data, isLoading, isError };
+};
+
+export const useGetOffersByToken = (tokenId: string) => {
+  const [filters, setFilters] = useState<IOfferFilter>({
+    limit: 12,
+    page: 1,
+    sortField: 'price',
+    sortOrder: 'desc',
+  });
+  const [inputSearch, setInputSearch] = useState('');
+
+  const debouncedSearch = useDebouncedCallback((search: string) => {
+    setFilters({ ...filters, search });
+  }, 500);
+
+  const handleSearch = (search: string) => {
+    setInputSearch(search);
+    debouncedSearch(search);
+  };
+  const { data, isLoading, isError } = useInfiniteQuery({
+    queryKey: ['offers', tokenId],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await Service.offer.getOffersV2({
+        page: pageParam,
+        limit: filters.limit,
+        sortField: filters.sortField,
+        sortOrder: filters.sortOrder,
+        search: filters.search,
+        networkIds: filters.networkIds,
+        collateralPercents: filters.collateralPercents,
+        settleDurations: filters.settleDurations,
+        tokenId: tokenId,
+      });
+      return response.data;
+    },
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.pagination.totalPages === pages.length) {
+        return undefined;
+      }
+      return pages.length + 1;
+    },
+    initialPageParam: 1,
+    enabled: !!tokenId,
+  });
+
+  return { data, isLoading, isError, filters, inputSearch, handleSearch, setFilters };
 };

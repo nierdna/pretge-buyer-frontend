@@ -28,6 +28,9 @@ export interface IToken {
   symbol: string;
   tokenContract: string;
   updatedAt: string;
+  network: INetwork;
+  isHot: boolean;
+  isNew: boolean;
 }
 export interface IExToken {
   address: string;
