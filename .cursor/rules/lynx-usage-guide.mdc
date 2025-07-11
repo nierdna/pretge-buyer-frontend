@@ -1,0 +1,220 @@
+---
+description: Config thư viện lynx-reown-dapp-kit
+alwaysApply: false
+---
+# Usage Guide: Injecting `lynx-reown-dapp-kit` SDK into Another Project (Practical Example)
+
+## 1. Install Dependencies
+
+Cài các package cần thiết (tham khảo từ `examples/nextjs/package.json`):
+
+```sh
+pnpm add lynx-reown-dapp-kit @reown/appkit @reown/appkit-adapter-wagmi @reown/appkit-adapter-solana @solana/web3.js @tanstack/react-query wagmi react react-dom
+```
+
+## 2. Setup Provider và Adapter (theo ví dụ Next.js)
+
+Tạo file `ClientProviders.tsx`:
+```tsx
+import { LynxReownProvider } from "lynx-reown-dapp-kit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import { SolanaAdapter } from "@reown/appkit-adapter-solana";
+import { createAppKit } from "@reown/appkit";
+
+const wagmiAdapter = new WagmiAdapter({
+  ssr: true,
+  networks: [/* ...networks config... */],
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+});
+const solanaAdapter = new SolanaAdapter();
+const queryClient = new QueryClient();
+
+createAppKit({
+  adapters: [wagmiAdapter, solanaAdapter],
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  networks: [/* ... */],
+  metadata: {/* ... */},
+  features: { analytics: true },
+});
+
+const chains = [/* ...xem ví dụ thực tế... */];
+
+export default function ClientProviders({ children }) {
+  return (
+    <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <LynxReownProvider chains={chains} defaultChain={chains[1]}>
+          {children}
+        </LynxReownProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+}
+```
+
+Inject provider vào layout gốc (Next.js):
+```tsx
+// app/layout.tsx
+import ClientProviders from "../components/ClientProviders";
+export default function RootLayout({ children }) {
+  return <ClientProviders>{children}</ClientProviders>;
+}
+```
+
+## 3. Sử dụng hook và contract
+
+- Import và dùng hook `useWallet` để lấy wallet instance:
+```tsx
+import { useWallet } from "lynx-reown-dapp-kit";
+const walletEvm = useWallet("84532"); // EVM chainId
+const walletSol = useWallet("EtWTRABZaYq6iMfeYKouRu166VU2xqa1"); // Solana address
+```
+
+- Tạo custom contract kế thừa EvmContract:
+```ts
+import { EvmContract } from "lynx-reown-dapp-kit";
+const abi = [/* ... */];
+export class Erc20Contract extends EvmContract {
+  constructor(address: string) {
+    super({ address, abi });
+  }
+  transfer(to: string, value: number) {
+    return this.build({ method: "transfer", params: [to, value] });
+  }
+}
+```
+
+- Gửi transaction:
+```ts
+const txData = new Erc20Contract(address).transfer(to, value);
+const tx = await walletEvm?.sendTransaction(txData);
+```
+
+- Gửi transaction Solana:
+```ts
+import { Transaction, SystemProgram, PublicKey } from "@solana/web3.js";
+const transaction = new Transaction();
+const transferIx = SystemProgram.transfer({
+  fromPubkey: new PublicKey(walletSol.address),
+  toPubkey: new PublicKey(walletSol.address),
+  lamports: 0.0001 * 1e9,
+});
+transaction.add(transferIx);
+const tx = await walletSol.sendTransaction(transaction);
+```
+
+## 4. Lưu ý
+- Đảm bảo đã cấu hình đúng networks, adapters, và provider context.
+- Đảm bảo user đã kết nối ví trước khi gửi transaction.
+- Có thể custom contract theo chuẩn EvmContract/SolanaContract.
+- Xem thêm ví dụ thực tế tại `examples/nextjs` trong repo này.
+# Usage Guide: Injecting `lynx-reown-dapp-kit` SDK into Another Project (Practical Example)
+
+## 1. Install Dependencies
+
+Cài các package cần thiết (tham khảo từ `examples/nextjs/package.json`):
+
+```sh
+pnpm add lynx-reown-dapp-kit @reown/appkit @reown/appkit-adapter-wagmi @reown/appkit-adapter-solana @solana/web3.js @tanstack/react-query wagmi react react-dom
+```
+
+## 2. Setup Provider và Adapter (theo ví dụ Next.js)
+
+Tạo file `ClientProviders.tsx`:
+```tsx
+import { LynxReownProvider } from "lynx-reown-dapp-kit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { WagmiProvider } from "wagmi";
+import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
+import { SolanaAdapter } from "@reown/appkit-adapter-solana";
+import { createAppKit } from "@reown/appkit";
+
+const wagmiAdapter = new WagmiAdapter({
+  ssr: true,
+  networks: [/* ...networks config... */],
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+});
+const solanaAdapter = new SolanaAdapter();
+const queryClient = new QueryClient();
+
+createAppKit({
+  adapters: [wagmiAdapter, solanaAdapter],
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  networks: [/* ... */],
+  metadata: {/* ... */},
+  features: { analytics: true },
+});
+
+const chains = [/* ...xem ví dụ thực tế... */];
+
+export default function ClientProviders({ children }) {
+  return (
+    <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <LynxReownProvider chains={chains} defaultChain={chains[1]}>
+          {children}
+        </LynxReownProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+}
+```
+
+Inject provider vào layout gốc (Next.js):
+```tsx
+// app/layout.tsx
+import ClientProviders from "../components/ClientProviders";
+export default function RootLayout({ children }) {
+  return <ClientProviders>{children}</ClientProviders>;
+}
+```
+
+## 3. Sử dụng hook và contract
+
+- Import và dùng hook `useWallet` để lấy wallet instance:
+```tsx
+import { useWallet } from "lynx-reown-dapp-kit";
+const walletEvm = useWallet("84532"); // EVM chainId
+const walletSol = useWallet("EtWTRABZaYq6iMfeYKouRu166VU2xqa1"); // Solana address
+```
+
+- Tạo custom contract kế thừa EvmContract:
+```ts
+import { EvmContract } from "lynx-reown-dapp-kit";
+const abi = [/* ... */];
+export class Erc20Contract extends EvmContract {
+  constructor(address: string) {
+    super({ address, abi });
+  }
+  transfer(to: string, value: number) {
+    return this.build({ method: "transfer", params: [to, value] });
+  }
+}
+```
+
+- Gửi transaction:
+```ts
+const txData = new Erc20Contract(address).transfer(to, value);
+const tx = await walletEvm?.sendTransaction(txData);
+```
+
+- Gửi transaction Solana:
+```ts
+import { Transaction, SystemProgram, PublicKey } from "@solana/web3.js";
+const transaction = new Transaction();
+const transferIx = SystemProgram.transfer({
+  fromPubkey: new PublicKey(walletSol.address),
+  toPubkey: new PublicKey(walletSol.address),
+  lamports: 0.0001 * 1e9,
+});
+transaction.add(transferIx);
+const tx = await walletSol.sendTransaction(transaction);
+```
+
+## 4. Lưu ý
+- Đảm bảo đã cấu hình đúng networks, adapters, và provider context.
+- Đảm bảo user đã kết nối ví trước khi gửi transaction.
+- Có thể custom contract theo chuẩn EvmContract/SolanaContract.
+- Xem thêm ví dụ thực tế tại `examples/nextjs` trong repo này.

@@ -5,6 +5,8 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const { offer_id, quantity, wallet_id } = body;
+    // TODO: Cải thiện lại logic để đảm bảo security
+    // protect api này bẳng oauth và so sánh wallet id phải là ví của oauth đó
     if (!offer_id || !quantity || !wallet_id) {
       return NextResponse.json(
         { success: false, message: 'offer_id, quantity, wallet_id là bắt buộc' },
