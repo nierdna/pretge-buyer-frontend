@@ -473,6 +473,17 @@ export const mockOffers: Offer[] = [
   },
 ];
 
+export interface IOfferFilter {
+  limit?: number;
+  page?: number;
+  networkIds?: string[];
+  collateralPercents?: string[];
+  settleDurations?: string[];
+  sortField?: string;
+  sortOrder?: string;
+  search?: string;
+}
+
 export class OfferService {
   /**
    * Get all offers
@@ -524,8 +535,20 @@ export class OfferService {
   }
 
   //new
-  async getOffersV2(filters?: OfferFilter): Promise<OffersResponseV2> {
-    const response = await axiosInstance.get('/offers', { params: filters });
+
+  async getOffersV2(filters?: IOfferFilter): Promise<OffersResponseV2> {
+    const response = await axiosInstance.get('/offers', {
+      params: {
+        network_ids: filters?.networkIds?.join(',') || undefined,
+        collateral_percents: filters?.collateralPercents?.join(',') || undefined,
+        settle_durations: filters?.settleDurations?.join(',') || undefined,
+        search: filters?.search,
+        page: filters?.page,
+        limit: filters?.limit,
+        sort_field: filters?.sortField,
+        sort_order: filters?.sortOrder,
+      },
+    });
     console.log('response', response.data);
     return response.data;
   }

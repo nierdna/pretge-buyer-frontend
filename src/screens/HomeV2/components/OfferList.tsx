@@ -11,7 +11,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'; // New import for view type toggle
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
-import { useGetOffersV2 } from '@/queries';
+import { IOffer } from '@/types/offer';
 import { LayoutGrid, List } from 'lucide-react'; // Icons for view types
 import { useEffect, useRef, useState } from 'react'; // Import hooks
 import OfferCard from './OfferCard';
@@ -224,7 +224,7 @@ const mockOffers = [
   },
 ];
 
-export default function OfferList() {
+export default function OfferList({ offers, isLoading }: { offers: IOffer[]; isLoading: boolean }) {
   const [isSticky, setIsSticky] = useState(false);
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
   const searchBarRef = useRef<HTMLDivElement>(null);
@@ -256,16 +256,12 @@ export default function OfferList() {
     }
   }, [isMobile]);
 
-  const { data, isLoading, isError } = useGetOffersV2();
-
-  const offers = data?.pages.flatMap((page) => page.data) || [];
-
   return (
     <div className="grid gap-6">
       <div
         ref={searchBarRef}
         className={cn(
-          'sticky top-[4.5rem] z-30 rounded-xl flex flex-col justify-between sm:flex-row p-4 items-center gap-4 transition-colors duration-300',
+          'sticky h-fit top-[4.5rem] z-30 rounded-xl flex flex-col justify-between sm:flex-row p-4 items-center gap-4 transition-colors duration-300',
           // isSticky ? 'bg-white/95 backdrop-blur-lg shadow-md border-b border-gray-300' : '',
           'bg-white/95 backdrop-blur-lg shadow-md border border-gray-300'
         )}
@@ -312,7 +308,6 @@ export default function OfferList() {
         </ToggleGroup>
       </div>
 
-      {/* Conditional rendering for Offer Cards or Offer List Items */}
       {viewType === 'card' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {offers.map((offer, index) => (
@@ -321,8 +316,6 @@ export default function OfferList() {
         </div>
       ) : (
         <div className="grid gap-4">
-          {' '}
-          {/* Using grid for consistent gap, but items will be full width */}
           {offers.map((offer, index) => (
             <OfferListItem key={index} offer={offer} />
           ))}

@@ -1,11 +1,12 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { useChainStore } from '@/store/chainStore';
 import { useEffect, useRef } from 'react';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { address, isConnected, accessToken, handleLogin, handleLogout } = useAuth();
-
+  const { fetchChains } = useChainStore();
   const prevStateRef = useRef({ address, isConnected, accessToken });
   const isInitialMount = useRef(true);
 
@@ -48,6 +49,11 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
       handleLogout();
     }
   }, [address, isConnected, accessToken]);
+
+  useEffect(() => {
+    fetchChains();
+  }, []);
+
   return <div>{children}</div>;
 };
 

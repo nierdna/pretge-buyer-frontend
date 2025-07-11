@@ -74,15 +74,19 @@ CREATE TABLE IF NOT EXISTS tokens (
 CREATE TABLE IF NOT EXISTS offers (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   token_id UUID REFERENCES tokens(id) ON DELETE CASCADE,
+  ex_token_id UUID REFERENCES ex_tokens(id) ON DELETE CASCADE,
   seller_wallet_id UUID REFERENCES wallets(id) ON DELETE CASCADE,
   price DECIMAL(18,8) NOT NULL,
   quantity DECIMAL(18,8) NOT NULL,
   filled DECIMAL(18,8) NOT NULL DEFAULT 0,
+  collateral_percent DECIMAL(5,2) NOT NULL DEFAULT 0,
+  settle_duration INTEGER NOT NULL DEFAULT 0,
   status VARCHAR(20) DEFAULT 'open' CHECK (status IN ('open', 'closed')),
-  start_time TIMESTAMP WITH TIME ZONE NOT NULL,
-  end_time TIMESTAMP WITH TIME ZONE NOT NULL,
+  title VARCHAR(255) NOT NULL DEFAULT '',
+  description TEXT,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  CONSTRAINT check_token_or_ex_token CHECK (token_id IS NOT NULL OR ex_token_id IS NOT NULL)
 );
 
 -- Create orders table (based on Order interface from order.ts)

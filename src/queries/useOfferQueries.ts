@@ -1,5 +1,10 @@
+'use client';
+
 import { Service } from '@/service';
+import { IOfferFilter } from '@/service/offer.service';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import type { OfferFilter } from '../types/offer';
 
 // Query keys
@@ -50,16 +55,44 @@ export const useRelatedOffers = (offerId?: string) => {
 // Create offer mutation
 
 //new
+
 export const useGetOffersV2 = () => {
+  const [filters, setFilters] = useState<IOfferFilter>({
+    limit: 12,
+    page: 1,
+    sortField: 'price',
+    sortOrder: 'desc',
+  });
+  const [inputSearch, setInputSearch] = useState('');
+
+  const handleChangeFilter = (filterChange: IOfferFilter) => {
+    setFilters({ ...filters, ...filterChange });
+  };
+
+  const debouncedSearch = useDebouncedCallback((search: string) => {
+    setFilters({ ...filters, search });
+  }, 500);
+
+  const handleSearch = (search: string) => {
+    setInputSearch(search);
+    debouncedSearch(search);
+  };
   const { data, isLoading, isError } = useInfiniteQuery({
-    queryKey: ['offers'],
+    queryKey: ['offers', filters],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await Service.offer.getOffersV2({ page: pageParam, limit: 12 });
+      const response = await Service.offer.getOffersV2({
+        page: pageParam,
+        limit: filters.limit,
+        sortField: filters.sortField,
+        sortOrder: filters.sortOrder,
+        search: filters.search,
+        networkIds: filters.networkIds,
+        collateralPercents: filters.collateralPercents,
+        settleDurations: filters.settleDurations,
+      });
       return response.data;
     },
     getNextPageParam: (lastPage, pages) => {
-      console.log('lastPage', lastPage);
-      console.log('pages', pages);
       if (lastPage.pagination.totalPages === pages.length) {
         return undefined;
       }
@@ -68,7 +101,15 @@ export const useGetOffersV2 = () => {
     initialPageParam: 1,
   });
 
-  return { data, isLoading, isError };
+  return {
+    data,
+    isLoading,
+    isError,
+    filters,
+    inputSearch,
+    handleSearch,
+    setFilters,
+  };
 };
 
 export const useGetOfferById = (id: string) => {
