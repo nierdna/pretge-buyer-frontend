@@ -6,9 +6,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import Separator from '@/components/ui/separator';
+import { CONTRACTS } from '@/contracts/contracts';
+import { useEscrow } from '@/hooks/useEscrow';
+import { useToken } from '@/hooks/useToken';
 import { IOffer } from '@/types/offer';
+import { useAppKitAccount } from '@reown/appkit/react';
+import { useQuery } from '@tanstack/react-query';
+import { useWallet } from 'lynx-reown-dapp-kit';
 import Image from 'next/image';
 import { useState } from 'react';
+import axiosInstance from '@/service/axios';
+import { useEffect } from 'react';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
+import { OrderService } from '@/service/order.service';
+import axios from 'axios';
 
 interface OfferDetailHeroProps {
   offer?: IOffer;
@@ -16,11 +35,149 @@ interface OfferDetailHeroProps {
 
 export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
   const [buyQuantity, setBuyQuantity] = useState(1);
+  const [balance, setBalance] = useState<number | null>(null);
+  const [showDepositModal, setShowDepositModal] = useState(false);
+  const [approveLoading, setApproveLoading] = useState(false);
+  const [depositLoading, setDepositLoading] = useState(false);
+  const { address } = useAppKitAccount();
   const estimatedCost = buyQuantity * Number(offer?.price || 0);
 
+  // Đưa fetchBalance ra ngoài useEffect để có thể gọi lại
+  const fetchBalance = async () => {
+    if (!address || !offer?.exToken?.address) return;
+    try {
+      // Always use English for comments and console logs in code
+      const res = await axiosInstance.get('/wallet-ex-tokens/balance', {
+        params: {
+          wallet_address: address,
+          ex_token_address: offer.exToken.address,
+        },
+      });
+      setBalance(Number(res.data?.balance ?? 0));
+      console.log('Fetched ex token balance:', res.data?.balance);
+    } catch (err) {
+      console.error('Failed to fetch ex token balance', err);
+      setBalance(null);
+    }
+  };
+
+  useEffect(() => {
+    fetchBalance();
+  }, [address, offer?.exToken?.address]);
+
+  const chainId = '84532';
+  const { escrowContract } = useEscrow(chainId);
+  const wallet = useWallet(chainId);
+
+  const tokenAddress = offer?.exToken.address;
+
+  const { tokenContract } = useToken(tokenAddress || '', chainId);
+  const contractAddress = CONTRACTS[chainId].ESCROW;
+
+  const { data: allowance, refetch: refetchAllowance } = useQuery({
+    queryKey: ['allowance', tokenAddress, address],
+    queryFn: async () => {
+      if (!tokenContract || !address) return 0;
+      return await tokenContract.getAllowance(address, contractAddress);
+    },
+    enabled: !!address && !!tokenAddress,
+  });
+
+  const handleApprove = async () => {
+    setApproveLoading(true);
+    try {
+      const txData = await tokenContract?.buildApprove(contractAddress, Number.MAX_SAFE_INTEGER);
+      if (!txData) return;
+      const tx = await wallet?.sendTransaction(txData);
+      if (!tx) return;
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await refetchAllowance();
+    } catch (err: any) {
+      console.error('Approve failed', err);
+    } finally {
+      setApproveLoading(false);
+    }
+  };
+
+  const handleDeposit = async () => {
+    setDepositLoading(true);
+    try {
+      const txData = await escrowContract?.buildDeposit(tokenAddress!, buyQuantity);
+      if (!txData) return;
+      const tx = await wallet?.sendTransaction(txData);
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      if (!tx) return;
+      // Call deposit-callback API
+      try {
+        await axios.post('/api/deposit-callback', {
+          tx_hash: tx || '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
+          chain_id: Number(chainId),
+        });
+        console.log('Deposit callback API called');
+      } catch (err) {
+        console.error('Deposit callback API failed', err);
+      }
+      // Refetch balance
+      await fetchBalance();
+      setShowDepositModal(false);
+    } catch (err: any) {
+      console.error('Deposit failed', err);
+    } finally {
+      setDepositLoading(false);
+    }
+  };
+
+  // Placeholder: create order function
+  const placeOrder = async () => {
+    // Always use English for comments and console logs in code
+    if (!offer) return;
+    try {
+      // Fake address for placeholder
+      const address = '0x0000000000000000000000000000000000000000';
+      const orderInput = {
+        items: [
+          {
+            offerId: offer.id,
+            quantity: buyQuantity,
+          },
+        ],
+        shippingAddress: {
+          firstName: 'John',
+          lastName: 'Doe',
+          address1: address,
+          city: 'City',
+          state: 'State',
+          postalCode: '00000',
+          country: 'Country',
+        },
+        shippingMethod: 'Digital Delivery',
+        paymentMethod: 'crypto',
+      };
+      // Có thể dùng OrderService hoặc axiosInstance tuỳ ý
+      // const service = new OrderService();
+      // const res = await service.createOrder(orderInput);
+      const res = await axiosInstance.post('/api/v1/orders', orderInput);
+      console.log('Order created (placeholder):', res.data);
+      alert('Order placed (placeholder)');
+    } catch (err) {
+      console.error('Failed to place order (placeholder)', err);
+      alert('Failed to place order (placeholder)');
+    }
+  };
+
   const handleBuy = () => {
-    alert(`Buying ${buyQuantity} ${offer?.tokens?.symbol} for $${estimatedCost.toLocaleString()}`);
-    // Implement actual buy logic here
+    if (balance === null) {
+      // Always use English for comments and console logs in code
+      console.log('Balance not loaded yet');
+      return;
+    }
+    if (balance >= estimatedCost) {
+      // Placeholder: call API to create order
+      placeOrder();
+    } else {
+      // Not enough balance, open deposit modal
+      setShowDepositModal(true);
+    }
   };
 
   return (
@@ -97,6 +254,10 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
         {/* Buy Section */}
         <div className="grid gap-4">
           <h3 className="text-xl font-semibold">Purchase Offer</h3>
+          {/* Show balance (placeholder) */}
+          <div className="text-sm text-gray-500 mb-2">
+            Balance: {balance !== null ? balance : '...'} {offer?.exToken?.symbol}
+          </div>
           <div className="grid sm:grid-cols-2 gap-4 items-end">
             <div>
               <Label htmlFor="buy-quantity" className="text-gray-600">
@@ -123,9 +284,91 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
               </div>
             </div>
           </div>
-          <Button onClick={handleBuy} className="w-full mt-4" disabled={buyQuantity === 0}>
+          <Button
+            id="buy-now-offer-detail"
+            onClick={handleBuy}
+            className="w-full mt-4"
+            disabled={buyQuantity === 0}
+          >
             Buy Now
           </Button>
+          {/* Deposit Modal (placeholder) */}
+          <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Deposit Required</DialogTitle>
+                <DialogDescription>
+                  Your balance is not enough to complete this purchase. Please deposit more{' '}
+                  {offer?.exToken?.symbol} to continue.
+                </DialogDescription>
+              </DialogHeader>
+              <div className="py-4 text-center text-gray-700">
+                {/* Deposit modal logic */}
+                {allowance !== undefined && estimatedCost !== undefined ? (
+                  allowance < estimatedCost ? (
+                    <Button onClick={handleApprove} disabled={approveLoading} className="w-full">
+                      {approveLoading ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                              fill="none"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v8z"
+                            />
+                          </svg>
+                          Approving...
+                        </>
+                      ) : (
+                        'Approve'
+                      )}
+                    </Button>
+                  ) : (
+                    <Button onClick={handleDeposit} disabled={depositLoading} className="w-full">
+                      {depositLoading ? (
+                        <>
+                          <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                              fill="none"
+                            />
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8v8z"
+                            />
+                          </svg>
+                          Depositing...
+                        </>
+                      ) : (
+                        'Deposit'
+                      )}
+                    </Button>
+                  )
+                ) : (
+                  <div>Checking allowance...</div>
+                )}
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="outline">Close</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </div>
 
         <Separator className="bg-gray-200" />

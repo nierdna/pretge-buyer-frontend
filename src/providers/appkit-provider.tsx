@@ -5,6 +5,8 @@ import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana/react';
 import { base, baseSepolia, mainnet, solana, solanaDevnet } from '@reown/appkit/networks';
 import { createAppKit } from '@reown/appkit/react';
+import { LynxReownProvider } from 'lynx-reown-dapp-kit';
+import { chainConfigs } from '@/configs/chains';
 
 // 2. Create a metadata object
 const metadata = {
@@ -29,5 +31,18 @@ createAppKit({
 });
 
 export function AppKitProvider({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  // Lấy chain đầu tiên là defaultChain (có thể tuỳ chỉnh)
+  return (
+    <LynxReownProvider
+      chains={chainConfigs.map((item) => ({
+        chainId: item.chainId,
+        chainName: item.name,
+        chainType: item.chainType as any,
+        rpc: item.privateRpcUrl,
+        explorerUrl: item.explorerUrl,
+      }))}
+    >
+      {children}
+    </LynxReownProvider>
+  );
 }
