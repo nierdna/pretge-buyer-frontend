@@ -122,13 +122,16 @@ export const useGetOfferById = (id: string) => {
 };
 
 export const useGetOrdersByOffer = (offerId: string) => {
-  const { data, isLoading, isError } = useInfiniteQuery({
-    queryKey: ['orders', offerId],
-    queryFn: async ({ pageParam = 1 }) => {
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ['orders', offerId, page],
+    queryFn: async () => {
       const response = await Service.offer.getOrdersByOffer(offerId, {
-        page: pageParam,
-        limit: 10,
+        page: page,
+        limit: 1,
       });
+      setTotalPages(response.data.pagination.totalPages);
       return response.data;
     },
     getNextPageParam: (lastPage, pages) => {
@@ -140,7 +143,7 @@ export const useGetOrdersByOffer = (offerId: string) => {
     initialPageParam: 1,
   });
 
-  return { data, isLoading, isError };
+  return { data, isLoading, isError, setPage, page, totalPages, fetchNextPage, hasNextPage };
 };
 
 export const useGetOffersByToken = (tokenId: string) => {

@@ -2,6 +2,9 @@
  * Order related type definitions
  */
 
+import { Wallet } from 'ethers';
+import { IOffer } from './offer';
+
 export type OrderStatus =
   | 'pending'
   | 'processing'
@@ -99,12 +102,22 @@ export interface OrderUpdateInput {
 
 //new
 
+export enum EOrderStatus {
+  PENDING = 'pending',
+  SETTLED = 'settled',
+  CANCELLED = 'cancelled',
+}
 export interface IOrder {
   id: string;
+  amount: number;
+  createdAt: string;
+  buyerWalletId: string;
+  cancelTxHash: string | null;
+  hashId: string | null;
+  buyer: Wallet;
+  offer: IOffer;
   offerId: string;
-  offerName: string;
-  variantId?: string;
-  variantName?: string;
-  sku: string;
-  price: number;
+  settleTxHash: string | null;
+  status: EOrderStatus;
+  updatedAt: string;
 }

@@ -18,12 +18,12 @@ import Separator from '@/components/ui/separator';
 import { CONTRACTS } from '@/contracts/contracts';
 import { useEscrow } from '@/hooks/useEscrow';
 import { useToken } from '@/hooks/useToken';
+import { useWallet } from '@/hooks/useWallet';
 import axiosInstance from '@/service/axios';
 import { IOffer } from '@/types/offer';
 import { useAppKitAccount } from '@reown/appkit/react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useWallet } from 'lynx-reown-dapp-kit';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -55,7 +55,7 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
       console.log('Fetched ex token balance:', res.data?.balance);
     } catch (err) {
       console.error('Failed to fetch ex token balance', err);
-      setBalance(null);
+      setBalance(0);
     }
   };
 
@@ -68,7 +68,7 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
   const wallet = useWallet(chainId);
   console.log('wallet', wallet);
 
-  const tokenAddress = offer?.exToken.address;
+  const tokenAddress = offer?.exToken?.address;
 
   const { tokenContract } = useToken(tokenAddress || '', chainId);
   const contractAddress = CONTRACTS[chainId].ESCROW;

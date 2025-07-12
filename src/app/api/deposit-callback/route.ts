@@ -100,7 +100,11 @@ export async function POST(req: NextRequest) {
       .eq('address', userAddress.toLowerCase())
       .single();
     if (walletError || !wallet) {
-      return NextResponse.json({ error: 'Wallet not found for userAddress' }, { status: 404 });
+      console.log('walletError: ' + walletError?.message);
+      return NextResponse.json(
+        { error: 'Wallet not found for userAddress: ' + userAddress },
+        { status: 404 }
+      );
     }
     const walletId = wallet.id;
 

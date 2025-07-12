@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/server/db/supabase';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     // Trừ số lượng offer, tăng filled
     const { error: updateOfferError } = await supabase
       .from('offers')
-      .update({ quantity: offer.quantity - quantity, filled: (offer.filled || 0) + quantity })
+      .update({ filled: (offer.filled || 0) + quantity })
       .eq('id', offer_id);
     if (updateOfferError) {
       return NextResponse.json(
