@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ethers } from 'ethers';
 import { supabase } from '@/server/db/supabase';
+import { CONTRACTS } from '@/contracts/contracts';
 
 // Thay thế bằng RPC thực tế của bạn
-const RPC_URL = 'https://sepolia.base.org';
-const ESCROW_ADDRESS = '0xe9edd28b3e8cfd142b1e5b84fa282a18c1b783c2';
 const ESCROW_ABI = [
   {
     anonymous: false,
@@ -25,8 +24,29 @@ export async function POST(req: NextRequest) {
     if (!txHash || !chainId) {
       return NextResponse.json({ error: 'Missing txHash or chainId' }, { status: 400 });
     }
+    const { data: network, error: networkError } = await supabase
+      .from('networks')
+      .select('rpc_url')
+      .eq('id', chainId.toString())
+      .single();
+    if (networkError || !network) {
+      console.log('networkError: ' + networkError?.message);
+      return NextResponse.json(
+        { error: 'Network not found ' + networkError?.message },
+        { status: 404 }
+      );
+    }
+    const rpcUrl = network.rpc_url as string;
+    const escrowAddress = CONTRACTS[chainId.toString()].ESCROW;
+    if (!escrowAddress) {
+      console.log('escrowAddress not found ' + chainId.toString());
+      return NextResponse.json(
+        { error: 'Escrow address not found ' + chainId.toString() },
+        { status: 404 }
+      );
+    }
 
-    const provider = new ethers.JsonRpcProvider(RPC_URL, chainId);
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
     const receipt = await provider.getTransactionReceipt(txHash);
     if (!receipt) {
       return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
@@ -44,7 +64,7 @@ export async function POST(req: NextRequest) {
 
     for (let i = 0; i < receipt.logs.length; i++) {
       const log = receipt.logs[i];
-      if (log.address.toLowerCase() === ESCROW_ADDRESS.toLowerCase()) {
+      if (log.address.toLowerCase() === escrowAddress.toLowerCase()) {
         try {
           const parsed = iface.parseLog(log);
           if (parsed && parsed.name === 'Deposit') {
