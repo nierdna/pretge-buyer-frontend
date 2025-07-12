@@ -14,6 +14,7 @@ export interface INetwork {
   id: string;
   name: string;
   rpcUrl: string;
+  chainId: string;
 }
 
 export interface IToken {

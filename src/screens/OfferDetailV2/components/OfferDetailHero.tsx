@@ -35,6 +35,7 @@ interface OfferDetailHeroProps {
 
 export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
   const [buyQuantity, setBuyQuantity] = useState(1);
+  const chainId = offer?.exToken?.network?.chainId || '';
   const [balance, setBalance] = useState<number | null>(null);
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
@@ -65,14 +66,13 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
     fetchBalance();
   }, [address, offer?.exToken?.address]);
 
-  const chainId = '84532';
   const { escrowContract } = useEscrow(chainId);
   const wallet = useWallet(chainId);
 
   const tokenAddress = offer?.exToken?.address;
 
   const { tokenContract } = useToken(tokenAddress || '', chainId);
-  const contractAddress = CONTRACTS[chainId].ESCROW;
+  const contractAddress = CONTRACTS[chainId]?.ESCROW;
 
   const { data: allowance, refetch: refetchAllowance } = useQuery({
     queryKey: ['allowance', tokenAddress, address],

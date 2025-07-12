@@ -3,7 +3,15 @@
 import { projectId } from '@/configs/env';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana/react';
-import { base, baseSepolia, mainnet, solana, solanaDevnet } from '@reown/appkit/networks';
+import {
+  arbitrum,
+  arbitrumSepolia,
+  base,
+  baseSepolia,
+  mainnet,
+  solana,
+  solanaDevnet,
+} from '@reown/appkit/networks';
 import { createAppKit } from '@reown/appkit/react';
 import { LynxReownProvider } from 'lynx-reown-dapp-kit';
 import { chainConfigs } from '@/configs/chains';
@@ -20,7 +28,7 @@ const metadata = {
 createAppKit({
   adapters: [new SolanaAdapter(), new EthersAdapter()],
   metadata,
-  networks: [mainnet, base, baseSepolia, solana, solanaDevnet],
+  networks: [mainnet, base, baseSepolia, solana, solanaDevnet, arbitrum, arbitrumSepolia],
   projectId,
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration

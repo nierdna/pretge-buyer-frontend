@@ -1,5 +1,6 @@
 import { ChainType } from '@/server/enums/chain';
 import { IChainConfig } from '@/types/chain';
+import { arbitrum, arbitrumSepolia, solana, solanaDevnet } from '@reown/appkit/networks';
 
 export const chainConfigs: IChainConfig[] = [
   {
@@ -38,25 +39,49 @@ export const chainConfigs: IChainConfig[] = [
     escrowVaultAddress: '0x6B4792a57caBEbE6363ce3C0354D1494e63d0320',
   },
 
+  //
+  {
+    id: arbitrum.id.toString(),
+    name: 'Arbitrum',
+    publicRpcUrl: arbitrum.rpcUrls.default.http[0],
+    privateRpcUrl: arbitrum.rpcUrls.default.http[0],
+    explorerUrl: arbitrum.blockExplorers.default.url,
+    chainId: arbitrum.id.toString(),
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    chainType: ChainType.EVM,
+  },
+
+  // arbitrum sepolia
+  {
+    id: arbitrumSepolia.id.toString(),
+    name: 'Arbitrum Sepolia',
+    publicRpcUrl: arbitrumSepolia.rpcUrls.default.http[0],
+    privateRpcUrl: arbitrumSepolia.rpcUrls.default.http[0],
+    explorerUrl: 'https://sepolia.arbiscan.io',
+    chainId: arbitrumSepolia.id.toString(),
+    nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    chainType: ChainType.EVM,
+  },
+
   //add solana devnet
   {
-    id: '999999',
+    id: solanaDevnet.id.toString(),
     name: 'Solana Devnet',
     publicRpcUrl: 'https://api.devnet.solana.com',
     privateRpcUrl: 'https://api.devnet.solana.com',
     explorerUrl: 'https://solscan.io',
-    chainId: 'EtWTRABZaYq6iMfeYKouRu166VU2xqa1',
+    chainId: solanaDevnet.id.toString(),
     nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
     chainType: ChainType.SOLANA,
   },
   //add solana mainnet
   {
-    id: '666666',
+    id: solana.id.toString(),
     name: 'Solana',
     publicRpcUrl: 'https://api.mainnet.solana.com',
     privateRpcUrl: 'https://api.mainnet.solana.com',
     explorerUrl: 'https://solscan.io',
-    chainId: '5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp',
+    chainId: solana.id.toString(),
     nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
     chainType: ChainType.SOLANA,
   },
