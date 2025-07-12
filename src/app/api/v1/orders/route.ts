@@ -50,13 +50,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
-    // Tạo order (amount = price * quantity)
+    // Tạo order (amount = quantity)
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({
         offer_id,
         buyer_wallet_id: wallet_id,
-        amount: offer.price * quantity,
+        amount: quantity,
         status: 'pending',
       })
       .select()
