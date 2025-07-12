@@ -31,6 +31,52 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Lấy promotion (nếu có)
+    let promotion = null;
+    let eligible = false;
+    let discountPercent = 0;
+    let promotionId = null;
+    let realAmount = offer.price * quantity;
+    const { data: promotionData } = await supabase
+      .from('promotions')
+      .select('*')
+      .eq('offer_id', offer_id)
+      .eq('is_active', true)
+      .limit(1)
+      .maybeSingle();
+    if (promotionData) {
+      promotion = promotionData;
+      // Lấy address từ wallet_id
+      const { data: walletData, error: walletError } = await supabase
+        .from('wallets')
+        .select('address')
+        .eq('id', wallet_id)
+        .single();
+      if (!walletError && walletData && walletData.address) {
+        if (promotion.check_type === 'url') {
+          try {
+            const res = await fetch(promotion.check_eligible_url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ address: walletData.address }),
+            });
+            const data = await res.json();
+            eligible = !!data.eligible;
+          } catch (e) {
+            eligible = false;
+          }
+        } else if (promotion.check_type === 'test') {
+          eligible = true;
+        }
+      }
+      if (eligible) {
+        discountPercent = promotion.discount_percent;
+        promotionId = promotion.id;
+        realAmount = offer.price * quantity * (1 - discountPercent / 100);
+      }
+    }
+
     // Lấy số dư
     const { data: walletToken, error: walletTokenError } = await supabase
       .from('wallet_ex_tokens')
@@ -44,7 +90,7 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
-    if (!walletToken || walletToken.balance < offer.price * quantity) {
+    if (!walletToken || walletToken.balance < realAmount) {
       return NextResponse.json(
         { success: false, message: 'Số dư không đủ để mua' },
         { status: 400 }
@@ -58,6 +104,8 @@ export async function POST(req: NextRequest) {
         buyer_wallet_id: wallet_id,
         amount: quantity,
         status: 'pending',
+        promotion_id: promotionId,
+        discount_percent: discountPercent,
       })
       .select()
       .single();
@@ -67,7 +115,7 @@ export async function POST(req: NextRequest) {
     // Trừ số dư
     const { error: updateBalanceError } = await supabase
       .from('wallet_ex_tokens')
-      .update({ balance: walletToken.balance - offer.price * quantity })
+      .update({ balance: walletToken.balance - realAmount })
       .eq('wallet_id', wallet_id)
       .eq('ex_token_id', offer.ex_token_id);
     if (updateBalanceError) {
