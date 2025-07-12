@@ -4,13 +4,14 @@ import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Separator from '@/components/ui/separator';
-import { Wallet } from '@/types/user';
+import { WalletWithUser } from '@/types/user';
+import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { truncateAddress } from '@/utils/helpers/string';
 import { Star } from 'lucide-react';
 import Link from 'next/link'; // Import Link
 
 interface SellerInfoSectionProps {
-  seller: Wallet | undefined;
+  seller: WalletWithUser | undefined;
 }
 
 export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
@@ -24,20 +25,16 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
       <CardContent className="p-6 grid gap-4">
         <div className="flex items-center gap-4">
           <Avatar className="h-16 w-16">
-            <AvatarImage
-              src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${
-                seller?.address || Math.random().toString()
-              }`}
-            />
+            <AvatarImage src={seller?.user?.avatar || getFallbackAvatar(seller?.address)} />
           </Avatar>
           <div className="grid gap-1">
             <div className="text-xl font-semibold">{truncateAddress(seller?.address)}</div>
             {/* <div className="text-sm text-gray-500">{displayWallet}</div> */}
             <div className="flex items-center gap-1 text-sm">
-              <span className="font-semibold">{seller?.rating}</span>
+              <span className="font-semibold">{seller?.user?.rating}</span>
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
               <span className="text-gray-500">
-                ({Number(seller?.rating || 0) * 10} reviews)
+                ({Number(seller?.user?.rating || 0) * 10} reviews)
               </span>{' '}
               {/* Mock review count */}
             </div>
@@ -50,7 +47,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
             <span className="font-medium">Member since:</span> {seller.joinDate}
           </p>
         </div> */}
-        <Link href={`/sellers/${seller?.id}`} className="w-full">
+        <Link href={`/sellers/${seller?.user?.id}`} className="w-full">
           <Button
             variant="outline"
             className="w-full mt-2 bg-transparent border-gray-300 hover:bg-gray-100"

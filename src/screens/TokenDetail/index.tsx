@@ -4,9 +4,9 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '@/components/ui
 import { useGetOffersByToken } from '@/queries';
 import { useTokenBySymbol } from '@/queries/useTokenQueries';
 import Link from 'next/link';
-import FilterSheet from '../HomeV2/components/FilterSheet';
-import FilterSidebar from '../HomeV2/components/FilterSidebar';
-import OfferList from '../HomeV2/components/OfferList';
+import FilterSheet from '../../components/filter/FilterSheet';
+import FilterSidebar from '../../components/filter/FilterSidebar';
+import OfferList from '../../components/OfferList';
 import TokenInfoSection from './components/TokenInfomation';
 
 export default function TokenDetail({ symbol }: { symbol: string }) {

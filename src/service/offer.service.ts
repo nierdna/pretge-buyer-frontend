@@ -1,4 +1,4 @@
-import type { IOffer, Offer, OfferFilter } from '@/types/offer';
+import type { IOffer, Offer } from '@/types/offer';
 import { IOrder } from '@/types/order';
 import axiosInstance from './axios';
 
@@ -486,58 +486,7 @@ export interface IOfferFilter {
 }
 
 export class OfferService {
-  /**
-   * Get all offers
-   * @param filters Offer filters
-   * @returns Offers response
-   */
-  async getOffers(filters?: OfferFilter): Promise<OffersResponse> {
-    // For now, just return mock data
-    return { data: mockOffers };
-  }
-
-  /**
-   * Get offer by id
-   * @param id Offer id
-   * @returns Offer response
-   */
-  async getOfferById(id: string): Promise<OfferResponse> {
-    // Return mock data for a single offer
-    const offer = mockOffers.find((p) => p.id === id) || null;
-    return { data: offer };
-  }
-
-  /**
-   * Get featured offers
-   * @returns Featured offers response
-   */
-  async getFeaturedOffers(): Promise<OffersResponse> {
-    // Return mock featured offers
-    const featured = mockOffers.filter((p) => p.isFeatured);
-    return { data: featured };
-  }
-
-  /**
-   * Get related offers
-   * @param offerId Offer id
-   * @returns Related offers response
-   */
-  async getRelatedOffers(offerId: string): Promise<OffersResponse> {
-    // For mock data, just return other offers in the same category
-    const offer = mockOffers.find((p) => p.id === offerId);
-    if (!offer) return { data: [] };
-
-    const categoryIds = offer.categories.map((c) => c.id);
-    const related = mockOffers
-      .filter((p) => p.id !== offerId && p.categories.some((c) => categoryIds.includes(c.id)))
-      .slice(0, 4);
-
-    return { data: related };
-  }
-
-  //new
-
-  async getOffersV2(filters?: IOfferFilter): Promise<OffersResponseV2> {
+  async getOffers(filters?: IOfferFilter): Promise<OffersResponseV2> {
     const response = await axiosInstance.get('/offers', {
       params: {
         network_ids: filters?.networkIds?.join(',') || undefined,
@@ -555,7 +504,7 @@ export class OfferService {
     return response.data;
   }
 
-  async getOfferByIdV2(id: string): Promise<OfferByIdResponse> {
+  async getOfferById(id: string): Promise<OfferByIdResponse> {
     const response = await axiosInstance.get(`/offers/${id}`);
     return response.data;
   }
@@ -565,6 +514,23 @@ export class OfferService {
     params?: { page?: number; limit?: number }
   ): Promise<OrdersResponse> {
     const response = await axiosInstance.get(`/offers/${offerId}/orders`, { params });
+    return response.data;
+  }
+
+  async getOffersByUserId(userId: string, filters?: IOfferFilter): Promise<OffersResponseV2> {
+    const response = await axiosInstance.get(`/users/${userId}/offers`, {
+      params: {
+        network_ids: filters?.networkIds?.join(',') || undefined,
+        collateral_percents: filters?.collateralPercents?.join(',') || undefined,
+        settle_durations: filters?.settleDurations?.join(',') || undefined,
+        search: filters?.search,
+        page: filters?.page,
+        limit: filters?.limit,
+        sort_field: filters?.sortField,
+        sort_order: filters?.sortOrder,
+        token_id: filters?.tokenId || undefined,
+      },
+    });
     return response.data;
   }
 }

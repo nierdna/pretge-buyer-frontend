@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { IOffer } from '@/types/offer';
+import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { formatNumberShort } from '@/utils/helpers/number';
 import { normalizeNetworkName, truncateAddress } from '@/utils/helpers/string';
 import { Star } from 'lucide-react';
@@ -61,6 +62,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
         <div className="flex items-center gap-1">
           <span className="text-gray-500">Payment:</span>
           <div className="flex items-center gap-1 font-medium">
+            <Avatar className="h-4 w-4"></Avatar>
             <Image
               src={
                 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
@@ -90,9 +92,9 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
         <div className="flex items-start gap-2">
           <Avatar className="h-6 w-6">
             <AvatarImage
-              src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${
-                offer.sellerWallet.address || Math.random().toString()
-              }`}
+              src={
+                offer.sellerWallet?.user?.avatar || getFallbackAvatar(offer.sellerWallet?.address)
+              }
             />
             {/* <AvatarFallback className="text-xs">
               {truncateAddress(offer.sellerWallet.address)}
@@ -103,7 +105,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
               {truncateAddress(offer.sellerWallet.address)}
             </div>
             <div className="flex items-center gap-0.5 text-sm text-gray-500">
-              <span className="font-semibold">{Number(offer.sellerWallet?.rating || 0)}</span>
+              <span className="font-semibold">{Number(offer.sellerWallet?.user?.rating || 0)}</span>
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
             </div>
           </div>

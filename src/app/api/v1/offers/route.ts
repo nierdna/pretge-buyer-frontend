@@ -41,7 +41,7 @@ export async function GET(req: NextRequest) {
         `
         *,
         tokens:token_id (*),
-        seller_wallet: seller_wallet_id (*),
+        seller_wallet: seller_wallet_id (*, user:user_id (*)),
         ex_token:ex_token_id (*, network:network_id (*))
       `,
         { count: 'exact' }

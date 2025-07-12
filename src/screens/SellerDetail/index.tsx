@@ -1,77 +1,72 @@
 'use client';
 
-import SellerOfferList from '@/components/SellerOfferList';
-import SellerProfile from '@/components/SellerProfile';
-import { useSeller, useSellerOffers } from '@/queries/useSellerQueries';
+import { Card } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useGetOffersByUserId, useGetSellerById } from '@/queries';
+import SellerDetailPageSkeleton from './components/LoadingSkeletonSeller';
+import SellerOffersList from './components/LoadingSkeletonSeller/SellerOffersList';
+import SellerDetailHero from './components/SellerDetailHero';
 
 interface SellerDetailScreenProps {
   sellerId: string;
 }
 
 export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps) {
-  // Use React Query hooks
+  const { data: seller, isLoading } = useGetSellerById(sellerId);
   const {
-    data: sellerData,
-    isLoading: isLoadingSeller,
-    isError: isSellerError,
-  } = useSeller(sellerId);
-  const {
-    data: offersData,
-    isLoading: isLoadingOffers,
-    isError: isOffersError,
-  } = useSellerOffers(sellerId);
+    data: offers,
+    setFilters,
+    filters,
+    isLoading: isOffersLoading,
+  } = useGetOffersByUserId(sellerId);
+  const offersData = offers?.pages.flatMap((page) => page.data) || [];
+  const pagination = offers?.pages[0]?.pagination || {
+    total: 0,
+    page: 1,
+    limit: 12,
+    totalPages: 0,
+  };
 
-  const seller = sellerData?.data;
-  const offers = offersData?.data || [];
+  const paginate = (pageNumber: number) => {
+    if (pageNumber < 1) {
+      setFilters({ ...filters, page: 1 });
+    } else if (pageNumber > pagination.totalPages) {
+      setFilters({ ...filters, page: pagination.totalPages });
+    } else {
+      setFilters({ ...filters, page: pageNumber });
+    }
+  };
 
-  if (isLoadingSeller) {
-    return (
-      <div className="animate-pulse">
-        <div className="h-8 bg-opensea-darkBorder rounded w-1/3 mb-6"></div>
-        <div className="bg-opensea-darkBorder rounded-lg shadow-md p-6 mb-6 border border-opensea-darkBorder">
-          <div className="h-6 bg-opensea-darkBorder rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-opensea-darkBorder rounded w-full mb-2"></div>
-          <div className="h-4 bg-opensea-darkBorder rounded w-3/4 mb-2"></div>
-        </div>
-      </div>
-    );
-  }
-
-  if (isSellerError || !seller) {
-    return (
-      <div className="bg-opensea-darkBorder text-red-400 p-6 rounded-lg text-center border border-red-500/20">
-        <h2 className="text-xl font-semibold mb-2">Error Loading Seller</h2>
-        <p>We couldn&apos;t find the seller you&apos;re looking for. Please try again later.</p>
-      </div>
-    );
+  if (isLoading) {
+    return <SellerDetailPageSkeleton />;
   }
 
   return (
-    <>
-      <h1 className="text-3xl font-bold mb-6 text-white">Seller Profile</h1>
+    <div className="grid gap-8">
+      {/* Section 1: Seller Information */}
+      <SellerDetailHero seller={seller} />
 
-      {/* Seller Profile */}
-      <SellerProfile seller={seller} />
-
-      {/* Seller Offers */}
-      <div className="mt-8">
-        <h2 className="text-2xl font-bold mb-4 text-white">Seller Offers</h2>
-        {isLoadingOffers ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-opensea-blue"></div>
-          </div>
-        ) : isOffersError ? (
-          <div className="bg-opensea-darkBorder text-red-400 p-6 rounded-lg text-center border border-red-500/20">
-            <p>Error loading offers. Please try again later.</p>
-          </div>
-        ) : offers.length === 0 ? (
-          <div className="bg-opensea-darkBorder p-8 rounded-lg text-center border border-opensea-darkBorder">
-            <p className="text-opensea-lightGray">This seller has no offers yet.</p>
-          </div>
-        ) : (
-          <SellerOfferList offers={offers} />
-        )}
-      </div>
-    </>
+      {/* Section 2 & 3: Offers List and Reviews in Tabs */}
+      <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 p-6">
+        <Tabs defaultValue="offers" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="offers">Offers</TabsTrigger>
+            <TabsTrigger value="reviews">Reviews</TabsTrigger>
+          </TabsList>
+          <TabsContent value="offers" className="mt-6">
+            <SellerOffersList
+              offers={offersData}
+              pageNumber={pagination.page}
+              totalPages={pagination.totalPages}
+              paginate={paginate}
+              isLoading={isOffersLoading}
+            />
+          </TabsContent>
+          <TabsContent value="reviews" className="mt-6">
+            {/* <SellerReviews reviews={seller.reviews} /> */}
+          </TabsContent>
+        </Tabs>
+      </Card>
+    </div>
   );
 }
