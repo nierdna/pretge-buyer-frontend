@@ -181,6 +181,8 @@ CREATE TABLE IF NOT EXISTS "public"."promotions" (
     "check_eligible_url" character varying(255),
     "created_at" timestamp with time zone DEFAULT "now"(),
     "updated_at" timestamp with time zone DEFAULT "now"(),
+    "title" character varying(100) NOT NULL,
+    "description" character varying(500),
     CONSTRAINT "promotions_discount_percent_check" CHECK ((("discount_percent" > 0) AND ("discount_percent" <= 100)))
 );
 
