@@ -4,22 +4,34 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '@/components/ui
 import { useGetOffersByToken } from '@/queries';
 import { useTokenBySymbol } from '@/queries/useTokenQueries';
 import Link from 'next/link';
+import { useCallback } from 'react';
 import FilterSheet from '../../components/filter/FilterSheet';
 import FilterSidebar from '../../components/filter/FilterSidebar';
 import OfferList from '../../components/OfferList';
 import TokenInfoSection from './components/TokenInfomation';
 
 export default function TokenDetail({ symbol }: { symbol: string }) {
-  const { data: token, isLoading, isError } = useTokenBySymbol(symbol);
+  const { data: token, isLoading } = useTokenBySymbol(symbol);
   const {
     data: offers,
     isLoading: isLoadingOffers,
-    isError: isErrorOffers,
+    isFetching: isFetchingOffers,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
     filters,
+    inputSearch,
     handleSearch,
     setFilters,
   } = useGetOffersByToken(token?.id);
-  console.log('offers', offers);
+  // Callback to handle load more
+  const handleLoadMore = useCallback(() => {
+    if (isLoading || isFetching || !hasNextPage) {
+      return;
+    }
+    fetchNextPage();
+  }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
+
   const offersForToken = offers?.pages.flatMap((page) => page.data) || [];
   return (
     <section className="flex-1">
@@ -41,7 +53,17 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
       <FilterSheet hideNetworkFilter={true} filters={filters} setFilters={setFilters} />
       <div className="grid lg:grid-cols-[280px_1fr] gap-8">
         <FilterSidebar hideNetworkFilter={true} filters={filters} setFilters={setFilters} />
-        <OfferList offers={offersForToken} isLoading={isLoadingOffers} />
+        <OfferList
+          offers={offersForToken}
+          isLoading={isLoadingOffers}
+          isFetching={isFetchingOffers}
+          filters={filters}
+          setFilters={setFilters}
+          inputSearch={inputSearch}
+          handleSearch={handleSearch}
+          onLoadMore={handleLoadMore}
+          hasNextPage={hasNextPage}
+        />
       </div>
     </section>
   );

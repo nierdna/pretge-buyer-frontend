@@ -8,7 +8,7 @@ import { useDebouncedCallback } from 'use-debounce';
 
 export const useGetOffers = (queryKey: any[] = []) => {
   const [filters, setFilters] = useState<IOfferFilter>({
-    limit: 12,
+    limit: 6,
     page: 1,
     sortField: 'price',
     sortOrder: 'desc',
@@ -41,10 +41,10 @@ export const useGetOffers = (queryKey: any[] = []) => {
       return response.data;
     },
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage.pagination.totalPages === pages.length) {
-        return undefined;
+      if (lastPage.pagination.totalPages > pages.length) {
+        return pages.length + 1;
       }
-      return pages.length + 1;
+      return undefined;
     },
     initialPageParam: 1,
   });
@@ -135,7 +135,7 @@ export const useGetOffersByToken = (tokenId: string) => {
     setInputSearch(search);
     debouncedSearch(search);
   };
-  const { data, isLoading, isError } = useInfiniteQuery({
+  const { data, isLoading, isError, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['offers', tokenId],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await Service.offer.getOffers({
@@ -161,7 +161,18 @@ export const useGetOffersByToken = (tokenId: string) => {
     enabled: !!tokenId,
   });
 
-  return { data, isLoading, isError, filters, inputSearch, handleSearch, setFilters };
+  return {
+    data,
+    isLoading,
+    isError,
+    isFetching,
+    fetchNextPage,
+    hasNextPage,
+    filters,
+    inputSearch,
+    handleSearch,
+    setFilters,
+  };
 };
 
 export const useGetOffersByUserId = (userId: string) => {

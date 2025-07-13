@@ -2,6 +2,7 @@
 
 import { useGetOffers } from '@/queries/useOfferQueries';
 import { useTokenQueries } from '@/queries/useTokenQueries';
+import { useCallback } from 'react';
 import FilterSidebar from '../../components/filter/FilterSidebar';
 import OfferList from '../../components/OfferList';
 import FlashSale from './components/FlashSale';
@@ -24,6 +25,14 @@ export default function HomePage() {
 
   const { data: tokens } = useTokenQueries();
 
+  // Callback to handle load more
+  const handleLoadMore = useCallback(() => {
+    if (isLoading || isFetching || !hasNextPage) {
+      return;
+    }
+    fetchNextPage();
+  }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
+
   return (
     // <div className="min-h-screen text-gray-900">
     //   <Header />
@@ -43,6 +52,8 @@ export default function HomePage() {
             isFetching={isFetching}
             filters={filters}
             setFilters={setFilters}
+            onLoadMore={handleLoadMore}
+            hasNextPage={hasNextPage}
           />
         </div>
       </section>

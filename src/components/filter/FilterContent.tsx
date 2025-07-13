@@ -137,7 +137,7 @@ export default function FilterContent({
             </AccordionTrigger>
             <AccordionContent className="grid grid-cols-2 gap-2 pt-2">
               {listCollateral.map((item) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" key={item.id}>
                   <Checkbox
                     id={`collateral-${item.id}`}
                     checked={filters.collateralPercents?.includes(item.id)}

@@ -15,7 +15,7 @@ import OfferCardSkeleton from '@/screens/SellerDetail/components/LoadingSkeleton
 import { IOfferFilter } from '@/service/offer.service';
 import { IOffer } from '@/types/offer';
 import { LayoutGrid, List, Loader2 } from 'lucide-react'; // Icons for view types
-import { useEffect, useRef, useState } from 'react'; // Import hooks
+import { useCallback, useEffect, useRef, useState } from 'react'; // Import hooks
 import OfferCard from './OfferCard';
 import OfferListItem from './OfferListItem'; // New import for list view
 import FilterSheet from './filter/FilterSheet';
@@ -28,6 +28,8 @@ export default function OfferList({
   setFilters,
   inputSearch,
   handleSearch,
+  onLoadMore,
+  hasNextPage,
 }: {
   offers: IOffer[];
   isLoading: boolean;
@@ -36,10 +38,43 @@ export default function OfferList({
   setFilters: (filters: IOfferFilter) => void;
   inputSearch: string;
   handleSearch: (search: string) => void;
+  onLoadMore: () => void;
+  hasNextPage: boolean;
 }) {
   const [isSticky, setIsSticky] = useState(false);
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
   const searchBarRef = useRef<HTMLDivElement>(null);
+  const lastItemRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer for infinite scroll
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage && !isLoading && !isFetching) {
+        console.log('Loading more data...');
+        onLoadMore();
+      }
+    },
+    [hasNextPage, isLoading, isFetching, onLoadMore]
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      rootMargin: '100px',
+      threshold: 0.1,
+    });
+
+    // Clean up previous observer
+    if (lastItemRef.current) {
+      observer.observe(lastItemRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [observerCallback]);
+
   useEffect(() => {
     const handleScroll = () => {
       if (searchBarRef.current) {
@@ -140,9 +175,10 @@ export default function OfferList({
             </>
           )}
           {!isLoading && offers.map((offer, index) => <OfferCard key={index} offer={offer} />)}
-          {isFetching && (
-            <div className="col-span-full flex justify-center items-center">
-              <Loader2 className="h-4 w-4 animate-spin" />
+          {/* Separate trigger element for infinite scroll */}
+          {hasNextPage && (
+            <div ref={lastItemRef} className="col-span-full h-10 flex items-center justify-center">
+              {isFetching && <Loader2 className="h-6 w-6 animate-spin" />}
             </div>
           )}
         </div>
@@ -154,9 +190,10 @@ export default function OfferList({
             </div>
           )}
           {!isLoading && offers.map((offer, index) => <OfferListItem key={index} offer={offer} />)}
-          {isFetching && (
-            <div className="col-span-full flex justify-center items-center">
-              <Loader2 className="h-4 w-4 animate-spin" />
+          {/* Separate trigger element for infinite scroll */}
+          {hasNextPage && (
+            <div ref={lastItemRef} className="h-10 flex items-center justify-center">
+              {isFetching && <Loader2 className="h-6 w-6 animate-spin" />}
             </div>
           )}
         </div>
