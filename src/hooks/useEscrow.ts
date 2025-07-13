@@ -16,7 +16,7 @@ export const useEscrow = (
   }, [chains, chainId]);
 
   const escrowContract = useMemo(() => {
-    const contractAddress = CONTRACTS[chainId as keyof typeof CONTRACTS].ESCROW;
+    const contractAddress = CONTRACTS[chainId as keyof typeof CONTRACTS]?.ESCROW;
     if (!chain || !contractAddress) return undefined;
 
     if (chain.chainType === 'evm') {

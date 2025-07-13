@@ -1,4 +1,3 @@
-export const ESCROW_ADDRESS = '0xe9edd28b3e8cfd142b1e5b84fa282a18c1b783c2';
 export const ESCROW_ABI = [
   {
     inputs: [],

@@ -19,8 +19,8 @@ import { useEscrow } from '@/hooks/useEscrow';
 import { useToken } from '@/hooks/useToken';
 import { useWallet } from '@/hooks/useWallet';
 import axiosInstance from '@/service/axios';
+import { useAuthStore } from '@/store/authStore';
 import { IOffer } from '@/types/offer';
-import { useAppKitAccount } from '@reown/appkit/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { CheckCircle, Wallet } from 'lucide-react';
@@ -35,10 +35,11 @@ interface OfferDetailHeroProps {
 export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHeroProps) {
   const [buyQuantity, setBuyQuantity] = useState(1);
   const [balance, setBalance] = useState<number>(0);
+  const chainId = offer?.exToken?.network?.chainId?.toString() || '';
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
   const [depositLoading, setDepositLoading] = useState(false);
-  const { address } = useAppKitAccount();
+  const { walletAddress: address } = useAuthStore();
   const queryClient = useQueryClient();
   const estimatedCost = buyQuantity * Number(offer?.price || 0);
 
@@ -65,14 +66,13 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
     fetchBalance();
   }, [address, offer?.exToken?.address]);
 
-  const chainId = '84532';
   const { escrowContract } = useEscrow(chainId);
   const wallet = useWallet(chainId);
 
   const tokenAddress = offer?.exToken?.address;
 
   const { tokenContract } = useToken(tokenAddress || '', chainId);
-  const contractAddress = CONTRACTS[chainId].ESCROW;
+  const contractAddress = CONTRACTS[chainId]?.ESCROW;
 
   const { data: allowance, refetch: refetchAllowance } = useQuery({
     queryKey: ['allowance', tokenAddress, address],
@@ -90,6 +90,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
       const res = await axiosInstance.get(`wallets/${address}`);
       return res.data.data;
     },
+    enabled: !!address,
   });
 
   const handleApprove = async () => {
