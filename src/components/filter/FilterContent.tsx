@@ -119,7 +119,7 @@ export default function FilterContent({
             </AccordionTrigger>
             <AccordionContent className="flex flex-wrap gap-4 pt-2">
               {listSettleTime.map((item) => (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2" key={item.id}>
                   <Checkbox
                     id={`settle-${item.id}`}
                     checked={filters.settleDurations?.includes(item.id)}

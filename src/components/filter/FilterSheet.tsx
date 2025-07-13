@@ -14,12 +14,15 @@ export default function FilterSheet({
   hideNetworkFilter?: boolean;
 }) {
   return (
-    <div className="lg:hidden flex justify-end mb-4">
+    <div className="lg:hidden flex justify-end">
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" className="flex items-center gap-2 bg-transparent">
+          <Button
+            size={'icon'}
+            variant="outline"
+            className="flex items-center gap-2 bg-transparent"
+          >
             <Filter className="h-4 w-4" />
-            Filters
           </Button>
         </SheetTrigger>
         <SheetContent

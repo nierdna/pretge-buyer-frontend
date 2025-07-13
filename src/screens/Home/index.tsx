@@ -2,15 +2,24 @@
 
 import { useGetOffers } from '@/queries/useOfferQueries';
 import { useTokenQueries } from '@/queries/useTokenQueries';
-import FilterSheet from '../../components/filter/FilterSheet';
 import FilterSidebar from '../../components/filter/FilterSidebar';
 import OfferList from '../../components/OfferList';
 import FlashSale from './components/FlashSale';
 import TredingToken from './components/TredingToken';
 
 export default function HomePage() {
-  const { data, isLoading, isError, filters, setFilters, handleSearch, inputSearch } =
-    useGetOffers();
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    filters,
+    setFilters,
+    handleSearch,
+    inputSearch,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetOffers();
   const offers = data?.pages.flatMap((page) => page.data) || [];
 
   const { data: tokens } = useTokenQueries();
@@ -23,10 +32,18 @@ export default function HomePage() {
       <TredingToken trendingTokens={tokens?.data || []} />
       <FlashSale />
       <section className="py-4 md:py-8 px-4 -mx-2">
-        <FilterSheet filters={filters} setFilters={setFilters} /> {/* Mobile filter button */}
+        {/* <FilterSheet filters={filters} setFilters={setFilters} /> */}
         <div className="grid lg:grid-cols-[280px_1fr] gap-8">
           <FilterSidebar filters={filters} setFilters={setFilters} /> {/* Desktop filter sidebar */}
-          <OfferList offers={offers} isLoading={isLoading} />
+          <OfferList
+            inputSearch={inputSearch}
+            handleSearch={handleSearch}
+            offers={offers}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            filters={filters}
+            setFilters={setFilters}
+          />
         </div>
       </section>
     </div>

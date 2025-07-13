@@ -11,220 +11,32 @@ import {
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'; // New import for view type toggle
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import OfferCardSkeleton from '@/screens/SellerDetail/components/LoadingSkeletonSeller/OfferCardSkeleton';
+import { IOfferFilter } from '@/service/offer.service';
 import { IOffer } from '@/types/offer';
-import { LayoutGrid, List } from 'lucide-react'; // Icons for view types
+import { LayoutGrid, List, Loader2 } from 'lucide-react'; // Icons for view types
 import { useEffect, useRef, useState } from 'react'; // Import hooks
 import OfferCard from './OfferCard';
 import OfferListItem from './OfferListItem'; // New import for list view
+import FilterSheet from './filter/FilterSheet';
 
-const mockOffers = [
-  {
-    tokenSymbol: 'XYZ',
-    tokenName: 'XYZ Protocol Token',
-    network: 'Ethereum',
-    quantitySold: 75,
-    totalQuantity: 100,
-    paymentToken: 'ETH',
-    paymentAmount: 0.5,
-    percentCollateral: 10,
-    price: 0.5,
-    settleTime: '1 Hour',
-    sellerName: 'CryptoDeals',
-    sellerWallet: '0xAbC123DeF456...',
-    sellerRating: 4.8,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'ABC',
-    tokenName: 'Alpha Beta Coin',
-    network: 'Polygon',
-    quantitySold: 200,
-    totalQuantity: 500,
-    paymentToken: 'USDC',
-    paymentAmount: 1000,
-    percentCollateral: 25,
-    price: 1,
-    settleTime: '2 Hours',
-    sellerName: 'TokenTrader',
-    sellerWallet: '0x1234567890aB...',
-    sellerRating: 4.5,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'DEF',
-    tokenName: 'Decentralized Finance',
-    network: 'BNB Chain',
-    quantitySold: 10,
-    totalQuantity: 20,
-    paymentToken: 'BNB',
-    paymentAmount: 0.1,
-    percentCollateral: 50,
-    price: 5,
-    settleTime: '4 Hours',
-    sellerName: 'SmartContracts',
-    sellerWallet: '0xFeDcbA987654...',
-    sellerRating: 4.9,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'GHI',
-    tokenName: 'Global Hub Index',
-    network: 'Solana',
-    quantitySold: 150,
-    totalQuantity: 300,
-    paymentToken: 'SOL',
-    paymentAmount: 0.05,
-    percentCollateral: 0,
-    price: 10,
-    settleTime: '1 Hour',
-    sellerName: 'SolanaMarket',
-    sellerWallet: '0x9876543210Fe...',
-    sellerRating: 4.2,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'JKL',
-    tokenName: 'Jupiter Key Lock',
-    network: 'Ethereum',
-    quantitySold: 50,
-    totalQuantity: 120,
-    paymentToken: 'ETH',
-    paymentAmount: 0.8,
-    percentCollateral: 15,
-    price: 18,
-    settleTime: '2 Hours',
-    sellerName: 'EthVault',
-    sellerWallet: '0xCcDdEeFf0011...',
-    sellerRating: 4.7,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'MNO',
-    tokenName: 'Moonshot Network',
-    network: 'Polygon',
-    quantitySold: 300,
-    totalQuantity: 400,
-    paymentToken: 'MATIC',
-    paymentAmount: 50,
-    percentCollateral: 20,
-    price: 8,
-    settleTime: '4 Hours',
-    sellerName: 'PolyPioneer',
-    sellerWallet: '0x1a2b3c4d5e6f...',
-    sellerRating: 4.6,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'PQR',
-    tokenName: 'Phoenix Quantum',
-    network: 'Arbitrum',
-    quantitySold: 80,
-    totalQuantity: 150,
-    paymentToken: 'ARB',
-    paymentAmount: 1.2,
-    percentCollateral: 10,
-    price: 12,
-    settleTime: '1 Hour',
-    sellerName: 'ArbiTrader',
-    sellerWallet: '0x7b8c9d0e1f2a...',
-    sellerRating: 4.3,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'STU',
-    tokenName: 'Starlight Universe',
-    network: 'Optimism',
-    quantitySold: 120,
-    totalQuantity: 200,
-    paymentToken: 'OP',
-    paymentAmount: 0.7,
-    percentCollateral: 15,
-    price: 14,
-    settleTime: '3 Hours',
-    sellerName: 'OptiDeals',
-    sellerWallet: '0x3d4e5f6a7b8c...',
-    sellerRating: 4.6,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'VWX',
-    tokenName: 'Vortex Xchange',
-    network: 'Avalanche',
-    quantitySold: 40,
-    totalQuantity: 60,
-    paymentToken: 'AVAX',
-    paymentAmount: 0.3,
-    percentCollateral: 25,
-    price: 9,
-    settleTime: '2 Hours',
-    sellerName: 'AvaTrader',
-    sellerWallet: '0x9e8f7d6c5b4a...',
-    sellerRating: 4.9,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'YZA',
-    tokenName: 'Yield Zone Alpha',
-    network: 'Fantom',
-    quantitySold: 90,
-    totalQuantity: 110,
-    paymentToken: 'FTM',
-    paymentAmount: 0.1,
-    percentCollateral: 5,
-    price: 7,
-    settleTime: '1 Hour',
-    sellerName: 'FantomFlow',
-    sellerWallet: '0x1c2d3e4f5a6b...',
-    sellerRating: 4.4,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'BCD',
-    tokenName: 'Blockchain Dynamics',
-    network: 'Ethereum',
-    quantitySold: 180,
-    totalQuantity: 250,
-    paymentToken: 'ETH',
-    paymentAmount: 0.2,
-    percentCollateral: 10,
-    price: 20,
-    settleTime: '4 Hours',
-    sellerName: 'ChainLinker',
-    sellerWallet: '0x5f6e7d8c9b0a...',
-    sellerRating: 4.7,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-  {
-    tokenSymbol: 'EFG',
-    tokenName: 'Ecosystem Frontier',
-    network: 'Polygon',
-    quantitySold: 60,
-    totalQuantity: 80,
-    paymentToken: 'MATIC',
-    paymentAmount: 20,
-    percentCollateral: 30,
-    price: 6,
-    settleTime: '2 Hours',
-    sellerName: 'PolyMaster',
-    sellerWallet: '0x2a3b4c5d6e7f...',
-    sellerRating: 4.5,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-    paymentTokenImage: '/placeholder.svg?height=20&width=20',
-  },
-];
-
-export default function OfferList({ offers, isLoading }: { offers: IOffer[]; isLoading: boolean }) {
+export default function OfferList({
+  offers,
+  isLoading,
+  isFetching,
+  filters,
+  setFilters,
+  inputSearch,
+  handleSearch,
+}: {
+  offers: IOffer[];
+  isLoading: boolean;
+  isFetching: boolean;
+  filters: IOfferFilter;
+  setFilters: (filters: IOfferFilter) => void;
+  inputSearch: string;
+  handleSearch: (search: string) => void;
+}) {
   const [isSticky, setIsSticky] = useState(false);
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
   const searchBarRef = useRef<HTMLDivElement>(null);
@@ -267,16 +79,29 @@ export default function OfferList({ offers, isLoading }: { offers: IOffer[]; isL
         )}
       >
         {/* Left side: Search Input and Sort Select */}
-        <div className="flex items-center gap-4 w-full sm:w-auto">
+        <div className="flex items-center gap-4 w-full md:w-auto">
+          <FilterSheet filters={filters} setFilters={setFilters} />
+
           <Input
+            value={inputSearch}
+            onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search offers..."
             className={`flex-1 shadow-sm border-gray-200 ${
               isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
             }`}
           />
-          <Select defaultValue="newest">
+          <Select
+            defaultValue="newest"
+            onValueChange={(value) => {
+              if (value === 'newest') {
+                setFilters({ ...filters, sortField: 'created_at', sortOrder: 'desc' });
+              } else if (value === 'price') {
+                setFilters({ ...filters, sortField: 'price', sortOrder: 'asc' });
+              }
+            }}
+          >
             <SelectTrigger
-              className={`w-[180px] shadow-sm border-gray-200 ${
+              className={`w-32 md:w-[180px] shadow-sm border-gray-200 ${
                 isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
               }`}
             >
@@ -284,10 +109,7 @@ export default function OfferList({ offers, isLoading }: { offers: IOffer[]; isL
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="newest">Newest</SelectItem>
-              <SelectItem value="price-asc">Price: Low to High</SelectItem>
-              <SelectItem value="price-desc">Price: High to Low</SelectItem>
-              <SelectItem value="popularity">Popularity</SelectItem>
-              <SelectItem value="ending-soon">Ending Soon</SelectItem>
+              <SelectItem value="price">Lowest Price</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -310,15 +132,33 @@ export default function OfferList({ offers, isLoading }: { offers: IOffer[]; isL
 
       {viewType === 'card' ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-          {offers.map((offer, index) => (
-            <OfferCard key={index} offer={offer} />
-          ))}
+          {isLoading && (
+            <>
+              {Array.from({ length: 12 }).map((_, index) => (
+                <OfferCardSkeleton key={index} />
+              ))}
+            </>
+          )}
+          {!isLoading && offers.map((offer, index) => <OfferCard key={index} offer={offer} />)}
+          {isFetching && (
+            <div className="col-span-full flex justify-center items-center">
+              <Loader2 className="h-4 w-4 animate-spin" />
+            </div>
+          )}
         </div>
       ) : (
         <div className="grid gap-4">
-          {offers.map((offer, index) => (
-            <OfferListItem key={index} offer={offer} />
-          ))}
+          {isLoading && (
+            <div className="col-span-full flex justify-center items-center">
+              <Loader2 className="h-4 w-4 animate-spin" />
+            </div>
+          )}
+          {!isLoading && offers.map((offer, index) => <OfferListItem key={index} offer={offer} />)}
+          {isFetching && (
+            <div className="col-span-full flex justify-center items-center">
+              <Loader2 className="h-4 w-4 animate-spin" />
+            </div>
+          )}
         </div>
       )}
     </div>

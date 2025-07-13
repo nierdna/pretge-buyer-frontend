@@ -24,7 +24,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
     setInputSearch(search);
     debouncedSearch(search);
   };
-  const { data, isLoading, isError } = useInfiniteQuery({
+  const { data, isLoading, isError, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['offers', filters, ...queryKey],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await Service.offer.getOffers({
@@ -52,11 +52,14 @@ export const useGetOffers = (queryKey: any[] = []) => {
   return {
     data,
     isLoading,
+    isFetching,
     isError,
     filters,
     inputSearch,
     handleSearch,
     setFilters,
+    fetchNextPage,
+    hasNextPage,
   };
 };
 
