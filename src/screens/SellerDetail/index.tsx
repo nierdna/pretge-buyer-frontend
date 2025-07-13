@@ -2,10 +2,11 @@
 
 import { Card } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useGetOffersByUserId, useGetSellerById } from '@/queries';
+import { useGetOffersByUserId, useGetReviewsBySellerId, useGetSellerById } from '@/queries';
 import SellerDetailPageSkeleton from './components/LoadingSkeletonSeller';
-import SellerOffersList from './components/LoadingSkeletonSeller/SellerOffersList';
 import SellerDetailHero from './components/SellerDetailHero';
+import SellerOffersList from './components/SellerOffersList';
+import SellerReviews from './components/SellerReviews';
 
 interface SellerDetailScreenProps {
   sellerId: string;
@@ -19,21 +20,47 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
     filters,
     isLoading: isOffersLoading,
   } = useGetOffersByUserId(sellerId);
+
   const offersData = offers?.pages.flatMap((page) => page.data) || [];
-  const pagination = offers?.pages[0]?.pagination || {
+  const paginationOffers = offers?.pages[0]?.pagination || {
     total: 0,
     page: 1,
     limit: 12,
     totalPages: 0,
   };
 
-  const paginate = (pageNumber: number) => {
+  const paginateOffers = (pageNumber: number) => {
     if (pageNumber < 1) {
       setFilters({ ...filters, page: 1 });
-    } else if (pageNumber > pagination.totalPages) {
-      setFilters({ ...filters, page: pagination.totalPages });
+    } else if (pageNumber > paginationOffers.totalPages) {
+      setFilters({ ...filters, page: paginationOffers.totalPages });
     } else {
       setFilters({ ...filters, page: pageNumber });
+    }
+  };
+
+  const {
+    data: reviews,
+    setFilters: setReviewsFilters,
+    filters: reviewsFilters,
+    isLoading: isReviewsLoading,
+  } = useGetReviewsBySellerId(sellerId);
+
+  const reviewsData = reviews?.pages.flatMap((page) => page.data) || [];
+  const paginationReviews = reviews?.pages[0]?.pagination || {
+    total: 0,
+    page: 1,
+    limit: 10,
+    totalPages: 0,
+  };
+
+  const paginateReviews = (pageNumber: number) => {
+    if (pageNumber < 1) {
+      setReviewsFilters({ ...reviewsFilters, page: 1 });
+    } else if (pageNumber > paginationReviews.totalPages) {
+      setReviewsFilters({ ...reviewsFilters, page: paginationReviews.totalPages });
+    } else {
+      setReviewsFilters({ ...reviewsFilters, page: pageNumber });
     }
   };
 
@@ -56,14 +83,20 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
           <TabsContent value="offers" className="mt-6">
             <SellerOffersList
               offers={offersData}
-              pageNumber={pagination.page}
-              totalPages={pagination.totalPages}
-              paginate={paginate}
+              pageNumber={paginationOffers.page}
+              totalPages={paginationOffers.totalPages}
+              paginate={paginateOffers}
               isLoading={isOffersLoading}
             />
           </TabsContent>
           <TabsContent value="reviews" className="mt-6">
-            {/* <SellerReviews reviews={seller.reviews} /> */}
+            <SellerReviews
+              reviews={reviewsData}
+              pageNumber={paginationReviews.page}
+              totalPages={paginationReviews.totalPages}
+              paginate={paginateReviews}
+              isLoading={isReviewsLoading}
+            />
           </TabsContent>
         </Tabs>
       </Card>

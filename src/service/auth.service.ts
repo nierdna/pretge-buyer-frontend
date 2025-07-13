@@ -1,4 +1,5 @@
 import { ChainType } from '@/server/enums/chain';
+import { IToken } from '@/types/token';
 import { User, Wallet } from '@/types/user';
 import axiosInstance from './axios';
 
@@ -25,6 +26,39 @@ export interface LoginMessageResponse {
   message: string;
   success: boolean;
   timestamp: number;
+}
+
+export interface ProfileResponse {
+  data: {
+    user: User;
+    wallets: Wallet[];
+    currentWallet: {
+      address: string;
+      chainType: ChainType;
+    };
+  };
+  success: boolean;
+}
+
+export interface UpdateProfileResponse {
+  success: boolean;
+  data: User;
+  message: string;
+}
+
+export interface BalanceResponse {
+  success: boolean;
+  data: {
+    chainType: string;
+    walletAddress: string;
+    walletId: string;
+    balances: {
+      balance: number;
+      exTokenId: string;
+      exTokens: IToken;
+    }[];
+  };
+  message: string;
 }
 
 class AuthService {
@@ -65,6 +99,36 @@ class AuthService {
     const response = await axiosInstance.get('/auth/base/nonce', {
       params: {
         address,
+      },
+    });
+    return response.data;
+  }
+
+  async getProfile(): Promise<ProfileResponse> {
+    const response = await axiosInstance.get('/profile', {
+      headers: {
+        Authorization: true,
+      },
+    });
+    return response.data;
+  }
+
+  async updateProfile(data: {
+    name: string;
+    description: string;
+    avatar: string;
+  }): Promise<UpdateProfileResponse> {
+    const response = await axiosInstance.put('/profile', data, {
+      headers: {
+        Authorization: true,
+      },
+    });
+    return response.data;
+  }
+  async getBalance(): Promise<BalanceResponse> {
+    const response = await axiosInstance.get('/balance', {
+      headers: {
+        Authorization: true,
       },
     });
     return response.data;

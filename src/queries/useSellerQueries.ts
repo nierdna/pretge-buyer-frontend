@@ -1,5 +1,6 @@
 import { Service } from '@/service';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 export const useGetSellerById = (id: string) => {
@@ -7,7 +8,7 @@ export const useGetSellerById = (id: string) => {
     queryKey: ['seller', id],
     queryFn: async () => {
       try {
-        const response = await Service.seller.getSellerById(id);
+        const response = await Service.user.getSellerById(id);
         return response.data;
       } catch (error) {
         console.error('Error fetching seller:', error);
@@ -15,6 +16,31 @@ export const useGetSellerById = (id: string) => {
         return undefined;
       }
     },
-    enabled: !!id,
+    enabled: !!id && id !== 'undefined',
   });
+};
+
+export const useGetReviewsBySellerId = (id: string) => {
+  const [filters, setFilters] = useState({
+    page: 1,
+    limit: 10,
+  });
+  const { data, isLoading, isError, error } = useInfiniteQuery({
+    queryKey: ['reviews', id],
+    queryFn: async () => {
+      if (!id) return undefined;
+      try {
+        const response = await Service.user.getReviewsBySellerId(id, filters);
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+        toast.error('Error fetching reviews');
+        return undefined;
+      }
+    },
+    getNextPageParam: (lastPage, pages) => lastPage.pagination.page + 1,
+    initialPageParam: 1,
+    enabled: !!id && id !== 'undefined',
+  });
+  return { data, isLoading, isError, error, setFilters, filters };
 };

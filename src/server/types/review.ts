@@ -1,6 +1,6 @@
 export interface Review {
   id: string;
-  offerId?: string; // nullable nếu review cho shop
+  offerId: string;
   buyerId: string;
   rating: number; // 1-5
   comment: string;

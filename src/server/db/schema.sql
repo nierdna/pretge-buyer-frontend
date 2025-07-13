@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS orders (
 -- Create reviews table (based on Review interface from review.ts)
 CREATE TABLE IF NOT EXISTS reviews (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  offer_id UUID REFERENCES offers(id) ON DELETE CASCADE NULL, -- nullable for shop reviews
+  offer_id UUID REFERENCES offers(id) ON DELETE CASCADE NOT NULL,
   buyer_id VARCHAR(255) NOT NULL,
   rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
   comment TEXT NOT NULL,

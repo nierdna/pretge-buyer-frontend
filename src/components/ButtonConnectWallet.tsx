@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { truncateAddress } from '@/utils/helpers/string';
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
 import { ChevronDown, Copy, LogOut, User } from 'lucide-react';
+import Link from 'next/link';
 import { toast } from 'sonner';
 
 export const ButtonConnectWallet = () => {
@@ -47,6 +48,11 @@ export const ButtonConnectWallet = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <DropdownMenuItem asChild>
+              <Link className="w-full" href="/profile">
+                Profile
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleConnectWallet}>Switch Wallet</DropdownMenuItem>
             <DropdownMenuItem
               className="justify-between"

@@ -2,7 +2,7 @@ import OfferCard from '@/components/OfferCard'; // Re-use the existing OfferCard
 import PaginationCustom from '@/components/pagination-custom';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { IOffer } from '@/types/offer';
-import OfferCardSkeleton from './OfferCardSkeleton';
+import OfferCardSkeleton from './LoadingSkeletonSeller/OfferCardSkeleton';
 
 interface SellerOffersListProps {
   offers: Array<IOffer>; // Use a more specific type if available, e.g., OfferCardProps[]

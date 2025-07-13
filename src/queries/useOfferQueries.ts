@@ -74,12 +74,12 @@ export const useGetOfferById = (id: string) => {
 export const useGetOrdersByOffer = (offerId: string) => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
     queryKey: ['orders', offerId, page],
     queryFn: async () => {
       const response = await Service.offer.getOrdersByOffer(offerId, {
         page: page,
-        limit: 1,
+        limit: 5,
       });
       setTotalPages(response.data.pagination.totalPages);
       return response.data;
@@ -93,7 +93,26 @@ export const useGetOrdersByOffer = (offerId: string) => {
     initialPageParam: 1,
   });
 
-  return { data, isLoading, isError, setPage, page, totalPages, fetchNextPage, hasNextPage };
+  const resetToFirstPage = () => {
+    if (page > 1) {
+      setPage(1);
+    } else {
+      refetch();
+    }
+  };
+
+  return {
+    data,
+    isLoading,
+    isError,
+    setPage,
+    page,
+    totalPages,
+    fetchNextPage,
+    hasNextPage,
+    refetch,
+    resetToFirstPage,
+  };
 };
 
 export const useGetOffersByToken = (tokenId: string) => {
@@ -175,7 +194,7 @@ export const useGetOffersByUserId = (userId: string) => {
       return pages.length + 1;
     },
     initialPageParam: 1,
-    enabled: !!userId,
+    enabled: !!userId && userId !== 'undefined',
   });
 
   return { data, isLoading, isError, filters, inputSearch, handleSearch, setFilters };

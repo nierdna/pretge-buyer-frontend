@@ -1,10 +1,12 @@
 'use client';
 
 import { useAuth } from '@/hooks/useAuth';
+import { useAuthStore } from '@/store/authStore';
 import { useChainStore } from '@/store/chainStore';
 import { useEffect, useRef } from 'react';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
+  const { fetchProfile } = useAuthStore();
   const { address, isConnected, accessToken, handleLogin, handleLogout } = useAuth();
   const { fetchChains } = useChainStore();
   const prevStateRef = useRef({ address, isConnected, accessToken });
@@ -53,6 +55,12 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     fetchChains();
   }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      fetchProfile();
+    }
+  }, [accessToken]);
 
   return <div>{children}</div>;
 };

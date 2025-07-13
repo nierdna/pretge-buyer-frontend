@@ -22,8 +22,7 @@ export const useAuth = () => {
   const { walletProvider: evmWalletProvider } = useAppKitProvider<Provider>('eip155');
 
   const { disconnect } = useDisconnect();
-  const { setTokens, setUser, logout, user, accessToken, setWalletAddress, walletAddress } =
-    useAuthStore();
+  const { setTokens, logout, user, accessToken, setWalletAddress, walletAddress } = useAuthStore();
 
   // Generate login message
   const generateLoginMessage = useMutation({
@@ -66,7 +65,6 @@ export const useAuth = () => {
     onSuccess: (data) => {
       if (data.success && data.data) {
         setTokens(data.data.accessToken, data.data.refreshToken);
-        setUser(data.data.user);
         setWalletAddress(data.data.wallet.address);
         toast.success('Login successful', {
           description: `Welcome ${data.data.user.name || data.data.wallet.address}!`,

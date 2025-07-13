@@ -30,7 +30,8 @@ export async function GET(request: NextRequest) {
     .select(
       `
     *,
-    networks:network_id (*)`
+    networks:network_id (*)`,
+      { count: 'exact' }
     )
     .range(offset, offset + limit - 1);
   if (tokenIds) {
@@ -45,9 +46,9 @@ export async function GET(request: NextRequest) {
     query = query.in('status', statuses.split(','));
   }
 
-  const { data, error } = await query;
+  const { data, error, count } = await query;
   if (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: error.message }, { status: 500 });
   }
 
   const response = data.map((token: any) => ({
@@ -60,10 +61,10 @@ export async function GET(request: NextRequest) {
     success: true,
     data: response,
     pagination: {
+      total: count || 0,
       page,
       limit,
-      total: data?.length || 0,
-      totalPages: Math.ceil(data?.length || 0 / limit),
+      totalPages: Math.ceil((count || 0) / limit),
     },
   });
 }

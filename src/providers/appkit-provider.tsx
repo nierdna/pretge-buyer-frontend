@@ -1,12 +1,12 @@
 'use client';
 
+import { chainConfigs } from '@/configs/chains';
 import { projectId } from '@/configs/env';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana/react';
 import { base, baseSepolia, mainnet, solana, solanaDevnet } from '@reown/appkit/networks';
 import { createAppKit } from '@reown/appkit/react';
 import { LynxReownProvider } from 'lynx-reown-dapp-kit';
-import { chainConfigs } from '@/configs/chains';
 
 // 2. Create a metadata object
 const metadata = {

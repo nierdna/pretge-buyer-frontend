@@ -7,7 +7,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -22,22 +21,25 @@ import { useWallet } from '@/hooks/useWallet';
 import axiosInstance from '@/service/axios';
 import { IOffer } from '@/types/offer';
 import { useAppKitAccount } from '@reown/appkit/react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import { CheckCircle, Wallet } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 interface OfferDetailHeroProps {
   offer?: IOffer;
+  onOrderPlaced?: () => void;
 }
 
-export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
+export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHeroProps) {
   const [buyQuantity, setBuyQuantity] = useState(1);
-  const [balance, setBalance] = useState<number | null>(null);
+  const [balance, setBalance] = useState<number>(0);
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
   const [depositLoading, setDepositLoading] = useState(false);
   const { address } = useAppKitAccount();
+  const queryClient = useQueryClient();
   const estimatedCost = buyQuantity * Number(offer?.price || 0);
 
   // Đưa fetchBalance ra ngoài useEffect để có thể gọi lại
@@ -66,7 +68,6 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
   const chainId = '84532';
   const { escrowContract } = useEscrow(chainId);
   const wallet = useWallet(chainId);
-  console.log('wallet', wallet);
 
   const tokenAddress = offer?.exToken?.address;
 
@@ -143,6 +144,7 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
   const placeOrder = async () => {
     // Always use English for comments and console logs in code
     if (!offer) return;
+
     try {
       // Fake address for placeholder
       const orderInput = {
@@ -153,6 +155,15 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
       const res = await axiosInstance.post('orders', orderInput);
       console.log('Order created (placeholder):', res.data);
       alert('Order placed (placeholder)');
+
+      // Refetch TransactionHistory data and reset page to 1
+      await queryClient.invalidateQueries({
+        queryKey: ['orders', offer.id],
+      });
+
+      // Call the callback to reset TransactionHistory to first page
+      onOrderPlaced?.();
+      await fetchBalance();
     } catch (err) {
       console.error('Failed to place order (placeholder)', err);
       alert('Failed to place order (placeholder)');
@@ -188,56 +199,58 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
           </div>
 
           <div className="grid gap-1">
-            <CardTitle className="text-3xl font-bold">{offer?.tokens?.name}</CardTitle>
+            <CardTitle className="text-2xl font-bold">{offer?.tokens?.name}</CardTitle>
             <div className="flex items-center gap-2">
               <Badge variant="secondary">{offer?.tokens?.symbol}</Badge>
               <Badge variant="outline">{offer?.exToken?.network?.name}</Badge>
             </div>
           </div>
         </div>
-        <CardDescription className="mt-4 text-base text-gray-700">
+        <CardDescription className="mt-6 text-sm text-gray-700">
           {offer?.description}
         </CardDescription>
       </CardHeader>
 
-      <Separator className="mx-6 bg-gray-200" />
+      <div className="px-6">
+        <Separator className="bg-gray-200" />
+      </div>
 
       <CardContent className="p-6 grid gap-6">
         {/* Price and Quantity */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-gray-600">Price per Token</Label>
-            <div className="text-3xl font-extrabold text-primary mt-1">
+            <Label className="text-gray-600 text-sm">Price per Token</Label>
+            <div className="text-2xl font-extrabold text-primary mt-1">
               ${offer?.price.toLocaleString()}
             </div>
           </div>
           <div>
-            <Label className="text-gray-600">Quantity Available</Label>
-            <div className="text-3xl font-extrabold text-gray-800 mt-1">
+            <Label className="text-gray-600 text-sm">Quantity Available</Label>
+            <div className="text-2xl font-extrabold text-gray-800 mt-1">
               {offer?.filled} / {offer?.quantity}
             </div>
           </div>
         </div>
 
         {/* Payment, Collateral, Settle Time */}
-        <div className="grid gap-3 text-base">
-          <div className="flex items-center justify-between">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-3 text-sm">
+          <div className="flex items-center gap-1">
             <span className="text-gray-600">Payment with:</span>
-            <div className="flex items-center gap-2 font-medium">
+            <div className="flex items-center gap-1 font-medium">
               <Image
                 src={offer?.exToken?.logo || '/placeholder.svg'}
                 alt={`${offer?.exToken?.symbol} symbol`}
-                width={24}
-                height={24}
+                width={20}
+                height={20}
                 className="rounded-full object-cover"
               />
             </div>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
             <span className="text-gray-600">Collateral:</span>
             <span className="font-medium">{`${offer?.collateralPercent}%`}</span>
           </div>
-          <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1">
             <span className="text-gray-600">Settle After TGE:</span>
             <span className="font-medium">{offer?.settleDuration} hours</span>
           </div>
@@ -288,78 +301,94 @@ export default function OfferDetailHero({ offer }: OfferDetailHeroProps) {
           </Button>
           {/* Deposit Modal (placeholder) */}
           <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Deposit Required</DialogTitle>
-                <DialogDescription>
-                  Your balance is not enough to complete this purchase. Please deposit more{' '}
+            <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 text-center">
+              <DialogHeader className="flex flex-col items-center gap-2">
+                <CheckCircle className="h-12 w-12 text-green-500" /> {/* Success/Info icon */}
+                <DialogTitle className="text-xl font-bold mt-2">Confirm Deposit</DialogTitle>
+                {/* <DialogDescription>
+                  Your balance is not enough to complete this purchase. Please deposit{' '}
                   {offer?.exToken?.symbol} to continue.
-                </DialogDescription>
+                </DialogDescription> */}
               </DialogHeader>
-              <div className="py-4 text-center text-gray-700">
-                {/* Deposit modal logic */}
-                {allowance !== undefined && estimatedCost !== undefined ? (
-                  allowance < estimatedCost ? (
-                    <Button onClick={handleApprove} disabled={approveLoading} className="w-full">
-                      {approveLoading ? (
-                        <>
-                          <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                              fill="none"
-                            />
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8v8z"
-                            />
-                          </svg>
-                          Approving...
-                        </>
-                      ) : (
-                        'Approve'
-                      )}
-                    </Button>
-                  ) : (
-                    <Button onClick={handleDeposit} disabled={depositLoading} className="w-full">
-                      {depositLoading ? (
-                        <>
-                          <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                              fill="none"
-                            />
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8v8z"
-                            />
-                          </svg>
-                          Depositing...
-                        </>
-                      ) : (
-                        'Deposit'
-                      )}
-                    </Button>
-                  )
-                ) : (
-                  <div>Checking allowance...</div>
-                )}
+              <div className="py-4 grid gap-2">
+                <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-semibold text-gray-800">
+                  <Wallet className="h-5 w-5 text-gray-600" />
+                  <span>Required Deposit:</span>
+                  <span className="text-primary">
+                    ${estimatedCost - balance} {offer?.exToken?.symbol}
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-gray-600 text-center">
+                  Your balance is not enough to complete this purchase. Please deposit{' '}
+                  {offer?.exToken?.symbol} to continue.
+                </p>
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">Close</Button>
+                  <Button variant="outline" className="flex-1" disabled={depositLoading}>
+                    Cancel
+                  </Button>
                 </DialogClose>
+                <div className="text-center text-gray-700 flex-1">
+                  {/* Deposit modal logic */}
+                  {allowance !== undefined && estimatedCost !== undefined ? (
+                    allowance < estimatedCost ? (
+                      <Button onClick={handleApprove} disabled={approveLoading} className="w-full">
+                        {approveLoading ? (
+                          <>
+                            <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                                fill="none"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v8z"
+                              />
+                            </svg>
+                            Approving...
+                          </>
+                        ) : (
+                          'Approve'
+                        )}
+                      </Button>
+                    ) : (
+                      <Button onClick={handleDeposit} disabled={depositLoading} className="w-full">
+                        {depositLoading ? (
+                          <>
+                            <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                                fill="none"
+                              />
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8v8z"
+                              />
+                            </svg>
+                            Depositing...
+                          </>
+                        ) : (
+                          'Deposit'
+                        )}
+                      </Button>
+                    )
+                  ) : (
+                    <div>Checking allowance...</div>
+                  )}
+                </div>
               </DialogFooter>
             </DialogContent>
           </Dialog>

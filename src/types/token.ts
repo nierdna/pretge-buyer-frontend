@@ -14,6 +14,9 @@ export interface INetwork {
   id: string;
   name: string;
   rpcUrl: string;
+  chainId: number;
+  txHashUrl: string;
+  addressUrl: string;
 }
 
 export interface IToken {
