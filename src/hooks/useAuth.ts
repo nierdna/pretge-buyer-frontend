@@ -1,3 +1,5 @@
+'use client';
+
 import { chainConfigs } from '@/configs/chains';
 import { ChainType } from '@/server/enums/chain';
 import { Service } from '@/service';

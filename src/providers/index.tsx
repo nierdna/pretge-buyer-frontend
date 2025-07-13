@@ -6,9 +6,9 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
-import dynamic from 'next/dynamic';
 import type React from 'react';
 import { Toaster } from 'sonner';
+import { AppKitProvider } from './appkit-provider';
 import { QueryProvider } from './query-provider';
 // import "../styles/index.scss";
 
@@ -36,14 +36,6 @@ dayjs.updateLocale('en', {
     yy: '%dy',
   },
 });
-
-// Dynamically import AppKitProvider to avoid SSR issues
-const AppKitProvider = dynamic(
-  () => import('./appkit-provider').then((mod) => ({ default: mod.AppKitProvider })),
-  {
-    ssr: false,
-  }
-);
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   return (

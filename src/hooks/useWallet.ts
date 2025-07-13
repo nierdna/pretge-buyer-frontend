@@ -1,13 +1,15 @@
-import { useMemo } from 'react';
+'use client';
+
+import type { Provider as SolanaProvider } from '@reown/appkit-adapter-solana/react';
+import type { Provider } from '@reown/appkit/react';
+import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
+import { Connection, PublicKey } from '@solana/web3.js';
 import { useLynxReown } from 'lynx-reown-dapp-kit';
+import { Wallet } from 'lynx-reown-dapp-kit/dist/core/wallet';
 import { EvmWallet } from 'lynx-reown-dapp-kit/dist/evm/evmWallet';
 import { SolanaWallet } from 'lynx-reown-dapp-kit/dist/solana/solanaWallet';
-import { Wallet } from 'lynx-reown-dapp-kit/dist/core/wallet';
-import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
-import type { Provider } from '@reown/appkit/react';
-import type { Provider as SolanaProvider } from '@reown/appkit-adapter-solana/react';
-import { Connection, PublicKey } from '@solana/web3.js';
 import { SolanaTransactionSerializable } from 'lynx-reown-dapp-kit/dist/types/transaction';
+import { useMemo } from 'react';
 
 /**
  * Custom hook trả về instance wallet phù hợp với chainId

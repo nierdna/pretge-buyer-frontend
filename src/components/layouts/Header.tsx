@@ -1,3 +1,5 @@
+'use client';
+
 import { Package2 } from 'lucide-react';
 import Link from 'next/link';
 import { ButtonConnectWallet } from '../ButtonConnectWallet';

@@ -1,8 +1,10 @@
 'use client';
 
+import { Footer, Header } from '@/components/layouts';
 import { useAuth } from '@/hooks/useAuth';
 import { useAuthStore } from '@/store/authStore';
 import { useChainStore } from '@/store/chainStore';
+import { Separator } from '@radix-ui/react-separator';
 import { useEffect, useRef } from 'react';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
@@ -62,7 +64,17 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [accessToken]);
 
-  return <div>{children}</div>;
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <Separator />
+      <main className="flex-grow">
+        <div className="container mx-auto px-4 lg:px-6 py-8">{children}</div>
+      </main>
+      <Separator />
+      <Footer />
+    </div>
+  );
 };
 
 export default MainLayout;
