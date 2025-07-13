@@ -16,7 +16,7 @@ export const useToken = (
   }, [chains, chainId]);
 
   const tokenContract = useMemo(() => {
-    if (!chain) return undefined;
+    if (!chain || !token) return undefined;
 
     if (chain.chainType === 'evm') {
       return new TokenEvm(token, chain.rpc);

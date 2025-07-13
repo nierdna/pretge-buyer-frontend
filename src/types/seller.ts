@@ -2,88 +2,24 @@
  * Seller related type definitions
  */
 
-export interface SellerAddress {
-  address1: string;
-  address2?: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-}
+import { User } from './user';
 
-export interface SellerSocial {
-  website?: string;
-  facebook?: string;
-  twitter?: string;
-  instagram?: string;
-  youtube?: string;
-  linkedin?: string;
-}
-
-export interface SellerVerification {
-  isVerified: boolean;
-  verifiedAt?: string;
-  documents?: string[];
+export enum ReviewStatus {
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  REJECTED = 'rejected',
 }
 
 export interface SellerReview {
   id: string;
-  userId: string;
-  userName: string;
-  rating: number;
+  offerId: string;
+  buyer_wallet: string;
+  buyerId: string;
+  buyer: User;
+  rating: number; // 1-5
   comment: string;
+  reply?: string;
+  status: ReviewStatus;
   createdAt: string;
-}
-
-export interface Seller {
-  id: string;
-  name: string;
-  slug: string;
-  description: string;
-  email: string;
-  phone?: string;
-  logo?: string;
-  coverImage?: string;
-  address: SellerAddress;
-  social: SellerSocial;
-  verification: SellerVerification;
-  offersCount: number;
-  rating: number;
-  reviews: SellerReview[];
-  joinedAt: string;
-  status: 'active' | 'inactive' | 'suspended';
-}
-
-export interface SellerFilter {
-  search?: string;
-  status?: 'active' | 'inactive' | 'suspended';
-  isVerified?: boolean;
-  minRating?: number;
-  sortBy?: 'rating' | 'newest';
-  limit?: number;
-  page?: number;
-}
-
-export interface SellerCreateInput {
-  name: string;
-  description: string;
-  email: string;
-  phone?: string;
-  logo?: string;
-  coverImage?: string;
-  address: SellerAddress;
-  social?: SellerSocial;
-}
-
-export interface SellerUpdateInput {
-  id: string;
-  name?: string;
-  description?: string;
-  email?: string;
-  phone?: string;
-  logo?: string;
-  coverImage?: string;
-  address?: Partial<SellerAddress>;
-  social?: Partial<SellerSocial>;
-  status?: 'active' | 'inactive' | 'suspended';
+  updatedAt: string;
 }

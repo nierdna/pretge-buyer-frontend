@@ -3,7 +3,7 @@
  */
 
 import { IExToken, IToken } from './token';
-import { Wallet } from './user';
+import { WalletWithUser } from './user';
 
 export interface OfferImage {
   id: string;
@@ -97,63 +97,15 @@ export interface OfferFilter {
   limit?: number;
 }
 
-export interface OfferCreateInput {
-  name: string;
-  description: string;
-  price: number;
-  compareAtPrice?: number;
-  sku: string;
-  inventory: number;
-  categoryIds: string[];
-  images: Omit<OfferImage, 'id'>[];
-  variants?: Omit<OfferVariant, 'id'>[];
-  options?: OfferOption[];
-  isFeatured?: boolean;
-}
-
-export interface OfferUpdateInput extends Partial<OfferCreateInput> {
-  id: string;
-}
-
 // Sample data for testing the new OfferCard design
-export const sampleOffer: Offer = {
-  id: '1',
-  name: 'Sample Token',
-  slug: 'sample-token',
-  description: 'A sample token for testing',
-  price: 0.5,
-  compareAtPrice: 0.6,
-  sku: 'TOKEN001',
-  inventory: 1000,
-  images: [{ id: '1', url: 'https://via.placeholder.com/500', alt: 'Sample Token' }],
-  categories: [],
-  variants: [],
-  options: [],
-  reviews: [],
-  rating: 4.5,
-  sellerId: 'seller1',
-  sellerName: 'Sample Seller',
-  createdAt: '2024-01-01T00:00:00Z',
-  updatedAt: '2024-01-01T00:00:00Z',
-  isFeatured: true,
-  isPublished: true,
-  tokenInfo: {
-    icon: 'https://via.placeholder.com/40',
-    symbol: 'SMPL',
-    address: '0x1234567890abcdef',
-  },
-  sellerInfo: {
-    name: 'Crypto Seller',
-    address: '0xabcdef1234567890',
-    rating: 4.8,
-    avatar: 'https://via.placeholder.com/32',
-  },
-  startTime: '2024-01-15T10:00:00Z',
-  endTime: '2024-01-20T18:00:00Z',
-  amount: 50000,
-};
 
 //new
+export interface IPagination {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
 
 export enum EOfferStatus {
   OPEN = 'open',
@@ -169,7 +121,7 @@ export interface IOffer {
   id: string;
   price: number;
   quantity: number;
-  sellerWallet: Wallet;
+  sellerWallet: WalletWithUser;
   sellerWalletId: string;
   settleDuration: number;
   status: EOfferStatus;

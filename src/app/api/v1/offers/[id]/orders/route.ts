@@ -19,6 +19,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const limit = parseInt(searchParams.get('limit') || '10', 10);
     const status = searchParams.get('status') as 'pending' | 'settled' | 'cancelled' | undefined;
 
+    const offset = (Number(page) - 1) * Number(limit);
     // Validate pagination parameters
     if (page < 1 || limit < 1 || limit > 100) {
       return NextResponse.json(
@@ -41,15 +42,15 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       .select(
         `
         *,
-        offers (
-          *,
-          tokens (*)
-        )
+        buyer:buyer_wallet_id (*),
+        offer:offer_id (*,tokens:token_id (*),
+        seller_wallet: seller_wallet_id (*),
+        ex_token:ex_token_id (*, network:network_id (*)))
       `,
         { count: 'exact' }
       )
       .eq('offer_id', id)
-      .range((page - 1) * limit, page * limit - 1)
+      .range(offset, offset + Number(limit) - 1)
       .order('created_at', { ascending: false });
 
     // Add status filter if provided

@@ -159,7 +159,7 @@ axiosInstance.interceptors.response.use(
           // Handle other errors
           break;
       }
-    } else if (error.request) {
+    } else if (error?.request) {
       // The request was made but no response was received
       console.error('No response received:', error.request);
     } else {

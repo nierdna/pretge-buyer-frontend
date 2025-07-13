@@ -1,12 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/server/db/supabase';
 import { validateWalletAddress } from '@/server/utils/validation';
+import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/v1/wallets/[address]
-export async function GET(req: NextRequest, { params }: { params: { address: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ address: string }> }) {
   try {
     // Validate address
-    const address = validateWalletAddress(params.address);
+    const { address: addressParam } = await params;
+    const address = validateWalletAddress(addressParam);
 
     // Lấy thông tin ví (ưu tiên EVM, có thể mở rộng cho chain khác nếu cần)
     const { data, error } = await supabase
