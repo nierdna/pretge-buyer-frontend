@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
     const { data: network, error: networkError } = await supabase
       .from('networks')
       .select('rpc_url')
-      .eq('id', chainId.toString())
+      .eq('chain_id', chainId.toString())
       .single();
     if (networkError || !network) {
       console.log('networkError: ' + networkError?.message);
