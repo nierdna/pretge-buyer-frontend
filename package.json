@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm dlx next dev",
-    "build": "pnpm dlx next build",
-    "start": "pnpm dlx next start",
-    "lint": "pnpm dlx next lint",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "format": "pnpm dlx prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "prepare": "husky"
   },
   "dependencies": {
