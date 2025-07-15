@@ -32,7 +32,6 @@ export default function HomePage() {
     }
     fetchNextPage();
   }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
-
   return (
     // <div className="min-h-screen text-gray-900">
     //   <Header />

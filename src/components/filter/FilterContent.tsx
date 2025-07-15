@@ -150,8 +150,10 @@ export default function FilterContent({
           </AccordionItem>
         </Accordion>
         {/* <Separator className="bg-gray-200" /> */}
-        <Button variant="outline">Apply Filters</Button>
-        <Button variant="ghost">Clear Filters</Button>
+        {/* <Button className="lg:hidden" variant="outline">
+          Apply Filters
+        </Button> */}
+        <Button variant="outline">Clear Filters</Button>
       </CardContent>
     </>
   );

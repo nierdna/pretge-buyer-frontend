@@ -2,6 +2,7 @@
 
 import PaginationCustom from '@/components/pagination-custom';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
@@ -12,11 +13,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 import { useGetOrdersByOffer } from '@/queries/useOfferQueries';
 import { EOrderStatus } from '@/types/order';
+import { handleLinkTxHash } from '@/utils/helpers/getBlockUrlLink';
 import { formatNumberShort } from '@/utils/helpers/number';
 import { truncateAddress } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
+import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import { forwardRef, useImperativeHandle } from 'react';
 
@@ -67,6 +71,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
           return <Badge variant="warning">Unknown</Badge>;
       }
     };
+    console.log('orders', orders);
     return (
       <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
         <CardHeader className="p-6 pb-4">
@@ -88,6 +93,9 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                   </TableHead>
                   <TableHead colSpan={1} className="text-right">
                     Status
+                  </TableHead>
+                  <TableHead colSpan={1} className="text-right">
+                    Txn
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -112,21 +120,71 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                       </div>
                     </TableCell>
                     <TableCell colSpan={2}>
-                      <div className="flex items-center gap-2 justify-end">
-                        {formatNumberShort(order.amount * order.offer.price)}
-                        <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
-                          <Image
-                            src={order.offer?.exToken?.logo || '/placeholder.svg'}
-                            alt={`${order.offer?.exToken?.symbol} symbol`}
-                            fill
-                            className="rounded-full object-cover"
-                          />
+                      <div className="flex flex-col gap-1">
+                        {order.discountPercent > 0 && (
+                          <div className="flex items-center gap-2 justify-end text-red-500">
+                            {formatNumberShort(
+                              order.amount * order.offer.price * (1 - order.discountPercent / 100)
+                            )}
+                            <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                              <Image
+                                src={order.offer?.exToken?.logo || '/placeholder.svg'}
+                                alt={`${order.offer?.exToken?.symbol} symbol`}
+                                fill
+                                className="rounded-full object-cover"
+                              />
+                            </div>
+                          </div>
+                        )}
+                        <div
+                          className={cn('flex items-center justify-end', {
+                            // 'line-through': order.discountPercent > 0,
+                          })}
+                        >
+                          <div className="relative flex items-center justify-end gap-2 w-fit min-w-9">
+                            {order.discountPercent > 0 && (
+                              <div className="absolute h-px -right-1 top-1/2 -translate-y-1/2 left-0 w-full bg-primary z-10"></div>
+                            )}
+                            {formatNumberShort(order.amount * order.offer.price)}
+                            <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                              <Image
+                                src={order.offer?.exToken?.logo || '/placeholder.svg'}
+                                alt={`${order.offer?.exToken?.symbol} symbol`}
+                                fill
+                                className="rounded-full object-cover"
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell colSpan={1} className="text-right">
                       {getBadge(order.status)}
                     </TableCell>
+                    {order?.status !== EOrderStatus.PENDING ? (
+                      <TableCell colSpan={1} className="text-right">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => {
+                            let txHash = '';
+                            if (order?.status === EOrderStatus.CANCELLED) {
+                              txHash = order?.cancelTxHash || '';
+                            } else if (order?.status === EOrderStatus.SETTLED) {
+                              txHash = order?.settleTxHash || '';
+                            }
+                            handleLinkTxHash({
+                              txHashUrl: order.offer?.exToken?.network?.txHashUrl,
+                              txHash,
+                            });
+                          }}
+                        >
+                          <ArrowUpRight className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    ) : (
+                      <TableCell className="text-right text-gray-500">N/A</TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -160,6 +218,9 @@ function TransactionHistorySkeleton() {
           <TableHead colSpan={1} className="text-right">
             Status
           </TableHead>
+          <TableHead colSpan={1} className="text-right">
+            Txn
+          </TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -175,6 +236,9 @@ function TransactionHistorySkeleton() {
               <Skeleton className="h-4 w-1/2 ml-auto" />
             </TableCell>
             <TableCell colSpan={2} className="text-right">
+              <Skeleton className="h-4 w-1/2 ml-auto" />
+            </TableCell>
+            <TableCell colSpan={1} className="text-right">
               <Skeleton className="h-4 w-1/2 ml-auto" />
             </TableCell>
             <TableCell colSpan={1} className="text-right">

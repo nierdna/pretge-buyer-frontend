@@ -3,7 +3,6 @@
  */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
     unoptimized: true,
   },
@@ -55,9 +54,7 @@ const nextConfig = {
   },
   // Enable App Router
   experimental: {
-    serverActions: {
-      allowedOrigins: ['localhost:3000'],
-    },
+    serverActions: true,
   },
   // Disable ESLint during development
   eslint: {

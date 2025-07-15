@@ -1,3 +1,6 @@
+import Footer from '@/components/layouts/Footer';
+import Header from '@/components/layouts/Header';
+import Separator from '@/components/ui/separator';
 import Provider from '@/providers';
 import '@/styles/global.css';
 import type { Metadata } from 'next';
@@ -18,7 +21,17 @@ export default function RootLayout({
   return (
     <html lang="en" data-theme="dark">
       <body className={`${inter.className} min-h-screen flex flex-col bg-gradient-page-bg`}>
-        <Provider>{children}</Provider>
+        <Provider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <Separator />
+            <main className="flex-grow">
+              <div className="container mx-auto px-4 lg:px-6 py-8">{children}</div>
+            </main>
+            <Separator />
+            <Footer />
+          </div>
+        </Provider>
       </body>
     </html>
   );

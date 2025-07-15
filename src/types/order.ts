@@ -120,4 +120,6 @@ export interface IOrder {
   settleTxHash: string | null;
   status: EOrderStatus;
   updatedAt: string;
+  discountPercent: number;
+  promotionId: string | null;
 }

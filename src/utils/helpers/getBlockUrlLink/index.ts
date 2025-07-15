@@ -4,4 +4,10 @@ const handleLinkTxHash = ({ txHashUrl, txHash }: { txHashUrl: string; txHash: st
   return link;
 };
 
-export { handleLinkTxHash };
+const handleLinkAddress = ({ addressUrl, address }: { addressUrl: string; address: string }) => {
+  const link = addressUrl.replaceAll('address_string', address);
+  window.open(link, '_blank');
+  return link;
+};
+
+export { handleLinkAddress, handleLinkTxHash };

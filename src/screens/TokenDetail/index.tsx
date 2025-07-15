@@ -5,7 +5,6 @@ import { useGetOffersByToken } from '@/queries';
 import { useTokenBySymbol } from '@/queries/useTokenQueries';
 import Link from 'next/link';
 import { useCallback } from 'react';
-import FilterSheet from '../../components/filter/FilterSheet';
 import FilterSidebar from '../../components/filter/FilterSidebar';
 import OfferList from '../../components/OfferList';
 import TokenInfoSection from './components/TokenInfomation';
@@ -50,7 +49,7 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
       <div className="mb-8">
         <TokenInfoSection token={token} />
       </div>
-      <FilterSheet hideNetworkFilter={true} filters={filters} setFilters={setFilters} />
+      {/* <FilterSheet hideNetworkFilter={true} filters={filters} setFilters={setFilters} /> */}
       <div className="grid lg:grid-cols-[280px_1fr] gap-8">
         <FilterSidebar hideNetworkFilter={true} filters={filters} setFilters={setFilters} />
         <OfferList
@@ -63,6 +62,7 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
           handleSearch={handleSearch}
           onLoadMore={handleLoadMore}
           hasNextPage={hasNextPage}
+          hideNetworkFilter={true}
         />
       </div>
     </section>

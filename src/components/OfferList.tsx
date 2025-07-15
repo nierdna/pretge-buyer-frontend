@@ -30,6 +30,7 @@ export default function OfferList({
   handleSearch,
   onLoadMore,
   hasNextPage,
+  hideNetworkFilter = false,
 }: {
   offers: IOffer[];
   isLoading: boolean;
@@ -40,6 +41,7 @@ export default function OfferList({
   handleSearch: (search: string) => void;
   onLoadMore: () => void;
   hasNextPage: boolean;
+  hideNetworkFilter?: boolean;
 }) {
   const [isSticky, setIsSticky] = useState(false);
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
@@ -115,13 +117,17 @@ export default function OfferList({
       >
         {/* Left side: Search Input and Sort Select */}
         <div className="flex items-center gap-4 w-full md:w-auto">
-          <FilterSheet filters={filters} setFilters={setFilters} />
+          <FilterSheet
+            filters={filters}
+            setFilters={setFilters}
+            hideNetworkFilter={hideNetworkFilter}
+          />
 
           <Input
             value={inputSearch}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search offers..."
-            className={`flex-1 shadow-sm border-gray-200 ${
+            placeholder="Search symbol or name..."
+            className={`flex-1 shadow-sm border-gray-200 min-w-[200px] ${
               isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
             }`}
           />

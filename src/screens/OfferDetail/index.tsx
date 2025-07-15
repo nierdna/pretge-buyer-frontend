@@ -5,6 +5,7 @@ import { useRef } from 'react';
 import OfferDetailHero from './components/OfferDetailHero';
 import SellerInfoSection from './components/SellerInfoSection';
 import TransactionHistory, { TransactionHistoryRef } from './components/TransactionHistory';
+import { useParams, useRouter } from 'next/navigation';
 
 // Mock data for multiple offers, each with a unique ID
 
@@ -13,6 +14,10 @@ interface OfferDetailPageProps {
 }
 
 export default function OfferDetail({ id }: OfferDetailPageProps) {
+  const router = useRouter();
+  const params = useParams();
+  const { id: offerId } = params;
+  console.log('offerId', offerId);
   // Find the offer that matches the ID from the URL
   const { data: offer, isLoading } = useGetOfferById(id);
   const transactionHistoryRef = useRef<TransactionHistoryRef>(null);

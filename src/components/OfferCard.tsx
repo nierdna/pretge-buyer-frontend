@@ -29,11 +29,11 @@ export default function OfferCard({ offer }: OfferCardProps) {
 
   return (
     <Card className="bg-white/85 backdrop-blur-md shadow-lg hover:bg-white border-gray-300 hover:scale-[1.03] hover:shadow-xl transition-all duration-300 flex flex-col">
-      <CardHeader className="p-6 pb-4">
+      <CardHeader className="p-6 pb-4 flex-grow">
         {/* Block 1: Token Info (Left) and Price/Sold (Right) */}
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex items-start justify-between gap-2">
           {/* Left side: Token Image, Symbol, Network */}
-          <div className="flex items-center gap-3 flex-grow">
+          <div className="flex items-start gap-3 flex-grow">
             <div className="w-12 h-12 relative min-w-12 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
               <Image
                 src={
@@ -46,10 +46,19 @@ export default function OfferCard({ offer }: OfferCardProps) {
               />
             </div>
             <div className="grid gap-1 flex-grow">
-              <CardTitle className="text-xl font-bold truncate">{offer.tokens?.symbol}</CardTitle>
-              <Badge variant="secondary" className="w-fit">
-                {normalizeNetworkName(offer.exToken?.network?.name)}
-              </Badge>
+              <CardTitle className="text-xl font-bold truncate">
+                {offer?.title || offer?.tokens?.symbol}
+              </CardTitle>
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="secondary" className="max-w-40 w-fit">
+                  <div className="w-full truncate">{offer?.tokens?.symbol}</div>
+                </Badge>
+                <Badge variant="secondary" className="max-w-40 w-fit">
+                  <div className="w-full truncate">
+                    {normalizeNetworkName(offer.exToken?.network?.name)}
+                  </div>
+                </Badge>
+              </div>
             </div>
           </div>
 
@@ -73,7 +82,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div>
       </CardHeader>
       <Separator className="w-full bg-gray-200" />
-      <CardContent className="p-6 grid grid-cols-2 gap-4 text-sm flex-grow">
+      <CardContent className="p-6 grid grid-cols-2 gap-4 text-sm">
         {/* Block 1: Total Amount */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Total Amount</span>
