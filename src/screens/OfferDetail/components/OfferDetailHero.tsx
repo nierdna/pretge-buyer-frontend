@@ -125,7 +125,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
       try {
         await axios.post('/api/deposit-callback', {
           tx_hash: tx || '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
-          chain_id: Number(chainId),
+          chain_id: chainId,
         });
         console.log('Deposit callback API called');
       } catch (err) {
