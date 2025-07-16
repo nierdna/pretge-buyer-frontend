@@ -1,4 +1,5 @@
 import { arbitrumSepolia, baseSepolia, mainnet, base, arbitrum, bsc } from '@reown/appkit/networks';
+import { solana, solanaDevnet } from '@reown/appkit/networks';
 
 export const CONTRACTS = {
   [baseSepolia.id.toString()]: {
@@ -18,5 +19,11 @@ export const CONTRACTS = {
   },
   [mainnet.id.toString()]: {
     ESCROW: '0xe7F76c6D23b889a9cac5c2Bebf54988DD9EE3093',
+  },
+  [solanaDevnet.id.toString()]: {
+    ESCROW: 'AvvzyVdK6Jw4imMErCZzXgdKa1eeL24TsW2mXvdSdeYF',
+  },
+  [solana.id.toString()]: {
+    ESCROW: 'AvvzyVdK6Jw4imMErCZzXgdKa1eeL24TsW2mXvdSdeYF',
   },
 };

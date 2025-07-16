@@ -1,0 +1,211 @@
+---
+description: Escrow Market SDK documentation and usage guide for Solana blockchain integration
+alwaysApply: false
+---
+# Escrow Market SDK
+
+SDK for the Escrow Market program on the Solana blockchain.
+
+## Installation
+
+```bash
+npm install escrow-market-sdk
+```
+
+or
+
+```bash
+yarn add escrow-market-sdk
+```
+
+## SDK Structure
+
+The SDK is organized into the following modules:
+
+- **EscrowMarketClient**: The main class for interacting with the program
+- **Types**: Interfaces and types for accounts, instructions, and events
+- **Utils**: Utility functions for finding PDAs, data type conversions, etc.
+- **Constants**: Constants used in the program
+
+## Basic Usage
+
+```typescript
+import { Connection, Keypair, PublicKey, sendAndConfirmTransaction } from '@solana/web3.js';
+import { EscrowMarketClient } from 'escrow-market-sdk';
+
+// Connect to Solana cluster
+const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
+
+// Initialize client with program ID
+const programId = 'your_program_id_here'; // Program ID as string
+const client = new EscrowMarketClient(connection, programId);
+
+// Send a transaction with your keypair
+const tx = await client.someMethod(...);
+const signature = await sendAndConfirmTransaction(connection, tx, [yourKeypair]);
+```
+
+## Main Functions
+
+### 1. Initialize
+
+Initialize the Config account for the escrow market:
+
+```typescript
+const admin = new PublicKey('...');
+const operator = new PublicKey('...');
+
+// Creates transaction object that needs to be signed and sent
+const tx = await client.initialize(feePayer, admin, operator);
+const signature = await sendAndConfirmTransaction(connection, tx, [feePayerKeypair]);
+console.log(`Initialize successful: ${signature}`);
+```
+
+### 2. Initialize Vault
+
+Initialize a vault for a mint:
+
+```typescript
+const mint = new PublicKey('...');
+
+// Creates transaction object that needs to be signed and sent
+const tx = await client.initializeVault(feePayer, mint);
+const signature = await sendAndConfirmTransaction(connection, tx, [feePayerKeypair]);
+console.log(`Initialize vault successful: ${signature}`);
+```
+
+### 3. Deposit
+
+Deposit tokens into the vault:
+
+```typescript
+const mint = new PublicKey('...');
+const amount = 1_000_000; // 1 token with 6 decimals
+
+// Creates transaction object that needs to be signed and sent
+const tx = await client.deposit(depositor, mint, amount);
+const signature = await sendAndConfirmTransaction(connection, tx, [depositorKeypair]);
+console.log(`Deposit successful: ${signature}`);
+```
+
+### 4. Withdraw
+
+Withdraw tokens from the vault:
+
+```typescript
+const mint = new PublicKey('...');
+const amount = 1_000_000; // 1 token with 6 decimals
+const nonce = 123456; // Unique nonce to prevent replay attacks
+
+// Creates transaction object that needs to be signed and sent
+const tx = await client.withdraw(operatorPubkey, user, mint, amount, nonce);
+const signature = await sendAndConfirmTransaction(connection, tx, [operatorKeypair]);
+console.log(`Withdraw successful: ${signature}`);
+```
+
+### 5. Settle
+
+Complete a deal:
+
+```typescript
+const dealId = 'deal-123';
+const buyer = new PublicKey('...');
+const seller = new PublicKey('...');
+const tokenTransfer = new PublicKey('...');  // Token being transferred from seller to buyer
+const tokenWithdraw = new PublicKey('...');  // Token being withdrawn from vault to seller
+const transferAmount = 1_000_000;  // Amount of tokenTransfer
+const withdrawAmount = 2_000_000;  // Amount of tokenWithdraw
+
+// Creates transaction object that needs to be signed and sent
+const tx = await client.settle(
+  operatorPubkey,
+  dealId,
+  buyer,
+  seller,
+  tokenTransfer,
+  tokenWithdraw,
+  transferAmount,
+  withdrawAmount
+);
+const signature = await sendAndConfirmTransaction(connection, tx, [operatorKeypair]);
+console.log(`Settle successful: ${signature}`);
+```
+
+### 6. Operator Cancel
+
+Cancel a deal by the operator:
+
+```typescript
+const dealId = 'deal-123';
+const buyer = new PublicKey('...');
+const tokenWithdraw = new PublicKey('...');
+const amount = 1_000_000;
+
+// Creates transaction object that needs to be signed and sent
+const tx = await client.operatorCancel(
+  operatorPubkey,
+  dealId,
+  buyer,
+  tokenWithdraw,
+  amount
+);
+const signature = await sendAndConfirmTransaction(connection, tx, [operatorKeypair]);
+console.log(`Cancel successful: ${signature}`);
+```
+
+### 7. Parse Events
+
+Parse events from a transaction:
+
+```typescript
+const signature = "..."; // Transaction signature
+
+const events = await client.parseEventsFromTransaction(signature);
+console.log('Events:', events);
+```
+
+### 8. Get Information
+
+```typescript
+// Get config
+const config = await client.getConfig();
+console.log('Config:', config);
+
+// Get deal information
+const dealId = 'deal-123';
+const deal = await client.getDeal(dealId);
+console.log('Deal:', deal);
+
+// Get vault balance
+const mint = new PublicKey('...');
+const balance = await client.getVaultBalance(mint);
+console.log(`Vault balance: ${balance}`);
+```
+
+### 9. Subscribe to Events
+
+```typescript
+// Register event listener
+const listenerId = client.subscribeToEvents('SettleEvent', (event) => {
+  console.log('Settle event:', event);
+});
+
+// Unsubscribe
+await client.unsubscribeFromEvent(listenerId);
+```
+
+## Examples
+
+The SDK comes with examples to help you get started.
+
+## Development Notes
+
+1. **PDA Management**: Make sure you use the correct seeds for PDAs when interacting with the program.
+2. **Error Handling**: Always wrap function calls in try/catch blocks to handle errors.
+3. **Token Balance**: Check token balances before performing deposit, withdraw, or settle transactions.
+4. **Permissions**: Only the admin can initialize the program, and only the operator can cancel deals.
+5. **Token Programs**: The SDK supports both standard SPL tokens and custom token programs.
+
+## License
+
+MIT

@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { ethers } from 'ethers';
 import { supabase } from '@/server/db/supabase';
 import { CONTRACTS } from '@/contracts/contracts';
-
-// Thay thế bằng RPC thực tế của bạn
-const ESCROW_ABI = [
-  {
-    anonymous: false,
-    inputs: [
-      { indexed: true, internalType: 'address', name: 'user', type: 'address' },
-      { indexed: true, internalType: 'address', name: 'token', type: 'address' },
-      { indexed: false, internalType: 'uint256', name: 'amount', type: 'uint256' },
-    ],
-    name: 'Deposit',
-    type: 'event',
-  },
-];
-const ERC20_ABI = ['function decimals() view returns (uint8)'];
+import { EscrowFactory } from '@/contracts/factory/escrow-factory';
+import { Keypair } from '@solana/web3.js';
+import { ChainType } from '@/server/enums/chain';
 
 export async function POST(req: NextRequest) {
   try {
@@ -46,53 +33,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const provider = new ethers.JsonRpcProvider(rpcUrl);
-    const receipt = await provider.getTransactionReceipt(txHash);
-    if (!receipt) {
-      return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
+    const escrowContract = EscrowFactory.create(ChainType.SOLANA, chainId.toString(), {
+      rpc: rpcUrl,
+      programId: escrowAddress,
+      userAddress: Keypair.generate().publicKey.toString(),
+    });
+
+    if (!escrowContract) {
+      return NextResponse.json({ error: 'Escrow not found' }, { status: 404 });
     }
 
-    const iface = new ethers.Interface(ESCROW_ABI);
-    let found = false;
-    let result = null;
-    let userAddress = '';
-    let tokenAddress = '';
-    let rawAmount = '';
-    let formattedAmount = '';
-    let decimals = 18;
-    let logIndex = -1;
-
-    for (let i = 0; i < receipt.logs.length; i++) {
-      const log = receipt.logs[i];
-      if (log.address.toLowerCase() === escrowAddress.toLowerCase()) {
-        try {
-          const parsed = iface.parseLog(log);
-          if (parsed && parsed.name === 'Deposit') {
-            const { user, token, amount } = parsed.args;
-            userAddress = user;
-            tokenAddress = token;
-            rawAmount = amount.toString();
-            // Lấy decimals của token
-            const tokenContract = new ethers.Contract(token, ERC20_ABI, provider);
-            decimals = await tokenContract.decimals();
-            // Format amount
-            formattedAmount = ethers.formatUnits(amount, decimals);
-            result = {
-              user,
-              token,
-              amount: rawAmount,
-              formattedAmount,
-              decimals,
-            };
-            found = true;
-            logIndex = i;
-            break;
-          }
-        } catch (e) {
-          // Không phải log của event Deposit, bỏ qua
-        }
-      }
-    }
+    const { found, userAddress, tokenAddress, rawAmount, formattedAmount, logIndex } =
+      await escrowContract.parseTransaction(txHash);
 
     if (!found) {
       return NextResponse.json({ error: 'Deposit event not found' }, { status: 404 });
