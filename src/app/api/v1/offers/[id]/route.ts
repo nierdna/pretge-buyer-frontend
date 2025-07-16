@@ -44,9 +44,25 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ success: false, message: 'Offer not found' }, { status: 404 });
     }
 
+    const offerData = {
+      ...offer,
+      promotion_id: null,
+      promotion: null,
+    };
+    const { data: promotion, error: promotionsError } = await supabase
+      .from('promotions')
+      .select('*')
+      .eq('offer_id', id)
+      .single();
+
+    if (promotion) {
+      offerData.promotion_id = promotion.id;
+      offerData.promotion = promotion;
+    }
+
     return NextResponse.json({
       success: true,
-      data: offer,
+      data: offerData,
       message: 'Offer retrieved successfully',
     });
   } catch (error) {

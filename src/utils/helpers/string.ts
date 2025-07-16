@@ -7,5 +7,16 @@ const truncateAddress = (address?: string, length: number = 4) => {
 const normalizeNetworkName = (networkName?: string) => {
   return networkName?.replaceAll(/( Mainnet| Testnet| Devnet)/g, '');
 };
+const specialSymbolsRegex = /[.*+?^${}()|[\]\\]/g;
+const currencyRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`);
 
-export { normalizeNetworkName, truncateAddress };
+const transformToNumber = (value: string): string => {
+  const transformComma = value.replace(/,/g, '.');
+  const escapeRegExp = transformComma.replace(specialSymbolsRegex, '\\$&');
+  if (transformComma === '' || currencyRegex.test(escapeRegExp)) {
+    return transformComma;
+  }
+  return '';
+};
+
+export { normalizeNetworkName, transformToNumber, truncateAddress };

@@ -111,6 +111,19 @@ export enum EOfferStatus {
   OPEN = 'open',
   CLOSED = 'closed',
 }
+
+export interface IPromotion {
+  checkEligibleUrl: string | null;
+  checkType: string;
+  createdAt: string;
+  description: string;
+  discountPercent: number;
+  id: string;
+  isActive: boolean;
+  offerId: string;
+  title: string;
+  updatedAt: string;
+}
 export interface IOffer {
   collateralPercent: number;
   createdAt: string;
@@ -129,4 +142,7 @@ export interface IOffer {
   tokenId: string;
   tokens: IToken;
   updatedAt: string;
+  promotionId: string | null;
+  promotion: IPromotion | null;
+  imageUrl: string;
 }

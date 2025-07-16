@@ -73,11 +73,11 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
     };
     console.log('orders', orders);
     return (
-      <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
+      <Card className="bg-white/95 backdrop-blur-md w-full shadow-2xl border-gray-300 overflow-x-auto">
         <CardHeader className="p-6 pb-4">
           <CardTitle className="text-xl">Transaction History</CardTitle>
         </CardHeader>
-        <CardContent className="p-6 pt-0">
+        <CardContent className="p-6 pt-0 w-full overflow-x-auto">
           {isLoading && <TransactionHistorySkeleton />}
           {!isLoading && orders.length > 0 && (
             <Table>
