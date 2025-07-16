@@ -1,17 +1,33 @@
-import { EvmContract } from 'lynx-reown-dapp-kit';
-import { ESCROW_ABI } from '../../configs/contracts';
+import { EvmContract } from 'lynx-reown-dapp-kit/evm';
+import { ERC20_ABI, ESCROW_ABI } from '../../configs/contracts';
 import { IEscrow } from './types';
-import { parseUnits } from 'ethers';
+import { ethers, parseUnits } from 'ethers';
 import { TokenEvm } from '../tokens/evm';
 
 export class EscrowEvm extends EvmContract implements IEscrow {
   private rpc: string;
+  private provider: ethers.JsonRpcProvider;
+  private _abi: any;
+  private _address: string;
+
   constructor(address: string, rpc: string) {
     super({
       address,
       abi: ESCROW_ABI,
     });
     this.rpc = rpc;
+    this.provider = new ethers.JsonRpcProvider(rpc);
+    this._abi = ESCROW_ABI;
+    this._address = address;
+  }
+
+  async buildWithdraw(
+    userAddress: string,
+    tokenAddress: string,
+    amount: number,
+    nonce: number
+  ): Promise<any> {
+    throw new Error('Method not implemented.');
   }
 
   async buildDeposit(token: string, amount: number) {
@@ -39,8 +55,8 @@ export class EscrowEvm extends EvmContract implements IEscrow {
     tokenTransfer: string;
     tokenWithdraw: string;
     buyerAddress: string;
-    transferAmount: number;
-    withdrawAmount: number;
+    transferAmount: string;
+    withdrawAmount: string;
     nonce: number;
     deadline: number;
     signature: string;
@@ -90,5 +106,70 @@ export class EscrowEvm extends EvmContract implements IEscrow {
       method: 'cancel',
       params: [id, token, amountBN.toString(), nonce, deadline, signature],
     });
+  }
+
+  async parseTransaction(txHash: string): Promise<any> {
+    const receipt = await this.provider.getTransactionReceipt(txHash);
+    if (!receipt) {
+      return null;
+    }
+    const iface = new ethers.Interface(this._abi);
+
+    let found = false;
+    let userAddress = '';
+    let tokenAddress = '';
+    let rawAmount = '';
+    let formattedAmount = '';
+    let decimals = 18;
+    let logIndex = -1;
+    let eventType = '';
+    let settleEventData = null;
+
+    for (let i = 0; i < receipt.logs.length; i++) {
+      const log = receipt.logs[i];
+      if (log.address.toLowerCase() === this._address.toLowerCase()) {
+        try {
+          const parsed = iface.parseLog(log);
+          if (parsed) {
+            if (parsed.name === 'Deposit') {
+              const { user, token, amount } = parsed.args;
+              userAddress = user;
+              tokenAddress = token;
+              rawAmount = amount.toString();
+              // Lấy decimals của token
+              const tokenContract = new ethers.Contract(token, ERC20_ABI, this.provider);
+              decimals = await tokenContract.decimals();
+              // Format amount
+              formattedAmount = ethers.formatUnits(amount, decimals);
+              found = true;
+              logIndex = i;
+              eventType = 'Deposit';
+              break;
+            } else if (parsed.name === 'Settle') {
+              // Placeholder cho event Settle
+              settleEventData = parsed.args;
+              found = true;
+              logIndex = i;
+              eventType = 'Settle';
+              break;
+            }
+          }
+        } catch (e) {
+          // Không phải log của event Deposit hoặc Settle, bỏ qua
+        }
+      }
+    }
+
+    return {
+      found,
+      userAddress,
+      tokenAddress,
+      rawAmount,
+      formattedAmount,
+      eventType,
+      logIndex,
+      decimals,
+      ...settleEventData,
+    };
   }
 }

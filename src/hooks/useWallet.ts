@@ -5,10 +5,10 @@ import type { Provider } from '@reown/appkit/react';
 import { useAppKitAccount, useAppKitProvider } from '@reown/appkit/react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { useLynxReown } from 'lynx-reown-dapp-kit';
-import { Wallet } from 'lynx-reown-dapp-kit/dist/core/wallet';
-import { EvmWallet } from 'lynx-reown-dapp-kit/dist/evm/evmWallet';
-import { SolanaWallet } from 'lynx-reown-dapp-kit/dist/solana/solanaWallet';
-import { SolanaTransactionSerializable } from 'lynx-reown-dapp-kit/dist/types/transaction';
+import { Wallet } from 'lynx-reown-dapp-kit/core';
+import { EvmWallet } from 'lynx-reown-dapp-kit/evm';
+import { SolanaWallet } from 'lynx-reown-dapp-kit/solana';
+import { SolanaTransactionSerializable } from 'lynx-reown-dapp-kit/types';
 import { useMemo } from 'react';
 
 /**

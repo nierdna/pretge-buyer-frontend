@@ -1,7 +1,8 @@
 import { ERC20_ABI } from '../../configs/contracts';
 import { IToken } from './types';
 import { ethers, parseUnits } from 'ethers';
-import { EvmContract, TransactionSerializable } from 'lynx-reown-dapp-kit';
+import { EvmContract } from 'lynx-reown-dapp-kit/evm';
+import { TransactionSerializable } from 'lynx-reown-dapp-kit/types';
 
 export class TokenEvm extends EvmContract implements IToken {
   private provider: ethers.Provider;

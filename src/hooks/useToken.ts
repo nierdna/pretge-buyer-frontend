@@ -1,7 +1,7 @@
-import { useLynxReown } from 'lynx-reown-dapp-kit';
+import { ChainType, useLynxReown } from 'lynx-reown-dapp-kit';
 import { useMemo } from 'react';
-import { TokenEvm } from '../contracts/tokens/evm';
 import { IToken } from '../contracts/tokens/types';
+import { TokenFactory } from '../contracts/factory/token-factory';
 
 export const useToken = (
   token: string,
@@ -16,13 +16,11 @@ export const useToken = (
   }, [chains, chainId]);
 
   const tokenContract = useMemo(() => {
-    if (!chain || !token) return undefined;
+    if (!token || !chain) return undefined;
 
-    if (chain.chainType === 'evm') {
-      return new TokenEvm(token, chain.rpc);
-    }
-
-    return undefined;
+    return TokenFactory.create(chain.chainType as any, token, {
+      rpc: chain.rpc,
+    });
   }, [chain, token]);
 
   return {
