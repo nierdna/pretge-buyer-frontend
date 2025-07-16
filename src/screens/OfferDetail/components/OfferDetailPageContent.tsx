@@ -4,6 +4,14 @@ import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import Separator from '@/components/ui/separator';
 import { CONTRACTS } from '@/contracts/contracts';
@@ -18,7 +26,7 @@ import { formatNumberShort } from '@/utils/helpers/number';
 import { normalizeNetworkName, transformToNumber } from '@/utils/helpers/string';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { Minus, Plus } from 'lucide-react';
+import { CheckCircle, ChevronRight, Loader2, Minus, Plus, Wallet } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -40,6 +48,9 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
   const [approveLoading, setApproveLoading] = useState(false);
   const [depositLoading, setDepositLoading] = useState(false);
   const [balance, setBalance] = useState<number>(0);
+  const [isEligible, setIsEligible] = useState(false);
+  const [isShowPromotion, setIsShowPromotion] = useState(false);
+  const [isCheckingEligibility, setIsCheckingEligibility] = useState(false);
 
   const estimatedCost = buyQuantity * Number(offer?.price || 0);
   const chainId = offer?.exToken?.network?.chainId?.toString() || '';
@@ -125,7 +136,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
       try {
         await axios.post('/api/deposit-callback', {
           tx_hash: tx || '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
-          chain_id: Number(chainId),
+          chain_id: chainId,
         });
         console.log('Deposit callback API called');
       } catch (err) {
@@ -133,6 +144,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
       }
       // Refetch balance
       await fetchBalance();
+      setShowDepositModal(false);
     } catch (err: any) {
       console.error('Deposit failed', err);
     } finally {
@@ -194,18 +206,24 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
       toast.error('This offer does not have a promotion');
       return;
     }
-
-    console.log('offer?.promotionId', offer?.promotionId);
-    console.log('address', address);
+    setIsCheckingEligibility(true);
     try {
       const res = await axiosInstance.post('/promotion', {
         promotion_id: offer?.promotionId,
         address: address,
       });
-      console.log('res', res);
+      console.log('res', res?.data?.data);
+      if (res?.data?.data) {
+        setIsEligible(true);
+      } else {
+        setIsEligible(false);
+      }
     } catch (error) {
       console.error('Failed to check eligibility', error);
       toast.error('Failed to check eligibility');
+    } finally {
+      setIsShowPromotion(true);
+      setIsCheckingEligibility(false);
     }
   };
 
@@ -353,21 +371,64 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
               {formatNumberShort(estimatedCost)} {offer?.exToken?.symbol}
             </span>
           </div>
-        </div>
 
+          {/* Add discount section */}
+        </div>
+        {!isShowPromotion && offer?.promotion?.isActive && (
+          <div
+            className="flex items-center gap-2  bg-orange-500/20 hover:bg-orange-500/30 p-4 justify-between rounded-md font-medium cursor-pointer"
+            onClick={() => handleCheckEligibility()}
+          >
+            <div className="text-primary">Get Voucher</div>
+            {isCheckingEligibility ? (
+              <Loader2 className="w-4 h-4 text-primary animate-spin" />
+            ) : (
+              <ChevronRight className="w-4 h-4 text-primary" />
+            )}
+          </div>
+        )}
+        {isShowPromotion && offer?.promotion?.isActive && (
+          <>
+            {isEligible ? (
+              <div className="flex flex-col gap-1 bg-green-50 p-3 rounded-md">
+                <div className="flex items-center gap-2 text-green-600">
+                  <span className="text-sm font-medium">Voucher Applied!</span>
+                </div>
+                <div className="text-sm text-gray-600">
+                  Discount: {offer?.promotion?.discountPercent}%
+                </div>
+                <div className="text-sm text-gray-600">
+                  Final cost:{' '}
+                  <span className="font-bold text-green-600">
+                    {formatNumberShort(
+                      estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100)
+                    )}{' '}
+                    {offer?.exToken?.symbol}
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-1 bg-gray-50 p-3 rounded-md">
+                <div className="text-sm text-gray-600">
+                  You don't have any voucher for this offer
+                </div>
+              </div>
+            )}
+          </>
+        )}
         <Separator className="bg-gray-200" />
 
         {/* Action Button */}
         <div
           className={cn('grid gap-4', {
-            'mb:grid-cols-2': offer?.promotion?.isActive,
+            'mb:grid-cols-1': offer?.promotion?.isActive,
           })}
         >
-          {offer?.promotion?.isActive && (
+          {/* {offer?.promotion?.isActive && (
             <Button onClick={handleCheckEligibility} size="xl" disabled={buyQuantity === 0}>
               Check Eligibility
             </Button>
-          )}
+          )} */}
           <Button
             onClick={handleBuy}
             size="xl"
@@ -378,13 +439,13 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
           </Button>
         </div>
 
-        <Separator className="bg-gray-200" />
+        {/* <Separator className="bg-gray-200" /> */}
 
         {/* Terms and Conditions */}
-        <div className="grid gap-2 text-sm text-gray-600">
+        {/* <div className="grid gap-2 text-sm text-gray-600">
           <h3 className="text-lg font-semibold text-gray-800">Terms and Conditions</h3>
           <p>{offer?.description}</p>
-        </div>
+        </div> */}
       </CardContent>
 
       {/* Deposit Modal */}
@@ -395,6 +456,103 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
         tokenSymbol={offer.tokenSymbol}
         paymentToken={offer.paymentToken}
       /> */}
+      <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
+        <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 text-center">
+          <DialogHeader className="flex flex-col items-center gap-2">
+            <CheckCircle className="h-12 w-12 text-green-500" /> {/* Success/Info icon */}
+            <DialogTitle className="text-xl font-bold mt-2">Confirm Deposit</DialogTitle>
+            {/* <DialogDescription>
+                  Your balance is not enough to complete this purchase. Please deposit{' '}
+                  {offer?.exToken?.symbol} to continue.
+                </DialogDescription> */}
+          </DialogHeader>
+          <div className="py-4 grid gap-2">
+            <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-semibold text-gray-800">
+              <Wallet className="h-5 w-5 text-gray-600" />
+              <span>Required Deposit:</span>
+              <span className="text-primary">
+                {isEligible
+                  ? formatNumberShort(
+                      estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100) - balance
+                    )
+                  : formatNumberShort(estimatedCost - balance)}{' '}
+                {offer?.exToken?.symbol}
+              </span>
+            </div>
+            <p className="text-xs sm:text-sm text-gray-600 text-center">
+              Your balance is not enough to complete this purchase. Please deposit{' '}
+              {offer?.exToken?.symbol} to continue.
+            </p>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline" className="flex-1" disabled={depositLoading}>
+                Cancel
+              </Button>
+            </DialogClose>
+            <div className="text-center text-gray-700 flex-1">
+              {/* Deposit modal logic */}
+              {allowance !== undefined && estimatedCost !== undefined ? (
+                allowance < estimatedCost ? (
+                  <Button onClick={handleApprove} disabled={approveLoading} className="w-full">
+                    {approveLoading ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8z"
+                          />
+                        </svg>
+                        Approving...
+                      </>
+                    ) : (
+                      'Approve'
+                    )}
+                  </Button>
+                ) : (
+                  <Button onClick={handleDeposit} disabled={depositLoading} className="w-full">
+                    {depositLoading ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                            fill="none"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8z"
+                          />
+                        </svg>
+                        Depositing...
+                      </>
+                    ) : (
+                      'Deposit'
+                    )}
+                  </Button>
+                )
+              ) : (
+                <div>Checking allowance...</div>
+              )}
+            </div>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }
