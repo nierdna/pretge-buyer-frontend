@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     }
     const { data: network, error: networkError } = await supabase
       .from('networks')
-      .select('rpc_url')
+      .select('rpc_url, chain_type')
       .eq('chain_id', chainId.toString())
       .single();
     if (networkError || !network) {
@@ -24,6 +24,7 @@ export async function POST(req: NextRequest) {
       );
     }
     const rpcUrl = network.rpc_url as string;
+    const chainType = network.chain_type as ChainType;
     const escrowAddress = CONTRACTS[chainId.toString()].ESCROW;
     if (!escrowAddress) {
       console.log('escrowAddress not found ' + chainId.toString());
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const escrowContract = EscrowFactory.create(ChainType.SOLANA, chainId.toString(), {
+    const escrowContract = EscrowFactory.create(chainType, chainId.toString(), {
       rpc: rpcUrl,
       programId: escrowAddress,
       userAddress: Keypair.generate().publicKey.toString(),
@@ -149,6 +150,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, data });
   } catch (err: any) {
+    console.log('err: ' + err.message);
     return NextResponse.json({ error: err.message || 'Internal error' }, { status: 500 });
   }
 }
