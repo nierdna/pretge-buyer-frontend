@@ -43,13 +43,48 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
       {/* Price & Sold */}
       <div className="flex flex-col items-start w-full sm:w-24 xl:w-32 flex-shrink-0">
         {/* <span className="text-sm text-gray-600">Price</span> */}
-        <span className="font-bold text-green-500 text-xl">
-          $
-          {formatNumberShort(offer.price, {
-            useShorterExpression: true,
-          })}
-        </span>
-        <span className="text-xs text-gray-600">
+        <div className="mt-1 text-xl font-medium">
+          <span className="font-bold text-green-500">
+            $
+            {offer?.promotion?.isActive
+              ? formatNumberShort(
+                  offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
+                  {
+                    useShorterExpression: true,
+                  }
+                )
+              : formatNumberShort(offer.price, {
+                  useShorterExpression: true,
+                })}
+          </span>
+        </div>
+        {offer?.promotion?.isActive && (
+          <div className="text-sm relative text-gray-500 flex items-center gap-1">
+            <span className="font-medium line-through">
+              $
+              {formatNumberShort(offer.price, {
+                useShorterExpression: true,
+              })}
+            </span>
+            {/* <span className="font-bold text-xl text-green-500">
+                  $
+                  {formatNumberShort(offer.price, {
+                    useShorterExpression: true,
+                  })}
+                </span> */}
+            {offer?.promotion?.isActive && (
+              // <div className="absolute -top-3 -right-0">
+              <Badge
+                variant="secondary"
+                className="text-xs bg-orange-500 text-white px-1.5 hover:bg-orange-600"
+              >
+                -{offer?.promotion?.discountPercent}%
+              </Badge>
+              // </div>
+            )}
+          </div>
+        )}
+        <span className="text-xs mt-1 text-gray-600">
           Sold:{' '}
           <span className="font-semibold text-foreground">
             {formatNumberShort(offer.filled, { useShorterExpression: true })}

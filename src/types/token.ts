@@ -34,6 +34,10 @@ export interface IToken {
   network: INetwork;
   isHot: boolean;
   isNew: boolean;
+  websiteUrl: string;
+  twitterUrl: string;
+  telegramUrl: string;
+  bannerUrl: string;
 }
 export interface IExToken {
   address: string;
