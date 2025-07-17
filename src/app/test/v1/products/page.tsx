@@ -18,8 +18,9 @@ interface SellerWallet {
 interface Network {
   id: string;
   name: string;
-  symbol: string;
-  logo?: string;
+  chain_type: string;
+  rpc_url: string;
+  explorer_url: string;
 }
 
 interface ExToken {
@@ -35,6 +36,9 @@ interface Offer {
   id: string;
   price: number;
   quantity: number;
+  filled: number;
+  collateral_percent: number;
+  settle_duration: number;
   status: string;
   start_time: string;
   end_time: string;
@@ -50,29 +54,125 @@ const SORT_OPTIONS = [
   { label: 'Price: High to Low', value: 'price_desc' },
 ];
 
+const COLLATERAL_PERCENT_OPTIONS = [
+  { label: 'All', value: '' },
+  { label: '25%', value: '25' },
+  { label: '50%', value: '50' },
+  { label: '75%', value: '75' },
+  { label: '100%', value: '100' },
+];
+
+const SETTLE_DURATION_OPTIONS = [
+  { label: 'All', value: '' },
+  { label: '1 hr', value: '1' },
+  { label: '2 hrs', value: '2' },
+  { label: '4 hrs', value: '4' },
+  { label: '6 hrs', value: '6' },
+  { label: '12 hrs', value: '12' },
+  { label: '24 hrs', value: '24' },
+];
+
 export default function ProductsTestPage() {
   const [products, setProducts] = useState<Offer[]>([]);
+  const [networks, setNetworks] = useState<Network[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('recent');
 
+  // New filter states
+  const [selectedNetworkIds, setSelectedNetworkIds] = useState<string[]>([]);
+  const [selectedCollateralPercents, setSelectedCollateralPercents] = useState<string[]>([]);
+  const [selectedSettleDurations, setSelectedSettleDurations] = useState<string[]>([]);
+
+  // Load networks on component mount
+  useEffect(() => {
+    axios
+      .get('/api/v1/networks')
+      .then((res) => {
+        setNetworks(res.data.data || []);
+      })
+      .catch(() => setNetworks([]));
+  }, []);
+
   useEffect(() => {
     setLoading(true);
+
+    // Build query parameters
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: '8',
+      search: search,
+      sort: sort,
+    });
+
+    // Add network filter
+    if (selectedNetworkIds.length > 0) {
+      params.append('network_ids', selectedNetworkIds.join(','));
+    }
+
+    // Add collateral percent filter
+    if (selectedCollateralPercents.length > 0) {
+      params.append('collateral_percents', selectedCollateralPercents.join(','));
+    }
+
+    // Add settle duration filter
+    if (selectedSettleDurations.length > 0) {
+      params.append('settle_durations', selectedSettleDurations.join(','));
+    }
+
     axios
-      .get(`/api/v1/offers?page=${page}&limit=8&search=${encodeURIComponent(search)}&sort=${sort}`)
+      .get(`/api/v1/offers?${params.toString()}`)
       .then((res) => {
         setProducts(res.data.data || []);
-        setTotalPages(res.data.totalPages || 1);
+        setTotalPages(res.data.pagination?.totalPages || 1);
       })
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
-  }, [page, search, sort]);
+  }, [page, search, sort, selectedNetworkIds, selectedCollateralPercents, selectedSettleDurations]);
+
+  const handleNetworkChange = (networkId: string, checked: boolean) => {
+    if (checked) {
+      setSelectedNetworkIds((prev) => [...prev, networkId]);
+    } else {
+      setSelectedNetworkIds((prev) => prev.filter((id) => id !== networkId));
+    }
+    setPage(1);
+  };
+
+  const handleCollateralPercentChange = (percent: string, checked: boolean) => {
+    if (checked) {
+      setSelectedCollateralPercents((prev) => [...prev, percent]);
+    } else {
+      setSelectedCollateralPercents((prev) => prev.filter((p) => p !== percent));
+    }
+    setPage(1);
+  };
+
+  const handleSettleDurationChange = (duration: string, checked: boolean) => {
+    if (checked) {
+      setSelectedSettleDurations((prev) => [...prev, duration]);
+    } else {
+      setSelectedSettleDurations((prev) => prev.filter((d) => d !== duration));
+    }
+    setPage(1);
+  };
+
+  const clearAllFilters = () => {
+    setSelectedNetworkIds([]);
+    setSelectedCollateralPercents([]);
+    setSelectedSettleDurations([]);
+    setSearch('');
+    setSort('recent');
+    setPage(1);
+  };
 
   return (
     <div className="min-h-[80vh] bg-[#10141c] flex flex-col items-center py-10">
       <h1 className="text-2xl font-bold text-blue-400 mb-6">Danh sách sản phẩm (Offers)</h1>
+
+      {/* Main filters */}
       <div className="flex flex-col md:flex-row gap-4 mb-6 w-full max-w-5xl items-center">
         <input
           className="px-3 py-2 rounded bg-[#181e2a] border border-[#232a3a] text-gray-200 w-full md:w-1/2"
@@ -97,7 +197,116 @@ export default function ProductsTestPage() {
             </option>
           ))}
         </select>
+        <button
+          onClick={clearAllFilters}
+          className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
+        >
+          Clear Filters
+        </button>
       </div>
+
+      {/* Advanced filters */}
+      <div className="w-full max-w-5xl mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Network filter */}
+          <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
+            <h3 className="text-white font-semibold mb-3">Networks</h3>
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {networks.map((network) => (
+                <label
+                  key={network.id}
+                  className="flex items-center space-x-2 text-gray-300 text-sm"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedNetworkIds.includes(network.id)}
+                    onChange={(e) => handleNetworkChange(network.id, e.target.checked)}
+                    className="rounded border-[#232a3a] bg-[#232a3a] text-blue-600"
+                  />
+                  <span>{network.name}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Collateral Percent filter */}
+          <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
+            <h3 className="text-white font-semibold mb-3">Collateral Percent</h3>
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {COLLATERAL_PERCENT_OPTIONS.map((option) => (
+                <label
+                  key={option.value}
+                  className="flex items-center space-x-2 text-gray-300 text-sm"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedCollateralPercents.includes(option.value)}
+                    onChange={(e) => handleCollateralPercentChange(option.value, e.target.checked)}
+                    className="rounded border-[#232a3a] bg-[#232a3a] text-blue-600"
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Settle Duration filter */}
+          <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
+            <h3 className="text-white font-semibold mb-3">Settle Duration</h3>
+            <div className="space-y-2 max-h-40 overflow-y-auto">
+              {SETTLE_DURATION_OPTIONS.map((option) => (
+                <label
+                  key={option.value}
+                  className="flex items-center space-x-2 text-gray-300 text-sm"
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedSettleDurations.includes(option.value)}
+                    onChange={(e) => handleSettleDurationChange(option.value, e.target.checked)}
+                    className="rounded border-[#232a3a] bg-[#232a3a] text-blue-600"
+                  />
+                  <span>{option.label}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Active filters display */}
+      {(selectedNetworkIds.length > 0 ||
+        selectedCollateralPercents.length > 0 ||
+        selectedSettleDurations.length > 0) && (
+        <div className="w-full max-w-5xl mb-4">
+          <div className="bg-[#232a3a] rounded-lg p-3">
+            <h4 className="text-white font-semibold mb-2">Active Filters:</h4>
+            <div className="flex flex-wrap gap-2">
+              {selectedNetworkIds.map((networkId) => {
+                const network = networks.find((n) => n.id === networkId);
+                return (
+                  <span
+                    key={networkId}
+                    className="px-2 py-1 bg-blue-600 text-white text-xs rounded"
+                  >
+                    Network: {network?.name || networkId}
+                  </span>
+                );
+              })}
+              {selectedCollateralPercents.map((percent) => (
+                <span key={percent} className="px-2 py-1 bg-green-600 text-white text-xs rounded">
+                  Collateral: {percent}%
+                </span>
+              ))}
+              {selectedSettleDurations.map((duration) => (
+                <span key={duration} className="px-2 py-1 bg-purple-600 text-white text-xs rounded">
+                  Duration: {duration} days
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {loading ? (
         <div className="text-gray-300">Đang tải...</div>
       ) : (
@@ -127,6 +336,17 @@ export default function ProductsTestPage() {
               </div>
               <div className="text-gray-300">
                 Số lượng: <span className="font-bold">{offer.quantity}</span>
+                {offer.filled > 0 && (
+                  <span className="text-gray-500 ml-2">(Đã bán: {offer.filled})</span>
+                )}
+              </div>
+              <div className="text-gray-300">
+                Collateral:{' '}
+                <span className="text-yellow-400 font-bold">{offer.collateral_percent}%</span>
+              </div>
+              <div className="text-gray-300">
+                Duration:{' '}
+                <span className="text-blue-400 font-bold">{offer.settle_duration} days</span>
               </div>
               <div className="text-gray-400 text-xs">
                 Seller: {offer.seller_wallet?.address?.slice(0, 8)}...
@@ -144,8 +364,7 @@ export default function ProductsTestPage() {
                   {offer.ex_token.network && (
                     <span>
                       {' '}
-                      &gt; Network: <b>{offer.ex_token.network.name}</b> (
-                      {offer.ex_token.network.symbol})
+                      &gt; Network: <b>{offer.ex_token.network.name}</b>
                     </span>
                   )}
                 </div>

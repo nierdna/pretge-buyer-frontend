@@ -13,13 +13,11 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // Get user by ID using Supabase directly
     const { data: user, error } = await supabase.from('users').select('*').eq('id', id).single();
-
     if (error) {
       if (error.code === 'PGRST116') {
         // No rows returned
         return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
       }
-      console.error('Database error:', error);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch user' },
         { status: 500 }
@@ -30,9 +28,29 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
 
+    const { data: wallet, error: walletError } = await supabase
+      .from('wallets')
+      .select('*')
+      .eq('user_id', id);
+    console.log('wallet', wallet);
+    if (walletError) {
+      if (walletError.code === 'PGRST116') {
+        // No rows returned
+        return NextResponse.json({ success: false, message: 'Wallet not found' }, { status: 404 });
+      }
+      return NextResponse.json(
+        { success: false, message: 'Failed to fetch wallet' },
+        { status: 500 }
+      );
+    }
+
+    if (!wallet) {
+      return NextResponse.json({ success: false, message: 'Wallet not found' }, { status: 404 });
+    }
+
     return NextResponse.json({
       success: true,
-      data: user,
+      data: { ...user, wallet: wallet },
       message: 'User retrieved successfully',
     });
   } catch (error) {

@@ -6,7 +6,11 @@ export interface Offer {
   price: number;
   quantity: number;
   filled: number;
+  collateralPercent: number;
+  settleDuration: number;
   status: 'open' | 'closed';
+  title: string;
+  description?: string | null;
   startTime: Date;
   endTime: Date;
   createdAt: Date;

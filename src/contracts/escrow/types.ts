@@ -1,4 +1,5 @@
 export interface IEscrow {
+  parseTransaction(txHash: string): Promise<any>;
   buildDeposit: (token: string, amount: number) => any;
   buildSettle: ({
     id,
@@ -15,8 +16,8 @@ export interface IEscrow {
     tokenTransfer: string;
     tokenWithdraw: string;
     buyerAddress: string;
-    transferAmount: number;
-    withdrawAmount: number;
+    transferAmount: string;
+    withdrawAmount: string;
     nonce: number;
     deadline: number;
     signature: string;
@@ -36,4 +37,10 @@ export interface IEscrow {
     deadline: number;
     signature: string;
   }) => Promise<any>;
+  buildWithdraw: (
+    userAddress: string,
+    tokenAddress: string,
+    amount: number,
+    nonce: number
+  ) => Promise<any>;
 }

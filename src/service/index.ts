@@ -2,12 +2,12 @@ import AuthService from './auth.service';
 import ChainsService from './chains.service';
 import { OfferService } from './offer.service';
 import { OrderService } from './order.service';
-import { SellerService } from './seller.service';
+import { UserService } from './user.service';
 
 export const Service = Object.freeze({
   order: new OrderService(),
   chain: new ChainsService(),
   offer: new OfferService(),
-  seller: new SellerService(),
+  user: new UserService(),
   auth: new AuthService(),
 });

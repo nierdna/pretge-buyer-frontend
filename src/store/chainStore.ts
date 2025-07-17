@@ -13,7 +13,14 @@ export const useChainStore = create<ChainState>()((set) => ({
   chains: [],
   setChains: (chains: IChain[]) => set({ chains }),
   fetchChains: async () => {
-    const chains = await Service.chain.getChains();
-    set({ chains: chains.filter((chain) => chain.isActive) });
+    try {
+      const chains = await Service.chain.getChains();
+      if (chains.success) {
+        set({ chains: chains.data });
+      }
+    } catch (error) {
+      set({ chains: [] });
+      console.error('Error fetching chains', error);
+    }
   },
 }));

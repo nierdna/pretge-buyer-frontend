@@ -14,7 +14,9 @@ export interface INetwork {
   id: string;
   name: string;
   rpcUrl: string;
-  chainId: string;
+  chainId: number;
+  txHashUrl: string;
+  addressUrl: string;
 }
 
 export interface IToken {
@@ -29,6 +31,9 @@ export interface IToken {
   symbol: string;
   tokenContract: string;
   updatedAt: string;
+  network: INetwork;
+  isHot: boolean;
+  isNew: boolean;
 }
 export interface IExToken {
   address: string;

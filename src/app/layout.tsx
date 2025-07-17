@@ -1,4 +1,5 @@
-import { Footer, Header } from '@/components/layouts';
+import Footer from '@/components/layouts/Footer';
+import Header from '@/components/layouts/Header';
 import Separator from '@/components/ui/separator';
 import Provider from '@/providers';
 import '@/styles/global.css';

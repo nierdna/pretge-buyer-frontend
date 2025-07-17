@@ -22,9 +22,9 @@ export interface User {
     twitter: string;
     youtube: string;
   };
-
   status: string;
   updatedAt: string;
+  rating: number;
 }
 
 export interface Wallet {
@@ -34,5 +34,11 @@ export interface Wallet {
   id: string;
   isPrimary: boolean;
   userId: string;
-  rating: number;
+}
+export interface WalletWithUser extends Wallet {
+  user: User;
+}
+
+export interface ISeller extends User {
+  wallet: Wallet[];
 }

@@ -85,11 +85,11 @@ axiosInstance.interceptors.response.use(
   },
   async (error) => {
     // Handle errors here
-    if (error.response) {
-      const originalRequest = error.config;
+    if (error?.response) {
+      const originalRequest = error?.config;
 
       // Handle 401 Unauthorized error
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if (error?.response?.status === 401 && !originalRequest?._retry) {
         if (isRefreshing) {
           // If already refreshing, add request to queue
           return new Promise(function (resolve, reject) {
@@ -145,7 +145,7 @@ axiosInstance.interceptors.response.use(
         }
       }
 
-      switch (error.response.status) {
+      switch (error?.response?.status) {
         case 403:
           // Handle forbidden
           break;
@@ -159,12 +159,9 @@ axiosInstance.interceptors.response.use(
           // Handle other errors
           break;
       }
-    } else if (error.request) {
-      // The request was made but no response was received
-      console.error('No response received:', error.request);
     } else {
       // Something happened in setting up the request that triggered an Error
-      console.error('Error setting up request:', error.message);
+      console?.error('Error setting up request:', error?.message);
     }
     return Promise.reject(error);
   }
