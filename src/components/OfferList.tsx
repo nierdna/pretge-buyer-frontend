@@ -53,7 +53,6 @@ export default function OfferList({
     (entries: IntersectionObserverEntry[]) => {
       const [target] = entries;
       if (target.isIntersecting && hasNextPage && !isLoading && !isFetching) {
-        console.log('Loading more data...');
         onLoadMore();
       }
     },
@@ -93,9 +92,6 @@ export default function OfferList({
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  useEffect(() => {
-    console.log('viewType', viewType);
-  }, [viewType]);
 
   const { isMobile, isTablet } = useIsMobile();
 
@@ -111,26 +107,49 @@ export default function OfferList({
         ref={searchBarRef}
         className={cn(
           'sticky h-fit top-[4.5rem] z-30 rounded-xl flex flex-col justify-between sm:flex-row p-4 items-center gap-4 transition-colors duration-300',
-          // isSticky ? 'bg-white/95 backdrop-blur-lg shadow-md border-b border-gray-300' : '',
           'bg-white/95 backdrop-blur-lg shadow-md border border-gray-300'
         )}
       >
-        {/* Left side: Search Input and Sort Select */}
-        <div className="flex items-center gap-4 w-full md:w-auto">
-          <FilterSheet
-            filters={filters}
-            setFilters={setFilters}
-            hideNetworkFilter={hideNetworkFilter}
-          />
-
-          <Input
-            value={inputSearch}
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Search symbol or name..."
-            className={`flex-1 shadow-sm border-gray-200 min-w-[200px] ${
-              isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
-            }`}
-          />
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto">
+          <div className="flex items-center gap-4">
+            <FilterSheet
+              filters={filters}
+              setFilters={setFilters}
+              hideNetworkFilter={hideNetworkFilter}
+            />
+            <Select
+              defaultValue="newest"
+              onValueChange={(value) => {
+                if (value === 'newest') {
+                  setFilters({ ...filters, sortField: 'created_at', sortOrder: 'desc' });
+                } else if (value === 'price') {
+                  setFilters({ ...filters, sortField: 'price', sortOrder: 'asc' });
+                }
+              }}
+            >
+              <SelectTrigger
+                className={`w-32 flex-1 md:w-[180px] shadow-sm border-gray-200  flex sm:hidden ${
+                  isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
+                }`}
+              >
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="newest">Newest</SelectItem>
+                <SelectItem value="price">Lowest Price</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Input
+              value={inputSearch}
+              onChange={(e) => handleSearch(e.target.value)}
+              placeholder="Search symbol or name..."
+              className={`flex-1 shadow-sm border-gray-200 min-w-[200px] ${
+                isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
+              }`}
+            />
+          </div>
           <Select
             defaultValue="newest"
             onValueChange={(value) => {
@@ -142,7 +161,7 @@ export default function OfferList({
             }}
           >
             <SelectTrigger
-              className={`w-32 md:w-[180px] shadow-sm border-gray-200 ${
+              className={`w-32 md:w-[180px] shadow-sm border-gray-200 hidden sm:flex ${
                 isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
               }`}
             >
@@ -155,7 +174,6 @@ export default function OfferList({
           </Select>
         </div>
 
-        {/* Right side: View Type Toggle */}
         <ToggleGroup
           type="single"
           value={viewType}

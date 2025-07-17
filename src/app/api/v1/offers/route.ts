@@ -120,9 +120,39 @@ export async function GET(req: NextRequest) {
     if (error) {
       return NextResponse.json({ success: false, message: error.message }, { status: 500 });
     }
+
+    // Get list of offer IDs
+    const offerIds = data?.map((offer) => offer.id) || [];
+
+    // Query active promotions for these offers
+    const { data: promotions, error: promotionsError } = await supabase
+      .from('promotions')
+      .select('*')
+      .in('offer_id', offerIds)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (promotionsError) {
+      console.error('Error fetching promotions:', promotionsError);
+      return NextResponse.json(
+        { success: false, message: 'Failed to fetch promotions' },
+        { status: 500 }
+      );
+    }
+
+    // Map promotions to offers
+    const offersWithPromotions = data?.map((offer) => {
+      const promotion = promotions?.find((p) => p.offer_id === offer.id);
+      return {
+        ...offer,
+        promotion: promotion || null,
+      };
+    });
+
     return NextResponse.json({
       success: true,
-      data,
+      data: offersWithPromotions,
       pagination: {
         total: count || 0,
         page,

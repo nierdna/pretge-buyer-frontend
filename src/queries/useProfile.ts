@@ -28,13 +28,13 @@ export const useMyFilledOrders = () => {
   const { user } = useAuthStore();
   const [totalPages, setTotalPages] = useState(0);
   const [filters, setFilters] = useState<IOfferFilter>({
-    limit: 5,
+    limit: 10,
     page: 1,
     sortField: 'created_at',
     sortOrder: 'desc',
   });
 
-  const { data, isLoading, isError } = useInfiniteQuery({
+  const { data, isLoading, isError, refetch } = useInfiniteQuery({
     queryKey: ['order', user?.id, filters],
     queryFn: async () => {
       if (!user?.id) return { data: [], pagination: { totalPages: 0 } };
@@ -54,5 +54,13 @@ export const useMyFilledOrders = () => {
     enabled: !!user?.id && user?.id !== 'undefined',
   });
 
-  return { data, isLoading, isError, filters, setFilters, totalPages };
+  const refetchOrders = async () => {
+    if (filters.page === 1) {
+      await refetch();
+    } else {
+      setFilters({ ...filters, page: 1 });
+    }
+  };
+
+  return { data, isLoading, isError, filters, setFilters, totalPages, refetchOrders };
 };

@@ -192,16 +192,19 @@ ALTER TABLE "public"."promotions" OWNER TO "postgres";
 
 CREATE TABLE IF NOT EXISTS "public"."reviews" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "offer_id" "uuid",
+    "order_id" "uuid" NOT NULL,
+    "user_id" "uuid" NOT NULL,
     "rating" integer NOT NULL,
-    "comment" "text" NOT NULL,
-    "reply" "text",
+    "comment" text NOT NULL,
+    "reply" text,
     "status" character varying(20) DEFAULT 'pending'::character varying,
     "created_at" timestamp with time zone DEFAULT "now"(),
     "updated_at" timestamp with time zone DEFAULT "now"(),
-    "buyer_id" "uuid" NOT NULL,
-    CONSTRAINT "reviews_rating_check" CHECK ((("rating" >= 1) AND ("rating" <= 5))),
-    CONSTRAINT "reviews_status_check" CHECK ((("status")::"text" = ANY ((ARRAY['pending'::character varying, 'approved'::character varying, 'rejected'::character varying])::"text"[])))
+    CONSTRAINT "reviews_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "reviews_rating_check" CHECK ((rating >= 1 AND rating <= 5)),
+    CONSTRAINT "reviews_status_check" CHECK ((status::text = ANY (ARRAY['pending'::character varying, 'approved'::character varying, 'rejected'::character varying]::text[]))),
+    CONSTRAINT "reviews_order_id_fkey" FOREIGN KEY ("order_id") REFERENCES "public"."orders"("id") ON DELETE CASCADE,
+    CONSTRAINT "reviews_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE CASCADE
 );
 
 

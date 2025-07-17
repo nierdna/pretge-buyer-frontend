@@ -107,6 +107,18 @@ export enum EOrderStatus {
   SETTLED = 'settled',
   CANCELLED = 'cancelled',
 }
+
+export interface IReview {
+  buyer_id: string;
+  comment: string;
+  created_at: string;
+  id: string;
+  order_id: string;
+  rating: number;
+  reply: string | null;
+  status: 'pending' | 'approved' | 'rejected';
+  updated_at: string;
+}
 export interface IOrder {
   id: string;
   amount: number;
@@ -122,4 +134,5 @@ export interface IOrder {
   updatedAt: string;
   discountPercent: number;
   promotionId: string | null;
+  review: IReview | null;
 }

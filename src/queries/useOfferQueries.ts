@@ -2,6 +2,7 @@
 
 import { Service } from '@/service';
 import { IOfferFilter } from '@/service/offer.service';
+import { IOffer } from '@/types/offer';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -212,4 +213,21 @@ export const useGetOffersByUserId = (userId: string) => {
   });
 
   return { data, isLoading, isError, filters, inputSearch, handleSearch, setFilters };
+};
+
+export const useGetFlashSaleOffers = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['flash-sale-offers'],
+    queryFn: async () => {
+      try {
+        const response = await Service.offer.getFlashSaleOffers();
+        console.log('response', response);
+        return response as IOffer[];
+      } catch (error) {
+        console.error('Error fetching flash sale offers:', error);
+        return [];
+      }
+    },
+  });
+  return { data, isLoading, isError };
 };

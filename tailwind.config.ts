@@ -121,6 +121,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        mb: '480px',
+      },
       container: {
         center: true,
         padding: '2rem',

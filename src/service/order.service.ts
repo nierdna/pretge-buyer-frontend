@@ -1,6 +1,5 @@
-import type { Offer } from '@/types/offer';
-import type { Order, OrderCreateInput, OrderStatus, OrderUpdateInput } from '@/types/order';
-import { mockOffers } from './offer.service';
+import type { Order } from '@/types/order';
+import axiosInstance from './axios';
 
 interface OrderResponse {
   data: Order;
@@ -230,140 +229,20 @@ const mockOrders: Order[] = [
 ];
 
 export class OrderService {
-  /**
-   * Get all orders for the current user
-   */
-  async getOrders(params?: { page?: number; limit?: number; status?: string }) {
-    // Return mock data instead of API call
-    let filteredOrders = [...mockOrders];
-
-    // Apply status filter if provided
-    if (params?.status) {
-      filteredOrders = filteredOrders.filter((order) => order.status === params.status);
-    }
-
-    return {
-      data: filteredOrders,
-      total: filteredOrders.length,
-      page: params?.page || 1,
-      limit: params?.limit || 10,
-    };
-  }
-
-  /**
-   * Get a single order by ID
-   */
-  async getOrderById(id: string) {
-    // Return mock data for a single order
-    const order = mockOrders.find((o) => o.id === id);
-    return { data: order };
-  }
-
-  /**
-   * Create a new order
-   */
-  async createOrder(data: OrderCreateInput) {
-    // Find offers for the items
-    const orderItems = data.items.map((item) => {
-      // Find the offer in mockOffers
-      const offer = mockOffers.find((p: Offer) => p.id === item.offerId);
-
-      return {
-        id: `item${Date.now()}-${Math.random()}`,
-        offerId: item.offerId,
-        offerName: offer?.name || `Offer ${item.offerId}`,
-        sku: offer?.sku || `SKU-${item.offerId}`,
-        price: offer?.price || 0,
-        quantity: item.quantity,
-        subtotal: (offer?.price || 0) * item.quantity,
-        image: offer?.images?.[0]?.url,
-      };
-    });
-
-    const subtotal = orderItems.reduce((sum, item) => sum + item.subtotal, 0);
-    const tax = subtotal * 0.08; // 8% tax
-    const shippingCost = 10; // Default shipping cost
-
-    const newOrder: Order = {
-      id: `order${mockOrders.length + 1}`,
-      userId: 'user1', // Default user
-      orderNumber: `ORD-2023-00${mockOrders.length + 1}`,
-      items: orderItems,
-      subtotal,
-      tax,
-      discount: 0,
-      shipping: {
-        method: data.shippingMethod,
-        cost: shippingCost,
+  async reviewOrder(orderId: string, rating: number, comment?: string) {
+    const response = await axiosInstance.post(
+      '/review',
+      {
+        order_id: orderId,
+        rating: rating,
+        comment: comment,
       },
-      total: subtotal + tax + shippingCost,
-      status: 'pending' as OrderStatus,
-      payment: {
-        id: `pay-${Date.now()}`,
-        method: data.paymentMethod,
-        status: 'pending',
-        amount: subtotal + tax + shippingCost,
-        currency: 'USD',
-        createdAt: new Date().toISOString(),
-      },
-      shippingAddress: data.shippingAddress as any, // Type assertion to avoid TypeScript errors
-      billingAddress: (data.billingAddress || data.shippingAddress) as any, // Type assertion to avoid TypeScript errors
-      notes: data.notes,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    mockOrders.push(newOrder);
-    return { data: newOrder };
-  }
-
-  /**
-   * Update an existing order
-   */
-  async updateOrder(id: string, data: OrderUpdateInput) {
-    // Mock update order
-    const index = mockOrders.findIndex((o) => o.id === id);
-    if (index === -1) throw new Error('Order not found');
-
-    // Create a copy of the current order
-    const updatedOrder = { ...mockOrders[index] };
-
-    // Update the fields that are provided
-    if (data.status) updatedOrder.status = data.status;
-    if (data.shippingAddress)
-      updatedOrder.shippingAddress = {
-        ...updatedOrder.shippingAddress,
-        ...data.shippingAddress,
-      } as any;
-    if (data.billingAddress)
-      updatedOrder.billingAddress = {
-        ...updatedOrder.billingAddress,
-        ...data.billingAddress,
-      } as any;
-    if (data.notes) updatedOrder.notes = data.notes;
-
-    updatedOrder.updatedAt = new Date().toISOString();
-
-    mockOrders[index] = updatedOrder;
-    return { data: updatedOrder };
-  }
-
-  /**
-   * Cancel an order
-   */
-  async cancelOrder(id: string) {
-    // Mock cancel order
-    const index = mockOrders.findIndex((o) => o.id === id);
-    if (index === -1) throw new Error('Order not found');
-
-    const cancelledOrder = {
-      ...mockOrders[index],
-      status: 'cancelled' as OrderStatus,
-      updatedAt: new Date().toISOString(),
-      cancelledAt: new Date().toISOString(),
-    };
-
-    mockOrders[index] = cancelledOrder;
-    return { data: cancelledOrder };
+      {
+        headers: {
+          Authorization: true,
+        },
+      }
+    );
+    return response.data;
   }
 }

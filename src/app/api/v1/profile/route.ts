@@ -5,7 +5,6 @@ import { AuthenticatedRequest, withAuth } from '../../../../server/middleware/au
 async function getProfileHandler(req: AuthenticatedRequest) {
   try {
     const { user } = req;
-    console.log('user', user);
 
     if (!user) {
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });

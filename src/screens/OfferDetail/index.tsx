@@ -2,10 +2,11 @@
 
 import { useGetOfferById } from '@/queries';
 import { useRef } from 'react';
-import OfferDetailHero from './components/OfferDetailHero';
+import OfferDetailContentSkeleton from './components/OfferDetailContentSkeleton';
+import OfferDetailPageContent from './components/OfferDetailPageContent';
 import SellerInfoSection from './components/SellerInfoSection';
+import SellerInfoSectionSkeleton from './components/SellerInfoSectionSkeleton';
 import TransactionHistory, { TransactionHistoryRef } from './components/TransactionHistory';
-import { useParams, useRouter } from 'next/navigation';
 
 // Mock data for multiple offers, each with a unique ID
 
@@ -14,10 +15,6 @@ interface OfferDetailPageProps {
 }
 
 export default function OfferDetail({ id }: OfferDetailPageProps) {
-  const router = useRouter();
-  const params = useParams();
-  const { id: offerId } = params;
-  console.log('offerId', offerId);
   // Find the offer that matches the ID from the URL
   const { data: offer, isLoading } = useGetOfferById(id);
   const transactionHistoryRef = useRef<TransactionHistoryRef>(null);
@@ -27,9 +24,8 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
   // }
 
   return (
-    <div className="grid gap-8 lg:grid-cols-3">
-      {/* Section 1: Offer Information & Buy/Sell */}
-      <div className="lg:col-span-2">
+    <div className="grid gap-8 w-full">
+      {/* <div className="lg:col-span-2">
         <OfferDetailHero
           offer={offer}
           onOrderPlaced={() => {
@@ -39,15 +35,28 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
         />
       </div>
 
-      {/* Section 2: Seller Information */}
       <div className="lg:col-span-1">
         <SellerInfoSection seller={offer?.sellerWallet} />
-      </div>
+      </div> */}
+      {isLoading ? (
+        <OfferDetailContentSkeleton />
+      ) : (
+        <OfferDetailPageContent
+          offer={offer}
+          onOrderPlaced={() => {
+            // Reset TransactionHistory to first page and refetch
+            transactionHistoryRef.current?.resetToFirstPage();
+          }}
+        />
+      )}
 
       {/* Section 3: Transaction History (full width below other sections) */}
-      <div className="lg:col-span-3">
-        <TransactionHistory ref={transactionHistoryRef} offerId={id} />
-      </div>
+      <TransactionHistory ref={transactionHistoryRef} offerId={id} />
+      {isLoading ? (
+        <SellerInfoSectionSkeleton />
+      ) : (
+        <SellerInfoSection seller={offer?.sellerWallet} />
+      )}
     </div>
   );
   // return <div>OfferDetailV2</div>;

@@ -3,9 +3,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { IToken } from '@/types/token';
 import { TrendingUp } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link'; // Import Link
+import Link from 'next/link';
+import TrendingTokenSkeleton from './TrendingTokenSkeleton';
 
-export default function ActiveTokensSection({ trendingTokens }: { trendingTokens: IToken[] }) {
+export default function TrendingTokenSection({
+  trendingTokens,
+  isLoading,
+}: {
+  trendingTokens: IToken[];
+  isLoading: boolean;
+}) {
   // Filter offers that have a 'status' property (e.g., "hot" or "new") to display in trending
 
   const renderBadge = (token: IToken) => {
@@ -25,6 +32,9 @@ export default function ActiveTokensSection({ trendingTokens }: { trendingTokens
     }
     return null;
   };
+  if (isLoading) {
+    return <TrendingTokenSkeleton />;
+  }
   return (
     <section className="py-4 md:py-6">
       <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
