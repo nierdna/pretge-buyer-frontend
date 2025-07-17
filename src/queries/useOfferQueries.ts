@@ -194,7 +194,7 @@ export const useGetOffersByUserId = (userId: string) => {
     debouncedSearch(search);
   };
 
-  const { data, isLoading, isError } = useInfiniteQuery({
+  const { data, isLoading, isError, refetch } = useInfiniteQuery({
     queryKey: ['offers', userId, filters],
     queryFn: async () => {
       const response = await Service.offer.getOffersByUserId(userId, {
@@ -211,8 +211,24 @@ export const useGetOffersByUserId = (userId: string) => {
     initialPageParam: 1,
     enabled: !!userId && userId !== 'undefined',
   });
+  const refetchOffers = () => {
+    if (filters.page && filters.page > 1) {
+      setFilters({ ...filters, page: 1 });
+    } else {
+      refetch();
+    }
+  };
 
-  return { data, isLoading, isError, filters, inputSearch, handleSearch, setFilters };
+  return {
+    data,
+    isLoading,
+    isError,
+    filters,
+    inputSearch,
+    handleSearch,
+    setFilters,
+    refetchOffers,
+  };
 };
 
 export const useGetFlashSaleOffers = () => {

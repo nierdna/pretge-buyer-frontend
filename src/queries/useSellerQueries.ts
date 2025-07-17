@@ -25,7 +25,7 @@ export const useGetReviewsBySellerId = (id: string) => {
     page: 1,
     limit: 10,
   });
-  const { data, isLoading, isError, error } = useInfiniteQuery({
+  const { data, isLoading, isError, error, refetch } = useInfiniteQuery({
     queryKey: ['reviews', id],
     queryFn: async () => {
       if (!id) return undefined;
@@ -42,5 +42,12 @@ export const useGetReviewsBySellerId = (id: string) => {
     initialPageParam: 1,
     enabled: !!id && id !== 'undefined',
   });
-  return { data, isLoading, isError, error, setFilters, filters };
+  const refetchReviews = () => {
+    if (filters.page && filters.page > 1) {
+      setFilters({ ...filters, page: 1 });
+    } else {
+      refetch();
+    }
+  };
+  return { data, isLoading, isError, error, setFilters, filters, refetchReviews };
 };

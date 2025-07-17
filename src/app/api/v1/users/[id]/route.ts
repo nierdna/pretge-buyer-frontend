@@ -32,7 +32,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       .from('wallets')
       .select('*')
       .eq('user_id', id);
-    console.log('wallet', wallet);
     if (walletError) {
       if (walletError.code === 'PGRST116') {
         // No rows returned
