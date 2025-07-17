@@ -21,9 +21,9 @@ export const CONTRACTS = {
     ESCROW: '0xe7F76c6D23b889a9cac5c2Bebf54988DD9EE3093',
   },
   [solanaDevnet.id.toString()]: {
-    ESCROW: 'AvvzyVdK6Jw4imMErCZzXgdKa1eeL24TsW2mXvdSdeYF',
+    ESCROW: '6p58bca3jvFHGX4x179gL3ykXVreW4Hp2JLWv9Jnacmx',
   },
   [solana.id.toString()]: {
-    ESCROW: 'AvvzyVdK6Jw4imMErCZzXgdKa1eeL24TsW2mXvdSdeYF',
+    ESCROW: '6p58bca3jvFHGX4x179gL3ykXVreW4Hp2JLWv9Jnacmx',
   },
 };
