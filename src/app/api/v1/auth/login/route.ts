@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { AuthService } from '@/server/service/auth.service';
 import { BaseLoginRequest } from '@/server/utils/base';
 import { SolanaLoginRequest } from '@/server/utils/solana';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
