@@ -192,7 +192,7 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
           return {
             found: true,
             eventType: 'Deposit',
-            userAddress: event.data.buyer.toString(),
+            userAddress: event.data.user.toString(),
             tokenAddress: event.data.token.toString(),
             rawAmount: event.data.amount.toNumber(),
             formattedAmount: (Number(event.data.amount) / 10 ** decimals).toString(),
