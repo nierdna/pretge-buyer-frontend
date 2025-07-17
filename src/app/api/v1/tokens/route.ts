@@ -54,7 +54,8 @@ export async function GET(request: NextRequest) {
   const response = data.map((token: any) => ({
     ...token,
     is_new: new Date(token.created_at) > new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
-    is_hot: new Date(token.created_at) < new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), //todo: add change with vol24h
+    // is_hot: new Date(token.created_at) < new Date(Date.now() - 1 * 24 * 60 * 60 * 1000), //todo: add change with vol24h
+    is_hot: false,
   }));
 
   return NextResponse.json({
