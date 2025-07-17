@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { IToken } from '@/types/token';
+import { formatNumberShort } from '@/utils/helpers/number';
 import { normalizeNetworkName } from '@/utils/helpers/string';
 import { Globe, MessageCircle, Twitter } from 'lucide-react';
 import Image from 'next/image';
@@ -16,21 +17,31 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
     <Card className="bg-white/95 backdrop-blur-md shadow-lg border-gray-300">
       <CardContent className="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         {/* Left side: Token Image, Name, Symbol, Network */}
-        <div className="flex items-center gap-4 flex-shrink-0">
-          <div className="w-16 h-16 min-w-16 min-h-16 relative rounded-full overflow-hidden">
-            <Image
-              src={token?.logo || '/placeholder.svg'}
-              alt={`${token?.symbol} symbol`}
-              fill
-              className="rounded-full object-cover"
-            />
-          </div>
-          <div className="grid gap-1">
-            <CardTitle className="text-3xl font-bold">{token?.name}</CardTitle>
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary">{token?.symbol}</Badge>
-              <Badge variant="secondary">{normalizeNetworkName(token?.network?.name)}</Badge>
+
+        <div className="flex items-center gap-12 flex-shrink-0">
+          <div className="flex items-center gap-4">
+            <div className="w-16 h-16 min-w-16 min-h-16 relative rounded-full overflow-hidden">
+              <Image
+                src={token?.logo || '/placeholder.svg'}
+                alt={`${token?.symbol} symbol`}
+                fill
+                className="rounded-full object-cover"
+              />
             </div>
+            <div className="grid gap-1">
+              <CardTitle className="text-3xl font-bold">{token?.name}</CardTitle>
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary">{token?.symbol}</Badge>
+                <Badge variant="secondary">{normalizeNetworkName(token?.network?.name)}</Badge>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-center gap-1 text-3xl font-bold text-green-500">
+            <div className="text-xs text-gray-500"> Price</div>$
+            {formatNumberShort(token?.price || 0, {
+              useShorterExpression: true,
+            })}
           </div>
         </div>
 

@@ -38,6 +38,7 @@ export interface IToken {
   twitterUrl: string;
   telegramUrl: string;
   bannerUrl: string;
+  price: number;
 }
 export interface IExToken {
   address: string;
