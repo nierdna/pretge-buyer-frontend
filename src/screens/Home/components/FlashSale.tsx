@@ -6,63 +6,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCallback } from 'react';
 import FlashSaleCard from './FlashSaleCard';
-
-const mockFlashSaleOffers = [
-  {
-    tokenSymbol: 'FLS',
-    tokenName: 'Flash Token Sale',
-    network: 'Ethereum',
-    originalPriceUSD: 20000,
-    salePriceUSD: 15000,
-    discountPercent: 25,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-  },
-  {
-    tokenSymbol: 'DIS',
-    tokenName: 'Discount Coin',
-    network: 'BNB Chain',
-    originalPriceUSD: 10000,
-    salePriceUSD: 7000,
-    discountPercent: 30,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-  },
-  {
-    tokenSymbol: 'LMT',
-    tokenName: 'Limited Supply Token',
-    network: 'Polygon',
-    originalPriceUSD: 5000,
-    salePriceUSD: 4000,
-    discountPercent: 20,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-  },
-  {
-    tokenSymbol: 'EXC',
-    tokenName: 'Exclusive Token',
-    network: 'Solana',
-    originalPriceUSD: 30000,
-    salePriceUSD: 22500,
-    discountPercent: 25,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-  },
-  {
-    tokenSymbol: 'NEW',
-    tokenName: 'New Token',
-    network: 'Avalanche',
-    originalPriceUSD: 12000,
-    salePriceUSD: 9000,
-    discountPercent: 25,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-  },
-  {
-    tokenSymbol: 'HOT',
-    tokenName: 'Hot Token',
-    network: 'Fantom',
-    originalPriceUSD: 8000,
-    salePriceUSD: 6000,
-    discountPercent: 25,
-    tokenImage: '/placeholder.svg?height=48&width=48',
-  },
-];
+import FlashSaleCardSkeleton from './FlashSaleCardSkeleton';
 
 export default function FlashSale() {
   const {
@@ -70,7 +14,7 @@ export default function FlashSale() {
     isLoading: isLoadingFlashSaleOffers,
     isError: isErrorFlashSaleOffers,
   } = useGetFlashSaleOffers();
-  console.log('data', flashSaleOffers);
+
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
 
   const scrollPrev = useCallback(() => {
@@ -81,21 +25,35 @@ export default function FlashSale() {
     if (emblaApi) emblaApi.scrollNext();
   }, [emblaApi]);
 
-  // Mock global time remaining for the flash sale
-  const globalTimeRemaining = '00h 45m 12s';
+  // Render loading skeletons
+  if (isLoadingFlashSaleOffers) {
+    return (
+      <section className="container py-4 md:py-6 bg-neutral-900/90 backdrop-blur-lg rounded-lg shadow-2xl border border-neutral-700">
+        <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
+          <h2 className="text-xl md:text-2xl font-bold text-white text-center sm:text-left">
+            Flash Sale: Exclusive Pre-Market Deals!
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {[...Array(5)].map((_, index) => (
+            <FlashSaleCardSkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  // Render error state
+  if (isErrorFlashSaleOffers) {
+    return null;
+  }
 
   return (
     <section className="container py-4 md:py-6 bg-neutral-900/90 backdrop-blur-lg rounded-lg shadow-2xl border border-neutral-700">
-      {' '}
-      {/* Changed background to bg-neutral-900/90 and border to border-neutral-700 */}
       <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">
         <h2 className="text-xl md:text-2xl font-bold text-white text-center sm:text-left">
           Flash Sale: Exclusive Pre-Market Deals!
         </h2>
-        {/* <div className="flex items-center gap-2 text-lg font-bold text-red-400 flex-shrink-0">
-          <span>Time Left:</span>
-          <span>{globalTimeRemaining}</span>
-        </div> */}
       </div>
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
@@ -103,7 +61,7 @@ export default function FlashSale() {
             {flashSaleOffers?.map((offer, index) => (
               <div
                 key={index}
-                className="pl-2 flex-grow-0 flex-shrink-0 flex justify-center basis-[100%] mb:basis-1/2 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5 "
+                className="pl-2 flex-grow-0 flex-shrink-0 flex justify-center basis-[100%] mb:basis-1/2 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5"
               >
                 <FlashSaleCard offer={offer} />
               </div>

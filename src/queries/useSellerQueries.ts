@@ -38,7 +38,7 @@ export const useGetReviewsBySellerId = (id: string) => {
         return undefined;
       }
     },
-    getNextPageParam: (lastPage, pages) => lastPage.pagination.page + 1,
+    getNextPageParam: (lastPage, pages) => lastPage?.pagination?.page + 1,
     initialPageParam: 1,
     enabled: !!id && id !== 'undefined',
   });

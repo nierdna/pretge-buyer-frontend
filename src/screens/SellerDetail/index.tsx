@@ -46,7 +46,7 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
     isLoading: isReviewsLoading,
   } = useGetReviewsBySellerId(sellerId);
 
-  const reviewsData = reviews?.pages.flatMap((page) => page.data) || [];
+  const reviewsData = reviews?.pages.flatMap((page) => page?.data) || [];
   const paginationReviews = reviews?.pages[0]?.pagination || {
     total: 0,
     page: 1,

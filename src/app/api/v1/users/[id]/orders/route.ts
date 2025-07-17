@@ -144,11 +144,34 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       };
     });
 
+    // Get reviews for these orders
+    const { data: reviews, error: reviewsError } = await supabase
+      .from('reviews')
+      .select('*')
+      .in('order_id', orders?.map((order) => order.id) || []);
+
+    if (reviewsError) {
+      console.error('Error fetching reviews:', reviewsError);
+      return NextResponse.json(
+        { success: false, message: 'Failed to fetch reviews' },
+        { status: 500 }
+      );
+    }
+
+    // Map reviews to orders
+    const ordersWithPromotionsAndReviews = ordersWithPromotions?.map((order) => {
+      const review = reviews?.find((r) => r.order_id === order.id);
+      return {
+        ...order,
+        review: review || null,
+      };
+    });
+
     const totalPages = count ? Math.ceil(count / limit) : 0;
 
     return NextResponse.json({
       success: true,
-      data: ordersWithPromotions || [],
+      data: ordersWithPromotionsAndReviews || [],
       pagination: {
         total: count || 0,
         page,

@@ -2,8 +2,10 @@
 
 import { useGetOfferById } from '@/queries';
 import { useRef } from 'react';
+import OfferDetailContentSkeleton from './components/OfferDetailContentSkeleton';
 import OfferDetailPageContent from './components/OfferDetailPageContent';
 import SellerInfoSection from './components/SellerInfoSection';
+import SellerInfoSectionSkeleton from './components/SellerInfoSectionSkeleton';
 import TransactionHistory, { TransactionHistoryRef } from './components/TransactionHistory';
 
 // Mock data for multiple offers, each with a unique ID
@@ -36,18 +38,25 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
       <div className="lg:col-span-1">
         <SellerInfoSection seller={offer?.sellerWallet} />
       </div> */}
-
-      <OfferDetailPageContent
-        offer={offer}
-        onOrderPlaced={() => {
-          // Reset TransactionHistory to first page and refetch
-          transactionHistoryRef.current?.resetToFirstPage();
-        }}
-      />
+      {isLoading ? (
+        <OfferDetailContentSkeleton />
+      ) : (
+        <OfferDetailPageContent
+          offer={offer}
+          onOrderPlaced={() => {
+            // Reset TransactionHistory to first page and refetch
+            transactionHistoryRef.current?.resetToFirstPage();
+          }}
+        />
+      )}
 
       {/* Section 3: Transaction History (full width below other sections) */}
       <TransactionHistory ref={transactionHistoryRef} offerId={id} />
-      <SellerInfoSection seller={offer?.sellerWallet} />
+      {isLoading ? (
+        <SellerInfoSectionSkeleton />
+      ) : (
+        <SellerInfoSection seller={offer?.sellerWallet} />
+      )}
     </div>
   );
   // return <div>OfferDetailV2</div>;

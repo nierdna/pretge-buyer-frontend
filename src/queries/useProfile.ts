@@ -34,7 +34,7 @@ export const useMyFilledOrders = () => {
     sortOrder: 'desc',
   });
 
-  const { data, isLoading, isError } = useInfiniteQuery({
+  const { data, isLoading, isError, refetch } = useInfiniteQuery({
     queryKey: ['order', user?.id, filters],
     queryFn: async () => {
       if (!user?.id) return { data: [], pagination: { totalPages: 0 } };
@@ -54,5 +54,13 @@ export const useMyFilledOrders = () => {
     enabled: !!user?.id && user?.id !== 'undefined',
   });
 
-  return { data, isLoading, isError, filters, setFilters, totalPages };
+  const refetchOrders = async () => {
+    if (filters.page === 1) {
+      await refetch();
+    } else {
+      setFilters({ ...filters, page: 1 });
+    }
+  };
+
+  return { data, isLoading, isError, filters, setFilters, totalPages, refetchOrders };
 };

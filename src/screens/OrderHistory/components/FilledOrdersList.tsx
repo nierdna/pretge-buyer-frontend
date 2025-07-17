@@ -14,17 +14,52 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useMyFilledOrders } from '@/queries/useProfile';
-import { EOrderStatus } from '@/types/order';
+import { OrderService } from '@/service/order.service';
+import { EOrderStatus, IOrder } from '@/types/order';
 import { handleLinkTxHash } from '@/utils/helpers/getBlockUrlLink';
 import { formatNumberShort } from '@/utils/helpers/number';
 import { normalizeNetworkName } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
+import { toast } from 'sonner';
+import ReviewModal from './ReviewModal';
 
 export default function FilledOrdersList() {
-  const { data, isLoading, filters, setFilters, totalPages } = useMyFilledOrders();
+  const { data, isLoading, filters, setFilters, totalPages, refetchOrders } = useMyFilledOrders();
   const orders = data?.pages.flatMap((page) => page.data) || [];
+  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [isLoadingReview, setIsLoadingReview] = useState(false);
+
+  const handleOpenReviewModal = (order: IOrder) => {
+    setSelectedOrder(order);
+    setIsReviewModalOpen(true);
+  };
+  const handleCloseReviewModal = () => {
+    setSelectedOrder(null);
+    setIsReviewModalOpen(false);
+  };
+
+  const handleReviewSubmit = async (rating: number, comment: string) => {
+    setIsLoadingReview(true);
+    try {
+      if (!selectedOrder) return;
+
+      const orderService = new OrderService();
+      await orderService.reviewOrder(selectedOrder.id, rating, comment);
+      await refetchOrders();
+
+      toast.success('Review submitted successfully');
+      handleCloseReviewModal();
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      toast.error(error instanceof Error ? error.message : 'Failed to submit review');
+    } finally {
+      setIsLoadingReview(false);
+    }
+  };
 
   const getBadge = (status: EOrderStatus) => {
     switch (status) {
@@ -37,6 +72,24 @@ export default function FilledOrdersList() {
       default:
         return <Badge variant="warning">Unknown</Badge>;
     }
+  };
+  const getReviewStatus = (order: IOrder) => {
+    if (!order || order.status !== EOrderStatus.SETTLED || !order.review) {
+      return null;
+    }
+    if (order?.review?.status === 'pending') return <Badge variant="info">Pending</Badge>;
+    if (order?.review?.status === 'approved') return <Badge variant="success">Reviewed</Badge>;
+    if (order?.review?.status === 'rejected') return <Badge variant="error">Rejected</Badge>;
+    return (
+      <Button
+        variant="primary"
+        size="sm"
+        onClick={() => handleOpenReviewModal(order)}
+        className="bg-orange-500 hover:bg-orange-600"
+      >
+        Review
+      </Button>
+    );
   };
   const paginate = (pageNumber: number) => {
     if (pageNumber < 1) {
@@ -171,6 +224,7 @@ export default function FilledOrdersList() {
                   ) : (
                     <TableCell className="text-right text-gray-500">N/A</TableCell>
                   )}
+                  <TableCell className="text-center">{getReviewStatus(order)}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -187,6 +241,15 @@ export default function FilledOrdersList() {
           />
         )}
       </CardContent>
+      {selectedOrder && (
+        <ReviewModal
+          isOpen={isReviewModalOpen}
+          onClose={handleCloseReviewModal}
+          order={selectedOrder}
+          onReviewSubmit={handleReviewSubmit}
+          isLoading={isLoadingReview}
+        />
+      )}
     </Card>
   );
 }

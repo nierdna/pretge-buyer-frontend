@@ -201,7 +201,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
   }
 );
 
-function TransactionHistorySkeleton() {
+export function TransactionHistorySkeleton() {
   return (
     <Table>
       <TableHeader>

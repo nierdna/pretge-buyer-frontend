@@ -126,8 +126,8 @@ dependencies:
     specifier: ^8.6.0
     version: 8.6.0(react@18.3.1)
   escrow-market-sdk:
-    specifier: ^0.1.3
-    version: 0.1.3(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)
+    specifier: ^0.1.5
+    version: 0.1.5(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3)
   ethers:
     specifier: ^6.15.0
     version: 6.15.0
@@ -8254,10 +8254,10 @@ packages:
     engines: { node: '>=10' }
     dev: true
 
-  /escrow-market-sdk@0.1.3(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3):
+  /escrow-market-sdk@0.1.5(fastestsmallesttextencoderdecoder@1.0.22)(typescript@5.8.3):
     resolution:
       {
-        integrity: sha512-cAU+Yisjp67wec0d9MOj6mn2tHZPG2pusLfE2Zo7NRhCfjBk3dobGFo9CThCzIv6u9gor/QMAdxteOgCznwsmg==,
+        integrity: sha512-/kqWMf1TYztEsht2F/m2BYzR4V4J0Fa63lXH5m2kLz/D/tJgktTkLtIgGOm8x9Q0T2B9+8PZ+MibY3BaEjbQzQ==,
       }
     dependencies:
       '@coral-xyz/anchor': 0.29.0(typescript@5.8.3)

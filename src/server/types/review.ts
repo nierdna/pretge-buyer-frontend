@@ -1,7 +1,7 @@
 export interface Review {
   id: string;
-  offerId: string;
-  buyerId: string;
+  orderId: string;
+  userId: string;
   rating: number; // 1-5
   comment: string;
   reply?: string;
