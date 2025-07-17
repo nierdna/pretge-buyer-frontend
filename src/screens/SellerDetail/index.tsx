@@ -19,6 +19,7 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
     setFilters,
     filters,
     isLoading: isOffersLoading,
+    refetchOffers,
   } = useGetOffersByUserId(sellerId);
 
   const offersData = offers?.pages.flatMap((page) => page.data) || [];
@@ -44,6 +45,7 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
     setFilters: setReviewsFilters,
     filters: reviewsFilters,
     isLoading: isReviewsLoading,
+    refetchReviews,
   } = useGetReviewsBySellerId(sellerId);
 
   const reviewsData = reviews?.pages.flatMap((page) => page?.data) || [];
@@ -77,8 +79,12 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
       <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 p-6">
         <Tabs defaultValue="offers" className="w-full">
           <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="offers">Offers</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
+            <TabsTrigger value="offers" onClick={() => refetchOffers()}>
+              Offers
+            </TabsTrigger>
+            <TabsTrigger value="reviews" onClick={() => refetchReviews()}>
+              Reviews
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="offers" className="mt-6">
             <SellerOffersList

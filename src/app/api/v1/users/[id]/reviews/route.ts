@@ -79,7 +79,24 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     // Extract offer IDs
     const offerIds = offers.map((offer) => offer.id);
 
-    // Step 3: Find all reviews for these offers with pagination
+    // Step 3: Find all orders for these offers
+    const { data: orders, error: ordersError } = await supabase
+      .from('orders')
+      .select('id')
+      .in('offer_id', offerIds)
+      .eq('status', 'settled');
+
+    if (ordersError) {
+      console.error('Error fetching orders:', ordersError);
+      return NextResponse.json(
+        { success: false, message: 'Failed to fetch orders' },
+        { status: 500 }
+      );
+    }
+
+    const orderIds = orders.map((order) => order.id);
+
+    // Step 4: Find all reviews for these orders with pagination
     const {
       data: reviews,
       error: reviewsError,
@@ -93,10 +110,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       `,
         { count: 'exact' }
       )
-      .in('offer_id', offerIds)
+      .in('order_id', orderIds)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
-    // buyer_wallet:buyer_id!wallets(address)
+
     if (reviewsError) {
       console.error('Error fetching reviews:', reviewsError);
       return NextResponse.json(

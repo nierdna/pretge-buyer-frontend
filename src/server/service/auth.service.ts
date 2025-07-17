@@ -273,6 +273,7 @@ export class AuthService {
         },
         kyc_status: 'pending',
         status: 'active',
+        roles: 'buyer',
       })
       .select()
       .single();

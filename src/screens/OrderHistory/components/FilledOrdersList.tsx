@@ -22,6 +22,7 @@ import { normalizeNetworkName } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import ReviewModal from './ReviewModal';
@@ -139,11 +140,14 @@ export default function FilledOrdersList() {
                   </TableCell>
                   <TableCell>
                     <div className="min-w-40">
-                      <p className="break-words whitespace-normal text-green-600">
+                      <Link
+                        href={`/offers/${order.offer?.id}`}
+                        className="break-words whitespace-normal text-green-600 hover:underline"
+                      >
                         {`${order?.offer?.title || ''} - ${order?.offer?.tokens?.symbol || ''} - ${
                           normalizeNetworkName(order?.offer?.exToken?.network?.name) || ''
                         }`}
-                      </p>
+                      </Link>
                     </div>
                   </TableCell>
                   <TableCell>
@@ -160,7 +164,12 @@ export default function FilledOrdersList() {
                     </div>
                   </TableCell>
                   <TableCell className="text-green-600">
-                    {order.offer?.sellerWallet?.user?.name}
+                    <Link
+                      href={`/sellers/${order.offer?.sellerWallet?.user?.id}`}
+                      className="hover:underline"
+                    >
+                      {order.offer?.sellerWallet?.user?.name}
+                    </Link>
                   </TableCell>
                   <TableCell className="text-center">{formatNumberShort(order.amount)}</TableCell>
                   <TableCell className="text-right">
