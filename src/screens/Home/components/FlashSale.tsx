@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import { useGetFlashSaleOffers } from '@/queries';
 import useEmblaCarousel from 'embla-carousel-react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { useCallback } from 'react';
@@ -64,6 +65,12 @@ const mockFlashSaleOffers = [
 ];
 
 export default function FlashSale() {
+  const {
+    data: flashSaleOffers,
+    isLoading: isLoadingFlashSaleOffers,
+    isError: isErrorFlashSaleOffers,
+  } = useGetFlashSaleOffers();
+  console.log('data', flashSaleOffers);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' });
 
   const scrollPrev = useCallback(() => {
@@ -85,20 +92,20 @@ export default function FlashSale() {
         <h2 className="text-xl md:text-2xl font-bold text-white text-center sm:text-left">
           Flash Sale: Exclusive Pre-Market Deals!
         </h2>
-        <div className="flex items-center gap-2 text-lg font-bold text-red-400 flex-shrink-0">
+        {/* <div className="flex items-center gap-2 text-lg font-bold text-red-400 flex-shrink-0">
           <span>Time Left:</span>
           <span>{globalTimeRemaining}</span>
-        </div>
+        </div> */}
       </div>
       <div className="relative">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex -ml-2">
-            {mockFlashSaleOffers.map((offer, index) => (
+            {flashSaleOffers?.map((offer, index) => (
               <div
                 key={index}
-                className="pl-2 flex-grow-0 flex-shrink-0 flex justify-center basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 "
+                className="pl-2 flex-grow-0 flex-shrink-0 flex justify-center basis-[100%] mb:basis-1/2 sm:basis-1/3 lg:basis-1/4 xl:basis-1/5 "
               >
-                <FlashSaleCard {...offer} />
+                <FlashSaleCard offer={offer} />
               </div>
             ))}
           </div>

@@ -1,17 +1,17 @@
-'use client';
-
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Separator from '@/components/ui/separator';
 import { WalletWithUser } from '@/types/user';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
+import { formatNumberShort } from '@/utils/helpers/number';
 import { truncateAddress } from '@/utils/helpers/string';
+import dayjs from 'dayjs';
 import { Star } from 'lucide-react';
 import Link from 'next/link'; // Import Link
 
 interface SellerInfoSectionProps {
-  seller: WalletWithUser | undefined;
+  seller?: WalletWithUser;
 }
 
 export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
@@ -31,23 +31,20 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
             <div className="text-xl font-semibold">{seller?.user?.name}</div>
             <div className="text-sm text-gray-500">{truncateAddress(seller?.address)}</div>
             <div className="flex items-center gap-1 text-sm">
-              <span className="font-semibold">{seller?.user?.rating}</span>
+              <span className="font-semibold">{formatNumberShort(seller?.user?.rating)}</span>
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              <span className="text-gray-500">
-                ({Number(seller?.user?.rating || 0) * 10} reviews)
-              </span>{' '}
-              {/* Mock review count */}
             </div>
           </div>
         </div>
         <Separator className="bg-gray-200" />
-        {/* <div className="grid gap-2 text-sm text-gray-700">
-          <p>{seller.description}</p>
+        <div className="grid gap-2 text-sm text-gray-700">
+          <p>{seller?.user?.description}</p>
           <p className="text-gray-500">
-            <span className="font-medium">Member since:</span> {seller.joinDate}
+            <span className="font-medium">Member since:</span>{' '}
+            {dayjs(seller?.user?.createdAt).format('MMM D, YYYY')}
           </p>
-        </div> */}
-        <Link href={`/sellers/${seller?.user?.id}`} className="w-full">
+        </div>
+        <Link href={`/sellers/${seller?.userId}`} className="w-full">
           <Button
             variant="outline"
             className="w-full mt-2 bg-transparent border-gray-300 hover:bg-gray-100"

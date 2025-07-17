@@ -18,11 +18,12 @@ export default function FilterSheet({
       <Sheet>
         <SheetTrigger asChild>
           <Button
-            size={'icon'}
+            // size={'icon'}
             variant="outline"
             className="flex items-center gap-2 bg-transparent"
           >
             <Filter className="h-4 w-4" />
+            Filters
           </Button>
         </SheetTrigger>
         <SheetContent

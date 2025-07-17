@@ -39,10 +39,9 @@ export default function HomePage() {
       {/* Applied the main page background gradient here */}
       <TredingToken trendingTokens={tokens?.data || []} />
       <FlashSale />
-      <section className="py-4 md:py-8 px-4 -mx-2">
-        {/* <FilterSheet filters={filters} setFilters={setFilters} /> */}
+      <div className="py-4 md:py-8 sm:px-4 w-full">
         <div className="grid lg:grid-cols-[280px_1fr] gap-8">
-          <FilterSidebar filters={filters} setFilters={setFilters} /> {/* Desktop filter sidebar */}
+          <FilterSidebar filters={filters} setFilters={setFilters} />
           <OfferList
             inputSearch={inputSearch}
             handleSearch={handleSearch}
@@ -55,7 +54,7 @@ export default function HomePage() {
             hasNextPage={hasNextPage}
           />
         </div>
-      </section>
+      </div>
     </div>
     // </div>
   );

@@ -1,9 +1,9 @@
 'use client';
 
 import { useGetOfferById } from '@/queries';
-import { useParams, useRouter } from 'next/navigation';
 import { useRef } from 'react';
 import OfferDetailPageContent from './components/OfferDetailPageContent';
+import SellerInfoSection from './components/SellerInfoSection';
 import TransactionHistory, { TransactionHistoryRef } from './components/TransactionHistory';
 
 // Mock data for multiple offers, each with a unique ID
@@ -13,10 +13,6 @@ interface OfferDetailPageProps {
 }
 
 export default function OfferDetail({ id }: OfferDetailPageProps) {
-  const router = useRouter();
-  const params = useParams();
-  const { id: offerId } = params;
-  console.log('offerId', offerId);
   // Find the offer that matches the ID from the URL
   const { data: offer, isLoading } = useGetOfferById(id);
   const transactionHistoryRef = useRef<TransactionHistoryRef>(null);
@@ -51,6 +47,7 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
 
       {/* Section 3: Transaction History (full width below other sections) */}
       <TransactionHistory ref={transactionHistoryRef} offerId={id} />
+      <SellerInfoSection seller={offer?.sellerWallet} />
     </div>
   );
   // return <div>OfferDetailV2</div>;

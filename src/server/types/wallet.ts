@@ -7,4 +7,5 @@ export interface Wallet {
   address: string;
   isPrimary?: boolean;
   createdAt: Date;
+  roles: string;
 }

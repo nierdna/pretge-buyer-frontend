@@ -71,7 +71,6 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
           return <Badge variant="warning">Unknown</Badge>;
       }
     };
-    console.log('orders', orders);
     return (
       <Card className="bg-white/95 backdrop-blur-md w-full shadow-2xl border-gray-300 overflow-x-auto">
         <CardHeader className="p-6 pb-4">

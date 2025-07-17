@@ -3,7 +3,6 @@
 import { useAuthStore } from '@/store/authStore';
 import { useEffect } from 'react';
 import BalanceSection from './components/BalanceSection';
-import FilledOrdersList from './components/FilledOrdersList';
 import UserInfoSection from './components/UserInfoSection';
 
 const ProfilePage = () => {
@@ -13,18 +12,19 @@ const ProfilePage = () => {
       fetchProfile();
     }
   }, [accessToken]);
+
   return (
-    <div className="grid gap-8 lg:grid-cols-[360px_1fr]">
+    <div className="grid gap-8 lg:grid-cols-[360px_1fr] max-w-screen-lg mx-auto">
       {/* User Info and Balance Sections */}
-      <div className="lg:col-span-1 grid gap-8">
-        <UserInfoSection />
-        <BalanceSection />
-      </div>
+      {/* <div className="lg:col-span-1 grid gap-8"> */}
+      <UserInfoSection />
+      <BalanceSection />
+      {/* </div> */}
 
       {/* Filled Orders List */}
-      <div className="lg:col-span-1">
+      {/* <div className="lg:col-span-1">
         <FilledOrdersList />
-      </div>
+      </div> */}
     </div>
   );
 };

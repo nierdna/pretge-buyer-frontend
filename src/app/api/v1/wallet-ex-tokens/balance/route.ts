@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { supabase } from '@/server/db/supabase';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,7 +13,10 @@ export async function GET(req: NextRequest) {
     // Nếu chưa có wallet_id, thử lấy từ address
     if (!wallet_id && wallet_address) {
       // Nếu có chain_type thì dùng, không thì lấy bất kỳ ví nào khớp address
-      let walletQuery = supabase.from('wallets').select('id').eq('address', wallet_address);
+      let walletQuery = supabase
+        .from('wallets')
+        .select('id')
+        .ilike('address', `${wallet_address.toLowerCase()}`);
       if (chain_type) walletQuery = walletQuery.eq('chain_type', chain_type);
       const { data: walletData, error: walletError } = await walletQuery.single();
       if (walletError || !walletData) {
@@ -30,7 +33,7 @@ export async function GET(req: NextRequest) {
       const { data: tokenData, error: tokenError } = await supabase
         .from('ex_tokens')
         .select('id')
-        .eq('address', ex_token_address)
+        .ilike('address', `${ex_token_address.toLowerCase()}`)
         .single();
       if (tokenError || !tokenData) {
         return NextResponse.json(
@@ -57,7 +60,15 @@ export async function GET(req: NextRequest) {
       .eq('wallet_id', wallet_id)
       .eq('ex_token_id', ex_token_id)
       .single();
+
     if (error) {
+      if (error.code === 'PGRST116') {
+        // No rows returned
+        return NextResponse.json(
+          { success: false, message: 'Không tìm thấy balance' },
+          { status: 404 }
+        );
+      }
       return NextResponse.json({ success: false, message: error.message }, { status: 500 });
     }
     if (!data) {

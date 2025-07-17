@@ -28,7 +28,7 @@ export const useMyFilledOrders = () => {
   const { user } = useAuthStore();
   const [totalPages, setTotalPages] = useState(0);
   const [filters, setFilters] = useState<IOfferFilter>({
-    limit: 5,
+    limit: 10,
     page: 1,
     sortField: 'created_at',
     sortOrder: 'desc',

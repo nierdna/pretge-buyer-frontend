@@ -500,7 +500,6 @@ export class OfferService {
         token_id: filters?.tokenId || undefined,
       },
     });
-    console.log('response', response.data);
     return response.data;
   }
 
@@ -531,6 +530,11 @@ export class OfferService {
         token_id: filters?.tokenId || undefined,
       },
     });
+    return response.data;
+  }
+
+  async getFlashSaleOffers(): Promise<any> {
+    const response = await axiosInstance.get('/flash-sale');
     return response.data;
   }
 }

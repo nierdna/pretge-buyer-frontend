@@ -48,6 +48,14 @@ export class AuthService {
         const user = await this.createUser(walletAddress);
         wallet = await this.createWallet(user.id, walletAddress, 'evm');
       } else {
+        if (wallet.roles.includes('seller')) {
+          return {
+            success: false,
+            message:
+              'This wallet is already registered as a seller. Please connect with another wallet.',
+          };
+        }
+
         // Get user for existing wallet
         const user = await this.getUserById(wallet.userId!);
         if (!user) {
@@ -109,6 +117,13 @@ export class AuthService {
         const user = await this.createUser(walletAddress);
         wallet = await this.createWallet(user.id, walletAddress, 'sol');
       } else {
+        if (wallet.roles.includes('seller')) {
+          return {
+            success: false,
+            message:
+              'This wallet is already registered as a seller. Please connect with another wallet.',
+          };
+        }
         // Get user for existing wallet
         const user = await this.getUserById(wallet.userId!);
         if (!user) {
@@ -212,6 +227,7 @@ export class AuthService {
       address: data.address,
       isPrimary: data.is_primary,
       createdAt: data.created_at,
+      roles: data.roles,
     } as Wallet;
   }
 

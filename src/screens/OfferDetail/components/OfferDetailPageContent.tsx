@@ -21,7 +21,7 @@ import { useWallet } from '@/hooks/useWallet';
 import { cn } from '@/lib/utils';
 import axiosInstance from '@/service/axios';
 import { useAuthStore } from '@/store/authStore';
-import { IOffer } from '@/types/offer';
+import { EOfferStatus, IOffer } from '@/types/offer';
 import { formatNumberShort } from '@/utils/helpers/number';
 import { normalizeNetworkName, transformToNumber } from '@/utils/helpers/string';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -123,9 +123,11 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
   const handleDeposit = async () => {
     setDepositLoading(true);
     try {
-      console.log('escrowContract', escrowContract);
-      console.log('tokenAddress', tokenAddress);
-      const txData = await escrowContract?.buildDeposit(tokenAddress!, buyQuantity);
+      const amount = isEligible
+        ? estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100)
+        : estimatedCost;
+
+      const txData = await escrowContract?.buildDeposit(tokenAddress!, amount);
       console.log('txData', txData);
       if (!txData) return;
       const tx = await wallet?.sendTransaction(txData);
@@ -429,14 +431,21 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
               Check Eligibility
             </Button>
           )} */}
-          <Button
-            onClick={handleBuy}
-            size="xl"
-            className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
-            disabled={buyQuantity === 0}
-          >
-            Buy Now
-          </Button>
+          {offer?.status === EOfferStatus.OPEN && (
+            <Button
+              onClick={handleBuy}
+              size="xl"
+              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+              disabled={buyQuantity === 0}
+            >
+              Buy Now
+            </Button>
+          )}
+          {offer?.status === EOfferStatus.CLOSED && (
+            <Button size="xl" variant={'destructive'} className="flex-1" disabled>
+              Offer Closed
+            </Button>
+          )}
         </div>
 
         {/* <Separator className="bg-gray-200" /> */}

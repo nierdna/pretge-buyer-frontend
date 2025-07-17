@@ -1,9 +1,9 @@
 import { Connection, PublicKey } from '@solana/web3.js';
 import { EscrowMarketClient } from 'escrow-market-sdk';
-import { IEscrow } from './types';
-import { TransactionSerializable } from 'lynx-reown-dapp-kit/types';
 import { SolanaContract } from 'lynx-reown-dapp-kit/solana';
+import { TransactionSerializable } from 'lynx-reown-dapp-kit/types';
 import { TokenSolana } from '../tokens/solana';
+import { IEscrow } from './types';
 
 export class EscrowSolana extends SolanaContract implements IEscrow {
   private client: EscrowMarketClient;
@@ -45,10 +45,8 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
     try {
       // Chuyển đổi địa chỉ token thành PublicKey
       const mint = new PublicKey(token);
-      console.log('this.connection.rpcEndpoint', this.connection.rpcEndpoint);
       const mintProgram = new TokenSolana(token, this.connection.rpcEndpoint);
       const decimals = await mintProgram.getDecimals();
-      console.log('decimals', decimals);
       // Tạo transaction deposit
       // Theo API của escrow-market-sdk, deposit cần feePayer (thường là người gửi)
       const tx = await this.client.deposit(
@@ -187,7 +185,6 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
           );
           const decimals = await tokenProgram.getDecimals();
           // Đối với sự kiện Deposit
-          console.log('event', event);
 
           return {
             found: true,

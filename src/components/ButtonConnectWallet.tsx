@@ -53,6 +53,11 @@ export const ButtonConnectWallet = () => {
                 Profile
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link className="w-full" href="/my-orders">
+                Orders History
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleConnectWallet}>Switch Wallet</DropdownMenuItem>
             <DropdownMenuItem
               className="justify-between"

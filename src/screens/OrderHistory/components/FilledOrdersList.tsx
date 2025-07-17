@@ -17,6 +17,7 @@ import { useMyFilledOrders } from '@/queries/useProfile';
 import { EOrderStatus } from '@/types/order';
 import { handleLinkTxHash } from '@/utils/helpers/getBlockUrlLink';
 import { formatNumberShort } from '@/utils/helpers/number';
+import { normalizeNetworkName } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
@@ -49,7 +50,7 @@ export default function FilledOrdersList() {
   return (
     <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
       <CardHeader className="p-6 pb-4">
-        <CardTitle className="text-xl">Your Filled Orders</CardTitle>
+        <CardTitle className="text-xl">Orders History</CardTitle>
       </CardHeader>
       <CardContent className="p-6 pt-0">
         {isLoading && <FilledOrdersListSkeleton />}
@@ -57,22 +58,43 @@ export default function FilledOrdersList() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Order ID</TableHead>
                 <TableHead>Time</TableHead>
+                <TableHead>Title</TableHead>
                 <TableHead>Token</TableHead>
-                <TableHead className="text-right">Quantity</TableHead>
-                <TableHead className="text-right">Price (USD)</TableHead>
+                <TableHead>Seller</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead className="text-right">Price</TableHead>
+                <TableHead className="text-right">Discount</TableHead>
+                <TableHead className="text-right">Value</TableHead>
                 <TableHead className="text-right">Status</TableHead>
                 <TableHead className="text-right">Txn</TableHead>
+                <TableHead className="text-right">Review</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {orders.map((order) => (
-                <TableRow key={order?.id}>
-                  <TableCell>{dayjs(order?.createdAt).format('HH:mm DD/MM/YY')}</TableCell>
-                  <TableCell className="font-medium">{order.offer?.tokens?.symbol}</TableCell>
+                <TableRow key={order?.id} className="font-medium">
+                  <TableCell className="text-green-600">#{order?.id.split('-')[0]}</TableCell>
                   <TableCell>
-                    <div className="flex items-center gap-2 justify-end">
-                      {formatNumberShort(order.amount)}
+                    <div className="flex flex-col gap-2">
+                      <div>{dayjs(order?.createdAt).format('DD/MM/YYYY')}</div>
+                      <div className="text-xs text-gray-500">
+                        {dayjs(order?.createdAt).format('HH:mm')}
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="min-w-40">
+                      <p className="break-words whitespace-normal text-green-600">
+                        {`${order?.offer?.title || ''} - ${order?.offer?.tokens?.symbol || ''} - ${
+                          normalizeNetworkName(order?.offer?.exToken?.network?.name) || ''
+                        }`}
+                      </p>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
                       <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
                         <Image
                           src={order.offer?.tokens?.logo || '/placeholder.svg'}
@@ -81,12 +103,38 @@ export default function FilledOrdersList() {
                           className="rounded-full object-cover"
                         />
                       </div>
+                      {order.offer?.tokens?.symbol}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-green-600">
+                    {order.offer?.sellerWallet?.user?.name}
+                  </TableCell>
+                  <TableCell className="text-center">{formatNumberShort(order.amount)}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center gap-2 justify-end">
+                      {formatNumberShort(order.offer?.price)}
+                      <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                        <Image
+                          src={order.offer?.exToken?.logo || '/placeholder.svg'}
+                          alt={`${order.offer?.exToken?.symbol} symbol`}
+                          fill
+                          className="rounded-full object-cover"
+                        />
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    {' '}
                     <div className="flex items-center gap-2 justify-end">
-                      {formatNumberShort(order.offer.price)}
+                      {formatNumberShort(order.offer?.promotion?.discountPercent)}%
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center gap-2 justify-end">
+                      {formatNumberShort(
+                        order.amount *
+                          order.offer?.price *
+                          (1 - (order.offer?.promotion?.discountPercent || 0) / 100)
+                      )}
                       <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
                         <Image
                           src={order.offer?.exToken?.logo || '/placeholder.svg'}
@@ -148,10 +196,15 @@ function FilledOrdersListSkeleton() {
     <Table>
       <TableHeader>
         <TableRow>
+          <TableHead>Order ID</TableHead>
           <TableHead>Time</TableHead>
+          <TableHead>Title</TableHead>
           <TableHead>Token</TableHead>
-          <TableHead className="text-right">Quantity</TableHead>
-          <TableHead className="text-right">Price (USD)</TableHead>
+          <TableHead>Seller</TableHead>
+          <TableHead>Amount</TableHead>
+          <TableHead className="text-right">Price</TableHead>
+          <TableHead className="text-right">Discount</TableHead>
+          <TableHead className="text-right">Value</TableHead>
           <TableHead className="text-right">Status</TableHead>
           <TableHead className="text-right">Txn</TableHead>
         </TableRow>
@@ -164,6 +217,21 @@ function FilledOrdersListSkeleton() {
             </TableCell>
             <TableCell>
               <Skeleton className="h-4 w-1/2" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-1/2" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-1/2" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-1/2" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-1/2" />
+            </TableCell>
+            <TableCell>
+              <Skeleton className="h-4 w-1/2 ml-auto" />
             </TableCell>
             <TableCell>
               <Skeleton className="h-4 w-1/2 ml-auto" />

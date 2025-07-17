@@ -28,7 +28,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
   const offerId = offer.id;
 
   return (
-    <Card className="bg-white/85 backdrop-blur-md shadow-lg hover:bg-white border-gray-300 hover:scale-[1.03] hover:shadow-xl transition-all duration-300 flex flex-col">
+    <Card className="bg-white/85 backdrop-blur-md shadow-lg hover:bg-white border-gray-300 hover:scale-[1.03] hover:shadow-xl transition-all duration-300 flex flex-col relative">
+      {/* {offer?.promotion?.isActive && (
+        <div className="absolute -top-3 -right-0">
+          <Badge variant="secondary" className="text-xs bg-orange-500 text-white">
+            -{offer?.promotion?.discountPercent}%
+          </Badge>
+        </div>
+      )} */}
       <CardHeader className="p-6 pb-4 flex-grow">
         {/* Block 1: Token Info (Left) and Price/Sold (Right) */}
         <div className="flex items-start justify-between gap-2">
@@ -67,11 +74,44 @@ export default function OfferCard({ offer }: OfferCardProps) {
             <div className="mt-1 text-xl font-medium">
               <span className="font-bold text-green-500">
                 $
-                {formatNumberShort(offer.price, {
-                  useShorterExpression: true,
-                })}
+                {offer?.promotion?.isActive
+                  ? formatNumberShort(
+                      offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
+                      {
+                        useShorterExpression: true,
+                      }
+                    )
+                  : formatNumberShort(offer.price, {
+                      useShorterExpression: true,
+                    })}
               </span>
             </div>
+            {offer?.promotion?.isActive && (
+              <div className="text-sm relative text-gray-500 flex items-center gap-1">
+                <span className="font-medium line-through">
+                  $
+                  {formatNumberShort(offer.price, {
+                    useShorterExpression: true,
+                  })}
+                </span>
+                {/* <span className="font-bold text-xl text-green-500">
+                  $
+                  {formatNumberShort(offer.price, {
+                    useShorterExpression: true,
+                  })}
+                </span> */}
+                {offer?.promotion?.isActive && (
+                  // <div className="absolute -top-3 -right-0">
+                  <Badge
+                    variant="secondary"
+                    className="text-xs bg-orange-500 text-white px-1.5 hover:bg-orange-600"
+                  >
+                    -{offer?.promotion?.discountPercent}%
+                  </Badge>
+                  // </div>
+                )}
+              </div>
+            )}
             <div className="mt-1 text-sm font-medium text-gray-500">
               Sold:{' '}
               <span className="font-semibold text-foreground">{`${formatNumberShort(offer.filled, {
@@ -154,16 +194,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           </div>
         </div>
-        {offer.status === EOfferStatus.OPEN && (
-          <Link href={`/offers/${offerId}`} className="w-full">
-            <Button className="w-full">View Offer</Button>
-          </Link>
-        )}
-        {offer.status === EOfferStatus.CLOSED && (
-          <Button className="w-full" disabled>
-            Offer Closed
-          </Button>
-        )}
+        <Link href={`/offers/${offerId}`} className="w-full">
+          {offer.status === EOfferStatus.OPEN && <Button className="w-full">View Offer</Button>}
+          {offer.status === EOfferStatus.CLOSED && (
+            <Button variant={'destructive'} className="w-full">
+              Offer Closed
+            </Button>
+          )}
+        </Link>
       </CardFooter>
     </Card>
   );

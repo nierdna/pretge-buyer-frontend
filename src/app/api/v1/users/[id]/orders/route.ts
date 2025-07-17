@@ -68,7 +68,6 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     // Extract wallet IDs
     const walletIds = wallets.map((wallet) => wallet.id);
 
-    // Step 2: Get orders where buyer_wallet_id is in the list of user's wallets
     let query = supabase
       .from('orders')
       .select(
@@ -113,11 +112,43 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       );
     }
 
+    // Get list of offer IDs from orders
+    const offerIds = orders?.map((order) => order.offer_id) || [];
+
+    // Query active promotions for these offers
+    const { data: promotions, error: promotionsError } = await supabase
+      .from('promotions')
+      .select('*')
+      .in('offer_id', offerIds)
+      .eq('is_active', true)
+      .order('created_at', { ascending: false })
+      .limit(1);
+
+    if (promotionsError) {
+      console.error('Error fetching promotions:', promotionsError);
+      return NextResponse.json(
+        { success: false, message: 'Failed to fetch promotions' },
+        { status: 500 }
+      );
+    }
+
+    // Map promotions to orders
+    const ordersWithPromotions = orders?.map((order) => {
+      const promotion = promotions?.find((p) => p.offer_id === order.offer_id);
+      return {
+        ...order,
+        offer: {
+          ...order.offer,
+          promotion: promotion || null,
+        },
+      };
+    });
+
     const totalPages = count ? Math.ceil(count / limit) : 0;
 
     return NextResponse.json({
       success: true,
-      data: orders || [],
+      data: ordersWithPromotions || [],
       pagination: {
         total: count || 0,
         page,

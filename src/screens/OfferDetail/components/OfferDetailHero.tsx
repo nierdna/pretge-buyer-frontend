@@ -55,7 +55,6 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
         },
       });
       setBalance(Number(res.data?.balance ?? 0));
-      console.log('Fetched ex token balance:', res.data?.balance);
     } catch (err) {
       console.error('Failed to fetch ex token balance', err);
       setBalance(0);
@@ -112,13 +111,9 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
   const handleDeposit = async () => {
     setDepositLoading(true);
     try {
-      console.log('escrowContract', escrowContract);
-      console.log('tokenAddress', tokenAddress);
       const txData = await escrowContract?.buildDeposit(tokenAddress!, buyQuantity);
-      console.log('txData', txData);
       if (!txData) return;
       const tx = await wallet?.sendTransaction(txData);
-      console.log('tx', tx);
       await new Promise((resolve) => setTimeout(resolve, 4000));
       if (!tx) return;
       // Call deposit-callback API
