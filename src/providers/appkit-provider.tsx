@@ -2,6 +2,7 @@
 
 import { chainConfigs } from '@/configs/chains';
 import { projectId } from '@/configs/env';
+import { isPrd } from '@/constants/global';
 import { EthersAdapter } from '@reown/appkit-adapter-ethers';
 import { SolanaAdapter } from '@reown/appkit-adapter-solana/react';
 import {
@@ -24,11 +25,14 @@ const metadata = {
   icons: ['https://avatars.mywebsite.com/'],
 };
 
+const listMainnet = [mainnet, base, solana, arbitrum];
+const listTestnet = [baseSepolia, solanaDevnet, arbitrumSepolia];
+
 // 3. Create the AppKit instance
 createAppKit({
   adapters: [new SolanaAdapter(), new EthersAdapter()],
   metadata,
-  networks: [mainnet, base, baseSepolia, solana, solanaDevnet, arbitrum, arbitrumSepolia],
+  networks: isPrd ? (listMainnet as any) : (listTestnet as any),
   projectId,
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration
