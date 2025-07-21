@@ -59,7 +59,7 @@ export default function TrendingTokenSection({
                     <div className="w-12 h-12 relative min-w-12 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
                       <Image
                         src={
-                          // token?.logo ||
+                          token?.logo ||
                           'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
                         }
                         alt={`${token?.symbol} symbol`}

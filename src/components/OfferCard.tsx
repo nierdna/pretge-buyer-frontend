@@ -44,6 +44,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
             <div className="w-12 h-12 relative min-w-12 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
               <Image
                 src={
+                  offer.tokens?.logo ||
                   'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
                 }
                 // src={tokenImage || '/placeholder.svg'}
@@ -139,6 +140,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
           <div className="flex items-end gap-1 h-6 font-semibold">
             <Image
               src={
+                offer.exToken?.logo ||
                 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
               }
               alt={`${offer.exToken?.symbol} symbol`}

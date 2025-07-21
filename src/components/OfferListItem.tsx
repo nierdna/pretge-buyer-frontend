@@ -24,6 +24,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
         <div className="w-8 h-8 xl:w-12 xl:h-12 relative min-w-8 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
           <Image
             src={
+              offer.tokens?.logo ||
               'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
             }
             // src={tokenImage || '/placeholder.svg'}
@@ -100,6 +101,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
             <Avatar className="h-4 w-4"></Avatar>
             <Image
               src={
+                offer.exToken?.logo ||
                 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
               }
               alt={`${offer.exToken?.symbol} symbol`}
