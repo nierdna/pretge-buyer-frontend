@@ -17,6 +17,7 @@ export interface INetwork {
   chainId: number;
   txHashUrl: string;
   addressUrl: string;
+  logo: string;
 }
 
 export interface IToken {
@@ -31,7 +32,7 @@ export interface IToken {
   symbol: string;
   tokenContract: string;
   updatedAt: string;
-  network: INetwork;
+  networks: INetwork;
   isHot: boolean;
   isNew: boolean;
   websiteUrl: string;

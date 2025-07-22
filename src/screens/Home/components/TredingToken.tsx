@@ -15,6 +15,8 @@ export default function TrendingTokenSection({
 }) {
   // Filter offers that have a 'status' property (e.g., "hot" or "new") to display in trending
 
+  console.log(trendingTokens);
+
   const renderBadge = (token: IToken) => {
     if (token.isHot) {
       return (
@@ -56,7 +58,7 @@ export default function TrendingTokenSection({
                 >
                   <div className="relative">
                     {renderBadge(token)}
-                    <div className="w-12 h-12 relative min-w-12 rounded-full bg-gray-300 flex-shrink-0 overflow-hidden">
+                    <div className="w-12 h-12 relative min-w-12 rounded-full bg-gray-300 flex-shrink-0">
                       <Image
                         src={
                           token?.logo ||
@@ -64,7 +66,14 @@ export default function TrendingTokenSection({
                         }
                         alt={`${token?.symbol} symbol`}
                         fill
-                        className="object-cover"
+                        className="object-cover rounded-full"
+                      />
+                      <Image
+                        src={token?.networks?.logo}
+                        alt={`${token?.symbol} symbol`}
+                        width={16}
+                        height={16}
+                        className="object-cover z-10 absolute -bottom-0 -right-0 min-w-4 min-h-4 rounded-full"
                       />
                     </div>
                   </div>

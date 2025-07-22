@@ -48,6 +48,10 @@ export default function FlashSale() {
     return null;
   }
 
+  if (flashSaleOffers?.length === 0) {
+    return null;
+  }
+
   return (
     <section className="container py-4 md:py-6 bg-neutral-900/90 backdrop-blur-lg rounded-lg shadow-2xl border border-neutral-700">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-4 gap-2">

@@ -273,7 +273,6 @@ export class AuthService {
         },
         kyc_status: 'pending',
         status: 'active',
-        roles: 'buyer',
       })
       .select()
       .single();
@@ -309,6 +308,7 @@ export class AuthService {
         chain_type: chainType,
         address,
         is_primary: true,
+        roles: 'buyer',
       })
       .select()
       .single();
