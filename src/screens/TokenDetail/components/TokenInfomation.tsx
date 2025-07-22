@@ -32,7 +32,7 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
               <CardTitle className="text-3xl font-bold">{token?.name}</CardTitle>
               <div className="flex items-center gap-2">
                 <Badge variant="secondary">{token?.symbol}</Badge>
-                <Badge variant="secondary">{normalizeNetworkName(token?.network?.name)}</Badge>
+                <Badge variant="secondary">{normalizeNetworkName(token?.networks?.name)}</Badge>
               </div>
             </div>
           </div>
