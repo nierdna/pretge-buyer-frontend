@@ -15,8 +15,6 @@ export default function TrendingTokenSection({
 }) {
   // Filter offers that have a 'status' property (e.g., "hot" or "new") to display in trending
 
-  console.log(trendingTokens);
-
   const renderBadge = (token: IToken) => {
     if (token.isHot) {
       return (

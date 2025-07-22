@@ -66,7 +66,6 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
         },
       });
       setBalance(Number(res.data?.balance ?? 0));
-      console.log('Fetched ex token balance:', res.data?.balance);
     } catch (err) {
       console.error('Failed to fetch ex token balance', err);
       setBalance(0);
@@ -128,10 +127,8 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
         : estimatedCost;
 
       const txData = await escrowContract?.buildDeposit(tokenAddress!, amount);
-      console.log('txData', txData);
       if (!txData) return;
       const tx = await wallet?.sendTransaction(txData);
-      console.log('tx', tx);
       await new Promise((resolve) => setTimeout(resolve, 4000));
       if (!tx) return;
       // Call deposit-callback API
@@ -140,7 +137,6 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
           tx_hash: tx || '0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef',
           chain_id: chainId,
         });
-        console.log('Deposit callback API called');
       } catch (err) {
         console.error('Deposit callback API failed', err);
       }
@@ -167,8 +163,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
         quantity: buyQuantity,
       };
       const res = await axiosInstance.post('orders', orderInput);
-      console.log('Order created (placeholder):', res.data);
-      alert('Order placed (placeholder)');
+      toast.success('Order placed successfully');
 
       // Refetch TransactionHistory data and reset page to 1
       await queryClient.invalidateQueries({
@@ -214,7 +209,6 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
         promotion_id: offer?.promotionId,
         address: address,
       });
-      console.log('res', res?.data?.data);
       if (res?.data?.data) {
         setIsEligible(true);
       } else {

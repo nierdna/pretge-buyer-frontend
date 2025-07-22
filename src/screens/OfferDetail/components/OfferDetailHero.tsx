@@ -26,6 +26,7 @@ import axios from 'axios';
 import { CheckCircle, Wallet } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 interface OfferDetailHeroProps {
   offer?: IOffer;
@@ -149,8 +150,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
         quantity: buyQuantity,
       };
       const res = await axiosInstance.post('orders', orderInput);
-      console.log('Order created (placeholder):', res.data);
-      alert('Order placed (placeholder)');
+      toast.success('Order placed successfully');
 
       // Refetch TransactionHistory data and reset page to 1
       await queryClient.invalidateQueries({

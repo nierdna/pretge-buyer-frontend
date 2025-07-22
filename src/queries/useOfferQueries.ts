@@ -237,7 +237,6 @@ export const useGetFlashSaleOffers = () => {
     queryFn: async () => {
       try {
         const response = await Service.offer.getFlashSaleOffers();
-        console.log('response', response);
         return response as IOffer[];
       } catch (error) {
         console.error('Error fetching flash sale offers:', error);

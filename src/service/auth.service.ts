@@ -84,7 +84,6 @@ class AuthService {
       timestamp,
       chainType,
     });
-    console.log('response', response);
 
     return response.data;
   }

@@ -23,7 +23,6 @@ export default function UserInfoSection() {
   const onSave = async (data: { name: string; avatar: string; description: string }) => {
     try {
       const response = await Service.auth.updateProfile(data);
-      console.log(response, 'response');
       if (response.success) {
         toast.success('Profile updated successfully');
         setUser({ ...user, ...response.data });

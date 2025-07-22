@@ -118,6 +118,7 @@ export async function GET(req: NextRequest) {
 
     const { data, error, count } = await query;
     if (error) {
+      console.error('Error fetching offers:', error);
       return NextResponse.json({ success: false, message: error.message }, { status: 500 });
     }
 
@@ -161,6 +162,7 @@ export async function GET(req: NextRequest) {
       },
     });
   } catch (err: any) {
+    console.error('Error fetching offers:', err);
     return NextResponse.json({ success: false, message: err.message }, { status: 500 });
   }
 }
