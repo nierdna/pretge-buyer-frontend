@@ -1,6 +1,5 @@
 'use client';
 
-import { Package2 } from 'lucide-react';
 import Link from 'next/link';
 import { ButtonConnectWallet } from '../ButtonConnectWallet';
 
@@ -11,8 +10,8 @@ export default function Header() {
       {/* White translucent background, increased blur and shadow */}
       <div className="container flex h-16 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 font-semibold" prefetch={false}>
-          <Package2 className="h-6 w-6" />
-          <span className="text-lg">Pre-Market Hub</span>
+          <img src="/logo.png" alt="PretGe Market" className="w-auto h-10 md:block hidden" />
+          <img src="/logo-mb.png" alt="PretGe Market" className="w-auto h-8 md:hidden block" />
         </Link>
         {/* <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <Link href="#" className="hover:text-primary" prefetch={false}>
