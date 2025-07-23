@@ -1,11 +1,11 @@
+import { ChainType } from '@/server/enums/chain';
 import { useLynxReown } from 'lynx-reown-dapp-kit';
 import { useMemo } from 'react';
 import { CONTRACTS } from '../contracts/contracts';
-import { IEscrow } from '../contracts/escrow/types';
 import { EscrowEvm } from '../contracts/escrow/evm';
 import { EscrowSolana } from '../contracts/escrow/solana';
+import { IEscrow } from '../contracts/escrow/types';
 import { useWallet } from './useWallet';
-import { ChainType } from '@/server/enums/chain';
 
 export const useEscrow = (
   chainId: string
@@ -25,13 +25,13 @@ export const useEscrow = (
 
     const contractAddress = CONTRACTS[chainId as keyof typeof CONTRACTS]?.ESCROW;
 
-    // Trường hợp Solana
+    // Solana case
     if (chain.chainType === ChainType.SOLANA) {
       if (!userAddress) return undefined;
       return new EscrowSolana(contractAddress, chain.rpc, userAddress);
     }
 
-    // Trường hợp EVM
+    // EVM case
     if (chain.chainType === ChainType.EVM) {
       const contractAddress = CONTRACTS[chainId as keyof typeof CONTRACTS]?.ESCROW;
       if (!contractAddress) return undefined;

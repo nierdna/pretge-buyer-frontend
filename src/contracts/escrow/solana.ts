@@ -43,21 +43,21 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
 
   async buildDeposit(token: string, amount: number): Promise<TransactionSerializable> {
     try {
-      // Chuyển đổi địa chỉ token thành PublicKey
+      // Convert token address to PublicKey
       const mint = new PublicKey(token);
       const mintProgram = new TokenSolana(token, this.connection.rpcEndpoint);
       const decimals = await mintProgram.getDecimals();
-      // Tạo transaction deposit
-      // Theo API của escrow-market-sdk, deposit cần feePayer (thường là người gửi)
+      // Create deposit transaction
+      // According to escrow-market-sdk API, deposit needs feePayer (usually the sender)
       const tx = await this.client.deposit(
         this.userPublicKey, // feePayer/depositor
-        mint, // Mint address của token
-        BigInt(Number(amount) * 10 ** decimals) // Số lượng token, cần convert sang BigInt
+        mint, // Mint address of token
+        BigInt(Number(amount) * 10 ** decimals) // Token amount, need to convert to BigInt
       );
 
       console.log('tx', tx);
 
-      // Chuyển đổi transaction sang định dạng TransactionSerializable
+      // Convert transaction to TransactionSerializable format
       return this.build(tx);
     } catch (error) {
       console.error('Error building deposit transaction:', error);
@@ -87,13 +87,13 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
     signature: string;
   }): Promise<TransactionSerializable> {
     try {
-      // Lấy config để có được operator
+      // Get config to obtain operator
       const config = await this.client.getConfig();
 
-      // Operator phải ký giao dịch settle theo API của escrow-market-sdk
+      // Operator must sign the settle transaction according to escrow-market-sdk API
       const operatorPubkey = config.operator;
 
-      // Các tham số cần thiết
+      // Required parameters
       const buyer = new PublicKey(buyerAddress);
       const seller = this.userPublicKey;
       const tokenTransferPubkey = new PublicKey(tokenTransfer);
@@ -104,16 +104,16 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
       const transferAmountDecimals = await tokenTransferProgram.getDecimals();
       const withdrawAmountDecimals = await tokenWithdrawProgram.getDecimals();
 
-      // Gọi API settle
+      // Call settle API
       const tx = await this.client.settle(
         operatorPubkey, // Operator public key
         id, // Deal ID
-        buyer, // Người mua
-        seller, // Người bán
-        tokenTransferPubkey, // Token chuyển đi
-        tokenWithdrawPubkey, // Token rút về
-        BigInt(Number(transferAmount) * 10 ** transferAmountDecimals), // Số lượng token chuyển đi
-        BigInt(Number(withdrawAmount) * 10 ** withdrawAmountDecimals) // Số lượng token rút về
+        buyer, // Buyer
+        seller, // Seller
+        tokenTransferPubkey, // Token to transfer
+        tokenWithdrawPubkey, // Token to withdraw
+        BigInt(Number(transferAmount) * 10 ** transferAmountDecimals), // Amount of tokens to transfer
+        BigInt(Number(withdrawAmount) * 10 ** withdrawAmountDecimals) // Amount of tokens to withdraw
       );
 
       return this.build(tx);
@@ -139,25 +139,25 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
     signature: string;
   }): Promise<TransactionSerializable> {
     try {
-      // Lấy config để có được operator
+      // Get config to obtain operator
       const config = await this.client.getConfig();
       const operatorPubkey = config.operator;
 
-      // Trong escrow-market-sdk, operatorCancel cần buyer address và token
-      // Lấy thông tin deal để có buyer
+      // In escrow-market-sdk, operatorCancel needs buyer address and token
+      // Get deal information to get buyer
       const deal = await this.client.getDeal(id);
       const buyer = deal ? deal.buyer : this.userPublicKey; // Fallback
       const tokenPubkey = new PublicKey(token);
       const tokenProgram = new TokenSolana(token, this.connection.rpcEndpoint);
       const decimals = await tokenProgram.getDecimals();
 
-      // Gọi API operatorCancel
+      // Call operatorCancel API
       const tx = await this.client.operatorCancel(
         operatorPubkey, // Operator public key
         id, // Deal ID
         buyer, // Buyer address
         tokenPubkey, // Token address
-        BigInt(Number(amount) * 10 ** decimals) // Số lượng token, dùng BigInt
+        BigInt(Number(amount) * 10 ** decimals) // Token amount, using BigInt
       );
 
       return this.build(tx);
@@ -167,7 +167,7 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
     }
   }
 
-  // Phương thức phân tích giao dịch
+  // Transaction parsing method
   async parseTransaction(signature: string): Promise<any> {
     try {
       const events = await this.client.parseEventsFromTransaction(signature);
@@ -176,7 +176,7 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
         return { found: false };
       }
 
-      // Xử lý từng loại sự kiện
+      // Process each type of event
       for (const event of events) {
         if (event.name === 'DepositEvent') {
           const tokenProgram = new TokenSolana(
@@ -184,7 +184,7 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
             this.connection.rpcEndpoint
           );
           const decimals = await tokenProgram.getDecimals();
-          // Đối với sự kiện Deposit
+          // For Deposit event
 
           return {
             found: true,
@@ -193,10 +193,10 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
             tokenAddress: event.data.token.toString(),
             rawAmount: event.data.amount.toNumber(),
             formattedAmount: (Number(event.data.amount) / 10 ** decimals).toString(),
-            // Không format amount ở đây, để client xử lý
+            // Don't format amount here, let the client handle it
           };
         } else if (event.name === 'SettleEvent') {
-          // Đối với sự kiện Settle
+          // For Settle event
           return {
             found: true,
             eventType: 'Settle',

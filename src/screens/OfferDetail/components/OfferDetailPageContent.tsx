@@ -24,6 +24,7 @@ import { useAuthStore } from '@/store/authStore';
 import { EOfferStatus, IOffer } from '@/types/offer';
 import { formatNumberShort } from '@/utils/helpers/number';
 import { normalizeNetworkName, transformToNumber } from '@/utils/helpers/string';
+import { useAppKit } from '@reown/appkit/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { CheckCircle, ChevronRight, Loader2, Minus, Plus, Wallet } from 'lucide-react';
@@ -42,6 +43,7 @@ interface OfferDetailPageContentProps {
 function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageContentProps) {
   const { walletAddress: address } = useAuthStore();
   const queryClient = useQueryClient();
+  const { open } = useAppKit();
 
   const [buyQuantity, setBuyQuantity] = useState(1);
   const [showDepositModal, setShowDepositModal] = useState(false);
@@ -66,8 +68,9 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
         },
       });
       setBalance(Number(res.data?.balance ?? 0));
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to fetch ex token balance', err);
+      toast.error(err?.message || 'Failed to fetch ex token balance');
       setBalance(0);
     }
   };
@@ -180,6 +183,10 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
   };
 
   const handleBuy = () => {
+    if (!address) {
+      open();
+      return;
+    }
     if (balance === null) {
       // Always use English for comments and console logs in code
       console.log('Balance not loaded yet');
@@ -317,6 +324,32 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
           <div className="flex items-center gap-4">
             <span className="text-gray-600 flex-shrink-0">Settle After TGE:</span>
             <span className="font-medium">{offer?.settleDuration} hours</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-gray-600 flex-shrink-0">Quantity:</span>
+            <div className="flex items-center gap-1">
+              <span className="font-medium">{formatNumberShort(offer?.quantity || 0)}</span>
+              <Image
+                src={offer?.tokens?.logo || '/placeholder.svg'}
+                alt={`${offer?.tokens?.symbol} symbol`}
+                width={16}
+                height={16}
+                className="rounded-full object-cover min-w-4 min-h-4"
+              />
+            </div>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="text-gray-600 flex-shrink-0">Sold:</span>
+            <div className="flex items-center gap-1">
+              <span className="font-medium">{formatNumberShort(offer?.filled || 0)}</span>
+              <Image
+                src={offer?.tokens?.logo || '/placeholder.svg'}
+                alt={`${offer?.tokens?.symbol} symbol`}
+                width={16}
+                height={16}
+                className="rounded-full object-cover min-w-4 min-h-4"
+              />
+            </div>
           </div>
         </div>
 
@@ -583,7 +616,7 @@ export default function OfferDetailPageContent({ offer }: OfferDetailPageContent
 
         {/* <div className="flex items-center justify-between border-t border-gray-200 pt-4 mt-4">
           <div className="flex items-center gap-4 text-sm text-gray-600">
-            <span>Chia sẻ:</span>
+            <span>Share:</span>
             <div className="flex gap-2">
               {offer?.sellerInfo?.twitterUrl && (
                 <Link
@@ -622,7 +655,7 @@ export default function OfferDetailPageContent({ offer }: OfferDetailPageContent
             className="flex items-center gap-1 text-shopee-red hover:bg-shopee-red/10"
           >
             <Heart className="h-5 w-5 fill-shopee-red" />
-            <span>Đã thích (16,4k)</span>
+            <span>Liked (16.4k)</span>
           </Button>
         </div> */}
       </div>

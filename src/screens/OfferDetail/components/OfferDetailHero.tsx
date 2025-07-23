@@ -44,7 +44,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
   const queryClient = useQueryClient();
   const estimatedCost = buyQuantity * Number(offer?.price || 0);
 
-  // Đưa fetchBalance ra ngoài useEffect để có thể gọi lại
+  // Move fetchBalance outside useEffect so it can be called again
   const fetchBalance = async () => {
     if (!address || !offer?.exToken?.address) return;
     try {
@@ -56,8 +56,9 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
         },
       });
       setBalance(Number(res.data?.balance ?? 0));
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to fetch ex token balance', err);
+      toast.error(err?.message || 'Failed to fetch ex token balance');
       setBalance(0);
     }
   };

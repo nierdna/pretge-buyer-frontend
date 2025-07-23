@@ -10,9 +10,9 @@ export async function GET(req: NextRequest) {
     const ex_token_address = searchParams.get('ex_token_address');
     const chain_type = searchParams.get('chain_type'); // optional, useful for wallet lookup
 
-    // Nếu chưa có wallet_id, thử lấy từ address
+    // If wallet_id is not available, try to get it from address
     if (!wallet_id && wallet_address) {
-      // Nếu có chain_type thì dùng, không thì lấy bất kỳ ví nào khớp address
+      // If chain_type is provided, use it, otherwise get any wallet matching the address
       let walletQuery = supabase
         .from('wallets')
         .select('id')
@@ -21,14 +21,14 @@ export async function GET(req: NextRequest) {
       const { data: walletData, error: walletError } = await walletQuery.single();
       if (walletError || !walletData) {
         return NextResponse.json(
-          { success: false, message: 'Không tìm thấy wallet với address này' },
+          { success: false, message: 'Wallet not found with this address' },
           { status: 404 }
         );
       }
       wallet_id = walletData.id;
     }
 
-    // Nếu chưa có ex_token_id, thử lấy từ address
+    // If ex_token_id is not available, try to get it from address
     if (!ex_token_id && ex_token_address) {
       const { data: tokenData, error: tokenError } = await supabase
         .from('ex_tokens')
@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
         .single();
       if (tokenError || !tokenData) {
         return NextResponse.json(
-          { success: false, message: 'Không tìm thấy ex_token với address này' },
+          { success: false, message: 'Ex_token not found with this address' },
           { status: 404 }
         );
       }
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: 'wallet_id và ex_token_id là bắt buộc (hoặc truyền address tương ứng)',
+          message: 'wallet_id and ex_token_id are required (or provide corresponding addresses)',
         },
         { status: 400 }
       );
@@ -65,7 +65,7 @@ export async function GET(req: NextRequest) {
       if (error.code === 'PGRST116') {
         // No rows returned
         return NextResponse.json(
-          { success: false, message: 'Không tìm thấy balance' },
+          { success: false, message: 'No token in wallet' },
           { status: 404 }
         );
       }

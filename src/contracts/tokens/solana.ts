@@ -1,6 +1,6 @@
 import { Connection, PublicKey } from '@solana/web3.js';
-import { IToken } from './types';
 import { TransactionSerializable } from 'lynx-reown-dapp-kit/types';
+import { IToken } from './types';
 
 export class TokenSolana implements IToken {
   private connection: Connection;
@@ -13,14 +13,14 @@ export class TokenSolana implements IToken {
 
   async getDecimals(): Promise<number> {
     try {
-      // Lấy thông tin về token mint
+      // Get information about token mint
       const mintInfo = await this.connection.getParsedAccountInfo(this.mint);
 
       if (!mintInfo.value || !mintInfo.value.data) {
-        throw new Error('Không tìm thấy thông tin token');
+        throw new Error('Token information not found');
       }
 
-      // @ts-ignore - Truy cập vào dữ liệu đã phân tích
+      // @ts-ignore - Access to parsed data
       const parsedData = mintInfo.value.data.parsed;
       return parsedData.info.decimals;
     } catch (error) {
@@ -30,12 +30,12 @@ export class TokenSolana implements IToken {
   }
 
   async getAllowance(owner: string, spender: string): Promise<number> {
-    // Theo yêu cầu, luôn trả về max number
+    // As required, always return max number
     return Number.MAX_SAFE_INTEGER;
   }
 
   async buildApprove(spender: string, amount: number): Promise<TransactionSerializable> {
-    // Theo yêu cầu, không cần triển khai buildApprove
-    throw new Error('Approve không cần thiết trên Solana');
+    // As required, no need to implement buildApprove
+    throw new Error('Approve is not necessary on Solana');
   }
 }

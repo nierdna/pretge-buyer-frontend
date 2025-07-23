@@ -1,8 +1,8 @@
-import { IEscrow } from '../escrow/types';
+import { ChainType } from '@/server/enums/chain';
+import { CONTRACTS } from '../contracts';
 import { EscrowEvm } from '../escrow/evm';
 import { EscrowSolana } from '../escrow/solana';
-import { CONTRACTS } from '../contracts';
-import { ChainType } from '@/server/enums/chain';
+import { IEscrow } from '../escrow/types';
 
 export class EscrowFactory {
   static create(
@@ -22,7 +22,7 @@ export class EscrowFactory {
         return new EscrowEvm(contractAddress, options.rpc);
 
       case ChainType.SOLANA:
-        // Kiểm tra các tham số bắt buộc
+        // Check required parameters
         if (!programId || !rpc || !userAddress) return undefined;
         return new EscrowSolana(programId, rpc, userAddress);
 

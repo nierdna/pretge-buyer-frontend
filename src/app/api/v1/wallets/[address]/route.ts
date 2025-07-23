@@ -1,15 +1,13 @@
 import { supabase } from '@/server/db/supabase';
-import { validateWalletAddress } from '@/server/utils/validation';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET /api/v1/wallets/[address]
 export async function GET(req: NextRequest, { params }: { params: Promise<{ address: string }> }) {
   try {
     // Validate address
-    const { address: addressParam } = await params;
-    const address = validateWalletAddress(addressParam);
+    const { address } = await params;
 
-    // Lấy thông tin ví (ưu tiên EVM, có thể mở rộng cho chain khác nếu cần)
+    // Get wallet information (prioritize EVM, can be extended for other chains if needed)
     const { data, error } = await supabase
       .from('wallets')
       .select('*')
@@ -20,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ addr
       return NextResponse.json({ success: false, message: 'Wallet not found' }, { status: 404 });
     }
 
-    // Trả về thông tin ví
+    // Return wallet information
     return NextResponse.json({
       success: true,
       data: {

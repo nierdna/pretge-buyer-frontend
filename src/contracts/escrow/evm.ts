@@ -1,8 +1,8 @@
+import { ethers, parseUnits } from 'ethers';
 import { EvmContract } from 'lynx-reown-dapp-kit/evm';
 import { ERC20_ABI, ESCROW_ABI } from '../../configs/contracts';
-import { IEscrow } from './types';
-import { ethers, parseUnits } from 'ethers';
 import { TokenEvm } from '../tokens/evm';
+import { IEscrow } from './types';
 
 export class EscrowEvm extends EvmContract implements IEscrow {
   private rpc: string;
@@ -136,7 +136,7 @@ export class EscrowEvm extends EvmContract implements IEscrow {
               userAddress = user;
               tokenAddress = token;
               rawAmount = amount.toString();
-              // Lấy decimals của token
+              // Get token decimals
               const tokenContract = new ethers.Contract(token, ERC20_ABI, this.provider);
               decimals = await tokenContract.decimals();
               // Format amount
@@ -155,7 +155,7 @@ export class EscrowEvm extends EvmContract implements IEscrow {
             }
           }
         } catch (e) {
-          // Không phải log của event Deposit hoặc Settle, bỏ qua
+          // Not a log of Deposit or Settle event, skip
         }
       }
     }
