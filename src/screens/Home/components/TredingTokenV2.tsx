@@ -127,7 +127,7 @@ export default function TredingTokenV2({
   const activeDotIndex = getActiveDotIndex();
 
   return (
-    <section className="py-4 md:py-6">
+    <section className="">
       <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
         <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>
