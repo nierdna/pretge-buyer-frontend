@@ -13,6 +13,13 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    // Validate: quantity must be greater than 0
+    if (quantity <= 0) {
+      return NextResponse.json(
+        { success: false, message: 'Quantity must be greater than 0' },
+        { status: 400 }
+      );
+    }
     // Lấy offer
     const { data: offer, error: offerError } = await supabase
       .from('offers')
@@ -25,9 +32,17 @@ export async function POST(req: NextRequest) {
         { status: 404 }
       );
     }
-    if (offer.quantity < quantity) {
+    // Validate: offer must have enough available quantity (quantity >= filled + requested)
+    if (offer.quantity < (offer.filled || 0) + quantity) {
       return NextResponse.json(
-        { success: false, message: 'Số lượng còn lại không đủ' },
+        { success: false, message: 'Not enough offer quantity available' },
+        { status: 400 }
+      );
+    }
+    // Validate: buyer cannot be the seller (if offer has seller_wallet_id field)
+    if (offer.seller_wallet_id && offer.seller_wallet_id === wallet_id) {
+      return NextResponse.json(
+        { success: false, message: 'Cannot buy your own offer' },
         { status: 400 }
       );
     }
