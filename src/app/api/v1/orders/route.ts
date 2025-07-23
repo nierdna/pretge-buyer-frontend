@@ -139,10 +139,12 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
-    // Trừ số lượng offer, tăng filled
+    // Trừ số lượng offer, tăng filled và cập nhật status nếu cần
+    const newFilled = (offer.filled || 0) + quantity;
+    const newStatus = newFilled >= offer.quantity ? 'closed' : offer.status;
     const { error: updateOfferError } = await supabase
       .from('offers')
-      .update({ filled: (offer.filled || 0) + quantity })
+      .update({ filled: newFilled, status: newStatus })
       .eq('id', offer_id);
     if (updateOfferError) {
       return NextResponse.json(
