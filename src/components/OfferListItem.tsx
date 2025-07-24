@@ -76,7 +76,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
             {offer?.promotion?.isActive && (
               // <div className="absolute -top-3 -right-0">
               <Badge
-                variant="secondary"
+                variant="outline"
                 className="text-xs bg-orange-500 text-white px-1.5 hover:bg-orange-600"
               >
                 -{offer?.promotion?.discountPercent}%

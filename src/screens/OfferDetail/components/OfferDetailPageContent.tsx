@@ -262,7 +262,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
         <div className="flex flex-col items-start gap-4 flex-shrink-0">
           {offer?.promotionId && (
             <Badge
-              variant="secondary"
+              variant="outline"
               className="w-fit bg-orange-500 hover:bg-orange-600 text-white px-2 py-0.5 text-xs font-bold"
             >
               Hot Deals

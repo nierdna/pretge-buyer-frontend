@@ -156,6 +156,9 @@ const config = {
         danger: {
           DEFAULT: '#F97373',
         },
+        warning: {
+          DEFAULT: '#FBBF24',
+        },
         info: {
           DEFAULT: '#60A5FA',
         },

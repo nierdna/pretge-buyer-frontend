@@ -10,7 +10,7 @@ interface UploadButtonProps {
   onUploadSuccess: (url: string) => void;
   onUploadError?: (error: string) => void;
   className?: string;
-  variant?: 'default' | 'outline' | 'secondary' | 'ghost';
+  variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg' | 'icon';
   disabled?: boolean;
   accept?: string;

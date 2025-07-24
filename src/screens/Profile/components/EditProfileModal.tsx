@@ -88,7 +88,7 @@ export default function EditProfileModal({
                 <UploadButton
                   onUploadSuccess={handleAvatarUploadSuccess}
                   onUploadError={handleAvatarUploadError}
-                  variant="secondary"
+                  variant="outline"
                   size="sm"
                   className="h-24 w-24 rounded-full p-0"
                   accept="image/*"

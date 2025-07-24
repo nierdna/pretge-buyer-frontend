@@ -80,10 +80,9 @@ export default function FilledOrdersList() {
     }
     if (order?.review?.status === 'pending') return <Badge variant="info">Pending</Badge>;
     if (order?.review?.status === 'approved') return <Badge variant="success">Reviewed</Badge>;
-    if (order?.review?.status === 'rejected') return <Badge variant="error">Rejected</Badge>;
+    if (order?.review?.status === 'rejected') return <Badge variant="danger">Rejected</Badge>;
     return (
       <Button
-        variant="primary"
         size="sm"
         onClick={() => handleOpenReviewModal(order)}
         className="bg-orange-500 hover:bg-orange-600"
