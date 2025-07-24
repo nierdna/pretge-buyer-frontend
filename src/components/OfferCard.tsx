@@ -1,16 +1,20 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import Separator from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
-import { EOfferStatus, IOffer } from '@/types/offer';
+import { IOffer } from '@/types/offer';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
-import { formatNumberShort } from '@/utils/helpers/number';
-import { normalizeNetworkName, truncateAddress } from '@/utils/helpers/string';
-import { Star } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link'; // Import Link
+import { div, formatNumberShort, minus } from '@/utils/helpers/number';
+import { truncateAddress } from '@/utils/helpers/string';
+import { Dot, Star } from 'lucide-react';
+import { Badge } from './ui/badge';
+import { Progress } from './ui/progress';
 import { Skeleton } from './ui/skeleton';
 
 interface OfferCardProps {
@@ -28,7 +32,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
   const offerId = offer.id;
 
   return (
-    <Card className="backdrop-blur-md hover:scale-[1.015] transition-all duration-300 flex flex-col relative">
+    <Card className="backdrop-blur-md hover:scale-[1.015] transition-all p-3 duration-300 flex flex-col relative">
       {/* {offer?.promotion?.isActive && (
         <div className="absolute -top-3 -right-0">
           <Badge className="text-xs bg-orange-500 text-white">
@@ -36,10 +40,35 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </Badge>
         </div>
       )} */}
-      <CardHeader className="p-6 pb-4 flex-grow">
-        {/* Block 1: Token Info (Left) and Price/Sold (Right) */}
+      <div className="relative">
+        <img
+          src={offer?.imageUrl || offer.tokens?.bannerUrl || offer.tokens?.logo || '/logo-mb.png'}
+          alt={`${offer.tokens?.symbol} symbol`}
+          className="object-cover w-full h-64 border-line border rounded-2xl"
+        />
+        {!offer?.promotion?.isActive && (
+          <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
+            -{offer?.promotion?.discountPercent || 20}%
+          </Badge>
+        )}
+      </div>
+      <CardHeader className="p-3">
+        <div className="flex flex-col gap-2">
+          {/* <div className="text-content text-sm">
+            {dayjs(offer.createdAt).format('MMM DD, YYYY - HH:mm A')}
+          </div> */}
+          <CardTitle className="text-lg w-full truncate">
+            {offer?.title || offer?.tokens?.symbol}
+          </CardTitle>
+
+          <CardDescription className="text-sm line-clamp-2 text-content truncate">
+            {offer?.description || 'No description'}
+          </CardDescription>
+        </div>
+      </CardHeader>
+      <Separator className="w-full" />
+      {/* <CardHeader className="p-6 pb-4 flex-grow">
         <div className="flex items-start justify-between gap-2">
-          {/* Left side: Token Image, Symbol, Network */}
           <div className="flex items-start gap-3 flex-grow">
             <div className="w-12 h-12 relative min-w-12 rounded-full overflow-hidden bg-secondary-foreground flex-shrink-0">
               <Image
@@ -47,7 +76,6 @@ export default function OfferCard({ offer }: OfferCardProps) {
                   offer.tokens?.logo ||
                   'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
                 }
-                // src={tokenImage || '/placeholder.svg'}
                 alt={`${offer.tokens?.symbol} symbol`}
                 fill
                 className="object-cover"
@@ -70,7 +98,6 @@ export default function OfferCard({ offer }: OfferCardProps) {
             </div>
           </div>
 
-          {/* Right side: Price and Sold Amount */}
           <div className="flex flex-col items-end text-right flex-shrink-0">
             <div className="mt-1 text-xl font-medium">
               <span className="font-bold text-green-500">
@@ -95,21 +122,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
                     useShorterExpression: true,
                   })}
                 </span>
-                {/* <span className="font-bold text-xl text-green-500">
-                  $
-                  {formatNumberShort(offer.price, {
-                    useShorterExpression: true,
-                  })}
-                </span> */}
+
                 {offer?.promotion?.isActive && (
-                  // <div className="absolute -top-3 -right-0">
                   <Badge
                     variant="outline"
                     className="text-xs bg-orange-500 text-white px-1.5 hover:bg-orange-600"
                   >
                     -{offer?.promotion?.discountPercent}%
                   </Badge>
-                  // </div>
                 )}
               </div>
             )}
@@ -121,11 +141,42 @@ export default function OfferCard({ offer }: OfferCardProps) {
             </div>
           </div>
         </div>
-      </CardHeader>
-      <Separator className="w-full bg-gray-200" />
-      <CardContent className="p-6 grid grid-cols-2 gap-4 text-sm">
-        {/* Block 1: Total Amount */}
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+      </CardHeader> */}
+      <CardContent className="p-3 flex flex-col gap-4 text-sm">
+        <div className="flex items-center gap-4 justify-between">
+          <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(70%)]">
+            <div className="text-xs text-content inline-flex items-center">
+              <span>
+                {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
+                  maxDecimalCount: 0,
+                })}
+                %
+              </span>
+              <Dot className="text-content" size={16} />
+              {minus(offer.quantity, offer.filled)} {offer.tokens?.symbol} left
+            </div>
+            <div className="h-2 w-full">
+              <Progress
+                value={div(Number(offer.filled), Number(offer.quantity)) * 100}
+                // value={50}
+              />
+            </div>
+          </div>
+          <span className="text-3xl leading-none">
+            $
+            {offer?.promotion?.isActive
+              ? formatNumberShort(
+                  offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
+                  {
+                    useShorterExpression: true,
+                  }
+                )
+              : formatNumberShort(offer.price, {
+                  useShorterExpression: true,
+                })}
+          </span>
+        </div>
+        {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Total Amount</span>
           <span className="text-base font-bold text-primary">
             {formatNumberShort(offer.quantity, {
@@ -134,7 +185,6 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </span>
         </div>
 
-        {/* Block 2: Payment with */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Payment with</span>
           <div className="flex items-end gap-1 h-6 font-bold">
@@ -151,7 +201,6 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </div>
         </div>
 
-        {/* Block 3: Collateral */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Collateral</span>
           <span
@@ -159,7 +208,6 @@ export default function OfferCard({ offer }: OfferCardProps) {
           >{`${offer.collateralPercent}%`}</span>
         </div>
 
-        {/* Block 4: Settle After TGE */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Settle After TGE</span>
           <span className="text-base font-bold">
@@ -171,34 +219,36 @@ export default function OfferCard({ offer }: OfferCardProps) {
                 }`
               : 'N/A'}
           </span>
-        </div>
+        </div> */}
       </CardContent>
       <Separator className="w-full" />
-      <CardFooter className="p-6 flex flex-col items-start gap-4 pt-4">
+      <CardFooter className="p-3 pb-2 flex flex-col items-start gap-4 pt-4">
         {/* Block 3: Seller Info */}
         <div className="flex items-center gap-2 w-full">
           <Avatar className="h-8 w-8 flex-shrink-0">
             <AvatarImage src={getFallbackAvatar(offer.sellerWallet.address)} />
           </Avatar>
           <div className="grid gap-0.5 min-w-0 flex-grow">
-            <div className="font-bold truncate">{truncateAddress(offer.sellerWallet.address)}</div>
+            <div className="font-bold truncate">
+              {truncateAddress(offer.sellerWallet?.user?.name)}
+            </div>
             {/* <div className="text-xs text-gray-500 truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
           </div>
           <div className="flex items-center gap-0.5 ml-auto flex-shrink-0">
-            <span className="font-bold text-sm">
+            <span className="text-sm leading-none mt-1">
               {Number(offer.sellerWallet?.user?.rating || 0)}
             </span>
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
           </div>
         </div>
-        <Link href={`/offers/${offerId}`} className="w-full">
+        {/* <Link href={`/offers/${offerId}`} className="w-full">
           {offer.status === EOfferStatus.OPEN && <Button className="w-full">View Offer</Button>}
           {offer.status === EOfferStatus.CLOSED && (
             <Button variant={'danger'} className="w-full">
               Offer Closed
             </Button>
           )}
-        </Link>
+        </Link> */}
       </CardFooter>
     </Card>
   );
