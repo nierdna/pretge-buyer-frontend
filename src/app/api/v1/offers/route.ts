@@ -31,7 +31,16 @@ export async function GET(req: NextRequest) {
       }
       tokenIds = (tokens || []).map((t: any) => t.id);
       if (tokenIds.length === 0) {
-        return NextResponse.json({ success: true, data: [], total: 0, page, limit, totalPages: 0 });
+        return NextResponse.json({
+          success: true,
+          data: [],
+          pagination: {
+            total: 0,
+            page,
+            limit,
+            totalPages: 0,
+          },
+        });
       }
     }
 
@@ -78,10 +87,12 @@ export async function GET(req: NextRequest) {
           return NextResponse.json({
             success: true,
             data: [],
-            total: 0,
-            page,
-            limit,
-            totalPages: 0,
+            pagination: {
+              total: 0,
+              page,
+              limit,
+              totalPages: 0,
+            },
           });
         }
       }

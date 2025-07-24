@@ -72,7 +72,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
       }
     };
     return (
-      <Card className="bg-white/95 backdrop-blur-md w-full shadow-2xl border-gray-300 overflow-x-auto">
+      <Card className="overflow-x-auto">
         <CardHeader className="p-6 pb-4">
           <CardTitle className="text-xl">Transaction History</CardTitle>
         </CardHeader>

@@ -1,8 +1,13 @@
 'use client';
 
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { useGetOfferById } from '@/queries';
 import { useRef } from 'react';
-import OfferDetailContentSkeleton from './components/OfferDetailContentSkeleton';
 import OfferDetailPageContent from './components/OfferDetailPageContent';
 import SellerInfoSection from './components/SellerInfoSection';
 import SellerInfoSectionSkeleton from './components/SellerInfoSectionSkeleton';
@@ -24,40 +29,53 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
   // }
 
   return (
-    <div className="grid gap-8 w-full">
-      {/* <div className="lg:col-span-2">
-        <OfferDetailHero
-          offer={offer}
-          onOrderPlaced={() => {
-            // Reset TransactionHistory to first page and refetch
-            transactionHistoryRef.current?.resetToFirstPage();
-          }}
-        />
-      </div>
-
-      <div className="lg:col-span-1">
-        <SellerInfoSection seller={offer?.sellerWallet} />
-      </div> */}
-      {isLoading ? (
-        <OfferDetailContentSkeleton />
-      ) : (
+    <section className="flex-1">
+      <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator className="flex items-center" />
+        {/* <BreadcrumbItem>Token Detail</BreadcrumbItem>
+        <BreadcrumbSeparator className="flex items-center" /> */}
+        <BreadcrumbItem>{offer?.tokens?.symbol.toUpperCase()}</BreadcrumbItem>
+      </Breadcrumb>
+      <div className="grid grid-cols-[384px_1fr] gap-6 w-full">
         <OfferDetailPageContent
           offer={offer}
           onOrderPlaced={() => {
-            // Reset TransactionHistory to first page and refetch
             transactionHistoryRef.current?.resetToFirstPage();
           }}
         />
-      )}
+        <div className="flex flex-col gap-8 w-full">
+          {isLoading ? (
+            <SellerInfoSectionSkeleton />
+          ) : (
+            <SellerInfoSection seller={offer?.sellerWallet} />
+          )}
+          <TransactionHistory ref={transactionHistoryRef} offerId={id} />
+        </div>
+      </div>
+      {/* <div className="grid gap-8 w-full">
+        {isLoading ? (
+          <OfferDetailContentSkeleton />
+        ) : (
+          <OfferDetailPageContent
+            offer={offer}
+            onOrderPlaced={() => {
+              // Reset TransactionHistory to first page and refetch
+              transactionHistoryRef.current?.resetToFirstPage();
+            }}
+          />
+        )}
 
-      {/* Section 3: Transaction History (full width below other sections) */}
-      <TransactionHistory ref={transactionHistoryRef} offerId={id} />
-      {isLoading ? (
-        <SellerInfoSectionSkeleton />
-      ) : (
-        <SellerInfoSection seller={offer?.sellerWallet} />
-      )}
-    </div>
+        <TransactionHistory ref={transactionHistoryRef} offerId={id} />
+        {isLoading ? (
+          <SellerInfoSectionSkeleton />
+        ) : (
+          <SellerInfoSection seller={offer?.sellerWallet} />
+        )}
+      </div> */}
+    </section>
   );
   // return <div>OfferDetailV2</div>;
 }

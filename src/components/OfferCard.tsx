@@ -13,6 +13,7 @@ import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { div, formatNumberShort, minus } from '@/utils/helpers/number';
 import { truncateAddress } from '@/utils/helpers/string';
 import { Dot, Star } from 'lucide-react';
+import Link from 'next/link';
 import { Badge } from './ui/badge';
 import { Progress } from './ui/progress';
 import { Skeleton } from './ui/skeleton';
@@ -32,42 +33,43 @@ export default function OfferCard({ offer }: OfferCardProps) {
   const offerId = offer.id;
 
   return (
-    <Card className="backdrop-blur-md hover:scale-[1.015] transition-all p-3 duration-300 flex flex-col relative">
-      {/* {offer?.promotion?.isActive && (
+    <Link href={`/offers/${offerId}`} className="cursor-pointer">
+      <Card className="backdrop-blur-md hover:scale-[1.015] hover:bg-primary-foreground transition-all p-3 duration-300 flex flex-col relative">
+        {/* {offer?.promotion?.isActive && (
         <div className="absolute -top-3 -right-0">
           <Badge className="text-xs bg-orange-500 text-white">
             -{offer?.promotion?.discountPercent}%
           </Badge>
         </div>
       )} */}
-      <div className="relative">
-        <img
-          src={offer?.imageUrl || offer.tokens?.bannerUrl || offer.tokens?.logo || '/logo-mb.png'}
-          alt={`${offer.tokens?.symbol} symbol`}
-          className="object-cover w-full h-64 border-line border rounded-2xl"
-        />
-        {!offer?.promotion?.isActive && (
-          <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
-            -{offer?.promotion?.discountPercent || 20}%
-          </Badge>
-        )}
-      </div>
-      <CardHeader className="p-3">
-        <div className="flex flex-col gap-2">
-          {/* <div className="text-content text-sm">
+        <div className="relative">
+          <img
+            src={offer?.imageUrl || offer.tokens?.bannerUrl || offer.tokens?.logo || '/logo-mb.png'}
+            alt={`${offer.tokens?.symbol} symbol`}
+            className="object-cover w-full h-64 border-line border rounded-2xl"
+          />
+          {!offer?.promotion?.isActive && (
+            <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
+              -{offer?.promotion?.discountPercent || 20}%
+            </Badge>
+          )}
+        </div>
+        <CardHeader className="p-3">
+          <div className="flex flex-col gap-2">
+            {/* <div className="text-content text-sm">
             {dayjs(offer.createdAt).format('MMM DD, YYYY - HH:mm A')}
           </div> */}
-          <CardTitle className="text-lg w-full truncate">
-            {offer?.title || offer?.tokens?.symbol}
-          </CardTitle>
+            <CardTitle className="text-lg w-full truncate">
+              {offer?.title || offer?.tokens?.symbol}
+            </CardTitle>
 
-          <CardDescription className="text-sm line-clamp-2 text-content truncate">
-            {offer?.description || 'No description'}
-          </CardDescription>
-        </div>
-      </CardHeader>
-      <Separator className="w-full" />
-      {/* <CardHeader className="p-6 pb-4 flex-grow">
+            <CardDescription className="text-sm line-clamp-2 text-content truncate">
+              {offer?.description || 'No description'}
+            </CardDescription>
+          </div>
+        </CardHeader>
+        <Separator className="w-full" />
+        {/* <CardHeader className="p-6 pb-4 flex-grow">
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-start gap-3 flex-grow">
             <div className="w-12 h-12 relative min-w-12 rounded-full overflow-hidden bg-secondary-foreground flex-shrink-0">
@@ -142,41 +144,41 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </div>
         </div>
       </CardHeader> */}
-      <CardContent className="p-3 flex flex-col gap-4 text-sm">
-        <div className="flex items-center gap-4 justify-between">
-          <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(70%)]">
-            <div className="text-xs text-content inline-flex items-center">
-              <span>
-                {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
-                  maxDecimalCount: 0,
-                })}
-                %
-              </span>
-              <Dot className="text-content" size={16} />
-              {minus(offer.quantity, offer.filled)} {offer.tokens?.symbol} left
+        <CardContent className="p-3 flex flex-col gap-4 text-sm">
+          <div className="flex items-center gap-4 justify-between">
+            <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(70%)]">
+              <div className="text-xs text-content inline-flex items-center">
+                <span>
+                  {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
+                    maxDecimalCount: 0,
+                  })}
+                  %
+                </span>
+                <Dot className="text-content" size={16} />
+                {minus(offer.quantity, offer.filled)} {offer.tokens?.symbol} left
+              </div>
+              <div className="h-2 w-full">
+                <Progress
+                  value={div(Number(offer.filled), Number(offer.quantity)) * 100}
+                  // value={50}
+                />
+              </div>
             </div>
-            <div className="h-2 w-full">
-              <Progress
-                value={div(Number(offer.filled), Number(offer.quantity)) * 100}
-                // value={50}
-              />
-            </div>
-          </div>
-          <span className="text-3xl leading-none">
-            $
-            {offer?.promotion?.isActive
-              ? formatNumberShort(
-                  offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
-                  {
+            <span className="text-3xl leading-none">
+              $
+              {offer?.promotion?.isActive
+                ? formatNumberShort(
+                    offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
+                    {
+                      useShorterExpression: true,
+                    }
+                  )
+                : formatNumberShort(offer.price, {
                     useShorterExpression: true,
-                  }
-                )
-              : formatNumberShort(offer.price, {
-                  useShorterExpression: true,
-                })}
-          </span>
-        </div>
-        {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+                  })}
+            </span>
+          </div>
+          {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Total Amount</span>
           <span className="text-base font-bold text-primary">
             {formatNumberShort(offer.quantity, {
@@ -220,28 +222,28 @@ export default function OfferCard({ offer }: OfferCardProps) {
               : 'N/A'}
           </span>
         </div> */}
-      </CardContent>
-      <Separator className="w-full" />
-      <CardFooter className="p-3 pb-2 flex flex-col items-start gap-4 pt-4">
-        {/* Block 3: Seller Info */}
-        <div className="flex items-center gap-2 w-full">
-          <Avatar className="h-8 w-8 flex-shrink-0">
-            <AvatarImage src={getFallbackAvatar(offer.sellerWallet.address)} />
-          </Avatar>
-          <div className="grid gap-0.5 min-w-0 flex-grow">
-            <div className="font-bold truncate">
-              {truncateAddress(offer.sellerWallet?.user?.name)}
+        </CardContent>
+        <Separator className="w-full" />
+        <CardFooter className="p-3 pb-2 flex flex-col items-start gap-4 pt-4">
+          {/* Block 3: Seller Info */}
+          <div className="flex items-center gap-2 w-full">
+            <Avatar className="h-8 w-8 flex-shrink-0">
+              <AvatarImage src={getFallbackAvatar(offer.sellerWallet.address)} />
+            </Avatar>
+            <div className="grid gap-0.5 min-w-0 flex-grow">
+              <div className="font-bold truncate">
+                {truncateAddress(offer.sellerWallet?.user?.name)}
+              </div>
+              {/* <div className="text-xs text-gray-500 truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
             </div>
-            {/* <div className="text-xs text-gray-500 truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
+            <div className="flex items-center gap-0.5 ml-auto flex-shrink-0">
+              <span className="text-sm leading-none mt-1">
+                {Number(offer.sellerWallet?.user?.rating || 0)}
+              </span>
+              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+            </div>
           </div>
-          <div className="flex items-center gap-0.5 ml-auto flex-shrink-0">
-            <span className="text-sm leading-none mt-1">
-              {Number(offer.sellerWallet?.user?.rating || 0)}
-            </span>
-            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-          </div>
-        </div>
-        {/* <Link href={`/offers/${offerId}`} className="w-full">
+          {/* <Link href={`/offers/${offerId}`} className="w-full">
           {offer.status === EOfferStatus.OPEN && <Button className="w-full">View Offer</Button>}
           {offer.status === EOfferStatus.CLOSED && (
             <Button variant={'danger'} className="w-full">
@@ -249,8 +251,9 @@ export default function OfferCard({ offer }: OfferCardProps) {
             </Button>
           )}
         </Link> */}
-      </CardFooter>
-    </Card>
+        </CardFooter>
+      </Card>
+    </Link>
   );
 }
 
