@@ -9,7 +9,7 @@ export async function GET(
   console.log('symbol', symbol);
   const { data, error } = await supabase
     .from('tokens')
-    .select('*,network:network_id(*)')
+    .select('*,networks:network_id(*)')
     .or(`symbol.ilike.${symbol}`)
     .single();
   if (error) {

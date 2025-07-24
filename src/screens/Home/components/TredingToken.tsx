@@ -18,14 +18,14 @@ export default function TrendingTokenSection({
   const renderBadge = (token: IToken) => {
     if (token.isHot) {
       return (
-        <Badge className="bg-red-500 absolute -top-2 -right-3.5 text-2xs font-semibold px-2 py-0.5 z-10 text-white">
+        <Badge className="bg-red-500 absolute -top-2 -right-3.5 text-2xs font-bold px-2 py-0.5 z-10 text-white">
           HOT
         </Badge>
       );
     }
     if (token.isNew) {
       return (
-        <Badge className="bg-blue-500 absolute -top-2 -right-3.5 text-2xs font-semibold px-2 py-0.5 z-10 text-white">
+        <Badge className="bg-blue-500 absolute -top-2 -right-3.5 text-2xs font-bold px-2 py-0.5 z-10 text-white">
           NEW
         </Badge>
       );

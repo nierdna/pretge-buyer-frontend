@@ -35,7 +35,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
         </div>
         <div className="grid gap-0.5">
           <div className="font-bold text-lg truncate">{offer.tokens?.symbol}</div>
-          <Badge variant="secondary" className="w-fit text-xs">
+          <Badge className="w-fit text-xs">
             {normalizeNetworkName(offer.exToken?.network?.name)}
           </Badge>
         </div>
@@ -87,7 +87,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
         )}
         <span className="text-xs mt-1 text-gray-600">
           Sold:{' '}
-          <span className="font-semibold text-foreground">
+          <span className="font-bold text-foreground">
             {formatNumberShort(offer.filled, { useShorterExpression: true })}
           </span>
         </span>
@@ -138,11 +138,11 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
             </AvatarFallback> */}
           </Avatar>
           <div className="grid gap-0.5">
-            <div className="font-semibold text-sm truncate">
+            <div className="font-bold text-sm truncate">
               {truncateAddress(offer.sellerWallet.address)}
             </div>
             <div className="flex items-center gap-0.5 text-sm text-gray-500">
-              <span className="font-semibold">{Number(offer.sellerWallet?.user?.rating || 0)}</span>
+              <span className="font-bold">{Number(offer.sellerWallet?.user?.rating || 0)}</span>
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
             </div>
           </div>

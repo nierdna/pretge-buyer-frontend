@@ -39,7 +39,7 @@ export default function TredingTokenV2Skeleton() {
 
   return (
     <section className="">
-      <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
+      <Card className="bg-secondary-foreground backdrop-blur-md border-line">
         <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>
           <TrendingUp className="h-6 w-6 text-green-500" />

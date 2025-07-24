@@ -1,6 +1,6 @@
 'use client';
-import { useState } from 'react';
 import axios from 'axios';
+import { useState } from 'react';
 
 const WALLET_TYPES = [
   { label: 'Base (EVM)', value: 'evm', icon: '🦊' },
@@ -125,7 +125,7 @@ export default function AuthPage() {
             {WALLET_TYPES.map((w) => (
               <button
                 key={w.value}
-                className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition text-base font-semibold shadow-sm
+                className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition text-base font-bold shadow-sm
                   ${
                     chainType === w.value
                       ? 'bg-blue-600 text-white border-blue-500'
@@ -144,7 +144,7 @@ export default function AuthPage() {
         </div>
         <div className="w-full mb-4 flex flex-col items-center">
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold w-full transition"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
             onClick={connectWallet}
             disabled={loading}
             type="button"
@@ -159,7 +159,7 @@ export default function AuthPage() {
         </div>
         <div className="w-full mb-4">
           <button
-            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold w-full transition"
+            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
             onClick={handleLogin}
             disabled={loading || !address}
             type="button"
@@ -174,12 +174,10 @@ export default function AuthPage() {
           </div>
         )}
         {status && (
-          <div className="mt-4 text-sm text-green-400 font-semibold w-full text-center">
-            {status}
-          </div>
+          <div className="mt-4 text-sm text-green-400 font-bold w-full text-center">{status}</div>
         )}
         {error && (
-          <div className="mt-4 text-sm text-red-400 font-semibold w-full text-center">{error}</div>
+          <div className="mt-4 text-sm text-red-400 font-bold w-full text-center">{error}</div>
         )}
       </div>
     </div>

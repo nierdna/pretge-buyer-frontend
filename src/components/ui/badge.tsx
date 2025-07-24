@@ -4,20 +4,15 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = cva(
-  'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+  'inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-bold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
       variant: {
-        default: 'border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80',
-        secondary:
-          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
-        destructive:
-          'border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80',
-        outline: 'text-foreground',
-        info: 'border-transparent bg-blue-500/20 text-blue-500 hover:bg-blue-500/30',
-        success: 'border-transparent bg-green-500/20 text-green-500 hover:bg-green-500/30',
-        warning: 'border-transparent bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/30',
-        error: 'border-transparent bg-red-500/20 text-red-500 hover:bg-red-500/30',
+        default: 'bg-secondary text-primary shadow hover:bg-secondary/80 disabled:bg-secondary',
+        success: 'bg-success text-secondary shadow hover:bg-success/80 disabled:bg-success',
+        danger: 'bg-danger text-secondary shadow hover:bg-danger/80 disabled:bg-danger',
+        outline:
+          'border bg-primary-foreground border-line text-secondary shadow-sm hover:bg-primary-hover disabled:bg-transparent',
       },
     },
     defaultVariants: {

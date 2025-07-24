@@ -124,6 +124,10 @@ const config = {
       screens: {
         mb: '480px',
       },
+      fontFamily: {
+        sans: ['Helvetica Neue', 'sans-serif'],
+        helvetica: ['Helvetica Neue', 'sans-serif'],
+      },
       container: {
         center: true,
         padding: '2rem',
@@ -135,41 +139,72 @@ const config = {
         '2xs': ['0.625rem', { lineHeight: '0.75rem' }],
       },
       colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
         primary: {
-          DEFAULT: 'hsl(0 0% 20%)', // A dark gray for primary actions/buttons
-          foreground: 'hsl(0 0% 100%)', // White text on dark gray
+          DEFAULT: '#ffffff',
+          foreground: '#F8F9FA',
+          hover: '#F1F3F5',
         },
         secondary: {
-          DEFAULT: 'hsl(0 0% 96.1%)', // Light gray for secondary elements
-          foreground: 'hsl(0 0% 9%)', // Dark text on light gray
+          DEFAULT: '#000000',
+          foreground: '#1F2937',
+          hover: '#111827',
         },
-        destructive: {
-          DEFAULT: 'hsl(0 84.2% 60.2%)',
-          foreground: 'hsl(0 0% 98%)',
+        success: {
+          DEFAULT: '#A3E635',
+          foreground: '#D9F99D',
         },
-        muted: {
-          DEFAULT: 'hsl(0 0% 96.1%)',
-          foreground: 'hsl(0 0% 45.1%)',
+        danger: {
+          DEFAULT: '#F97373',
         },
-        accent: {
-          DEFAULT: 'hsl(0 0% 96.1%)',
-          foreground: 'hsl(0 0% 9%)',
+        info: {
+          DEFAULT: '#60A5FA',
         },
-        popover: {
-          DEFAULT: 'hsl(0 0% 100%)',
-          foreground: 'hsl(0 0% 9%)',
+        'pink-gd': {
+          DEFAULT: '#EBCEEA',
         },
-        card: {
-          DEFAULT: 'hsl(0 0% 100%)',
-          foreground: 'hsl(0 0% 9%)',
+        'blue-gd': {
+          DEFAULT: '#CCDFF2',
         },
-        avocado: 'hsl(var(--avocado))',
-        'cyan-0': 'hsl(var(--cyan-0))',
+        'green-gd': {
+          DEFAULT: '#DCFCE7',
+        },
+        'yellow-gd': {
+          DEFAULT: '#FEF3C7',
+        },
+
+        line: '#E5E7EB',
+        head: '#111827',
+        content: '#6B7280',
+        input: '#F0F0F0',
+
+        // border: 'hsl(var(--border))',
+        // input: 'hsl(var(--input))',
+        // ring: 'hsl(var(--ring))',
+        // background: 'hsl(var(--background))',
+        // foreground: 'hsl(var(--foreground))',
+
+        // destructive: {
+        //   DEFAULT: 'hsl(0 84.2% 60.2%)',
+        //   foreground: 'hsl(0 0% 98%)',
+        // },
+        // muted: {
+        //   DEFAULT: 'hsl(0 0% 96.1%)',
+        //   foreground: 'hsl(0 0% 45.1%)',
+        // },
+        // accent: {
+        //   DEFAULT: 'hsl(0 0% 96.1%)',
+        //   foreground: 'hsl(0 0% 9%)',
+        // },
+        // popover: {
+        //   DEFAULT: 'hsl(0 0% 100%)',
+        //   foreground: 'hsl(0 0% 9%)',
+        // },
+        // card: {
+        //   DEFAULT: 'hsl(0 0% 100%)',
+        //   foreground: 'hsl(0 0% 9%)',
+        // },
+        // avocado: 'hsl(var(--avocado))',
+        // 'cyan-0': 'hsl(var(--cyan-0))',
       },
       borderRadius: {
         lg: 'var(--radius)',

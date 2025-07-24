@@ -106,8 +106,8 @@ export default function OfferList({
       <div
         ref={searchBarRef}
         className={cn(
-          'sticky h-fit top-[4.5rem] z-30 rounded-xl flex flex-col justify-between sm:flex-row p-4 items-center gap-4 transition-colors duration-300',
-          'bg-white/95 backdrop-blur-lg shadow-md border border-gray-300'
+          'sticky h-fit top-[4.5rem] z-30 rounded-2xl flex flex-col justify-between sm:flex-row p-4 items-center gap-4 transition-colors duration-300',
+          'bg-primary-foreground border-line border'
         )}
       >
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto">
@@ -127,11 +127,7 @@ export default function OfferList({
                 }
               }}
             >
-              <SelectTrigger
-                className={`w-32 flex-1 md:w-[180px] shadow-sm border-gray-200  flex sm:hidden ${
-                  isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
-                }`}
-              >
+              <SelectTrigger className={`w-32 flex-1 md:w-[180px] flex sm:hidden`}>
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -143,11 +139,9 @@ export default function OfferList({
           <div>
             <Input
               value={inputSearch}
-              onChange={(e) => handleSearch(e.target.value)}
+              // onChange={(e) => handleSearch(e.target.value)}
               placeholder="Search symbol or name..."
-              className={`flex-1 shadow-sm border-gray-200 min-w-[200px] ${
-                isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
-              }`}
+              className={`flex-1 min-w-60`}
             />
           </div>
           <Select
@@ -160,11 +154,7 @@ export default function OfferList({
               }
             }}
           >
-            <SelectTrigger
-              className={`w-32 md:w-[180px] shadow-sm border-gray-200 hidden sm:flex ${
-                isSticky ? 'bg-white/80 backdrop-blur-sm' : 'bg-white'
-              }`}
-            >
+            <SelectTrigger className={`w-32 md:w-[180px] hidden sm:flex`}>
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -177,6 +167,7 @@ export default function OfferList({
         <ToggleGroup
           type="single"
           value={viewType}
+          variant="outline"
           onValueChange={(value: 'card' | 'list') => value && setViewType(value)}
           className="flex-shrink-0 hidden md:flex"
         >

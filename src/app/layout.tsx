@@ -1,13 +1,9 @@
-import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import Separator from '@/components/ui/separator';
 import Provider from '@/providers';
 import '@/styles/global.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import React from 'react';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: {
@@ -146,7 +142,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.className} min-h-screen flex flex-col bg-gradient-page-bg`}>
+      <body className={`min-h-screen flex flex-col bg-gradient-page-bg`}>
         <Provider>
           <div className="flex flex-col min-h-screen">
             <Header />
@@ -155,7 +151,7 @@ export default function RootLayout({
               <div className="container mx-auto px-4 lg:px-6 py-4 lg:py-8">{children}</div>
             </main>
             <Separator />
-            <Footer />
+            {/* <Footer /> */}
           </div>
         </Provider>
       </body>

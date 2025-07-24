@@ -47,7 +47,7 @@ export default function UploadTestPage() {
 
             {uploadedUrl && (
               <div className="mt-4 p-4 bg-green-50 rounded-lg">
-                <h3 className="font-semibold text-green-800 mb-2">Latest Upload:</h3>
+                <h3 className="font-bold text-green-800 mb-2">Latest Upload:</h3>
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
                     <AvatarImage src={uploadedUrl} alt="Uploaded image" />

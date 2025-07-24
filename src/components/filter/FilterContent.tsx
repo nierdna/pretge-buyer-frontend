@@ -81,7 +81,7 @@ export default function FilterContent({
         <Accordion type="multiple" defaultValue={['network', 'settle-time', 'collateral']}>
           {!hideNetworkFilter && (
             <AccordionItem value="network">
-              <AccordionTrigger className="text-base font-semibold">Network</AccordionTrigger>
+              <AccordionTrigger className="text-base font-bold">Network</AccordionTrigger>
               <AccordionContent className="grid gap-2 pt-2">
                 {chains.map((chain) => (
                   <div className="flex items-center gap-2">
@@ -114,9 +114,7 @@ export default function FilterContent({
           )}
 
           <AccordionItem value="settle-time">
-            <AccordionTrigger className="text-base font-semibold">
-              Settle After TGE
-            </AccordionTrigger>
+            <AccordionTrigger className="text-base font-bold">Settle After TGE</AccordionTrigger>
             <AccordionContent className="flex flex-wrap gap-4 pt-2">
               {listSettleTime.map((item) => (
                 <div className="flex items-center gap-2" key={item.id}>
@@ -125,16 +123,16 @@ export default function FilterContent({
                     checked={filters.settleDurations?.includes(item.id)}
                     onCheckedChange={() => handleChangeSettleTime(item.id)}
                   />
-                  <Label htmlFor={`settle-${item.id}`}>{item.name}</Label>
+                  <Label className="font-normal" htmlFor={`settle-${item.id}`}>
+                    {item.name}
+                  </Label>
                 </div>
               ))}
             </AccordionContent>
           </AccordionItem>
 
           <AccordionItem value="collateral">
-            <AccordionTrigger className="text-base font-semibold">
-              Percent Collateral
-            </AccordionTrigger>
+            <AccordionTrigger className="text-base font-bold">Percent Collateral</AccordionTrigger>
             <AccordionContent className="grid grid-cols-2 gap-2 pt-2">
               {listCollateral.map((item) => (
                 <div className="flex items-center gap-2" key={item.id}>
@@ -143,7 +141,9 @@ export default function FilterContent({
                     checked={filters.collateralPercents?.includes(item.id)}
                     onCheckedChange={() => handleChangeCollateral(item.id)}
                   />
-                  <Label htmlFor={`collateral-${item.id}`}>{item.name}</Label>
+                  <Label className="font-normal" htmlFor={`collateral-${item.id}`}>
+                    {item.name}
+                  </Label>
                 </div>
               ))}
             </AccordionContent>
@@ -153,7 +153,7 @@ export default function FilterContent({
         {/* <Button className="lg:hidden" variant="outline">
           Apply Filters
         </Button> */}
-        <Button variant="outline">Clear Filters</Button>
+        <Button>Clear Filters</Button>
       </CardContent>
     </>
   );

@@ -51,7 +51,7 @@ export default function UserInfoSection() {
             <div className="flex items-center gap-2">
               {' '}
               {/* Flex container for name and edit icon */}
-              <div className="text-xl font-semibold">{user?.name}</div>
+              <div className="text-xl font-bold">{user?.name}</div>
               <Button
                 variant="ghost"
                 size="icon"
@@ -71,7 +71,7 @@ export default function UserInfoSection() {
         </div>
         <Separator className="bg-gray-200" />
         <div className="grid gap-2 text-base text-gray-700">
-          <h3 className="text-xl font-semibold text-gray-800">About {user?.name}</h3>
+          <h3 className="text-xl font-bold text-gray-800">About {user?.name}</h3>
           <p>{user?.description}</p>
         </div>
       </CardContent>

@@ -263,7 +263,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
           {offer?.promotionId && (
             <Badge
               variant="secondary"
-              className="w-fit bg-orange-500 hover:bg-orange-600 text-white px-2 py-0.5 text-xs font-semibold"
+              className="w-fit bg-orange-500 hover:bg-orange-600 text-white px-2 py-0.5 text-xs font-bold"
             >
               Hot Deals
             </Badge>
@@ -272,10 +272,10 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
             <div className="flex flex-col gap-2">
               <div className="w-full break-words">{offer?.title}</div>
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="secondary" className="max-w-40 w-fit">
+                <Badge className="max-w-40 w-fit">
                   <div className="w-full truncate">{offer?.tokens?.symbol}</div>
                 </Badge>
-                <Badge variant="secondary" className="max-w-40 w-fit">
+                <Badge className="max-w-40 w-fit">
                   <div className="w-full truncate">
                     {normalizeNetworkName(offer?.exToken?.network?.name)}
                   </div>
@@ -296,7 +296,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
           {/* <span className="text-gray-500 line-through text-sm md:text-base">
             ${offer.originalPriceUSD.toLocaleString()}
           </span> */}
-          {/* <Badge className="bg-shopee-red text-white text-sm font-semibold px-2 py-0.5">
+          {/* <Badge className="bg-shopee-red text-white text-sm font-bold px-2 py-0.5">
             -{offer.discountPercent}%
           </Badge> */}
         </div>
@@ -361,7 +361,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
             <span className="text-gray-600 text-sm">Quantity</span>
             <div className="text-gray-500 text-sm">
               Balance:{' '}
-              <span className="text-primary font-semibold">
+              <span className="text-primary font-bold">
                 {balance !== null ? balance : '...'} {offer?.exToken?.symbol}
               </span>
             </div>
@@ -469,7 +469,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
             </Button>
           )}
           {offer?.status === EOfferStatus.CLOSED && (
-            <Button size="xl" variant={'destructive'} className="flex-1" disabled>
+            <Button size="xl" variant={'danger'} className="flex-1" disabled>
               Offer Closed
             </Button>
           )}
@@ -479,7 +479,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
 
         {/* Terms and Conditions */}
         {/* <div className="grid gap-2 text-sm text-gray-600">
-          <h3 className="text-lg font-semibold text-gray-800">Terms and Conditions</h3>
+          <h3 className="text-lg font-bold text-gray-800">Terms and Conditions</h3>
           <p>{offer?.description}</p>
         </div> */}
       </CardContent>
@@ -503,7 +503,7 @@ function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageConten
                 </DialogDescription> */}
           </DialogHeader>
           <div className="py-4 grid gap-2">
-            <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-semibold text-gray-800">
+            <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-bold text-gray-800">
               <Wallet className="h-5 w-5 text-gray-600" />
               <span>Required Deposit:</span>
               <span className="text-primary">

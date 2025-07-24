@@ -9,7 +9,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-lg font-semibold text-white mb-4">Pre-Market Store</h3>
+            <h3 className="text-lg font-bold text-white mb-4">Pre-Market Store</h3>
             <p className="text-opensea-lightGray mb-4 max-w-md">
               Get early access to innovative offers before they hit the mainstream market.
             </p>
@@ -31,7 +31,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
               Quick Links
             </h3>
             <ul className="space-y-2">
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {/* Categories */}
           <div>
-            <h3 className="text-sm font-semibold text-white uppercase tracking-wider mb-4">
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
               Categories
             </h3>
             <ul className="space-y-2">

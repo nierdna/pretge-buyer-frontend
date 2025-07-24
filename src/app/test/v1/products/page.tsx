@@ -210,7 +210,7 @@ export default function ProductsTestPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Network filter */}
           <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
-            <h3 className="text-white font-semibold mb-3">Networks</h3>
+            <h3 className="text-white font-bold mb-3">Networks</h3>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {networks.map((network) => (
                 <label
@@ -231,7 +231,7 @@ export default function ProductsTestPage() {
 
           {/* Collateral Percent filter */}
           <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
-            <h3 className="text-white font-semibold mb-3">Collateral Percent</h3>
+            <h3 className="text-white font-bold mb-3">Collateral Percent</h3>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {COLLATERAL_PERCENT_OPTIONS.map((option) => (
                 <label
@@ -252,7 +252,7 @@ export default function ProductsTestPage() {
 
           {/* Settle Duration filter */}
           <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
-            <h3 className="text-white font-semibold mb-3">Settle Duration</h3>
+            <h3 className="text-white font-bold mb-3">Settle Duration</h3>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {SETTLE_DURATION_OPTIONS.map((option) => (
                 <label
@@ -279,7 +279,7 @@ export default function ProductsTestPage() {
         selectedSettleDurations.length > 0) && (
         <div className="w-full max-w-5xl mb-4">
           <div className="bg-[#232a3a] rounded-lg p-3">
-            <h4 className="text-white font-semibold mb-2">Active Filters:</h4>
+            <h4 className="text-white font-bold mb-2">Active Filters:</h4>
             <div className="flex flex-wrap gap-2">
               {selectedNetworkIds.map((networkId) => {
                 const network = networks.find((n) => n.id === networkId);
@@ -325,7 +325,7 @@ export default function ProductsTestPage() {
                   />
                 )}
                 <div>
-                  <div className="text-lg font-semibold text-white">
+                  <div className="text-lg font-bold text-white">
                     {offer.tokens?.name || 'Token'}
                   </div>
                   <div className="text-xs text-gray-400">{offer.tokens?.symbol}</div>
@@ -371,7 +371,7 @@ export default function ProductsTestPage() {
               )}
               <Link
                 href={`/test/v1/products/${offer.id}`}
-                className="mt-3 px-4 py-2 rounded bg-blue-600 text-white text-center font-semibold hover:bg-blue-700 transition"
+                className="mt-3 px-4 py-2 rounded bg-blue-600 text-white text-center font-bold hover:bg-blue-700 transition"
               >
                 Chi tiết & Mua
               </Link>

@@ -198,7 +198,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
           <div className="grid gap-1">
             <CardTitle className="text-2xl font-bold">{offer?.tokens?.name}</CardTitle>
             <div className="flex items-center gap-2">
-              <Badge variant="secondary">{offer?.tokens?.symbol}</Badge>
+              <Badge>{offer?.tokens?.symbol}</Badge>
               <Badge variant="outline">{offer?.exToken?.network?.name}</Badge>
             </div>
           </div>
@@ -257,7 +257,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
 
         {/* Buy Section */}
         <div className="grid gap-4">
-          <h3 className="text-xl font-semibold">Purchase Offer</h3>
+          <h3 className="text-xl font-bold">Purchase Offer</h3>
           {/* Show balance (placeholder) */}
           <div className="text-sm text-gray-500 mb-2">
             Balance: {balance !== null ? balance : '...'} {offer?.exToken?.symbol}
@@ -308,7 +308,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
                 </DialogDescription> */}
               </DialogHeader>
               <div className="py-4 grid gap-2">
-                <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-semibold text-gray-800">
+                <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-bold text-gray-800">
                   <Wallet className="h-5 w-5 text-gray-600" />
                   <span>Required Deposit:</span>
                   <span className="text-primary">
@@ -395,7 +395,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
 
         {/* Terms and Conditions */}
         <div className="grid gap-2 text-sm text-gray-600">
-          <h3 className="text-lg font-semibold text-gray-800">Terms and Conditions</h3>
+          <h3 className="text-lg font-bold text-gray-800">Terms and Conditions</h3>
           <p>{offer?.description}</p>
         </div>
       </CardContent>

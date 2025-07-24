@@ -14,7 +14,7 @@ export default function FlashSaleCard({ offer }: FlashSaleCardProps) {
   return (
     <Card className="relative flex-col flex flex-shrink-0 w-full max-w-[calc(90%)] bg-white/95 backdrop-blur-md shadow-lg border-gray-300 hover:shadow-xl transition-shadow">
       {/* Discount Badge - now absolute */}
-      <Badge className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-semibold px-2 py-0.5 z-10 hover:bg-orange-600">
+      <Badge className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-0.5 z-10 hover:bg-orange-600">
         -{offer.promotion?.discountPercent}%
       </Badge>
 
@@ -31,10 +31,10 @@ export default function FlashSaleCard({ offer }: FlashSaleCardProps) {
           <div className="grid gap-0.5 flex-grow">
             <CardTitle className="text-base font-bold truncate w-4/5">{offer.title}</CardTitle>
             <div className="flex flex-wrap items-center gap-1">
-              <Badge variant="secondary" className="text-xs px-1 py-0.5 w-fit bg-gray-200">
+              <Badge className="text-xs px-1 py-0.5 w-fit bg-gray-200">
                 {offer.tokens?.symbol}
               </Badge>
-              <Badge variant="secondary" className="text-xs px-1 py-0.5 w-fit bg-gray-200">
+              <Badge className="text-xs px-1 py-0.5 w-fit bg-gray-200">
                 {normalizeNetworkName(offer.exToken?.network?.name)}
               </Badge>
             </div>

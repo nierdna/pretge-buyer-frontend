@@ -30,7 +30,7 @@ export default function V1TestMenu() {
             href={f.path}
             className="block bg-[#181e2a] border border-[#232a3a] rounded-xl p-6 shadow hover:shadow-lg transition group"
           >
-            <div className="text-xl font-semibold text-white group-hover:text-blue-400 mb-1">
+            <div className="text-xl font-bold text-white group-hover:text-blue-400 mb-1">
               {f.title}
             </div>
             <div className="text-gray-400 text-sm">{f.desc}</div>

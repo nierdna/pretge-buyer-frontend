@@ -28,10 +28,10 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
             <AvatarImage src={seller?.user?.avatar || getFallbackAvatar(seller?.address)} />
           </Avatar>
           <div className="grid gap-1">
-            <div className="text-xl font-semibold">{seller?.user?.name}</div>
+            <div className="text-xl font-bold">{seller?.user?.name}</div>
             <div className="text-sm text-gray-500">{truncateAddress(seller?.address)}</div>
             <div className="flex items-center gap-1 text-sm">
-              <span className="font-semibold">{formatNumberShort(seller?.user?.rating)}</span>
+              <span className="font-bold">{formatNumberShort(seller?.user?.rating)}</span>
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
             </div>
           </div>

@@ -1,10 +1,9 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { IToken } from '@/types/token';
-import { TrendingUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
@@ -85,14 +84,14 @@ export default function TredingTokenV2({
   const renderBadge = (token: IToken) => {
     if (token.isHot) {
       return (
-        <Badge className="bg-red-500 absolute -top-2 -right-3.5 text-2xs font-semibold px-2 py-0.5 z-10 text-white">
+        <Badge className="bg-red-500 absolute -top-2 -right-3.5 text-2xs font-bold px-2 py-0.5 z-10 text-white">
           HOT
         </Badge>
       );
     }
     if (token.isNew) {
       return (
-        <Badge className="bg-blue-500 absolute -top-2 -right-3.5 text-2xs font-semibold px-2 py-0.5 z-10 text-white">
+        <Badge className="bg-blue-500 absolute -top-2 -right-3.5 text-2xs font-bold px-2 py-0.5 z-10 text-white">
           NEW
         </Badge>
       );
@@ -128,19 +127,19 @@ export default function TredingTokenV2({
 
   return (
     <section className="">
-      <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
-        <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
+      <Card>
+        {/* <CardHeadper className="p-4 pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>
           <TrendingUp className="h-6 w-6 text-green-500" />
-        </CardHeader>
-        <CardContent className="p-4 pt-0">
+        </CardHeadper> */}
+        <CardContent className="p-4 pt-8">
           <Carousel
             opts={{
               align: 'start',
               loop: true,
             }}
             setApi={setApi}
-            className="w-full"
+            className="w-full px-4"
           >
             <CarouselContent>
               {trendingTokens.map((token, index) => (
@@ -192,7 +191,7 @@ export default function TredingTokenV2({
                 <button
                   key={i}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i === activeDotIndex ? 'bg-primary' : 'bg-gray-300'
+                    i === activeDotIndex ? 'bg-secondary' : 'bg-pre'
                   }`}
                   onClick={() => handleDotClick(i)}
                   aria-label={`Go to slide group ${i + 1}`}

@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 interface ExToken {
   id: string;
@@ -96,7 +96,7 @@ export default function WalletDepositTestPage() {
         {!walletId ? (
           <>
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-semibold w-full transition"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
               onClick={handleLogin}
               disabled={loginLoading}
             >
@@ -132,7 +132,7 @@ export default function WalletDepositTestPage() {
               onChange={(e) => setAmount(e.target.value)}
             />
             <button
-              className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-semibold w-full transition"
+              className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
               onClick={handleDeposit}
               disabled={loading || !walletId || !tokenId || !amount}
             >
@@ -140,7 +140,7 @@ export default function WalletDepositTestPage() {
             </button>
             {result && (
               <div
-                className={`mt-2 text-center text-sm font-semibold ${
+                className={`mt-2 text-center text-sm font-bold ${
                   result.includes('thành công') ? 'text-green-400' : 'text-red-400'
                 }`}
               >

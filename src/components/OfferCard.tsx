@@ -28,10 +28,10 @@ export default function OfferCard({ offer }: OfferCardProps) {
   const offerId = offer.id;
 
   return (
-    <Card className="bg-white/85 backdrop-blur-md shadow-lg hover:bg-white border-gray-300 hover:scale-[1.03] hover:shadow-xl transition-all duration-300 flex flex-col relative">
+    <Card className="backdrop-blur-md hover:scale-[1.015] transition-all duration-300 flex flex-col relative">
       {/* {offer?.promotion?.isActive && (
         <div className="absolute -top-3 -right-0">
-          <Badge variant="secondary" className="text-xs bg-orange-500 text-white">
+          <Badge className="text-xs bg-orange-500 text-white">
             -{offer?.promotion?.discountPercent}%
           </Badge>
         </div>
@@ -41,7 +41,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         <div className="flex items-start justify-between gap-2">
           {/* Left side: Token Image, Symbol, Network */}
           <div className="flex items-start gap-3 flex-grow">
-            <div className="w-12 h-12 relative min-w-12 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+            <div className="w-12 h-12 relative min-w-12 rounded-full overflow-hidden bg-secondary-foreground flex-shrink-0">
               <Image
                 src={
                   offer.tokens?.logo ||
@@ -54,14 +54,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
               />
             </div>
             <div className="grid gap-1 flex-grow">
-              <CardTitle className="text-xl font-bold truncate">
+              <CardTitle className="text-lg font-bold truncate">
                 {offer?.title || offer?.tokens?.symbol}
               </CardTitle>
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="secondary" className="max-w-40 w-fit">
+                <Badge className="max-w-40 w-fit">
                   <div className="w-full truncate">{offer?.tokens?.symbol}</div>
                 </Badge>
-                <Badge variant="secondary" className="max-w-40 w-fit">
+                <Badge className="max-w-40 w-fit">
                   <div className="w-full truncate">
                     {normalizeNetworkName(offer.exToken?.network?.name)}
                   </div>
@@ -104,7 +104,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
                 {offer?.promotion?.isActive && (
                   // <div className="absolute -top-3 -right-0">
                   <Badge
-                    variant="secondary"
+                    variant="outline"
                     className="text-xs bg-orange-500 text-white px-1.5 hover:bg-orange-600"
                   >
                     -{offer?.promotion?.discountPercent}%
@@ -115,7 +115,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
             )}
             <div className="mt-1 text-sm font-medium text-gray-500">
               Sold:{' '}
-              <span className="font-semibold text-foreground">{`${formatNumberShort(offer.filled, {
+              <span className="font-bold text-foreground">{`${formatNumberShort(offer.filled, {
                 useShorterExpression: true,
               })}`}</span>
             </div>
@@ -127,7 +127,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         {/* Block 1: Total Amount */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Total Amount</span>
-          <span className="text-base font-semibold text-primary">
+          <span className="text-base font-bold text-primary">
             {formatNumberShort(offer.quantity, {
               useShorterExpression: true,
             })}
@@ -137,7 +137,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         {/* Block 2: Payment with */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Payment with</span>
-          <div className="flex items-end gap-1 h-6 font-semibold">
+          <div className="flex items-end gap-1 h-6 font-bold">
             <Image
               src={
                 offer.exToken?.logo ||
@@ -155,17 +155,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Collateral</span>
           <span
-            className={cn(
-              'text-base font-semibold',
-              getColorFromCollateral(offer.collateralPercent)
-            )}
+            className={cn('text-base font-bold', getColorFromCollateral(offer.collateralPercent))}
           >{`${offer.collateralPercent}%`}</span>
         </div>
 
         {/* Block 4: Settle After TGE */}
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
           <span className="text-2xs text-gray-500">Settle After TGE</span>
-          <span className="text-base font-semibold">
+          <span className="text-base font-bold">
             {offer.settleDuration > 0
               ? `${
                   offer.settleDuration > 1
@@ -176,7 +173,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </span>
         </div>
       </CardContent>
-      <Separator className="w-full bg-gray-200" />
+      <Separator className="w-full" />
       <CardFooter className="p-6 flex flex-col items-start gap-4 pt-4">
         {/* Block 3: Seller Info */}
         <div className="flex items-center gap-2 w-full">
@@ -184,13 +181,11 @@ export default function OfferCard({ offer }: OfferCardProps) {
             <AvatarImage src={getFallbackAvatar(offer.sellerWallet.address)} />
           </Avatar>
           <div className="grid gap-0.5 min-w-0 flex-grow">
-            <div className="font-semibold truncate">
-              {truncateAddress(offer.sellerWallet.address)}
-            </div>
+            <div className="font-bold truncate">{truncateAddress(offer.sellerWallet.address)}</div>
             {/* <div className="text-xs text-gray-500 truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
           </div>
           <div className="flex items-center gap-0.5 ml-auto flex-shrink-0">
-            <span className="font-semibold text-sm">
+            <span className="font-bold text-sm">
               {Number(offer.sellerWallet?.user?.rating || 0)}
             </span>
             <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -199,7 +194,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         <Link href={`/offers/${offerId}`} className="w-full">
           {offer.status === EOfferStatus.OPEN && <Button className="w-full">View Offer</Button>}
           {offer.status === EOfferStatus.CLOSED && (
-            <Button variant={'destructive'} className="w-full">
+            <Button variant={'danger'} className="w-full">
               Offer Closed
             </Button>
           )}

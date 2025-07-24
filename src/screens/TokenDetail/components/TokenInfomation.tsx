@@ -13,8 +13,9 @@ interface TokenInfoSectionProps {
 }
 
 export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
+  console.log(token);
   return (
-    <Card className="bg-white/95 backdrop-blur-md shadow-lg border-gray-300">
+    <Card>
       <CardContent className="p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         {/* Left side: Token Image, Name, Symbol, Network */}
 
@@ -31,8 +32,12 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
             <div className="grid gap-1">
               <CardTitle className="text-3xl font-bold">{token?.name}</CardTitle>
               <div className="flex items-center gap-2">
-                <Badge variant="secondary">{token?.symbol}</Badge>
-                <Badge variant="secondary">{normalizeNetworkName(token?.networks?.name)}</Badge>
+                <Badge variant="outline">
+                  <span className="inline-block align-middle">{token?.symbol}</span>
+                </Badge>
+                <Badge variant="outline" className="flex items-center">
+                  {normalizeNetworkName(token?.networks?.name)}
+                </Badge>
               </div>
             </div>
           </div>
@@ -74,15 +79,15 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
         {/* <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm md:ml-auto w-full md:w-auto">
           <div className="flex flex-col">
             <span className="text-xs text-gray-500">24h Volume</span>
-            <span className="text-lg font-semibold text-primary">N/A</span>
+            <span className="text-lg font-bold text-primary">N/A</span>
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-gray-500">Total Volume</span>
-            <span className="text-lg font-semibold text-primary">N/A</span>
+            <span className="text-lg font-bold text-primary">N/A</span>
           </div>
           <div className="flex flex-col">
             <span className="text-xs text-gray-500">Settle Time</span>
-            <span className="text-lg font-semibold text-primary">N/A</span>
+            <span className="text-lg font-bold text-primary">N/A</span>
           </div>
         </div> */}
       </CardContent>

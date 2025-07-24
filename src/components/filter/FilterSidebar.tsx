@@ -12,7 +12,7 @@ export default function FilterSidebar({
   hideNetworkFilter?: boolean;
 }) {
   return (
-    <Card className="hidden lg:block h-fit sticky max-h-[calc(100vh-5.5rem)] top-[4.5rem] bg-white/95 backdrop-blur-lg shadow-xl border-gray-300 overflow-y-auto">
+    <Card className="hidden lg:block h-fit sticky max-h-[calc(100vh-5.5rem)] top-[4.5rem] overflow-y-auto">
       <FilterContent
         filters={filters}
         setFilters={setFilters}

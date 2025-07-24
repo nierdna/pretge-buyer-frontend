@@ -91,7 +91,7 @@ export default function ProductDetailTestPage() {
     <div className="min-h-[80vh] bg-[#10141c] flex flex-col items-center py-10">
       <div className="w-full max-w-lg bg-[#181e2a] rounded-xl p-8 shadow border border-[#232a3a]">
         <h1 className="text-2xl font-bold text-blue-400 mb-4">Chi tiết sản phẩm</h1>
-        <div className="mb-2 text-lg text-white font-semibold">
+        <div className="mb-2 text-lg text-white font-bold">
           {offer.tokens?.name} ({offer.tokens?.symbol})
         </div>
         <div className="mb-2 text-gray-300">
@@ -138,7 +138,7 @@ export default function ProductDetailTestPage() {
           />
           <button
             type="submit"
-            className="mt-2 px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+            className="mt-2 px-4 py-2 rounded bg-blue-600 text-white font-bold hover:bg-blue-700 transition"
             disabled={buying}
           >
             {buying ? 'Đang mua...' : 'Mua ngay'}

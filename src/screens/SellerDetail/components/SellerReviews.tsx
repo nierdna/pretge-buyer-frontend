@@ -47,7 +47,7 @@ export default function SellerReviews({
                   />
                 </Avatar>
                 <div className="grid gap-0.5">
-                  <div className="font-semibold">{review.buyer?.name}</div>
+                  <div className="font-bold">{review.buyer?.name}</div>
                   <div className="flex items-center gap-1 text-sm text-gray-500">
                     {[...Array(5)].map((_, i) => (
                       <Star
@@ -67,7 +67,7 @@ export default function SellerReviews({
               <p className="text-gray-700 text-base">{review.comment}</p>
               {review.reply && (
                 <div className="text-gray-700 text-sm">
-                  <span className="font-semibold">Seller Reply:</span> {review.reply}
+                  <span className="font-bold">Seller Reply:</span> {review.reply}
                 </div>
               )}
               <Separator className="bg-gray-100 last:hidden" />
