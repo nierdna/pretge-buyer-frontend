@@ -4,8 +4,8 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const page = parseInt(searchParams.get('page') || '1', 10);
-    const limit = parseInt(searchParams.get('limit') || '12', 10);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '12');
     const status = searchParams.get('status') || 'open';
     const search = searchParams.get('search') || '';
     const sort = searchParams.get('sort_field') || 'price';
@@ -16,6 +16,14 @@ export async function GET(req: NextRequest) {
     const networkIds = searchParams.get('network_ids') || '';
     const collateralPercents = searchParams.get('collateral_percents') || '';
     const settleDurations = searchParams.get('settle_durations') || '';
+
+    // Validate pagination parameters
+    if (page < 1 || limit < 1 || limit > 100) {
+      return NextResponse.json(
+        { success: false, message: 'Invalid pagination parameters' },
+        { status: 400 }
+      );
+    }
 
     const offset = (page - 1) * limit;
 
@@ -55,8 +63,7 @@ export async function GET(req: NextRequest) {
       `,
         { count: 'exact' }
       )
-      .eq('status', status)
-      .range(offset, offset + limit - 1);
+      .eq('status', status);
 
     if (tokenIds) {
       query = query.in('token_id', tokenIds);
@@ -140,6 +147,9 @@ export async function GET(req: NextRequest) {
       // Default sorting
       query = query.order('created_at', { ascending: false });
     }
+
+    // Apply pagination at the end
+    query = query.range(offset, offset + limit - 1);
 
     const { data, error, count } = await query;
     if (error) {
