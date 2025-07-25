@@ -39,7 +39,7 @@ export default function HomePage() {
       <TredingTokenV2 trendingTokens={tokens?.data || []} isLoading={isLoadingTokens} />
       {/* <FlashSale /> */}
       <div className="py-4 md:py-8 sm:px-4 w-full">
-        <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+        <div className="grid lg:grid-cols-[280px_1fr] gap-4">
           <FilterSidebar filters={filters} setFilters={setFilters} />
           <OfferList
             inputSearch={inputSearch}

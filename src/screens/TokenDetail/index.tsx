@@ -50,7 +50,7 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
         <TokenInfoSection token={token} />
       </div>
       {/* <FilterSheet hideNetworkFilter={true} filters={filters} setFilters={setFilters} /> */}
-      <div className="grid lg:grid-cols-[280px_1fr] gap-8">
+      <div className="grid lg:grid-cols-[280px_1fr] gap-4">
         <FilterSidebar hideNetworkFilter={true} filters={filters} setFilters={setFilters} />
         <OfferList
           offers={offersForToken}

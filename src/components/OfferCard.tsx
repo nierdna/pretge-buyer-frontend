@@ -46,11 +46,11 @@ export default function OfferCard({ offer }: OfferCardProps) {
           <img
             src={offer?.imageUrl || offer.tokens?.bannerUrl || offer.tokens?.logo || '/logo-mb.png'}
             alt={`${offer.tokens?.symbol} symbol`}
-            className="object-cover w-full h-64 border-line border rounded-2xl"
+            className="object-cover w-full h-48 border-line border rounded-2xl"
           />
           {!offer?.promotion?.isActive && (
             <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
-              -{offer?.promotion?.discountPercent || 20}%
+              Discount
             </Badge>
           )}
         </div>

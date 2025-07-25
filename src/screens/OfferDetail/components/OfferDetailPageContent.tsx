@@ -804,8 +804,9 @@ export default function OfferDetailPageContent({
 
   const collateralColorClass = getCollateralColorClass(Number(offer?.collateralPercent || 0));
   const unitPrice = Number(offer?.price || 0);
-  const subtotal = unitPrice * buyQuantity;
-  const fees = 0; // Không có phí
+  const subtotal =
+    mul(offer?.quantity || 0, offer?.price || 0) * div(offer?.collateralPercent || 0, 100);
+  const fees = 0;
   const totalValue =
     subtotal +
     fees +
@@ -890,7 +891,10 @@ export default function OfferDetailPageContent({
           </div>
 
           <div className="flex justify-between items-center">
-            <div>Collateral</div>
+            <div className="flex items-center gap-1">
+              <span>Collateral</span>
+              <span className="text-info">({offer?.collateralPercent || 0}%)</span>
+            </div>
             <div className="flex items-center gap-1">
               <div className="font-medium pt-0.5">
                 {formatNumberShort(
@@ -905,6 +909,15 @@ export default function OfferDetailPageContent({
                 height={16}
                 className="rounded-full"
               />
+            </div>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <div>Settle Duration</div>
+            <div className="flex items-center gap-1">
+              <div className="font-medium">
+                {offer?.settleDuration || 0} {offer?.settleDuration === 1 ? 'Hour' : 'Hours'}
+              </div>
             </div>
           </div>
         </div>
@@ -953,10 +966,8 @@ export default function OfferDetailPageContent({
       <div className="space-y-4 text-sm">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1">
-            <span>Price</span>
-            <span className="text-info">
-              ({buyQuantity} x ${formatNumberShort(unitPrice)} each)
-            </span>
+            <span>Collateral</span>
+            <span className="text-info">({offer?.collateralPercent}% of Order Value)</span>
           </div>
           <div className="font-medium">
             ${subtotal}

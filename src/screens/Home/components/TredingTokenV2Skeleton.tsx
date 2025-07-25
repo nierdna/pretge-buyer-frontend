@@ -1,9 +1,8 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { Skeleton } from '@/components/ui/skeleton';
-import { TrendingUp } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 export default function TredingTokenV2Skeleton() {
@@ -39,12 +38,12 @@ export default function TredingTokenV2Skeleton() {
 
   return (
     <section className="">
-      <Card className="bg-secondary-foreground backdrop-blur-md border-line">
-        <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
+      <Card>
+        {/* <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>
           <TrendingUp className="h-6 w-6 text-green-500" />
-        </CardHeader>
-        <CardContent className="p-4 pt-0">
+        </CardHeader> */}
+        <CardContent className="p-4 pt-8">
           <Carousel className="w-full">
             <CarouselContent>
               {Array.from({ length: totalItems }).map((_, index) => (

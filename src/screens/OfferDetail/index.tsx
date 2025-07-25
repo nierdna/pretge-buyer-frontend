@@ -39,14 +39,14 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
         <BreadcrumbSeparator className="flex items-center" /> */}
         <BreadcrumbItem>{offer?.tokens?.symbol.toUpperCase()}</BreadcrumbItem>
       </Breadcrumb>
-      <div className="grid grid-cols-[384px_1fr] gap-6 w-full">
+      <div className="grid grid-cols-[384px_1fr] gap-4 w-full">
         <OfferDetailPageContent
           offer={offer}
           onOrderPlaced={() => {
             transactionHistoryRef.current?.resetToFirstPage();
           }}
         />
-        <div className="flex flex-col gap-8 w-full">
+        <div className="flex flex-col gap-4 w-full">
           {isLoading ? (
             <SellerInfoSectionSkeleton />
           ) : (

@@ -81,7 +81,7 @@ export default function FilterContent({
         <Accordion type="multiple" defaultValue={['network', 'settle-time', 'collateral']}>
           {!hideNetworkFilter && (
             <AccordionItem value="network">
-              <AccordionTrigger className="text-base font-bold">Network</AccordionTrigger>
+              <AccordionTrigger className="text-base">Network</AccordionTrigger>
               <AccordionContent className="grid gap-2 pt-2">
                 {chains.map((chain) => (
                   <div className="flex items-center gap-2">
@@ -114,7 +114,7 @@ export default function FilterContent({
           )}
 
           <AccordionItem value="settle-time">
-            <AccordionTrigger className="text-base font-bold">Settle After TGE</AccordionTrigger>
+            <AccordionTrigger className="text-base">Settle After TGE</AccordionTrigger>
             <AccordionContent className="flex flex-wrap gap-4 pt-2">
               {listSettleTime.map((item) => (
                 <div className="flex items-center gap-2" key={item.id}>
@@ -132,7 +132,7 @@ export default function FilterContent({
           </AccordionItem>
 
           <AccordionItem value="collateral">
-            <AccordionTrigger className="text-base font-bold">Percent Collateral</AccordionTrigger>
+            <AccordionTrigger className="text-base">Percent Collateral</AccordionTrigger>
             <AccordionContent className="grid grid-cols-2 gap-2 pt-2">
               {listCollateral.map((item) => (
                 <div className="flex items-center gap-2" key={item.id}>
