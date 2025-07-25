@@ -77,7 +77,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
         <CardHeader className="p-6 pb-4 flex justify-between">
           <CardTitle className="text-xl flex justify-between">
             <span className="inline-block">Orders History</span>
-            <Link href="my-orders" className="underline text-end text-base">
+            <Link href="/my-orders" className="underline text-end text-base">
               View All
             </Link>
           </CardTitle>

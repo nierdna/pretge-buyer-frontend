@@ -239,7 +239,7 @@ export default function FilledOrdersList() {
           </Table>
         )}
         {!isLoading && orders.length === 0 && (
-          <p className="text-center text-gray-500 py-4">You have no filled orders yet.</p>
+          <p className="text-center text-gray-500 py-4">You have no filled orders.</p>
         )}
         {totalPages > 1 && (
           <PaginationCustom

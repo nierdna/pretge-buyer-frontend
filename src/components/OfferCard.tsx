@@ -48,6 +48,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
             alt={`${offer.tokens?.symbol} symbol`}
             className="object-cover w-full h-48 border-line border rounded-2xl"
           />
+          <Badge className="absolute top-2 left-2 z-10">{offer.exToken?.network?.name}</Badge>
           {!!offer?.promotion?.isActive && (
             <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
               Discount
@@ -146,7 +147,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
       </CardHeader> */}
         <CardContent className="p-3 flex flex-col gap-4 text-sm">
           <div className="flex items-center gap-4 justify-between">
-            <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(70%)]">
+            <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(60%)]">
               <div className="text-xs text-content inline-flex items-center">
                 <span>
                   {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
@@ -164,7 +165,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
                 />
               </div>
             </div>
-            <span className="text-3xl leading-none">
+            <span className="text-2xl leading-none">
               $
               {offer?.promotion?.isActive
                 ? formatNumberShort(
@@ -224,9 +225,9 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div> */}
         </CardContent>
         <Separator className="w-full" />
-        <CardFooter className="p-3 pb-2 flex flex-col items-start gap-4 pt-4">
+        <CardFooter className="flex flex-col items-center p-0">
           {/* Block 3: Seller Info */}
-          <div className="flex items-center gap-2 w-full">
+          <div className="flex items-center gap-2 w-full pt-3">
             <Avatar className="h-8 w-8 flex-shrink-0">
               <AvatarImage src={getFallbackAvatar(offer.sellerWallet.address)} />
             </Avatar>

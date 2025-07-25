@@ -184,7 +184,7 @@ export default function OfferList({
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
           {isLoading && (
             <>
-              {Array.from({ length: 12 }).map((_, index) => (
+              {Array.from({ length: 6 }).map((_, index) => (
                 <OfferCardSkeleton key={index} />
               ))}
             </>

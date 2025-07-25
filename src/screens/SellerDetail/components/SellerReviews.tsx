@@ -74,7 +74,7 @@ export default function SellerReviews({
             </div>
           ))}
         {!isLoading && reviews.length === 0 && (
-          <p className="text-center text-gray-500 py-4">No reviews yet for this seller.</p>
+          <p className="text-center text-gray-500 py-4">No reviews for this seller.</p>
         )}
       </CardContent>
       {totalPages > 1 && (

@@ -1,16 +1,14 @@
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { IOffer } from '@/types/offer';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
-import { formatNumberShort } from '@/utils/helpers/number';
-import { normalizeNetworkName, truncateAddress } from '@/utils/helpers/string';
-import { Star } from 'lucide-react';
+import { div, formatNumberShort, minus } from '@/utils/helpers/number';
+import { truncateAddress } from '@/utils/helpers/string';
+import { Dot, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getColorFromCollateral } from './OfferCard';
+import { Progress } from './ui/progress';
 
 interface OfferListItemProps {
   offer: IOffer;
@@ -18,34 +16,59 @@ interface OfferListItemProps {
 
 export default function OfferListItem({ offer }: OfferListItemProps) {
   return (
-    <Card className="bg-white/95 backdrop-blur-md shadow-lg border-gray-300 hover:scale-[1.03] hover:shadow-xl transition-all duration-300 flex flex-col sm:flex-row items-center p-4 gap-4">
+    <Card className="bg-primary-foreground border-gray-200 hover:scale-[1.01] transition-all duration-300 flex flex-col sm:flex-row items-center p-4 gap-4">
       {/* Token Info */}
-      <div className="flex items-center gap-3 w-full sm:w-40 xl:w-48 flex-shrink-0">
-        <div className="w-8 h-8 xl:w-12 xl:h-12 relative min-w-8 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
-          <Image
-            src={
-              offer.tokens?.logo ||
-              'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
-            }
-            // src={tokenImage || '/placeholder.svg'}
-            alt={`${offer.tokens?.symbol} symbol`}
-            fill
-            className="object-cover"
-          />
+      <div className="flex items-center gap-4 w-full sm:w-40 xl:w-48 flex-shrink-0">
+        <div className="relative w-8 h-8 xl:w-12 xl:h-12">
+          <div className="absolute inset-0 z-20 flex items-center justify-center">
+            <div className="relative">
+              <Image
+                src={offer?.tokens?.logo || '/logo-mb.png'}
+                alt={offer?.tokens?.symbol || 'Token Image'}
+                width={48}
+                height={48}
+                className="rounded-full border border-content"
+              />
+              <Image
+                src={offer?.exToken?.network?.logo || '/logo-mb.png'}
+                alt={offer?.exToken?.network?.name || 'Token Image'}
+                width={20}
+                height={20}
+                className="rounded-full absolute bottom-0 right-0 border border-content"
+              />
+            </div>
+          </div>
         </div>
         <div className="grid gap-0.5">
-          <div className="font-bold text-lg truncate">{offer.tokens?.symbol}</div>
-          <Badge className="w-fit text-xs">
-            {normalizeNetworkName(offer.exToken?.network?.name)}
-          </Badge>
+          <div className="font-medium text-lg truncate">{offer.tokens?.symbol}</div>
         </div>
       </div>
 
       {/* Price & Sold */}
-      <div className="flex flex-col items-start w-full sm:w-24 xl:w-32 flex-shrink-0">
+      <div className="flex flex-col items-start w-full sm:w-32 xl:w-64 flex-shrink-0">
         {/* <span className="text-sm text-gray-600">Price</span> */}
-        <div className="mt-1 text-xl font-medium">
-          <span className="font-bold text-green-500">
+
+        <div className="flex items-end gap-4 w-full">
+          <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(60%)]">
+            <div className="text-xs text-content inline-flex items-center">
+              <span>
+                {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
+                  maxDecimalCount: 0,
+                })}
+                %
+              </span>
+              <Dot className="text-content" size={16} />
+              {minus(offer.quantity, offer.filled)} {offer.tokens?.symbol} left
+            </div>
+            <div className="h-2 w-full">
+              <Progress
+                value={div(Number(offer.filled), Number(offer.quantity)) * 100}
+                // value={50}
+              />
+            </div>
+          </div>
+
+          <span className="text-xl leading-none">
             $
             {offer?.promotion?.isActive
               ? formatNumberShort(
@@ -59,67 +82,19 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
                 })}
           </span>
         </div>
-        {offer?.promotion?.isActive && (
-          <div className="text-sm relative text-gray-500 flex items-center gap-1">
-            <span className="font-medium line-through">
-              $
-              {formatNumberShort(offer.price, {
-                useShorterExpression: true,
-              })}
-            </span>
-            {/* <span className="font-bold text-xl text-green-500">
-                  $
-                  {formatNumberShort(offer.price, {
-                    useShorterExpression: true,
-                  })}
-                </span> */}
-            {offer?.promotion?.isActive && (
-              // <div className="absolute -top-3 -right-0">
-              <Badge
-                variant="outline"
-                className="text-xs bg-orange-500 text-white px-1.5 hover:bg-orange-600"
-              >
-                -{offer?.promotion?.discountPercent}%
-              </Badge>
-              // </div>
-            )}
-          </div>
-        )}
-        <span className="text-xs mt-1 text-gray-600">
-          Sold:{' '}
-          <span className="font-bold text-foreground">
-            {formatNumberShort(offer.filled, { useShorterExpression: true })}
-          </span>
-        </span>
       </div>
 
       {/* Payment, Collateral, Settle Time */}
       <div className="grid gap-1 text-sm min-w-24 flex-1 xl:min-w-[150px] lg:w-auto lg:flex-1">
         <div className="flex items-center gap-1">
-          <span className="text-gray-500">Payment:</span>
-          <div className="flex items-center gap-1 font-medium">
-            <Avatar className="h-4 w-4"></Avatar>
-            <Image
-              src={
-                offer.exToken?.logo ||
-                'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
-              }
-              alt={`${offer.exToken?.symbol} symbol`}
-              width={16}
-              height={16}
-              className="rounded-full object-cover"
-            />
-          </div>
-        </div>
-        <div className="flex items-center gap-1">
           <span className="text-gray-500">Collateral:</span>
-          <span
-            className={cn('font-medium', getColorFromCollateral(offer.collateralPercent))}
-          >{`${offer.collateralPercent}%`}</span>
+          <span className={cn('font-medium')}>{`${offer.collateralPercent}%`}</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-gray-500">Settle:</span>
-          <span className="font-medium">{offer.settleDuration}</span>
+          <span className="text-gray-500">Settle Duration:</span>
+          <span className="font-medium">
+            {offer.settleDuration} {offer.settleDuration > 1 ? 'hrs' : 'hr'}
+          </span>
         </div>
       </div>
 
@@ -139,7 +114,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
           </Avatar>
           <div className="grid gap-0.5">
             <div className="font-bold text-sm truncate">
-              {truncateAddress(offer.sellerWallet.address)}
+              {truncateAddress(offer.sellerWallet?.user?.name)}
             </div>
             <div className="flex items-center gap-0.5 text-sm text-gray-500">
               <span className="font-bold">{Number(offer.sellerWallet?.user?.rating || 0)}</span>
@@ -150,11 +125,11 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
       </div>
 
       {/* View Offer Button */}
-      <Link href={`/offers/${offer.id}`} className="ml-auto flex-shrink-0 w-full sm:w-auto">
-        <Button className="h-9 px-4 text-sm w-full gap-1">
-          View
-          <span className="hidden xl:inline">Offer</span>
-        </Button>
+      <Link
+        href={`/offers/${offer.id}`}
+        className="ml-auto flex-shrink-0 w-full sm:w-auto underline text-end text-base"
+      >
+        View Offer
       </Link>
     </Card>
   );
