@@ -76,7 +76,6 @@ export const ButtonConnectWallet = () => {
         </DropdownMenu>
       ) : (
         <Button
-          size={'sm'}
           onClick={() => {
             handleConnectWallet();
           }}

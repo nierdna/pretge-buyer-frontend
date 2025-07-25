@@ -31,6 +31,7 @@ export const getColorFromCollateral = (collateral: number) => {
 export default function OfferCard({ offer }: OfferCardProps) {
   // Assuming a unique ID can be derived or passed for linking to detail page
   const offerId = offer.id;
+  console.log(offer?.promotion?.isActive);
 
   return (
     <Link href={`/offers/${offerId}`} className="cursor-pointer">

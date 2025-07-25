@@ -804,8 +804,7 @@ export default function OfferDetailPageContent({
 
   const collateralColorClass = getCollateralColorClass(Number(offer?.collateralPercent || 0));
   const unitPrice = Number(offer?.price || 0);
-  const subtotal =
-    mul(offer?.quantity || 0, offer?.price || 0) * div(offer?.collateralPercent || 0, 100);
+  const subtotal = unitPrice * buyQuantity;
   const fees = 0;
   const totalValue =
     subtotal +
@@ -966,8 +965,10 @@ export default function OfferDetailPageContent({
       <div className="space-y-4 text-sm">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-1">
-            <span>Collateral</span>
-            <span className="text-info">({offer?.collateralPercent}% of Order Value)</span>
+            <span>Order Value</span>
+            <span className="text-info">
+              ({buyQuantity} x ${formatNumberShort(unitPrice)} each)
+            </span>
           </div>
           <div className="font-medium">
             ${subtotal}
