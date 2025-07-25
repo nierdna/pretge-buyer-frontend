@@ -9,8 +9,6 @@ import {
 import { useGetOfferById } from '@/queries';
 import { useRef } from 'react';
 import OfferDetailPageContent from './components/OfferDetailPageContent';
-import SellerInfoSection from './components/SellerInfoSection';
-import SellerInfoSectionSkeleton from './components/SellerInfoSectionSkeleton';
 import TransactionHistory, { TransactionHistoryRef } from './components/TransactionHistory';
 
 // Mock data for multiple offers, each with a unique ID
@@ -39,19 +37,15 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
         <BreadcrumbSeparator className="flex items-center" /> */}
         <BreadcrumbItem>{offer?.tokens?.symbol.toUpperCase()}</BreadcrumbItem>
       </Breadcrumb>
-      <div className="grid grid-cols-[384px_1fr] gap-4 w-full">
+      <div className="grid grid-cols-1 gap-4 w-full">
         <OfferDetailPageContent
+          isLoading={isLoading}
           offer={offer}
           onOrderPlaced={() => {
             transactionHistoryRef.current?.resetToFirstPage();
           }}
         />
         <div className="flex flex-col gap-4 w-full">
-          {isLoading ? (
-            <SellerInfoSectionSkeleton />
-          ) : (
-            <SellerInfoSection seller={offer?.sellerWallet} />
-          )}
           <TransactionHistory ref={transactionHistoryRef} offerId={id} />
         </div>
       </div>

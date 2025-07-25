@@ -22,6 +22,7 @@ import { truncateAddress } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { forwardRef, useImperativeHandle } from 'react';
 
 interface TransactionHistoryProps {
@@ -73,8 +74,13 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
     };
     return (
       <Card className="overflow-x-auto">
-        <CardHeader className="p-6 pb-4">
-          <CardTitle className="text-xl">Transaction History</CardTitle>
+        <CardHeader className="p-6 pb-4 flex justify-between">
+          <CardTitle className="text-xl flex justify-between">
+            <span className="inline-block">Orders History</span>
+            <Link href="my-orders" className="underline text-end text-base">
+              View All
+            </Link>
+          </CardTitle>
         </CardHeader>
         <CardContent className="p-6 pt-0 w-full overflow-x-auto">
           {isLoading && <TransactionHistorySkeleton />}
@@ -190,7 +196,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
             </Table>
           )}
           {!isLoading && orders.length === 0 && (
-            <p className="text-center text-gray-500 py-4">No transactions yet for this offer.</p>
+            <p className="text-center text-gray-500 py-4">No transactions for this offer.</p>
           )}
           {totalPages > 1 && (
             <PaginationCustom pageNumber={pageNumber} totalPages={totalPages} paginate={paginate} />

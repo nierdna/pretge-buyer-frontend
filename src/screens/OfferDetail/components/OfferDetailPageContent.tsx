@@ -22,12 +22,15 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import DialogDeposit from './DialogDeposit';
+import SellerInfoSection from './SellerInfoSection';
+import SellerInfoSectionSkeleton from './SellerInfoSectionSkeleton';
 
 // import DepositModal from "./deposit-modal"
 
 interface OfferDetailPageContentProps {
   offer?: IOffer;
   onOrderPlaced?: () => void;
+  isLoading?: boolean;
 }
 
 // This component now contains the right-hand side details of the offer
@@ -588,6 +591,7 @@ interface OfferDetailPageContentProps {
 export default function OfferDetailPageContent({
   offer,
   onOrderPlaced,
+  isLoading,
 }: OfferDetailPageContentProps) {
   const { walletAddress: address } = useAuthStore();
   const queryClient = useQueryClient();
@@ -811,127 +815,138 @@ export default function OfferDetailPageContent({
     fees +
     (isEligible ? (subtotal * (offer?.promotion?.discountPercent || 0)) / 100 : 0);
 
-  console.log(offer);
   const eventTitle = offer?.title;
 
   return (
-    <Card className="p-4 h-fit rounded-3xl shadow-lg">
-      {/* Event details */}
-      <div className="rounded-2xl border border-gray-200 mb-4">
-        <div className="relative">
-          <div className="bg-secondary/50 absolute inset-0 rounded-2xl z-10"></div>
-          <img
-            src={offer?.imageUrl || offer?.tokens?.bannerUrl || offer?.tokens?.logo || '/logo.png'}
-            alt={offer?.tokens?.symbol || 'Offer Image'}
-            className="w-full h-52 object-cover rounded-2xl opacity-70"
-          />
-          <div className="absolute inset-0 z-20 flex items-center justify-center">
-            <div className="relative">
-              <Image
-                src={offer?.tokens?.logo || '/logo-mb.png'}
-                alt={offer?.tokens?.symbol || 'Token Image'}
-                width={80}
-                height={80}
-                className="rounded-full border border-content"
-              />
-              <Image
-                src={offer?.exToken?.network?.logo || '/logo-mb.png'}
-                alt={offer?.exToken?.network?.name || 'Token Image'}
-                width={24}
-                height={24}
-                className="rounded-full absolute bottom-0 right-0 border border-content"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="p-4">
-          <h1 className="text-xl mb-2 text-head">{eventTitle}</h1>
-          <div className="text-content text-sm">{offer?.description || 'No description'}</div>
-        </div>
-        <div className="px-4">
-          <Separator />
-        </div>
-        <div className="space-y-2 text-sm p-4 ">
-          <div className="flex flex-col gap-1 flex-1 relative">
-            <div className="text-xs text-content inline-flex items-center">
-              <span>
-                {formatNumberShort(
-                  div(Number(offer?.filled || 0), Number(offer?.quantity || 0)) * 100,
-                  {
-                    maxDecimalCount: 0,
-                  }
-                )}
-                %
-              </span>
-              <Dot className="text-content" size={16} />
-              {minus(Number(offer?.quantity || 0), Number(offer?.filled || 0))}{' '}
-              {offer?.tokens?.symbol} left
-            </div>
-            <div className="h-2 w-full">
-              <Progress
-                value={div(Number(offer?.filled || 0), Number(offer?.quantity || 0)) * 100}
-                // value={50}
-              />
-            </div>
-          </div>
-          <div className="flex justify-between items-center pt-2">
-            <div>Total Amount</div>
-            <div className="flex items-center gap-1">
-              <div className="font-medium pt-0.5">{formatNumberShort(offer?.quantity || 0)}</div>
-              <Image
-                src={offer?.tokens?.logo || '/logo-mb.png'}
-                alt={offer?.tokens?.symbol || 'Token Image'}
-                width={16}
-                height={16}
-                className="rounded-full"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-1">
-              <span>Collateral</span>
-              <span className="text-info">({offer?.collateralPercent || 0}%)</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <div className="font-medium pt-0.5">
-                {formatNumberShort(
-                  mul(offer?.quantity || 0, offer?.price || 0) *
-                    div(offer?.collateralPercent || 0, 100)
-                )}
-              </div>
-              <Image
-                src={offer?.exToken?.logo || '/logo-mb.png'}
-                alt={offer?.exToken?.symbol || 'Token Image'}
-                width={16}
-                height={16}
-                className="rounded-full"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-between items-center">
-            <div>Settle Duration</div>
-            <div className="flex items-center gap-1">
-              <div className="font-medium">
-                {offer?.settleDuration || 0} {offer?.settleDuration === 1 ? 'Hour' : 'Hours'}
+    <Card className="h-fit rounded-3xl shadow-lg flex gap-8 py-6 px-8">
+      <div className="w-[40%] flex flex-col gap-4 rounded-2xl border border-gray-200 p-4">
+        {/* Event details */}
+        <div className="rounded-2xl border border-gray-200">
+          <div className="relative">
+            <div className="bg-secondary/50 absolute inset-0 rounded-2xl z-10"></div>
+            <img
+              src={
+                offer?.imageUrl || offer?.tokens?.bannerUrl || offer?.tokens?.logo || '/logo.png'
+              }
+              alt={offer?.tokens?.symbol || 'Offer Image'}
+              className="w-full h-52 object-cover rounded-2xl opacity-70"
+            />
+            <div className="absolute inset-0 z-20 flex items-center justify-center">
+              <div className="relative">
+                <Image
+                  src={offer?.tokens?.logo || '/logo-mb.png'}
+                  alt={offer?.tokens?.symbol || 'Token Image'}
+                  width={80}
+                  height={80}
+                  className="rounded-full border border-content"
+                />
+                <Image
+                  src={offer?.exToken?.network?.logo || '/logo-mb.png'}
+                  alt={offer?.exToken?.network?.name || 'Token Image'}
+                  width={24}
+                  height={24}
+                  className="rounded-full absolute bottom-0 right-0 border border-content"
+                />
               </div>
             </div>
           </div>
+
+          <div className="p-4">
+            <h1 className="text-xl mb-2 text-head">{eventTitle}</h1>
+            <div className="text-content text-sm">{offer?.description || 'No description'}</div>
+          </div>
+          <div className="px-4">
+            <Separator />
+          </div>
+          <div className="space-y-2 text-sm p-4 ">
+            <div className="flex flex-col gap-1 flex-1 relative">
+              <div className="text-xs text-content inline-flex items-center">
+                <span>
+                  {formatNumberShort(
+                    div(Number(offer?.filled || 0), Number(offer?.quantity || 0)) * 100,
+                    {
+                      maxDecimalCount: 0,
+                    }
+                  )}
+                  %
+                </span>
+                <Dot className="text-content" size={16} />
+                {minus(Number(offer?.quantity || 0), Number(offer?.filled || 0))}{' '}
+                {offer?.tokens?.symbol} left
+              </div>
+              <div className="h-2 w-full">
+                <Progress
+                  value={div(Number(offer?.filled || 0), Number(offer?.quantity || 0)) * 100}
+                  // value={50}
+                />
+              </div>
+            </div>
+            <div className="flex justify-between items-center pt-2">
+              <div>Total Amount</div>
+              <div className="flex items-center gap-1">
+                <div className="font-medium pt-0.5">{formatNumberShort(offer?.quantity || 0)}</div>
+                <Image
+                  src={offer?.tokens?.logo || '/logo-mb.png'}
+                  alt={offer?.tokens?.symbol || 'Token Image'}
+                  width={16}
+                  height={16}
+                  className="rounded-full"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <div className="flex items-center gap-1">
+                <span>Collateral</span>
+                <span className="text-info">({offer?.collateralPercent || 0}%)</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="font-medium pt-0.5">
+                  {formatNumberShort(
+                    mul(offer?.quantity || 0, offer?.price || 0) *
+                      div(offer?.collateralPercent || 0, 100)
+                  )}
+                </div>
+                <Image
+                  src={offer?.exToken?.logo || '/logo-mb.png'}
+                  alt={offer?.exToken?.symbol || 'Token Image'}
+                  width={16}
+                  height={16}
+                  className="rounded-full"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <div>Settle Duration</div>
+              <div className="flex items-center gap-1">
+                <div className="font-medium">
+                  {offer?.settleDuration || 0} {offer?.settleDuration === 1 ? 'Hour' : 'Hours'}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Price section */}
+        <div className="text-center mt-2">
+          <div className="text-5xl font-bold">${unitPrice}</div>
         </div>
       </div>
-
-      {/* Price section */}
-      <div className="text-center my-8">
-        <div className="text-5xl font-bold">${unitPrice}</div>
-      </div>
-
-      {/* Quantity selector */}
-      <div className="p-2 px-3 border border-line rounded-xl mb-4 flex justify-between items-center">
-        <div className="font-medium">Quantity</div>
-        <div className="flex items-center">
-          {/* <Button
+      <div className="flex-1 flex justify-end w-[60%]">
+        <div className="flex flex-col justify-between gap-6 w-[90%]">
+          {isLoading ? (
+            <SellerInfoSectionSkeleton />
+          ) : (
+            <SellerInfoSection seller={offer?.sellerWallet} />
+          )}
+          <Separator className="bg-gray-200" />
+          <div>
+            {/* Quantity selector */}
+            <div className="p-2 px-3 border border-line rounded-xl mb-4 flex justify-between items-center">
+              <div className="font-medium">Quantity</div>
+              <div className="flex items-center">
+                {/* <Button
             variant="ghost"
             size="icon"
             onClick={() => handleQuantityChange(-1)}
@@ -940,16 +955,16 @@ export default function OfferDetailPageContent({
           >
             <Minus className="h-4 w-4" />
           </Button> */}
-          <Input
-            type="text"
-            inputMode="numeric"
-            pattern="[0-9]*"
-            value={buyQuantity}
-            onChange={handleQuantityInputChange}
-            className="text-center w-28 max-w-28 rounded-lg bg-primary focus:bg-primary"
-            min={1}
-          />
-          {/* <Button
+                <Input
+                  type="text"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
+                  value={buyQuantity}
+                  onChange={handleQuantityInputChange}
+                  className="text-center rounded-lg bg-primary focus:bg-primary"
+                  min={1}
+                />
+                {/* <Button
             variant="ghost"
             size="icon"
             disabled={buyQuantity >= (offer?.quantity || 0)}
@@ -958,34 +973,34 @@ export default function OfferDetailPageContent({
           >
             <Plus className="h-4 w-4" />
           </Button> */}
-        </div>
-      </div>
+              </div>
+            </div>
 
-      {/* Price breakdown */}
-      <div className="space-y-4 text-sm">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-1">
-            <span>Order Value</span>
-            <span className="text-info">
-              ({buyQuantity} x ${formatNumberShort(unitPrice)} each)
-            </span>
-          </div>
-          <div className="font-medium">
-            ${subtotal}
-            {/* <span className="text-xs">.00</span> */}
-          </div>
-        </div>
+            {/* Price breakdown */}
+            <div className="space-y-4 text-sm">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center gap-1">
+                  <span>Order Value</span>
+                  <span className="text-info">
+                    ({buyQuantity} x ${formatNumberShort(unitPrice)} each)
+                  </span>
+                </div>
+                <div className="font-medium">
+                  ${subtotal}
+                  {/* <span className="text-xs">.00</span> */}
+                </div>
+              </div>
 
-        <Separator />
-        <div className="flex justify-between items-center">
-          <div>No Fees</div>
-          <div className="font-medium">
-            ${fees}
-            {/* <span className="text-xs">.00</span> */}
-          </div>
-        </div>
+              <Separator />
+              <div className="flex justify-between items-center">
+                <div>No Fees</div>
+                <div className="font-medium">
+                  ${fees}
+                  {/* <span className="text-xs">.00</span> */}
+                </div>
+              </div>
 
-        {/* <Separator />
+              {/* <Separator />
         <div className="flex justify-between items-center">
           <div>Tax</div>
           <div className="font-medium">
@@ -993,43 +1008,43 @@ export default function OfferDetailPageContent({
             <span className="text-xs">.00</span>
           </div>
         </div> */}
-        <Separator />
+              <Separator />
 
-        {!isShowPromotion && offer?.promotion?.isActive && (
-          <Button
-            className="w-full justify-between group bg-line text-head hover:bg-line/70 disabled:bg-line/90"
-            disabled={isCheckingEligibility}
-            onClick={handleCheckEligibility}
-          >
-            Get Discount
-            {isCheckingEligibility ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <ChevronRight className="h-4 w-4 text-content group-hover:translate-x-2 transition-all duration-300 group-hover:text-head" />
-            )}
-          </Button>
-        )}
-        {(isShowPromotion || !offer?.promotion?.isActive) && (
-          <>
-            <div className="flex justify-between items-center">
-              <div>Discount</div>
-              <div className="font-medium">
-                {isEligible ? offer?.promotion?.discountPercent || 0 : 0}%
+              {!isShowPromotion && offer?.promotion?.isActive && (
+                <Button
+                  className="w-full justify-between group bg-line text-head hover:bg-line/70 disabled:bg-line/90"
+                  disabled={isCheckingEligibility}
+                  onClick={handleCheckEligibility}
+                >
+                  Get Discount
+                  {isCheckingEligibility ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <ChevronRight className="h-4 w-4 text-content group-hover:translate-x-2 transition-all duration-300 group-hover:text-head" />
+                  )}
+                </Button>
+              )}
+              {(isShowPromotion || !offer?.promotion?.isActive) && (
+                <>
+                  <div className="flex justify-between items-center">
+                    <div>Discount</div>
+                    <div className="font-medium">
+                      {isEligible ? offer?.promotion?.discountPercent || 0 : 0}%
+                    </div>
+                  </div>
+                  <Separator />
+                </>
+              )}
+
+              <div className="flex justify-between items-center">
+                <div className="font-bold">Total:</div>
+                <div className="font-bold text-2xl">${formatNumberShort(totalValue)}</div>
               </div>
             </div>
-            <Separator />
-          </>
-        )}
 
-        <div className="flex justify-between items-center">
-          <div className="font-bold">Total:</div>
-          <div className="font-bold text-2xl">${formatNumberShort(totalValue)}</div>
-        </div>
-      </div>
-
-      {/* Checkout button */}
-      <div className="mt-6">
-        {/* <Button
+            {/* Checkout button */}
+            <div className="mt-6">
+              {/* <Button
           size={'lg'}
           className="w-full"
           onClick={() => {
@@ -1038,26 +1053,29 @@ export default function OfferDetailPageContent({
         >
           Buy Now
         </Button> */}
-        {offer?.status === EOfferStatus.OPEN && (
-          <Button
-            onClick={handleBuy}
-            size="xl"
-            className="w-full"
-            disabled={buyQuantity === 0 || (offer?.promotion?.isActive && !isShowPromotion)}
-          >
-            Buy Now
-          </Button>
-        )}
-        {offer?.status === EOfferStatus.CLOSED && (
-          <Button
-            size="xl"
-            variant={'danger'}
-            className="w-full disabled:opacity-100 disabled:bg-danger/80"
-            disabled
-          >
-            Offer Closed
-          </Button>
-        )}
+              {offer?.status === EOfferStatus.OPEN && (
+                <Button
+                  onClick={handleBuy}
+                  size="xl"
+                  className="w-full"
+                  disabled={buyQuantity === 0 || (offer?.promotion?.isActive && !isShowPromotion)}
+                >
+                  Buy Now
+                </Button>
+              )}
+              {offer?.status === EOfferStatus.CLOSED && (
+                <Button
+                  size="xl"
+                  variant={'danger'}
+                  className="w-full disabled:opacity-100 disabled:bg-danger/80"
+                  disabled
+                >
+                  Offer Closed
+                </Button>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
       <DialogDeposit
         showDepositModal={showDepositModal}

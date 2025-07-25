@@ -31,7 +31,6 @@ export const getColorFromCollateral = (collateral: number) => {
 export default function OfferCard({ offer }: OfferCardProps) {
   // Assuming a unique ID can be derived or passed for linking to detail page
   const offerId = offer.id;
-  console.log(offer?.promotion?.isActive);
 
   return (
     <Link href={`/offers/${offerId}`} className="cursor-pointer">
@@ -49,7 +48,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
             alt={`${offer.tokens?.symbol} symbol`}
             className="object-cover w-full h-48 border-line border rounded-2xl"
           />
-          {!offer?.promotion?.isActive && (
+          {!!offer?.promotion?.isActive && (
             <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
               Discount
             </Badge>

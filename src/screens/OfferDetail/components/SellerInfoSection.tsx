@@ -16,7 +16,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
   // Generate a slug for the seller's ID
 
   return (
-    <Card className="h-fit">
+    <Card className="h-fit border-none">
       {/* <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Seller Information</CardTitle>
       </CardHeader> */}
@@ -45,10 +45,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
         </div>
         {/* <Separator className="bg-gray-200" /> */}
         <div className="flex flex-col gap-2 ">
-          <Link
-            href={`/sellers/${seller?.userId}`}
-            className="w-full underline font-medium text-end"
-          >
+          <Link href={`/sellers/${seller?.userId}`} className="w-full underline text-end">
             View Seller
           </Link>
         </div>
