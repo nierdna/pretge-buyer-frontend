@@ -818,8 +818,8 @@ export default function OfferDetailPageContent({
   const eventTitle = offer?.title;
 
   return (
-    <Card className="h-fit rounded-3xl shadow-lg flex gap-8 py-6 px-8">
-      <div className="w-[40%] flex flex-col gap-4 rounded-2xl border border-gray-200 p-4">
+    <Card className="h-fit rounded-3xl shadow-lg flex flex-col md:flex-row gap-8 py-6 px-4 md:px-8">
+      <div className="w-full md:w-[40%] flex flex-col gap-4 rounded-2xl border border-gray-200 p-4">
         {/* Event details */}
         <div className="rounded-2xl border border-gray-200">
           <div className="relative">
@@ -829,7 +829,7 @@ export default function OfferDetailPageContent({
                 offer?.imageUrl || offer?.tokens?.bannerUrl || offer?.tokens?.logo || '/logo.png'
               }
               alt={offer?.tokens?.symbol || 'Offer Image'}
-              className="w-full h-52 object-cover rounded-2xl opacity-70"
+              className="w-full h-40 sm:h-52 object-cover rounded-2xl opacity-70"
             />
             <div className="absolute inset-0 z-20 flex items-center justify-center">
               <div className="relative">
@@ -858,7 +858,7 @@ export default function OfferDetailPageContent({
           <div className="px-4">
             <Separator />
           </div>
-          <div className="space-y-2 text-sm p-4 ">
+          <div className="space-y-2 text-sm p-4">
             <div className="flex flex-col gap-1 flex-1 relative">
               <div className="text-xs text-content inline-flex items-center">
                 <span>
@@ -877,7 +877,6 @@ export default function OfferDetailPageContent({
               <div className="h-2 w-full">
                 <Progress
                   value={div(Number(offer?.filled || 0), Number(offer?.quantity || 0)) * 100}
-                  // value={50}
                 />
               </div>
             </div>
@@ -930,11 +929,11 @@ export default function OfferDetailPageContent({
 
         {/* Price section */}
         <div className="text-center mt-2">
-          <div className="text-5xl font-bold">${unitPrice}</div>
+          <div className="text-3xl md:text-5xl font-bold">${unitPrice}</div>
         </div>
       </div>
-      <div className="flex-1 flex justify-end w-[60%]">
-        <div className="flex flex-col justify-between gap-6 w-[90%]">
+      <div className="flex-1 w-full md:w-[60%] md:flex md:justify-end mt-6 md:mt-0">
+        <div className="flex flex-col justify-between gap-6 w-full md:w-[90%]">
           {isLoading ? (
             <SellerInfoSectionSkeleton />
           ) : (
@@ -946,15 +945,6 @@ export default function OfferDetailPageContent({
             <div className="p-2 px-3 border border-line rounded-xl mb-4 flex justify-between items-center">
               <div className="font-medium">Quantity</div>
               <div className="flex items-center">
-                {/* <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => handleQuantityChange(-1)}
-            disabled={buyQuantity <= 1}
-            className="h-9 w-9 rounded-none bg-primary hover:bg-line"
-          >
-            <Minus className="h-4 w-4" />
-          </Button> */}
                 <Input
                   type="text"
                   inputMode="numeric"
@@ -964,50 +954,27 @@ export default function OfferDetailPageContent({
                   className="text-center rounded-lg bg-primary focus:bg-primary"
                   min={1}
                 />
-                {/* <Button
-            variant="ghost"
-            size="icon"
-            disabled={buyQuantity >= (offer?.quantity || 0)}
-            onClick={() => handleQuantityChange(1)}
-            className="h-9 w-9 rounded-none bg-primary hover:bg-line"
-          >
-            <Plus className="h-4 w-4" />
-          </Button> */}
               </div>
             </div>
 
             {/* Price breakdown */}
             <div className="space-y-4 text-sm">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-1">
+              <div className="flex justify-between items-center flex-wrap gap-2">
+                <div className="flex items-center gap-1 flex-wrap">
                   <span>Order Value</span>
                   <span className="text-info">
                     ({buyQuantity} x ${formatNumberShort(unitPrice)} each)
                   </span>
                 </div>
-                <div className="font-medium">
-                  ${subtotal}
-                  {/* <span className="text-xs">.00</span> */}
-                </div>
+                <div className="font-medium">${subtotal}</div>
               </div>
 
               <Separator />
               <div className="flex justify-between items-center">
                 <div>No Fees</div>
-                <div className="font-medium">
-                  ${fees}
-                  {/* <span className="text-xs">.00</span> */}
-                </div>
+                <div className="font-medium">${fees}</div>
               </div>
 
-              {/* <Separator />
-        <div className="flex justify-between items-center">
-          <div>Tax</div>
-          <div className="font-medium">
-            ${tax}
-            <span className="text-xs">.00</span>
-          </div>
-        </div> */}
               <Separator />
 
               {!isShowPromotion && offer?.promotion?.isActive && (
@@ -1038,21 +1005,14 @@ export default function OfferDetailPageContent({
 
               <div className="flex justify-between items-center">
                 <div className="font-bold">Total:</div>
-                <div className="font-bold text-2xl">${formatNumberShort(totalValue)}</div>
+                <div className="font-bold text-xl md:text-2xl">
+                  ${formatNumberShort(totalValue)}
+                </div>
               </div>
             </div>
 
             {/* Checkout button */}
             <div className="mt-6">
-              {/* <Button
-          size={'lg'}
-          className="w-full"
-          onClick={() => {
-            handleBuy();
-          }}
-        >
-          Buy Now
-        </Button> */}
               {offer?.status === EOfferStatus.OPEN && (
                 <Button
                   onClick={handleBuy}

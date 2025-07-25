@@ -20,7 +20,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
       {/* <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Seller Information</CardTitle>
       </CardHeader> */}
-      <CardContent className="p-6 grid grid-cols-2 gap-4 items-center">
+      <CardContent className="p-0 md:p-6 grid md:grid-cols-2 grid-cols-1 gap-4 items-center">
         <div className="flex items-center gap-4">
           <Avatar className="h-16 w-16">
             <AvatarImage src={seller?.user?.avatar || getFallbackAvatar(seller?.address)} />
@@ -45,7 +45,10 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
         </div>
         {/* <Separator className="bg-gray-200" /> */}
         <div className="flex flex-col gap-2 ">
-          <Link href={`/sellers/${seller?.userId}`} className="w-full underline text-end">
+          <Link
+            href={`/sellers/${seller?.userId}`}
+            className="w-full underline text-start md:text-end"
+          >
             View Seller
           </Link>
         </div>

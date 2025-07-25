@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 const SellerInfoSectionSkeleton = () => {
   return (
-    <Card className="bg-white/95 backdrop-blur-md h-fit border-none">
+    <Card className="h-fit border-none">
       <CardHeader className="p-6">
         <CardTitle className="text-xl">Seller Information</CardTitle>
       </CardHeader>
