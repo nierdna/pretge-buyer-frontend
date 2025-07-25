@@ -41,6 +41,7 @@ export default function OfferList({
   onLoadMore,
   hasNextPage,
   hideNetworkFilter = false,
+  hideTokenFilter = false,
 }: {
   offers: IOffer[];
   isLoading: boolean;
@@ -52,6 +53,7 @@ export default function OfferList({
   onLoadMore: () => void;
   hasNextPage: boolean;
   hideNetworkFilter?: boolean;
+  hideTokenFilter?: boolean;
 }) {
   const [isSticky, setIsSticky] = useState(false);
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
@@ -140,6 +142,7 @@ export default function OfferList({
               filters={filters}
               setFilters={setFilters}
               hideNetworkFilter={hideNetworkFilter}
+              hideTokenFilter={hideTokenFilter}
             />
 
             {/* Mobile Sort Field Select */}

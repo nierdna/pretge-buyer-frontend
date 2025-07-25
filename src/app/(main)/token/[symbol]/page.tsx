@@ -1,6 +1,27 @@
 import TokenDetailScreen from '@/screens/TokenDetail';
+import { supabase } from '@/server/db/supabase';
 import { Metadata } from 'next';
-import React from 'react';
+
+// Function to fetch token data from database
+async function getTokenData(symbol: string) {
+  try {
+    const { data, error } = await supabase
+      .from('tokens')
+      .select('*,networks:network_id(*)')
+      .or(`symbol.ilike.${symbol}`)
+      .single();
+
+    if (error) {
+      console.error('Error fetching token data:', error);
+      return null;
+    }
+
+    return data;
+  } catch (error) {
+    console.error('Error in getTokenData:', error);
+    return null;
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -10,9 +31,15 @@ export async function generateMetadata({
   const { symbol: symbolParam } = await params;
   const symbol = symbolParam.toUpperCase();
 
-  // Mock data - replace with actual API call
-  const tokenName = `${symbol} Token`;
+  // Fetch token data from database
+  const tokenData = await getTokenData(symbol);
+
+  // Use token data if available, otherwise fallback to default values
+  const tokenName = tokenData?.name || `${symbol} Token`;
   const tokenDescription = `Explore ${symbol} token offers and pre-market opportunities. View current prices, seller listings, and exclusive deals for ${tokenName} on PretGe Market.`;
+
+  // Use banner_url from database if available, otherwise fallback to default banner
+  const imageUrl = tokenData?.banner_url || '/banner.png';
 
   return {
     title: `${symbol} Token - Pre-Market Offers & Prices`,
@@ -36,7 +63,7 @@ export async function generateMetadata({
       type: 'website',
       images: [
         {
-          url: '/banner.png', // Replace with token logo
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: `${tokenName} Information`,
@@ -46,7 +73,7 @@ export async function generateMetadata({
     twitter: {
       title: `${symbol} Token - PretGe Market`,
       description: tokenDescription,
-      images: ['/banner.png'],
+      images: [imageUrl],
     },
     alternates: {
       canonical: `https://pretgemarket.xyz/token/${symbolParam.toLowerCase()}`,

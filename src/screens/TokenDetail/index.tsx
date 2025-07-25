@@ -51,7 +51,12 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
       </div>
       {/* <FilterSheet hideNetworkFilter={true} filters={filters} setFilters={setFilters} /> */}
       <div className="grid lg:grid-cols-[280px_1fr] gap-4">
-        <FilterSidebar hideNetworkFilter={true} filters={filters} setFilters={setFilters} />
+        <FilterSidebar
+          hideNetworkFilter={true}
+          hideTokenFilter={true}
+          filters={filters}
+          setFilters={setFilters}
+        />
         <OfferList
           offers={offersForToken}
           isLoading={isLoadingOffers}
@@ -63,6 +68,7 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
           onLoadMore={handleLoadMore}
           hasNextPage={hasNextPage}
           hideNetworkFilter={true}
+          hideTokenFilter={true}
         />
       </div>
     </section>

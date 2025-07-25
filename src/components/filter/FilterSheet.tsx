@@ -8,10 +8,12 @@ export default function FilterSheet({
   filters,
   setFilters,
   hideNetworkFilter,
+  hideTokenFilter,
 }: {
   filters: IOfferFilter;
   setFilters: (filterChange: IOfferFilter) => void;
   hideNetworkFilter?: boolean;
+  hideTokenFilter?: boolean;
 }) {
   return (
     <div className="lg:hidden flex justify-end">
@@ -38,6 +40,7 @@ export default function FilterSheet({
               filters={filters}
               setFilters={setFilters}
               hideNetworkFilter={hideNetworkFilter}
+              hideTokenFilter={hideTokenFilter}
             />{' '}
             {/* Render FilterContent directly */}
           </div>

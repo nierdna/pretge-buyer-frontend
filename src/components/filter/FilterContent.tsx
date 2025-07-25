@@ -10,20 +10,29 @@ import { Button } from '@/components/ui/button';
 import { CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
+import { useTokenQueries } from '@/queries/useTokenQueries';
 import { IOfferFilter } from '@/service/offer.service';
 import { useChainStore } from '@/store/chainStore';
+import { IToken } from '@/types/token';
+import Image from 'next/image';
 
 // This component contains only the filter UI, without any wrapping Card or visibility/positioning classes.
 export default function FilterContent({
   filters,
   setFilters,
   hideNetworkFilter = false,
+  hideTokenFilter = false,
 }: {
   filters: IOfferFilter;
   setFilters: (filters: IOfferFilter) => void;
   hideNetworkFilter?: boolean;
+  hideTokenFilter?: boolean;
 }) {
   const { chains } = useChainStore();
+  const { data: tokensData, isLoading: isLoadingTokens } = useTokenQueries({
+    statuses: ['active'],
+    limit: 50, // Get more tokens for filter options
+  });
 
   const listSettleTime = [
     { id: '1', name: '1 Hr' },
@@ -72,25 +81,45 @@ export default function FilterContent({
       });
     }
   };
+
+  const handleChangeToken = (tokenId: string) => {
+    if (filters.tokenId === tokenId) {
+      setFilters({ ...filters, tokenId: '' });
+    } else {
+      setFilters({ ...filters, tokenId });
+    }
+  };
   return (
     <>
       <CardHeader className="lg:block hidden pb-0">
         <CardTitle className="text-xl">Filters</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-6">
-        <Accordion type="multiple" defaultValue={['network', 'settle-time', 'collateral']}>
+        <Accordion type="multiple" defaultValue={['network', 'token', 'settle-time', 'collateral']}>
           {!hideNetworkFilter && (
             <AccordionItem value="network">
               <AccordionTrigger className="text-base">Network</AccordionTrigger>
               <AccordionContent className="grid gap-2 pt-2">
                 {chains.map((chain) => (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2" key={chain.id}>
                     <Checkbox
                       id={`network-${chain.id}`}
                       checked={filters.networkIds?.includes(chain.id)}
                       onCheckedChange={() => handleChangeNetwork(chain.id)}
                     />
-                    <Label htmlFor={`network-${chain.id}`}>{chain.name}</Label>
+                    <div className="flex items-center gap-2">
+                      {chain.logo && (
+                        <div className="w-5 h-5 relative flex-shrink-0">
+                          <Image
+                            src={chain.logo}
+                            alt={`${chain.name} logo`}
+                            fill
+                            className="object-cover rounded-full"
+                          />
+                        </div>
+                      )}
+                      <Label htmlFor={`network-${chain.id}`}>{chain.name}</Label>
+                    </div>
                   </div>
                 ))}
                 {/* <div className="flex items-center gap-2">
@@ -109,6 +138,42 @@ export default function FilterContent({
                 <Checkbox id="network-sol" />
                 <Label htmlFor="network-sol">Solana</Label>
               </div> */}
+              </AccordionContent>
+            </AccordionItem>
+          )}
+
+          {!hideTokenFilter && (
+            <AccordionItem value="token">
+              <AccordionTrigger className="text-base">Token</AccordionTrigger>
+              <AccordionContent className="grid gap-2 pt-2">
+                {isLoadingTokens ? (
+                  <div className="text-sm text-gray-500">Loading tokens...</div>
+                ) : tokensData?.data?.length > 0 ? (
+                  tokensData.data.map((token: IToken) => (
+                    <div className="flex items-center gap-2" key={token.id}>
+                      <Checkbox
+                        id={`token-${token.id}`}
+                        checked={filters.tokenId === token.id}
+                        onCheckedChange={() => handleChangeToken(token.id)}
+                      />
+                      <div className="flex items-center gap-2">
+                        {token.logo && (
+                          <div className="w-5 h-5 relative flex-shrink-0">
+                            <Image
+                              src={token.logo}
+                              alt={`${token.symbol} logo`}
+                              fill
+                              className="object-cover rounded-full"
+                            />
+                          </div>
+                        )}
+                        <Label htmlFor={`token-${token.id}`}>{token.symbol}</Label>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-sm text-gray-500">No tokens available</div>
+                )}
               </AccordionContent>
             </AccordionItem>
           )}

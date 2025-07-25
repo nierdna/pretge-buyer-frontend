@@ -137,7 +137,7 @@ export const useGetOffersByToken = (tokenId: string) => {
     debouncedSearch(search);
   };
   const { data, isLoading, isError, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ['offers', tokenId],
+    queryKey: ['offers', tokenId, filters],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await Service.offer.getOffers({
         page: pageParam,

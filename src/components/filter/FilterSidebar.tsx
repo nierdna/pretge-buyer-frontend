@@ -6,10 +6,12 @@ export default function FilterSidebar({
   filters,
   setFilters,
   hideNetworkFilter = false,
+  hideTokenFilter = false,
 }: {
   filters: IOfferFilter;
   setFilters: (filters: IOfferFilter) => void;
   hideNetworkFilter?: boolean;
+  hideTokenFilter?: boolean;
 }) {
   return (
     <Card className="hidden lg:block h-fit sticky max-h-[calc(100vh-5.5rem)] top-[4.5rem] overflow-y-auto">
@@ -17,6 +19,7 @@ export default function FilterSidebar({
         filters={filters}
         setFilters={setFilters}
         hideNetworkFilter={hideNetworkFilter}
+        hideTokenFilter={hideTokenFilter}
       />
     </Card>
   );
