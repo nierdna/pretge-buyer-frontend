@@ -89,6 +89,16 @@ export default function FilterContent({
       setFilters({ ...filters, tokenId });
     }
   };
+
+  const handleClearFilters = () => {
+    setFilters({
+      ...filters,
+      networkIds: [],
+      tokenId: '',
+      settleDurations: [],
+      collateralPercents: [],
+    });
+  };
   return (
     <>
       <CardHeader className="lg:block hidden pb-0">
@@ -218,7 +228,7 @@ export default function FilterContent({
         {/* <Button className="lg:hidden" variant="outline">
           Apply Filters
         </Button> */}
-        <Button>Clear Filters</Button>
+        <Button onClick={handleClearFilters}>Clear Filters</Button>
       </CardContent>
     </>
   );

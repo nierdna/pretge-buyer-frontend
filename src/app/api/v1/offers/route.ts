@@ -153,6 +153,22 @@ export async function GET(req: NextRequest) {
 
     const { data, error, count } = await query;
     if (error) {
+      // Handle "Requested range not satisfiable" error gracefully
+      if (
+        error.message?.includes('range') ||
+        error.message?.includes('Requested range not satisfiable')
+      ) {
+        return NextResponse.json({
+          success: true,
+          data: [],
+          pagination: {
+            total: 0,
+            page,
+            limit,
+            totalPages: 0,
+          },
+        });
+      }
       console.error('Error fetching offers:', error);
       return NextResponse.json({ success: false, message: error.message }, { status: 500 });
     }
