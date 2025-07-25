@@ -63,7 +63,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
     const getBadge = (status: EOrderStatus) => {
       switch (status) {
         case EOrderStatus.PENDING:
-          return <Badge variant="info">Pending</Badge>;
+          return <Badge variant="warning">Pending</Badge>;
         case EOrderStatus.SETTLED:
           return <Badge variant="success">Settled</Badge>;
         case EOrderStatus.CANCELLED:
