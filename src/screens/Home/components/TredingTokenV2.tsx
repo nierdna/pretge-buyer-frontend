@@ -52,7 +52,7 @@ export default function TredingTokenV2({
     const startAutoScroll = () => {
       intervalRef.current = setInterval(() => {
         api.scrollNext();
-      }, 3000); // Scroll every 3 seconds
+      }, 9000); // Scroll every 9 seconds
     };
 
     // Start auto-scroll
@@ -146,7 +146,7 @@ export default function TredingTokenV2({
                 <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/3 pl-4">
                   <Link
                     href={`/token/${token?.symbol?.toLowerCase()}`}
-                    className="relative flex flex-col gap-2 items-center justify-center p-3 pt-6 rounded-lg border border-gray-300 bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer hover:bg-gray-100 transition-colors h-full"
+                    className="group relative flex flex-col gap-2 items-center justify-center p-3 pt-6 rounded-lg border border-gray-300 bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer hover:bg-gray-100 transition-all duration-300 h-full overflow-hidden"
                   >
                     <Image
                       src={
@@ -156,9 +156,9 @@ export default function TredingTokenV2({
                       }
                       alt={`${token?.symbol} banner`}
                       fill
-                      className="object-cover rounded-lg absolute top-0 left-0 z-0"
+                      className="object-cover rounded-lg absolute top-0 left-0 z-0 transition-all duration-300 group-hover:blur-sm"
                     />
-                    <div className="relative">
+                    <div className="relative opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                       {renderBadge(token)}
                       <div className="w-12 h-12 relative min-w-12 rounded-full bg-gray-300 flex-shrink-0">
                         <Image
@@ -181,7 +181,9 @@ export default function TredingTokenV2({
                         )}
                       </div>
                     </div>
-                    <span className="text-lg font-bold text-gray-800">{token?.symbol}</span>
+                    <span className="text-lg font-medium text-primary z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      {token?.symbol}
+                    </span>
                   </Link>
                 </CarouselItem>
               ))}

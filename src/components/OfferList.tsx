@@ -1,6 +1,5 @@
 'use client'; // Make this a Client Component
 
-import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -10,15 +9,18 @@ import {
 } from '@/components/ui/select';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'; // New import for view type toggle
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useSearchSuggestions } from '@/hooks/useSearchSuggestions';
 import { cn } from '@/lib/utils';
 import OfferCardSkeleton from '@/screens/SellerDetail/components/LoadingSkeletonSeller/OfferCardSkeleton';
 import { IOfferFilter } from '@/service/offer.service';
+import { searchService, SearchSuggestion } from '@/service/search.service';
 import { IOffer } from '@/types/offer';
 import { ArrowDownAZ, ArrowUpAZ, LayoutGrid, List, Loader2 } from 'lucide-react'; // Icons for view types and sorting
 import { useCallback, useEffect, useRef, useState } from 'react'; // Import hooks
+import FilterSheet from './filter/FilterSheet';
 import OfferCard from './OfferCard';
 import OfferListItem from './OfferListItem'; // New import for list view
-import FilterSheet from './filter/FilterSheet';
+import SearchInput from './SearchInput';
 
 // Define sort field options with their display names
 const sortFieldOptions = [
@@ -59,8 +61,13 @@ export default function OfferList({
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
   const [sortField, setSortField] = useState(filters.sortField || 'created_at');
   const [sortOrder, setSortOrder] = useState(filters.sortOrder || 'desc');
+  const [apiSuggestions, setApiSuggestions] = useState<SearchSuggestion[]>([]);
+  const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
   const lastItemRef = useRef<HTMLDivElement>(null);
+
+  // Search suggestions hook
+  const { recentSearches, addRecentSearch } = useSearchSuggestions();
 
   // Handle sort field change
   const handleSortFieldChange = (value: string) => {
@@ -73,6 +80,44 @@ export default function OfferList({
     setSortOrder(value);
     setFilters({ ...filters, sortField, sortOrder: value });
   };
+
+  // Enhanced search handler
+  const handleEnhancedSearch = (search: string) => {
+    handleSearch(search);
+    if (search.trim()) {
+      addRecentSearch(search);
+    }
+  };
+
+  // Fetch suggestions from API
+  const fetchSuggestions = useCallback(async (query: string) => {
+    if (!query.trim() || query.length < 2) {
+      setApiSuggestions([]);
+      return;
+    }
+
+    setIsLoadingSuggestions(true);
+    try {
+      const response = await searchService.getSuggestions(query, 10);
+      if (response.success) {
+        setApiSuggestions(response.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch suggestions:', error);
+      setApiSuggestions([]);
+    } finally {
+      setIsLoadingSuggestions(false);
+    }
+  }, []);
+
+  // Debounced search for suggestions
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      fetchSuggestions(inputSearch);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  }, [inputSearch, fetchSuggestions]);
 
   // Intersection Observer for infinite scroll
   const observerCallback = useCallback(
@@ -192,12 +237,16 @@ export default function OfferList({
               </SelectContent>
             </Select>
           </div>
-          <div>
-            <Input
+
+          {/* Enhanced Search Input */}
+          <div className="flex-1 min-w-60">
+            <SearchInput
               value={inputSearch}
-              onChange={(e) => handleSearch(e.target.value)}
-              placeholder="Search symbol or name..."
-              className={`flex-1 min-w-60`}
+              onChange={handleEnhancedSearch}
+              placeholder="Search by token symbol"
+              suggestions={apiSuggestions}
+              recentSearches={recentSearches}
+              isLoading={isLoadingSuggestions}
             />
           </div>
 

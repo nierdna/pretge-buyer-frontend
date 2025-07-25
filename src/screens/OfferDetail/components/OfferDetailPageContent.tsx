@@ -22,8 +22,8 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import DialogDeposit from './DialogDeposit';
+import OfferDetailContentSkeleton from './OfferDetailContentSkeleton';
 import SellerInfoSection from './SellerInfoSection';
-import SellerInfoSectionSkeleton from './SellerInfoSectionSkeleton';
 
 // import DepositModal from "./deposit-modal"
 
@@ -817,6 +817,11 @@ export default function OfferDetailPageContent({
 
   const eventTitle = offer?.title;
 
+  // Show skeleton when loading or when offer data is not available
+  if (isLoading || !offer) {
+    return <OfferDetailContentSkeleton />;
+  }
+
   return (
     <Card className="h-fit rounded-3xl shadow-lg flex flex-col md:flex-row gap-8 py-6 px-4 md:px-8">
       <div className="w-full md:w-[40%] flex flex-col gap-4 rounded-2xl border border-gray-200 p-4">
@@ -910,17 +915,13 @@ export default function OfferDetailPageContent({
 
         {/* Price section */}
         <div className="text-center mt-2">
-          <div className="text-3xl md:text-5xl font-bold">${unitPrice}</div>
+          <div className="text-xl md:text-5xl font-medium">${unitPrice}</div>
         </div>
       </div>
       <div className="flex-1 w-full md:w-[60%] md:flex md:justify-end mt-6 md:mt-0">
         <div className="flex flex-col gap-6 w-full md:w-[90%]">
           <div>
-            {isLoading ? (
-              <SellerInfoSectionSkeleton />
-            ) : (
-              <SellerInfoSection seller={offer?.sellerWallet} />
-            )}
+            <SellerInfoSection seller={offer?.sellerWallet} />
             <Separator className="bg-gray-200" />
           </div>
           <div>
