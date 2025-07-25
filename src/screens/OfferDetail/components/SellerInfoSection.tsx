@@ -3,7 +3,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { WalletWithUser } from '@/types/user';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { formatNumberShort } from '@/utils/helpers/number';
-import { truncateAddress } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
 import { Dot, Star } from 'lucide-react';
 import Link from 'next/link'; // Import Link
@@ -21,7 +20,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
         <CardTitle className="text-xl">Seller Information</CardTitle>
       </CardHeader> */}
       <CardContent className="p-0 md:p-6 grid md:grid-cols-2 grid-cols-1 gap-4 items-center">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 w-full">
           <Avatar className="h-16 w-16">
             <AvatarImage src={seller?.user?.avatar || getFallbackAvatar(seller?.address)} />
           </Avatar>
@@ -34,7 +33,6 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
                 <Star className="h-5 w-5 fill-yellow-400 text-yellow-400 pb-1" />
               </div>
             </div>
-            <div className="text-sm text-gray-500">{truncateAddress(seller?.address)}</div>
             <div className="grid gap-2 text-sm text-gray-700">
               <p className="text-gray-500">
                 <span className="font-medium">Member since:</span>{' '}

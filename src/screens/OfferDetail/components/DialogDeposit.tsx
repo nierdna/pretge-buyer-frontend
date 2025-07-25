@@ -34,9 +34,9 @@ const DialogDeposit = ({
 }: DialogDepositProps) => {
   return (
     <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
-      <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 text-center">
+      <DialogContent className="sm:max-w-md bg-primary-foreground shadow-2xl border-gray-200 text-center">
         <DialogHeader className="flex flex-col items-center gap-2">
-          <CheckCircle className="h-12 w-12 text-green-500" /> {/* Success/Info icon */}
+          <CheckCircle className="h-12 w-12 " /> {/* Success/Info icon */}
           <DialogTitle className="text-xl font-bold mt-2">Confirm Deposit</DialogTitle>
           {/* <DialogDescription>
                      Your balance is not enough to complete this purchase. Please deposit{' '}
@@ -45,9 +45,9 @@ const DialogDeposit = ({
         </DialogHeader>
         <div className="py-4 grid gap-2">
           <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-bold text-gray-800">
-            <Wallet className="h-5 w-5 text-gray-600" />
+            <Wallet className="h-5 w-5 text-content" />
             <span>Required Deposit:</span>
-            <span className="text-primary">
+            <span className="">
               {isEligible
                 ? formatNumberShort(
                     estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100) - balance

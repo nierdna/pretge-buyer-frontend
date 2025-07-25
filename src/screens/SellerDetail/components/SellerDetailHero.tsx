@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Separator from '@/components/ui/separator';
 import { ISeller } from '@/types/user';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
-import { truncateAddress } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
 import { Star } from 'lucide-react';
 
@@ -16,7 +15,7 @@ export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
   return (
     <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
       <CardHeader className="p-6 pb-4">
-        <CardTitle className="text-3xl font-bold">Seller Profile</CardTitle>
+        <CardTitle className="text-xl">Seller Profile</CardTitle>
       </CardHeader>
       <CardContent className="p-6 grid gap-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
@@ -25,9 +24,7 @@ export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
           </Avatar>
           <div className="grid gap-2 text-center sm:text-left">
             <div className="text-2xl font-bold">{seller?.name}</div>
-            <div className="text-base text-gray-500">
-              {truncateAddress(seller?.wallet[0]?.address)}
-            </div>
+
             <div className="flex items-center justify-center sm:justify-start gap-1 text-base">
               <span className="font-bold">{Number(seller?.rating || 0)}</span>
               <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />

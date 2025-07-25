@@ -486,20 +486,56 @@ export interface IOfferFilter {
 }
 
 export class OfferService {
+  // Helper function to map frontend field names to backend field names
+  private mapSortField(fieldName?: string): string | undefined {
+    if (!fieldName) return undefined;
+
+    const fieldMapping: Record<string, string> = {
+      collateralPercent: 'collateral_percent',
+      settleDuration: 'settle_duration',
+      // Note: 'filled' and 'quantity' don't need mapping as they match database field names
+    };
+
+    return fieldMapping[fieldName] || fieldName;
+  }
+
   async getOffers(filters?: IOfferFilter): Promise<OffersResponseV2> {
-    const response = await axiosInstance.get('/offers', {
-      params: {
-        network_ids: filters?.networkIds?.join(',') || undefined,
-        collateral_percents: filters?.collateralPercents?.join(',') || undefined,
-        settle_durations: filters?.settleDurations?.join(',') || undefined,
-        search: filters?.search,
-        page: filters?.page,
-        limit: filters?.limit,
-        sort_field: filters?.sortField,
-        sort_order: filters?.sortOrder,
-        token_id: filters?.tokenId || undefined,
-      },
-    });
+    // Map sort field to API format
+    const sortField = this.mapSortField(filters?.sortField);
+
+    const params: Record<string, any> = {};
+
+    // Handle array parameters
+    if (filters?.networkIds && filters.networkIds.length > 0) {
+      params.network_ids = filters.networkIds.join(',');
+    }
+    if (filters?.collateralPercents && filters.collateralPercents.length > 0) {
+      params.collateral_percents = filters.collateralPercents.join(',');
+    }
+    if (filters?.settleDurations && filters.settleDurations.length > 0) {
+      params.settle_durations = filters.settleDurations.join(',');
+    }
+
+    // Handle string parameters
+    if (filters?.search && filters.search.trim()) {
+      params.search = filters.search.trim();
+    }
+    if (filters?.tokenId && filters.tokenId.trim()) {
+      params.token_id = filters.tokenId.trim();
+    }
+
+    // Always include page and limit with defaults
+    params.page = filters?.page || 1;
+    params.limit = filters?.limit || 10;
+
+    // Handle sort parameters
+    if (sortField) {
+      params.sort_field = sortField;
+      // Always include sort_order when sort_field is provided
+      params.sort_order = filters?.sortOrder || 'desc';
+    }
+
+    const response = await axiosInstance.get('/offers', { params });
     return response.data;
   }
 
@@ -517,19 +553,42 @@ export class OfferService {
   }
 
   async getOffersByUserId(userId: string, filters?: IOfferFilter): Promise<OffersResponseV2> {
-    const response = await axiosInstance.get(`/users/${userId}/offers`, {
-      params: {
-        network_ids: filters?.networkIds?.join(',') || undefined,
-        collateral_percents: filters?.collateralPercents?.join(',') || undefined,
-        settle_durations: filters?.settleDurations?.join(',') || undefined,
-        search: filters?.search,
-        page: filters?.page,
-        limit: filters?.limit,
-        sort_field: filters?.sortField,
-        sort_order: filters?.sortOrder,
-        token_id: filters?.tokenId || undefined,
-      },
-    });
+    // Map sort field to API format
+    const sortField = this.mapSortField(filters?.sortField);
+
+    const params: Record<string, any> = {};
+
+    // Handle array parameters
+    if (filters?.networkIds && filters.networkIds.length > 0) {
+      params.network_ids = filters.networkIds.join(',');
+    }
+    if (filters?.collateralPercents && filters.collateralPercents.length > 0) {
+      params.collateral_percents = filters.collateralPercents.join(',');
+    }
+    if (filters?.settleDurations && filters.settleDurations.length > 0) {
+      params.settle_durations = filters.settleDurations.join(',');
+    }
+
+    // Handle string parameters
+    if (filters?.search && filters.search.trim()) {
+      params.search = filters.search.trim();
+    }
+    if (filters?.tokenId && filters.tokenId.trim()) {
+      params.token_id = filters.tokenId.trim();
+    }
+
+    // Always include page and limit with defaults
+    params.page = filters?.page || 1;
+    params.limit = filters?.limit || 10;
+
+    // Handle sort parameters
+    if (sortField) {
+      params.sort_field = sortField;
+      // Always include sort_order when sort_field is provided
+      params.sort_order = filters?.sortOrder || 'desc';
+    }
+
+    const response = await axiosInstance.get(`/users/${userId}/offers`, { params });
     return response.data;
   }
 

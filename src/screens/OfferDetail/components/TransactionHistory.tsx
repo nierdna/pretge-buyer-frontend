@@ -89,7 +89,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
               <TableHeader>
                 <TableRow>
                   <TableHead colSpan={1}>Time</TableHead>
-                  <TableHead colSpan={1}>Buyer</TableHead>
+                  <TableHead colSpan={1}>Your Wallet</TableHead>
                   <TableHead colSpan={2} className="text-right">
                     Amount
                   </TableHead>

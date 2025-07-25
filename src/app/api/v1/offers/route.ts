@@ -120,11 +120,25 @@ export async function GET(req: NextRequest) {
       query = query.eq('token_id', tokenId);
     }
 
-    // Sort
-    if (sort === 'price') {
-      query = query.order('price', { ascending: sort_order === 'asc' ? true : false });
-    } else if (sort === 'created_at') {
-      query = query.order('created_at', { ascending: sort_order === 'asc' ? true : false });
+    // Sort - Support all sortable fields from the offers table
+    if (sort) {
+      const validSortFields = [
+        'price',
+        'quantity',
+        'filled',
+        'created_at',
+        'collateral_percent',
+        'settle_duration',
+      ];
+      if (validSortFields.includes(sort)) {
+        query = query.order(sort, { ascending: sort_order === 'asc' });
+      } else {
+        // Default to created_at if invalid sort field
+        query = query.order('created_at', { ascending: false });
+      }
+    } else {
+      // Default sorting
+      query = query.order('created_at', { ascending: false });
     }
 
     const { data, error, count } = await query;

@@ -1,7 +1,11 @@
 'use client';
 
-import { Card } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { useGetOffersByUserId, useGetReviewsBySellerId, useGetSellerById } from '@/queries';
 import SellerDetailPageSkeleton from './components/LoadingSkeletonSeller';
 import SellerDetailHero from './components/SellerDetailHero';
@@ -71,41 +75,39 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
   }
 
   return (
-    <div className="grid gap-8">
-      {/* Section 1: Seller Information */}
-      <SellerDetailHero seller={seller} />
+    <section className="flex-1 sm:px-4">
+      <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator className="flex items-center" />
+        {/* <BreadcrumbItem>Token Detail</BreadcrumbItem>
+        <BreadcrumbSeparator className="flex items-center" /> */}
+        <BreadcrumbItem>{seller?.name}</BreadcrumbItem>
+      </Breadcrumb>
 
-      {/* Section 2 & 3: Offers List and Reviews in Tabs */}
-      <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 p-6">
-        <Tabs defaultValue="offers" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="offers" onClick={() => refetchOffers()}>
-              Offers
-            </TabsTrigger>
-            <TabsTrigger value="reviews" onClick={() => refetchReviews()}>
-              Reviews
-            </TabsTrigger>
-          </TabsList>
-          <TabsContent value="offers" className="mt-6">
-            <SellerOffersList
-              offers={offersData}
-              pageNumber={paginationOffers.page}
-              totalPages={paginationOffers.totalPages}
-              paginate={paginateOffers}
-              isLoading={isOffersLoading}
-            />
-          </TabsContent>
-          <TabsContent value="reviews" className="mt-6">
-            <SellerReviews
-              reviews={reviewsData}
-              pageNumber={paginationReviews.page}
-              totalPages={paginationReviews.totalPages}
-              paginate={paginateReviews}
-              isLoading={isReviewsLoading}
-            />
-          </TabsContent>
-        </Tabs>
-      </Card>
-    </div>
+      <div className="grid gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Section 1: Seller Information */}
+          <SellerDetailHero seller={seller} />
+
+          <SellerReviews
+            reviews={reviewsData}
+            pageNumber={paginationReviews.page}
+            totalPages={paginationReviews.totalPages}
+            paginate={paginateReviews}
+            isLoading={isReviewsLoading}
+          />
+        </div>
+
+        <SellerOffersList
+          offers={offersData}
+          pageNumber={paginationOffers.page}
+          totalPages={paginationOffers.totalPages}
+          paginate={paginateOffers}
+          isLoading={isOffersLoading}
+        />
+      </div>
+    </section>
   );
 }

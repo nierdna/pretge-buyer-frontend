@@ -35,7 +35,11 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
         <BreadcrumbSeparator className="flex items-center" />
         {/* <BreadcrumbItem>Token Detail</BreadcrumbItem>
         <BreadcrumbSeparator className="flex items-center" /> */}
-        <BreadcrumbItem>{offer?.tokens?.symbol.toUpperCase()}</BreadcrumbItem>
+        <BreadcrumbLink href={`/token/${offer?.tokens?.symbol?.toLowerCase()}`}>
+          {offer?.tokens?.symbol.toUpperCase()}
+        </BreadcrumbLink>
+        <BreadcrumbSeparator className="flex items-center" />
+        <BreadcrumbItem className="truncate">{offer?.title}</BreadcrumbItem>
       </Breadcrumb>
       <div className="grid grid-cols-1 gap-4 w-full">
         <OfferDetailPageContent

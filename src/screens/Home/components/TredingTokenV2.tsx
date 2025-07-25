@@ -191,7 +191,7 @@ export default function TredingTokenV2({
                 <button
                   key={i}
                   className={`w-2 h-2 rounded-full transition-colors ${
-                    i === activeDotIndex ? 'bg-secondary' : 'bg-pre'
+                    i === activeDotIndex ? 'bg-secondary w-4' : 'bg-secondary-foreground/50'
                   }`}
                   onClick={() => handleDotClick(i)}
                   aria-label={`Go to slide group ${i + 1}`}

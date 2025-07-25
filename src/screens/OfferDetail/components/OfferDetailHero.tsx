@@ -298,10 +298,10 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
           </Button>
           {/* Deposit Modal (placeholder) */}
           <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
-            <DialogContent className="sm:max-w-md bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 text-center">
+            <DialogContent className="sm:max-w-md bg-primary-foreground border-gray-200 text-center">
               <DialogHeader className="flex flex-col items-center gap-2">
-                <CheckCircle className="h-12 w-12 text-green-500" /> {/* Success/Info icon */}
-                <DialogTitle className="text-xl font-bold mt-2">Confirm Deposit</DialogTitle>
+                <CheckCircle className="h-12 w-12" /> {/* Success/Info icon */}
+                <DialogTitle className="text-xl  mt-2">Confirm Deposit</DialogTitle>
                 {/* <DialogDescription>
                   Your balance is not enough to complete this purchase. Please deposit{' '}
                   {offer?.exToken?.symbol} to continue.
@@ -311,11 +311,11 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
                 <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-bold text-gray-800">
                   <Wallet className="h-5 w-5 text-gray-600" />
                   <span>Required Deposit:</span>
-                  <span className="text-primary">
+                  <span className="">
                     ${estimatedCost - balance} {offer?.exToken?.symbol}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-gray-600 text-center">
+                <p className="text-xs sm:text-sm text-content text-center">
                   Your balance is not enough to complete this purchase. Please deposit{' '}
                   {offer?.exToken?.symbol} to continue.
                 </p>
@@ -326,7 +326,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
                     Cancel
                   </Button>
                 </DialogClose>
-                <div className="text-center text-gray-700 flex-1">
+                <div className="text-center text-content flex-1">
                   {/* Deposit modal logic */}
                   {allowance !== undefined && estimatedCost !== undefined ? (
                     allowance < estimatedCost ? (

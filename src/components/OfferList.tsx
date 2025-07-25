@@ -14,11 +14,21 @@ import { cn } from '@/lib/utils';
 import OfferCardSkeleton from '@/screens/SellerDetail/components/LoadingSkeletonSeller/OfferCardSkeleton';
 import { IOfferFilter } from '@/service/offer.service';
 import { IOffer } from '@/types/offer';
-import { LayoutGrid, List, Loader2 } from 'lucide-react'; // Icons for view types
+import { ArrowDownAZ, ArrowUpAZ, LayoutGrid, List, Loader2 } from 'lucide-react'; // Icons for view types and sorting
 import { useCallback, useEffect, useRef, useState } from 'react'; // Import hooks
 import OfferCard from './OfferCard';
 import OfferListItem from './OfferListItem'; // New import for list view
 import FilterSheet from './filter/FilterSheet';
+
+// Define sort field options with their display names
+const sortFieldOptions = [
+  { value: 'created_at', label: 'Newest' },
+  { value: 'price', label: 'Price' },
+  { value: 'quantity', label: 'Quantity' },
+  { value: 'filled', label: 'Filled Amount' },
+  { value: 'collateralPercent', label: 'Collateral %' },
+  { value: 'settleDuration', label: 'Settle Duration' },
+];
 
 export default function OfferList({
   offers,
@@ -45,8 +55,22 @@ export default function OfferList({
 }) {
   const [isSticky, setIsSticky] = useState(false);
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
+  const [sortField, setSortField] = useState(filters.sortField || 'created_at');
+  const [sortOrder, setSortOrder] = useState(filters.sortOrder || 'desc');
   const searchBarRef = useRef<HTMLDivElement>(null);
   const lastItemRef = useRef<HTMLDivElement>(null);
+
+  // Handle sort field change
+  const handleSortFieldChange = (value: string) => {
+    setSortField(value);
+    setFilters({ ...filters, sortField: value, sortOrder });
+  };
+
+  // Handle sort order change
+  const handleSortOrderChange = (value: string) => {
+    setSortOrder(value);
+    setFilters({ ...filters, sortField, sortOrder: value });
+  };
 
   // Intersection Observer for infinite scroll
   const observerCallback = useCallback(
@@ -117,49 +141,107 @@ export default function OfferList({
               setFilters={setFilters}
               hideNetworkFilter={hideNetworkFilter}
             />
-            <Select
-              defaultValue="newest"
-              onValueChange={(value) => {
-                if (value === 'newest') {
-                  setFilters({ ...filters, sortField: 'created_at', sortOrder: 'desc' });
-                } else if (value === 'price') {
-                  setFilters({ ...filters, sortField: 'price', sortOrder: 'asc' });
-                }
-              }}
-            >
+
+            {/* Mobile Sort Field Select */}
+            <Select value={sortField} onValueChange={handleSortFieldChange}>
               <SelectTrigger className={`w-32 flex-1 md:w-[180px] flex sm:hidden`}>
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="newest">Newest</SelectItem>
-                <SelectItem value="price">Lowest Price</SelectItem>
+                {sortFieldOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* Mobile Sort Order Select */}
+            <Select value={sortOrder} onValueChange={handleSortOrderChange}>
+              <SelectTrigger className="w-[100px] flex sm:hidden">
+                <SelectValue placeholder="Order">
+                  {sortOrder === 'asc' ? (
+                    <div className="flex items-center gap-2">
+                      <ArrowUpAZ className="h-4 w-4" />
+                      <span>Asc</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <ArrowDownAZ className="h-4 w-4" />
+                      <span>Desc</span>
+                    </div>
+                  )}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="asc">
+                  <div className="flex items-center gap-2">
+                    <ArrowUpAZ className="h-4 w-4" />
+                    <span>Ascending</span>
+                  </div>
+                </SelectItem>
+                <SelectItem value="desc">
+                  <div className="flex items-center gap-2">
+                    <ArrowDownAZ className="h-4 w-4" />
+                    <span>Descending</span>
+                  </div>
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>
           <div>
             <Input
               value={inputSearch}
-              // onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => handleSearch(e.target.value)}
               placeholder="Search symbol or name..."
               className={`flex-1 min-w-60`}
             />
           </div>
-          <Select
-            defaultValue="newest"
-            onValueChange={(value) => {
-              if (value === 'newest') {
-                setFilters({ ...filters, sortField: 'created_at', sortOrder: 'desc' });
-              } else if (value === 'price') {
-                setFilters({ ...filters, sortField: 'price', sortOrder: 'asc' });
-              }
-            }}
-          >
+
+          {/* Desktop Sort Field Select */}
+          <Select value={sortField} onValueChange={handleSortFieldChange}>
             <SelectTrigger className={`w-32 md:w-[180px] hidden sm:flex`}>
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="newest">Newest</SelectItem>
-              <SelectItem value="price">Lowest Price</SelectItem>
+              {sortFieldOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          {/* Desktop Sort Order Select */}
+          <Select value={sortOrder} onValueChange={handleSortOrderChange}>
+            <SelectTrigger className="w-[140px] hidden sm:flex">
+              <SelectValue placeholder="Order">
+                {sortOrder === 'asc' ? (
+                  <div className="flex items-center gap-2">
+                    <ArrowUpAZ className="h-4 w-4" />
+                    <span>Ascending</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <ArrowDownAZ className="h-4 w-4" />
+                    <span>Descending</span>
+                  </div>
+                )}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">
+                <div className="flex items-center gap-2">
+                  <ArrowUpAZ className="h-4 w-4" />
+                  <span>Ascending</span>
+                </div>
+              </SelectItem>
+              <SelectItem value="desc">
+                <div className="flex items-center gap-2">
+                  <ArrowDownAZ className="h-4 w-4" />
+                  <span>Descending</span>
+                </div>
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>

@@ -823,32 +823,13 @@ export default function OfferDetailPageContent({
         {/* Event details */}
         <div className="rounded-2xl border border-gray-200">
           <div className="relative">
-            <div className="bg-secondary/50 absolute inset-0 rounded-2xl z-10"></div>
             <img
               src={
                 offer?.imageUrl || offer?.tokens?.bannerUrl || offer?.tokens?.logo || '/logo.png'
               }
               alt={offer?.tokens?.symbol || 'Offer Image'}
-              className="w-full h-40 sm:h-52 object-cover rounded-2xl opacity-70"
+              className="w-full h-40 sm:h-52 object-cover rounded-2xl"
             />
-            <div className="absolute inset-0 z-20 flex items-center justify-center">
-              <div className="relative">
-                <Image
-                  src={offer?.tokens?.logo || '/logo-mb.png'}
-                  alt={offer?.tokens?.symbol || 'Token Image'}
-                  width={80}
-                  height={80}
-                  className="rounded-full border border-content"
-                />
-                <Image
-                  src={offer?.exToken?.network?.logo || '/logo-mb.png'}
-                  alt={offer?.exToken?.network?.name || 'Token Image'}
-                  width={24}
-                  height={24}
-                  className="rounded-full absolute bottom-0 right-0 border border-content"
-                />
-              </div>
-            </div>
           </div>
 
           <div className="p-4">
@@ -933,13 +914,15 @@ export default function OfferDetailPageContent({
         </div>
       </div>
       <div className="flex-1 w-full md:w-[60%] md:flex md:justify-end mt-6 md:mt-0">
-        <div className="flex flex-col justify-between gap-6 w-full md:w-[90%]">
-          {isLoading ? (
-            <SellerInfoSectionSkeleton />
-          ) : (
-            <SellerInfoSection seller={offer?.sellerWallet} />
-          )}
-          <Separator className="bg-gray-200" />
+        <div className="flex flex-col gap-6 w-full md:w-[90%]">
+          <div>
+            {isLoading ? (
+              <SellerInfoSectionSkeleton />
+            ) : (
+              <SellerInfoSection seller={offer?.sellerWallet} />
+            )}
+            <Separator className="bg-gray-200" />
+          </div>
           <div>
             {/* Quantity selector */}
             <div className="p-2 px-3 border border-line rounded-xl mb-4 flex justify-between items-center">
