@@ -102,7 +102,7 @@ export default function OfferList({
   }, [isMobile]);
 
   return (
-    <div className="grid gap-6 h-fit">
+    <div className="grid gap-4 h-fit">
       <div
         ref={searchBarRef}
         className={cn(

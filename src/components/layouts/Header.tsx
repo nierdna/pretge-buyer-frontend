@@ -5,10 +5,10 @@ import { ButtonConnectWallet } from '../ButtonConnectWallet';
 
 export default function Header() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-pink-gd bg-primary backdrop-blur-lg shadow-sm">
+    <header className="container sticky top-0 z-40">
       {' '}
       {/* White translucent background, increased blur and shadow */}
-      <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+      <div className="container flex h-16 items-center justify-between rounded-2xl bg-primary border-line border rounded-t-none">
         <Link href="/" className="flex items-center gap-2 font-bold" prefetch={false}>
           <img src="/logo.png" alt="PretGe Market" className="w-auto h-10 md:block hidden" />
           <img src="/logo-mb.png" alt="PretGe Market" className="w-auto h-8 md:hidden block" />

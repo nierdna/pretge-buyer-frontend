@@ -29,7 +29,7 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
   // }
 
   return (
-    <section className="flex-1">
+    <section className="flex-1 sm:px-4">
       <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>

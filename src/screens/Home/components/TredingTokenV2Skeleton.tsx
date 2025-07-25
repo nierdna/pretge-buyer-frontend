@@ -37,13 +37,13 @@ export default function TredingTokenV2Skeleton() {
   const numberOfDots = Math.ceil(totalItems / slidesPerView);
 
   return (
-    <section className="">
+    <section className="pb-4 md:pb-6 sm:px-4">
       <Card>
         {/* <CardHeader className="p-4 pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>
           <TrendingUp className="h-6 w-6 text-green-500" />
         </CardHeader> */}
-        <CardContent className="p-4 pt-8">
+        <CardContent className="p-4 pt-8 ">
           <Carousel className="w-full">
             <CarouselContent>
               {Array.from({ length: totalItems }).map((_, index) => (

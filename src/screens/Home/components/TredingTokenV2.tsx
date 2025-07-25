@@ -126,7 +126,7 @@ export default function TredingTokenV2({
   const activeDotIndex = getActiveDotIndex();
 
   return (
-    <section className="">
+    <section className="pb-4 md:pb-6 pt-0 sm:px-4">
       <Card>
         {/* <CardHeadper className="p-4 pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>

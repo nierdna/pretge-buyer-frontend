@@ -248,7 +248,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
             <span className="font-medium">{`${offer?.collateralPercent}%`}</span>
           </div>
           <div className="flex items-center gap-1">
-            <span className="text-gray-600">Settle After TGE:</span>
+            <span className="text-gray-600">Settle Duration:</span>
             <span className="font-medium">{offer?.settleDuration} hours</span>
           </div>
         </div>

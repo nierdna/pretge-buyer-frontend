@@ -114,7 +114,7 @@ export default function FilterContent({
           )}
 
           <AccordionItem value="settle-time">
-            <AccordionTrigger className="text-base">Settle After TGE</AccordionTrigger>
+            <AccordionTrigger className="text-base">Settle Duration</AccordionTrigger>
             <AccordionContent className="flex flex-wrap gap-4 pt-2">
               {listSettleTime.map((item) => (
                 <div className="flex items-center gap-2" key={item.id}>
