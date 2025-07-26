@@ -153,7 +153,16 @@ export const useGetOffersByToken = (tokenId: string) => {
       return response.data;
     },
     getNextPageParam: (lastPage, pages) => {
-      if (lastPage.pagination.totalPages === pages.length) {
+      // If lastPage is an array, stop paginating
+      if (Array.isArray(lastPage)) {
+        return undefined;
+      }
+      const lp: any = lastPage;
+      const offersArr = Array.isArray(lp?.data?.data) ? lp.data.data : [];
+      if (offersArr.length === 0) {
+        return undefined;
+      }
+      if (lp.pagination && lp.pagination.totalPages === pages.length) {
         return undefined;
       }
       return pages.length + 1;
