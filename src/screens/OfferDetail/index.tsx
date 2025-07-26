@@ -19,7 +19,7 @@ interface OfferDetailPageProps {
 
 export default function OfferDetail({ id }: OfferDetailPageProps) {
   // Find the offer that matches the ID from the URL
-  const { data: offer, isLoading } = useGetOfferById(id);
+  const { data: offer, isLoading, refetch } = useGetOfferById(id);
   const transactionHistoryRef = useRef<TransactionHistoryRef>(null);
 
   // if (!offer) {
@@ -47,6 +47,7 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
           offer={offer}
           onOrderPlaced={() => {
             transactionHistoryRef.current?.resetToFirstPage();
+            refetch();
           }}
         />
         <div className="flex flex-col gap-4 w-full">

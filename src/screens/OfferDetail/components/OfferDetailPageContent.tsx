@@ -605,6 +605,7 @@ export default function OfferDetailPageContent({
   const [isEligible, setIsEligible] = useState(false);
   const [isShowPromotion, setIsShowPromotion] = useState(false);
   const [isCheckingEligibility, setIsCheckingEligibility] = useState(false);
+  const [buyLoading, setBuyLoading] = useState(false);
 
   const estimatedCost = buyQuantity * Number(offer?.price || 0);
   const chainId = offer?.exToken?.network?.chainId?.toString() || '';
@@ -710,11 +711,9 @@ export default function OfferDetailPageContent({
 
   // Placeholder: create order function
   const placeOrder = async () => {
-    // Always use English for comments and console logs in code
     if (!offer) return;
-
+    setBuyLoading(true);
     try {
-      // Fake address for placeholder
       const orderInput = {
         offer_id: offer.id,
         wallet_id: walletInfo?.id,
@@ -722,16 +721,16 @@ export default function OfferDetailPageContent({
       };
       const res = await axiosInstance.post('orders', orderInput);
       toast.success('Order placed successfully');
-
       await queryClient.invalidateQueries({
         queryKey: ['orders', offer.id],
       });
-
       onOrderPlaced?.();
       await fetchBalance();
     } catch (err) {
       console.error('Failed to place order (placeholder)', err);
       alert('Failed to place order (placeholder)');
+    } finally {
+      setBuyLoading(false);
     }
   };
 
@@ -741,15 +740,12 @@ export default function OfferDetailPageContent({
       return;
     }
     if (balance === null) {
-      // Always use English for comments and console logs in code
       console.log('Balance not loaded yet');
       return;
     }
     if (balance >= estimatedCost) {
-      // Placeholder: call API to create order
       placeOrder();
     } else {
-      // Not enough balance, open deposit modal
       setShowDepositModal(true);
     }
   };
@@ -1002,8 +998,13 @@ export default function OfferDetailPageContent({
                   onClick={handleBuy}
                   size="xl"
                   className="w-full"
-                  disabled={buyQuantity === 0 || (offer?.promotion?.isActive && !isShowPromotion)}
+                  disabled={
+                    buyQuantity === 0 ||
+                    (offer?.promotion?.isActive && !isShowPromotion) ||
+                    buyLoading
+                  }
                 >
+                  {buyLoading ? <Loader2 className="animate-spin mr-2" /> : null}
                   Buy Now
                 </Button>
               )}
