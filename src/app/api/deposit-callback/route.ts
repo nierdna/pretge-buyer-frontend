@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
     const { data: wallet, error: walletError } = await supabase
       .from('wallets')
       .select('id')
-      .eq('address', userAddress.toLowerCase())
+      .ilike('address', userAddress.toLowerCase())
       .single();
     if (walletError || !wallet) {
       console.log('walletError: ' + walletError?.message);
@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
     const { data: exToken, error: exTokenError } = await supabase
       .from('ex_tokens')
       .select('id')
-      .eq('address', tokenAddress.toLowerCase())
+      .ilike('address', tokenAddress.toLowerCase())
       .single();
     if (exTokenError || !exToken) {
       return NextResponse.json({ error: 'exToken not found for token address' }, { status: 404 });
