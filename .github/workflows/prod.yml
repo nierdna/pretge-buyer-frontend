@@ -26,9 +26,11 @@ jobs:
       - name: Deploy Project Artifacts to Vercel
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
       - name: Notify n8n Webhook (on success)
-        if: success() # chỉ chạy nếu job build thành công
+        if: success() && env.N8N_WEBHOOK_URL != ''
+        env:
+          N8N_WEBHOOK_URL: ${{ secrets.N8N_WEBHOOK_URL }}
         run: |
-          curl -X POST https://n8n.6h30.xyz/webhook/fd13e5ab-2e2a-4e18-b771-227c2b8cd133 \
+          curl -X POST "$N8N_WEBHOOK_URL" \
             -H "Content-Type: application/json" \
             -d '{
               "project": "${{ github.event.repository.name }}",
