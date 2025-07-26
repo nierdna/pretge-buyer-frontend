@@ -136,7 +136,7 @@ export async function POST(req: NextRequest) {
     const { error: txLogError } = await supabase.from('transactions').insert({
       tx_hash: txHash,
       chain_id: chainId,
-      log_index: logIndex,
+      log_index: logIndex || 0,
       event: 'deposit',
       event_data: eventData,
       created_at: new Date().toISOString(),
