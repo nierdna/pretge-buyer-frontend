@@ -22,9 +22,10 @@ export function verifySolanaSignature(
 ): boolean {
   try {
     const pubKey = new PublicKey(walletAddress);
-    const signatureBytes = Buffer.from(signature, 'base64');
-    const messageBytes = Buffer.from(message, 'utf8');
-    // Xác thực chữ ký bằng tweetnacl
+    // Decode signature from base58 (Solana standard)
+    const signatureBytes = bs58.decode(signature);
+    const messageBytes = new TextEncoder().encode(message);
+    // Verify signature using tweetnacl
     return nacl.sign.detached.verify(messageBytes, signatureBytes, pubKey.toBytes());
   } catch (error) {
     return false;
