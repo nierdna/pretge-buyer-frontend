@@ -31,7 +31,7 @@ jobs:
           curl -X POST https://n8n.6h30.xyz/webhook/fd13e5ab-2e2a-4e18-b771-227c2b8cd133 \
             -H "Content-Type: application/json" \
             -d '{
-              "project": "pre-market-xyz",
+              "project": "${{ github.event.repository.name }}",
               "status": "success",
               "branch": "${{ github.ref_name }}",
               "commit": "${{ github.sha }}",
