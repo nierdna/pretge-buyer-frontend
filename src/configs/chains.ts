@@ -79,7 +79,8 @@ export const chainConfigs: IChainConfig[] = [
     id: solana.id.toString(),
     name: 'Solana',
     publicRpcUrl: 'https://api.mainnet.solana.com',
-    privateRpcUrl: 'https://api.mainnet.solana.com',
+    privateRpcUrl:
+      'https://powerful-prettiest-aura.solana-mainnet.quiknode.pro/c2cb8c625bd63a33189e46ae79aec60b64e845ee',
     explorerUrl: 'https://solscan.io',
     chainId: solana.id.toString(),
     nativeCurrency: { name: 'Solana', symbol: 'SOL', decimals: 9 },
