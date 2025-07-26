@@ -15,6 +15,7 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
+import bs58 from 'bs58';
 
 export const useAuth = () => {
   const { address, isConnected } = useAppKitAccount();
@@ -115,7 +116,7 @@ export const useAuth = () => {
         // For Solana
         const encodedMessage = new TextEncoder().encode(loginMessage);
         const sig = await solanaWalletProvider.signMessage(encodedMessage);
-        signature = Buffer.from(sig).toString('base64');
+        signature = bs58.encode(sig);
       }
 
       // 3. Login with signature
