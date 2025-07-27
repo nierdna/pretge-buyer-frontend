@@ -133,8 +133,8 @@ export const useGetOffersByToken = (tokenId: string) => {
     defaultFilter: {
       limit: 12,
       page: 1,
-      sortField: 'created_at',
-      sortOrder: 'desc',
+      sortField: 'price',
+      sortOrder: 'asc',
     },
   });
   const [inputSearch, setInputSearch] = useState('');
