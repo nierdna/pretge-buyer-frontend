@@ -50,9 +50,14 @@ const DialogDeposit = ({
             <span className="">
               {isEligible
                 ? formatNumberShort(
-                    estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100) - balance
+                    estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100) - balance,
+                    {
+                      maxDecimalCount: 4,
+                    }
                   )
-                : formatNumberShort(estimatedCost - balance)}{' '}
+                : formatNumberShort(estimatedCost - balance, {
+                    maxDecimalCount: 4,
+                  })}{' '}
               {offer?.exToken?.symbol}
             </span>
           </div>

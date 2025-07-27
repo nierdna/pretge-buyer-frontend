@@ -173,7 +173,9 @@ export default function FilledOrdersList() {
                   <TableCell className="text-center">{formatNumberShort(order.amount)}</TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center gap-2 justify-end">
-                      {formatNumberShort(order.offer?.price)}
+                      {formatNumberShort(order.offer?.price, {
+                        maxDecimalCount: 4,
+                      })}
                       <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
                         <Image
                           src={order.offer?.exToken?.logo || '/placeholder.svg'}
@@ -194,7 +196,10 @@ export default function FilledOrdersList() {
                       {formatNumberShort(
                         order.amount *
                           order.offer?.price *
-                          (1 - (order.offer?.promotion?.discountPercent || 0) / 100)
+                          (1 - (order.offer?.promotion?.discountPercent || 0) / 100),
+                        {
+                          maxDecimalCount: 4,
+                        }
                       )}
                       <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
                         <Image

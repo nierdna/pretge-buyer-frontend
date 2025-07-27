@@ -943,7 +943,11 @@ export default function OfferDetailPageContent({
                 <div className="flex items-center gap-1 flex-wrap">
                   <span>Order Value</span>
                   <span className="text-info">
-                    ({buyQuantity} x ${formatNumberShort(unitPrice)} each)
+                    ({buyQuantity} x $
+                    {formatNumberShort(unitPrice, {
+                      maxDecimalCount: 4,
+                    })}{' '}
+                    each)
                   </span>
                 </div>
                 <div className="font-medium">${subtotal}</div>
@@ -986,7 +990,10 @@ export default function OfferDetailPageContent({
               <div className="flex justify-between items-center">
                 <div className="font-bold">Total:</div>
                 <div className="font-bold text-xl md:text-2xl">
-                  ${formatNumberShort(totalValue)}
+                  $
+                  {formatNumberShort(totalValue, {
+                    maxDecimalCount: 4,
+                  })}
                 </div>
               </div>
             </div>

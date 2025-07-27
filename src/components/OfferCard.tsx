@@ -111,10 +111,12 @@ export default function OfferCard({ offer }: OfferCardProps) {
                       offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
                       {
                         useShorterExpression: true,
+                        maxDecimalCount: 4,
                       }
                     )
                   : formatNumberShort(offer.price, {
                       useShorterExpression: true,
+                      maxDecimalCount: 4,
                     })}
               </span>
             </div>
@@ -124,6 +126,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
                   $
                   {formatNumberShort(offer.price, {
                     useShorterExpression: true,
+                    maxDecimalCount: 4,
                   })}
                 </span>
 
@@ -173,10 +176,12 @@ export default function OfferCard({ offer }: OfferCardProps) {
                     offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
                     {
                       useShorterExpression: true,
+                      maxDecimalCount: 4,
                     }
                   )
                 : formatNumberShort(offer.price, {
                     useShorterExpression: true,
+                    maxDecimalCount: 4,
                   })}
               <div className="flex items-end gap-1">
                 <Image

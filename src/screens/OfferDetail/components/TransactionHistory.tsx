@@ -150,7 +150,9 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                             {order.discountPercent > 0 && (
                               <div className="absolute h-px -right-1 top-1/2 -translate-y-1/2 left-0 w-full bg-primary z-10"></div>
                             )}
-                            {formatNumberShort(order.amount * order.offer.price)}
+                            {formatNumberShort(order.amount * order.offer.price, {
+                              maxDecimalCount: 4,
+                            })}
                             <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
                               <Image
                                 src={order.offer?.exToken?.logo || '/placeholder.svg'}

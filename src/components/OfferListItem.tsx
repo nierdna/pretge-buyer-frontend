@@ -75,10 +75,12 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
                   offer.price * (1 - Number(offer.promotion?.discountPercent) / 100),
                   {
                     useShorterExpression: true,
+                    maxDecimalCount: 4,
                   }
                 )
               : formatNumberShort(offer.price, {
                   useShorterExpression: true,
+                  maxDecimalCount: 4,
                 })}
           </span>
         </div>
