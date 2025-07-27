@@ -18,7 +18,7 @@ export const CONTRACTS = {
     ESCROW: '0xe419f17D931fD5De4Cde4874B1326Fe76B7EeE17',
   },
   [mainnet.id.toString()]: {
-    ESCROW: '0xe7F76c6D23b889a9cac5c2Bebf54988DD9EE3093',
+    ESCROW: '0xe419f17D931fD5De4Cde4874B1326Fe76B7EeE17',
   },
   [solanaDevnet.id.toString()]: {
     ESCROW: '6p58bca3jvFHGX4x179gL3ykXVreW4Hp2JLWv9Jnacmx',
