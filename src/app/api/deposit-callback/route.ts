@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Escrow not found' }, { status: 404 });
     }
 
-    const { found, userAddress, tokenAddress, rawAmount, formattedAmount, logIndex } =
+    const { found, userAddress, tokenAddress, formattedAmount, logIndex } =
       await escrowContract.parseTransaction(txHash);
 
     if (!found) {
@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
       }
     } else {
       // Chưa có, tạo mới
-      newBalance = rawAmount;
+      newBalance = formattedAmount;
       const { error: insertError } = await supabase
         .from('wallet_ex_tokens')
         .insert({ wallet_id: walletId, ex_token_id: exTokenId, balance: newBalance });
@@ -126,7 +126,7 @@ export async function POST(req: NextRequest) {
     const eventData = {
       user: userAddress,
       token: tokenAddress,
-      amount: rawAmount,
+      amount: formattedAmount,
       formattedAmount,
       walletId,
       exTokenId,
