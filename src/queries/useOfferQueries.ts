@@ -15,7 +15,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
     defaultFilter: {
       limit: 6,
       page: 1,
-      sortField: 'price',
+      sortField: 'created_at',
       sortOrder: 'desc',
       tokenId: '',
     },
@@ -133,7 +133,7 @@ export const useGetOffersByToken = (tokenId: string) => {
     defaultFilter: {
       limit: 12,
       page: 1,
-      sortField: 'price',
+      sortField: 'created_at',
       sortOrder: 'desc',
     },
   });
@@ -205,7 +205,7 @@ export const useGetOffersByUserId = (userId: string) => {
     defaultFilter: {
       limit: 12,
       page: 1,
-      sortField: 'price',
+      sortField: 'created_at',
       sortOrder: 'desc',
     },
   });
