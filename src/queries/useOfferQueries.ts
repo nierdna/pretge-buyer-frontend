@@ -6,14 +6,19 @@ import { IOffer } from '@/types/offer';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
+import { useFilterCache } from '@/hooks/useFilterCache';
+import { CACHE_KEYS } from '@/utils/filterCache';
 
 export const useGetOffers = (queryKey: any[] = []) => {
-  const [filters, setFilters] = useState<IOfferFilter>({
-    limit: 6,
-    page: 1,
-    sortField: 'price',
-    sortOrder: 'desc',
-    tokenId: '',
+  const { filters, setFilters, resetToDefault, clearCache, loadFromCache } = useFilterCache({
+    key: CACHE_KEYS.OFFERS_FILTER,
+    defaultFilter: {
+      limit: 6,
+      page: 1,
+      sortField: 'price',
+      sortOrder: 'desc',
+      tokenId: '',
+    },
   });
   const [inputSearch, setInputSearch] = useState('');
 
@@ -61,6 +66,9 @@ export const useGetOffers = (queryKey: any[] = []) => {
     setFilters,
     fetchNextPage,
     hasNextPage,
+    resetToDefault,
+    clearCache,
+    loadFromCache,
   };
 };
 
@@ -120,11 +128,14 @@ export const useGetOrdersByOffer = (offerId: string) => {
 };
 
 export const useGetOffersByToken = (tokenId: string) => {
-  const [filters, setFilters] = useState<IOfferFilter>({
-    limit: 12,
-    page: 1,
-    sortField: 'price',
-    sortOrder: 'desc',
+  const { filters, setFilters, resetToDefault, clearCache, loadFromCache } = useFilterCache({
+    key: `${CACHE_KEYS.OFFERS_BY_TOKEN_FILTER}_${tokenId}`,
+    defaultFilter: {
+      limit: 12,
+      page: 1,
+      sortField: 'price',
+      sortOrder: 'desc',
+    },
   });
   const [inputSearch, setInputSearch] = useState('');
 
@@ -182,15 +193,21 @@ export const useGetOffersByToken = (tokenId: string) => {
     inputSearch,
     handleSearch,
     setFilters,
+    resetToDefault,
+    clearCache,
+    loadFromCache,
   };
 };
 
 export const useGetOffersByUserId = (userId: string) => {
-  const [filters, setFilters] = useState<IOfferFilter>({
-    limit: 12,
-    page: 1,
-    sortField: 'price',
-    sortOrder: 'desc',
+  const { filters, setFilters, resetToDefault, clearCache, loadFromCache } = useFilterCache({
+    key: `${CACHE_KEYS.OFFERS_BY_USER_FILTER}_${userId}`,
+    defaultFilter: {
+      limit: 12,
+      page: 1,
+      sortField: 'price',
+      sortOrder: 'desc',
+    },
   });
   const [inputSearch, setInputSearch] = useState('');
 
@@ -237,6 +254,9 @@ export const useGetOffersByUserId = (userId: string) => {
     handleSearch,
     setFilters,
     refetchOffers,
+    resetToDefault,
+    clearCache,
+    loadFromCache,
   };
 };
 
