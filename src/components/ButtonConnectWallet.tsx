@@ -55,7 +55,7 @@ export const ButtonConnectWallet = () => {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link className="w-full" href="/my-orders">
-                Orders History
+                My Orders
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem onClick={handleConnectWallet}>Switch Wallet</DropdownMenuItem>
