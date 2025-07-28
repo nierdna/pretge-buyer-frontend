@@ -209,7 +209,7 @@ export default function OfferList({
 
             {/* Mobile Sort Order Select */}
             <Select value={sortOrder} onValueChange={handleSortOrderChange}>
-              <SelectTrigger className="w-[100px] flex sm:hidden">
+              <SelectTrigger className="w-28 flex sm:hidden">
                 <SelectValue placeholder="Order">
                   {sortOrder === 'asc' ? (
                     <div className="flex items-center gap-2">
@@ -269,7 +269,7 @@ export default function OfferList({
 
           {/* Desktop Sort Order Select */}
           <Select value={sortOrder} onValueChange={handleSortOrderChange}>
-            <SelectTrigger className="w-[140px] hidden sm:flex">
+            <SelectTrigger className="w-40 hidden sm:flex">
               <SelectValue placeholder="Order">
                 {sortOrder === 'asc' ? (
                   <div className="flex items-center gap-2">

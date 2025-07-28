@@ -7,9 +7,9 @@ export default function Header() {
   return (
     <>
       {/* Top bar with seller links */}
-      <div className="container">
+      <div className="container px-4 lg:px-8">
         <div className="bg-primary">
-          <div className="container flex h-8 items-center justify-between text-xs text-muted-foreground">
+          <div className="flex h-8 px-4 lg:px-8 items-center justify-between text-xs text-muted-foreground">
             <div className="flex items-center gap-4">
               <Link
                 href="https://seller.pretgemarket.xyz"
@@ -34,8 +34,8 @@ export default function Header() {
       </div>
 
       {/* Main header */}
-      <header className="container sticky top-0 z-40">
-        <div className="container flex h-16 items-center justify-between rounded-2xl bg-primary border-line border rounded-t-none">
+      <header className="container sticky top-0 z-40 px-4 lg:px-8">
+        <div className="flex h-16 px-4 lg:px-6 items-center justify-between rounded-2xl bg-primary border-line border rounded-t-none">
           <Link href="/" className="flex items-center gap-2 font-bold" prefetch={false}>
             <img src="/logo.png" alt="PretGe Market" className="w-auto h-10 md:block hidden" />
             <img src="/logo-mb.png" alt="PretGe Market" className="w-auto h-8 md:hidden block" />

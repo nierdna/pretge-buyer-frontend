@@ -36,6 +36,8 @@ export const saveFilterToStorage = (key: string, filter: IOfferFilter): void => 
  */
 export const loadFilterFromStorage = (key: string): IOfferFilter | null => {
   try {
+    if (typeof window === 'undefined') return null;
+
     const cached = localStorage.getItem(key);
     if (!cached) return null;
 
