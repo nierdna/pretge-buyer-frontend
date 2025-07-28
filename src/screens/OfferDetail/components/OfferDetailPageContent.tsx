@@ -1,5 +1,6 @@
 'use client';
 
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -32,6 +33,35 @@ interface OfferDetailPageContentProps {
   onOrderPlaced?: () => void;
   isLoading?: boolean;
 }
+
+// Color functions for styling
+export const getSettleDurationColor = (settleDuration: number) => {
+  if (settleDuration <= 2) return 'bg-green-500 text-white'; // 1h, 2h - green (fast)
+  if (settleDuration <= 6) return 'bg-yellow-500 text-white'; // 4h, 6h - yellow (medium)
+  return 'bg-red-500 text-white'; // 12h - red (slow)
+};
+
+export const getSettleDurationTextColor = (settleDuration: number) => {
+  if (settleDuration <= 2) return 'text-green-500'; // 1h, 2h - green (fast)
+  if (settleDuration <= 6) return 'text-yellow-500'; // 4h, 6h - yellow (medium)
+  return 'text-red-500'; // 12h - red (slow)
+};
+
+export const getColorFromCollateral = (collateral: number) => {
+  if (collateral >= 100) return 'text-green-500'; // 100% - green (most reliable)
+  if (collateral >= 75) return 'text-cyan-500'; // 75% - cyan (very reliable)
+  if (collateral >= 50) return 'text-orange-500'; // 50% - orange (moderate)
+  return 'text-red-500'; // 25% - red (least reliable)
+};
+
+export const formatSettleDuration = (settleDuration: number) => {
+  if (settleDuration <= 0) return 'N/A';
+  return `${settleDuration}h`;
+};
+
+export const formatCollateralPercent = (collateralPercent: number) => {
+  return `${collateralPercent}%`;
+};
 
 // This component now contains the right-hand side details of the offer
 // function OfferDetailsRightColumn({ offer, onOrderPlaced }: OfferDetailPageContentProps) {
@@ -831,6 +861,26 @@ export default function OfferDetailPageContent({
               alt={offer?.tokens?.symbol || 'Offer Image'}
               className="w-full h-40 sm:h-52 object-cover rounded-2xl"
             />
+            <Badge className="absolute top-2 left-2 z-10">{offer?.exToken?.network?.name}</Badge>
+            {!!offer?.promotion?.isActive && (
+              <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
+                Discount
+              </Badge>
+            )}
+            <Badge
+              className={`absolute bottom-2 left-2 z-10 ${getSettleDurationColor(
+                offer?.settleDuration || 0
+              )}`}
+            >
+              {formatSettleDuration(offer?.settleDuration || 0)}
+            </Badge>
+            <Badge
+              className={`absolute bottom-2 left-12 z-10 ${getColorFromCollateral(
+                offer?.collateralPercent || 0
+              )}`}
+            >
+              {formatCollateralPercent(offer?.collateralPercent || 0)}
+            </Badge>
           </div>
 
           <div className="p-4">
@@ -879,7 +929,11 @@ export default function OfferDetailPageContent({
             <div className="flex justify-between items-center">
               <div className="flex items-center gap-1">
                 <span>Collateral</span>
-                <span className="text-info">({offer?.collateralPercent || 0}%)</span>
+                <span
+                  className={`font-medium ${getColorFromCollateral(offer?.collateralPercent || 0)}`}
+                >
+                  ({offer?.collateralPercent || 0}%)
+                </span>
               </div>
               <div className="flex items-center gap-1">
                 <div className="font-medium pt-0.5">
@@ -901,8 +955,12 @@ export default function OfferDetailPageContent({
             <div className="flex justify-between items-center">
               <div>Settle Duration</div>
               <div className="flex items-center gap-1">
-                <div className="font-medium">
-                  {offer?.settleDuration || 0} {offer?.settleDuration === 1 ? 'Hour' : 'Hours'}
+                <div
+                  className={`font-medium ${getSettleDurationTextColor(
+                    offer?.settleDuration || 0
+                  )}`}
+                >
+                  {formatSettleDuration(offer?.settleDuration || 0)}
                 </div>
               </div>
             </div>
@@ -1025,6 +1083,35 @@ export default function OfferDetailPageContent({
                   Offer Closed
                 </Button>
               )}
+            </div>
+
+            {/* Note section explaining settle duration and collateral */}
+            <Separator className="bg-gray-200 mt-6" />
+            <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl shadow-sm">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                <h4 className="font-semibold text-orange-800">Key Information</h4>
+              </div>
+              <div className="space-y-3 text-sm text-orange-700">
+                <div className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <span className="font-medium text-orange-800">Settle Duration:</span>
+                    <span className="ml-1">
+                      Shorter times reduce price volatility at TGE, protecting buyers.
+                    </span>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <span className="font-medium text-orange-800">Collateral Percent:</span>
+                    <span className="ml-1">
+                      Higher reduces default risk, but trusted sellers may not need collateral.
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

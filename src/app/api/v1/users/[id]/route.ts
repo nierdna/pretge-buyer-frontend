@@ -28,28 +28,22 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
       return NextResponse.json({ success: false, message: 'User not found' }, { status: 404 });
     }
 
-    const { data: wallet, error: walletError } = await supabase
+    // Get all wallets for the user
+    const { data: wallets, error: walletsError } = await supabase
       .from('wallets')
       .select('*')
       .eq('user_id', id);
-    if (walletError) {
-      if (walletError.code === 'PGRST116') {
-        // No rows returned
-        return NextResponse.json({ success: false, message: 'Wallet not found' }, { status: 404 });
-      }
+    if (walletsError) {
+      console.error('Error fetching wallets:', walletsError);
       return NextResponse.json(
-        { success: false, message: 'Failed to fetch wallet' },
+        { success: false, message: 'Failed to fetch wallets' },
         { status: 500 }
       );
     }
 
-    if (!wallet) {
-      return NextResponse.json({ success: false, message: 'Wallet not found' }, { status: 404 });
-    }
-
     return NextResponse.json({
       success: true,
-      data: { ...user, wallet: wallet },
+      data: { ...user, wallet: wallets || [] },
       message: 'User retrieved successfully',
     });
   } catch (error) {

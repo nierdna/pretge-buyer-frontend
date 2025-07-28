@@ -1,13 +1,13 @@
 'use client';
 
+import { useFilterCache } from '@/hooks/useFilterCache';
 import { Service } from '@/service';
-import { IOfferFilter } from '@/service/offer.service';
 import { IOffer } from '@/types/offer';
+import { CACHE_KEYS } from '@/utils/filterCache';
+import { extractTokenSymbol } from '@/utils/helpers/string';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { useFilterCache } from '@/hooks/useFilterCache';
-import { CACHE_KEYS } from '@/utils/filterCache';
 
 export const useGetOffers = (queryKey: any[] = []) => {
   const { filters, setFilters, resetToDefault, clearCache, loadFromCache } = useFilterCache({
@@ -23,7 +23,8 @@ export const useGetOffers = (queryKey: any[] = []) => {
   const [inputSearch, setInputSearch] = useState('');
 
   const debouncedSearch = useDebouncedCallback((search: string) => {
-    setFilters({ ...filters, search });
+    const symbolOnly = extractTokenSymbol(search);
+    setFilters({ ...filters, search: symbolOnly });
   }, 500);
 
   const handleSearch = (search: string) => {
@@ -140,7 +141,8 @@ export const useGetOffersByToken = (tokenId: string) => {
   const [inputSearch, setInputSearch] = useState('');
 
   const debouncedSearch = useDebouncedCallback((search: string) => {
-    setFilters({ ...filters, search });
+    const symbolOnly = extractTokenSymbol(search);
+    setFilters({ ...filters, search: symbolOnly });
   }, 500);
 
   const handleSearch = (search: string) => {
@@ -212,7 +214,8 @@ export const useGetOffersByUserId = (userId: string) => {
   const [inputSearch, setInputSearch] = useState('');
 
   const debouncedSearch = useDebouncedCallback((search: string) => {
-    setFilters({ ...filters, search });
+    const symbolOnly = extractTokenSymbol(search);
+    setFilters({ ...filters, search: symbolOnly });
   }, 500);
 
   const handleSearch = (search: string) => {

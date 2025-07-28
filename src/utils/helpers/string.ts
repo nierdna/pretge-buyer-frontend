@@ -19,4 +19,24 @@ const transformToNumber = (value: string): string => {
   return '';
 };
 
+/**
+ * Extract token symbol from search input
+ * If input contains "WLFI - World Liberty Financial", return "WLFI"
+ * If input is just "WLFI", return "WLFI"
+ */
+export function extractTokenSymbol(searchInput: string): string {
+  if (!searchInput || !searchInput.trim()) {
+    return '';
+  }
+
+  const trimmed = searchInput.trim();
+  const dashIndex = trimmed.indexOf(' - ');
+
+  if (dashIndex > 0) {
+    return trimmed.substring(0, dashIndex).trim();
+  }
+
+  return trimmed;
+}
+
 export { normalizeNetworkName, transformToNumber, truncateAddress };

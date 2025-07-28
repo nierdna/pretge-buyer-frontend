@@ -25,9 +25,9 @@ export default function SearchResults({
       <div className="space-y-4">
         <div className="flex items-center gap-2 text-sm text-content">
           <Search className="h-4 w-4" />
-          Searching for "{searchQuery}"...
+          Searching for token symbol "{searchQuery}"...
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="animate-pulse">
               <div className="bg-secondary h-48 rounded-2xl mb-4"></div>
@@ -54,7 +54,8 @@ export default function SearchResults({
           <div>
             <h3 className="text-lg font-medium">No results found</h3>
             <p className="text-content">
-              No offers found for "{searchQuery}". Try searching with different keywords.
+              No offers found for token symbol "{searchQuery}". Try searching with different token
+              symbols.
             </p>
           </div>
         </div>
@@ -68,8 +69,8 @@ export default function SearchResults({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-sm text-content">
           <Search className="h-4 w-4" />
-          Found {totalResults || offers.length} result{totalResults !== 1 ? 's' : ''} for "
-          {searchQuery}"
+          Found {totalResults || offers.length} result{totalResults !== 1 ? 's' : ''} for token
+          symbol "{searchQuery}"
         </div>
         <div className="flex items-center gap-2 text-xs text-content">
           <Coins className="h-3 w-3" />
@@ -78,7 +79,7 @@ export default function SearchResults({
       </div>
 
       {/* Results Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
         {offers.map((offer, index) => (
           <Link key={offer.id || index} href={`/offers/${offer.id}`}>
             <Card className="hover:scale-[1.02] transition-transform duration-200 cursor-pointer">
@@ -149,9 +150,9 @@ export default function SearchResults({
           Search Tips
         </h4>
         <ul className="text-sm text-content space-y-1">
-          <li>• Try searching by token symbol (e.g., "BTC", "ETH")</li>
-          <li>• Search by token name (e.g., "Bitcoin", "Ethereum")</li>
-          <li>• Use partial matches for broader results</li>
+          <li>• Search by token symbol (e.g., "BTC", "ETH", "WLFI")</li>
+          <li>• Use partial symbol matches for broader results</li>
+          <li>• Symbols are case-sensitive</li>
           <li>• Check recent searches for quick access</li>
         </ul>
       </div>

@@ -29,11 +29,11 @@ export async function GET(req: NextRequest) {
 
     let tokenIds: string[] | undefined = undefined;
     if (search) {
-      // Tìm token_id theo name hoặc symbol bắt đầu bằng search
+      // Tìm token_id chỉ theo symbol bắt đầu bằng search
       const { data: tokens, error: tokenError } = await supabase
         .from('tokens')
         .select('id')
-        .or(`name.ilike.${search}%,symbol.ilike.${search}%`);
+        .ilike('symbol', `${search}%`);
       if (tokenError) {
         return NextResponse.json({ success: false, message: tokenError.message }, { status: 500 });
       }

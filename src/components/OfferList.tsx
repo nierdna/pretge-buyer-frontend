@@ -15,6 +15,7 @@ import OfferCardSkeleton from '@/screens/SellerDetail/components/LoadingSkeleton
 import { IOfferFilter } from '@/service/offer.service';
 import { searchService, SearchSuggestion } from '@/service/search.service';
 import { IOffer } from '@/types/offer';
+import { extractTokenSymbol } from '@/utils/helpers/string';
 import { ArrowDownAZ, ArrowUpAZ, LayoutGrid, List, Loader2 } from 'lucide-react'; // Icons for view types and sorting
 import { useCallback, useEffect, useRef, useState } from 'react'; // Import hooks
 import FilterSheet from './filter/FilterSheet';
@@ -98,7 +99,9 @@ export default function OfferList({
 
     setIsLoadingSuggestions(true);
     try {
-      const response = await searchService.getSuggestions(query, 10);
+      // Use only the symbol part for API suggestions
+      const symbolOnly = extractTokenSymbol(query);
+      const response = await searchService.getSuggestions(symbolOnly, 10);
       if (response.success) {
         setApiSuggestions(response.data);
       }
@@ -315,7 +318,7 @@ export default function OfferList({
       </div>
 
       {viewType === 'card' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
           {isLoading && (
             <>
               {Array.from({ length: 6 }).map((_, index) => (

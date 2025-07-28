@@ -2,6 +2,7 @@
 
 import { Input } from '@/components/ui/input';
 import { SearchSuggestion } from '@/service/search.service';
+import { extractTokenSymbol } from '@/utils/helpers/string';
 import { Clock, Coins, Search, X } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
@@ -49,6 +50,7 @@ export default function SearchInput({
 
   // Handle suggestion click
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
+    // Only use the symbol part for search, but show full display text in input
     onChange(suggestion.displayText);
     setShowSuggestions(false);
     inputRef.current?.blur();
@@ -135,11 +137,13 @@ export default function SearchInput({
           {isLoading ? (
             <div className="flex items-center gap-2">
               <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-400"></div>
-              Searching for: <span className="font-medium text-blue-300">"{value}"</span>
+              Searching for token symbol:{' '}
+              <span className="font-medium text-blue-300">"{extractTokenSymbol(value)}"</span>
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              Searching for: <span className="font-medium text-blue-300">"{value}"</span>
+              Searching for token symbol:{' '}
+              <span className="font-medium text-blue-300">"{extractTokenSymbol(value)}"</span>
             </div>
           )}
         </div>

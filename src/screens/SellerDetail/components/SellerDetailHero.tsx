@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { Star } from 'lucide-react';
 
 interface SellerDetailHeroProps {
-  seller?: ISeller;
+  seller: ISeller;
 }
 
 export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
@@ -20,7 +20,7 @@ export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
       <CardContent className="p-6 grid gap-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
           <Avatar className="h-24 w-24 flex-shrink-0">
-            <AvatarImage src={seller?.avatar || getFallbackAvatar(seller?.wallet[0]?.address)} />
+            <AvatarImage src={seller?.avatar || getFallbackAvatar(seller?.name)} />
           </Avatar>
           <div className="grid gap-2 text-center sm:text-left">
             <div className="text-2xl font-bold">{seller?.name}</div>

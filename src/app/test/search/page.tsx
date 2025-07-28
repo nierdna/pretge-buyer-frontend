@@ -4,6 +4,7 @@ import SearchInput from '@/components/SearchInput';
 import SearchResults from '@/components/SearchResults';
 import { useGetOffers } from '@/queries/useOfferQueries';
 import { searchService } from '@/service/search.service';
+import { extractTokenSymbol } from '@/utils/helpers/string';
 import { useCallback, useState } from 'react';
 
 export default function SearchTestPage() {
@@ -39,7 +40,9 @@ export default function SearchTestPage() {
     if (search.trim() && search.length >= 2) {
       setIsLoadingSuggestions(true);
       try {
-        const response = await searchService.getSuggestions(search, 10);
+        // Use only the symbol part for API suggestions
+        const symbolOnly = extractTokenSymbol(search);
+        const response = await searchService.getSuggestions(symbolOnly, 10);
         if (response.success) {
           setSuggestions(response.data);
         }

@@ -14,11 +14,11 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    // Search in tokens table for symbol and name
+    // Search in tokens table for symbol only
     const { data: tokens, error: tokenError } = await supabase
       .from('tokens')
       .select('id, symbol, name, logo, networks:network_id(name)')
-      .or(`symbol.ilike.%${query}%,name.ilike.%${query}%`)
+      .ilike('symbol', `%${query}%`)
       .limit(limit);
 
     if (tokenError) {

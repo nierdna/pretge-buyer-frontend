@@ -75,13 +75,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     // Extract wallet IDs
     const walletIds = wallets.map((wallet) => wallet.id);
 
-    // Handle search filter - find token_ids by name or symbol
+    // Handle search filter - find token_ids by symbol only
     let tokenIds: string[] | undefined = undefined;
     if (search) {
       const { data: tokens, error: tokenError } = await supabase
         .from('tokens')
         .select('id')
-        .or(`name.ilike.${search}%,symbol.ilike.${search}%`);
+        .ilike('symbol', `${search}%`);
 
       if (tokenError) {
         return NextResponse.json({ success: false, message: tokenError.message }, { status: 500 });
