@@ -7,11 +7,11 @@ import React from 'react';
 
 export const metadata: Metadata = {
   title: {
-    default: 'PretGe Market - Pre-Market Token Trading Platform | Early Access Crypto Deals',
-    template: '%s | PretGe Market',
+    default: 'PreTGE Market - Pre-Market Token Trading Platform | Early Access Crypto Deals',
+    template: '%s | PreTGE Market',
   },
   description:
-    'Discover exclusive pre-market token opportunities on PretGe Market. Access early-stage crypto projects, flash sales, and premium token deals before they hit mainstream exchanges. Connect with trusted sellers and secure the best pre-market prices.',
+    'Discover exclusive pre-market token opportunities on PreTGE Market. Access early-stage crypto projects, flash sales, and premium token deals before they hit mainstream exchanges. Connect with trusted sellers and secure the best pre-market prices.',
   keywords: [
     'pre-market tokens',
     'cryptocurrency trading',
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
     'ethereum tokens',
     'base network tokens',
   ],
-  authors: [{ name: 'PretGe Market Team' }],
-  creator: 'PretGe Market',
-  publisher: 'PretGe Market',
+  authors: [{ name: 'PreTGE Market Team' }],
+  creator: 'PreTGE Market',
+  publisher: 'PreTGE Market',
   formatDetection: {
     email: false,
     address: false,
@@ -44,22 +44,22 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://app.pretgemarket.xyz',
-    title: 'PretGe Market - Pre-Market Token Trading Platform',
+    title: 'PreTGE Market - Pre-Market Token Trading Platform',
     description:
       'Discover exclusive pre-market token opportunities. Access early-stage crypto projects, flash sales, and premium token deals before they hit mainstream exchanges.',
-    siteName: 'PretGe Market',
+    siteName: 'PreTGE Market',
     images: [
       {
         url: '/banner.png',
         width: 1200,
         height: 630,
-        alt: 'PretGe Market - Pre-Market Token Trading Platform',
+        alt: 'PreTGE Market - Pre-Market Token Trading Platform',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PretGe Market - Pre-Market Token Trading Platform',
+    title: 'PreTGE Market - Pre-Market Token Trading Platform',
     description:
       'Discover exclusive pre-market token opportunities. Access early-stage crypto projects and premium deals.',
     images: ['/banner.png'],
@@ -98,8 +98,8 @@ export default function RootLayout({
         <meta name="theme-color" content="#000000" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta name="apple-mobile-web-app-title" content="PretGe Market" />
-        <meta name="application-name" content="PretGe Market" />
+        <meta name="apple-mobile-web-app-title" content="PreTGE Market" />
+        <meta name="application-name" content="PreTGE Market" />
         <meta name="msapplication-TileColor" content="#000000" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <script async src={`https://www.googletagmanager.com/gtag/js?id=G-0D3EX5J8SD`} />
@@ -124,7 +124,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'Organization',
-              name: 'PretGe Market',
+              name: 'PreTGE Market',
               url: 'https://app.pretgemarket.xyz',
               logo: 'https://app.pretgemarket.xyz/banner.png',
               description: 'Pre-market token trading platform for exclusive cryptocurrency deals',

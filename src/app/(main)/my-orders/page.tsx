@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'My Orders - Order History & Transaction Status',
   description:
-    'View your token purchase history, track order status, and manage your cryptocurrency transactions on PretGe Market. Access all your pre-market token orders in one place.',
+    'View your token purchase history, track order status, and manage your cryptocurrency transactions on PreTGE Market. Access all your pre-market token orders in one place.',
   keywords: [
     'order history',
     'token orders',
@@ -16,14 +16,14 @@ export const metadata: Metadata = {
     'order tracking',
   ],
   openGraph: {
-    title: 'My Orders - PretGe Market',
+    title: 'My Orders - PreTGE Market',
     description:
       'View your token purchase history, track order status, and manage your cryptocurrency transactions.',
     url: 'https://app.pretgemarket.xyz/my-orders',
     type: 'website',
   },
   twitter: {
-    title: 'My Orders - PretGe Market',
+    title: 'My Orders - PreTGE Market',
     description:
       'View your token purchase history, track order status, and manage your cryptocurrency transactions.',
   },

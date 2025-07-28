@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'My Profile - Account Settings & Wallet Management',
   description:
-    'Manage your PretGe Market profile, wallet connections, account settings, and trading preferences. Update your information and secure your cryptocurrency trading account.',
+    'Manage your PreTGE Market profile, wallet connections, account settings, and trading preferences. Update your information and secure your cryptocurrency trading account.',
   keywords: [
     'user profile',
     'account settings',
@@ -16,14 +16,14 @@ export const metadata: Metadata = {
     'user dashboard',
   ],
   openGraph: {
-    title: 'My Profile - PretGe Market',
-    description: 'Manage your PretGe Market profile, wallet connections, and account settings.',
+    title: 'My Profile - PreTGE Market',
+    description: 'Manage your PreTGE Market profile, wallet connections, and account settings.',
     url: 'https://app.pretgemarket.xyz/profile',
     type: 'website',
   },
   twitter: {
-    title: 'My Profile - PretGe Market',
-    description: 'Manage your PretGe Market profile, wallet connections, and account settings.',
+    title: 'My Profile - PreTGE Market',
+    description: 'Manage your PreTGE Market profile, wallet connections, and account settings.',
   },
   alternates: {
     canonical: 'https://app.pretgemarket.xyz/profile',
