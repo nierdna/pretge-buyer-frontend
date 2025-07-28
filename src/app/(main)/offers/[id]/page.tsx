@@ -31,7 +31,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${offerTitle} - PretGe Market`,
       description: offerDescription,
-      url: `https://pretgemarket.xyz/offers/${offerId}`,
+      url: `https://app.otccrypto.xyz/offers/${offerId}`,
       type: 'website',
       images: [
         {
@@ -48,7 +48,7 @@ export async function generateMetadata({
       images: ['/banner.png'],
     },
     alternates: {
-      canonical: `https://pretgemarket.xyz/offers/${offerId}`,
+      canonical: `https://app.otccrypto.xyz/offers/${offerId}`,
     },
   };
 }

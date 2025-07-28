@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     title: 'PretGe Market - Exclusive Pre-Market Token Deals & Flash Sales',
     description:
       'Explore trending tokens, flash sale opportunities, and exclusive pre-market deals. Find the best early-stage cryptocurrency investments.',
-    url: 'https://pretgemarket.xyz',
+    url: 'https://app.otccrypto.xyz',
     images: [
       {
         url: '/banner.png',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
       'Explore trending tokens, flash sale opportunities, and exclusive pre-market deals.',
   },
   alternates: {
-    canonical: 'https://pretgemarket.xyz',
+    canonical: 'https://app.otccrypto.xyz',
   },
 };
 
