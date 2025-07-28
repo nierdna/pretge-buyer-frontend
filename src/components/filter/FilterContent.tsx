@@ -14,7 +14,9 @@ import { useTokenQueries } from '@/queries/useTokenQueries';
 import { IOfferFilter } from '@/service/offer.service';
 import { useChainStore } from '@/store/chainStore';
 import { IToken } from '@/types/token';
+import { Play } from 'lucide-react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 // This component contains only the filter UI, without any wrapping Card or visibility/positioning classes.
 export default function FilterContent({
@@ -33,6 +35,24 @@ export default function FilterContent({
     statuses: ['active'],
     limit: 50, // Get more tokens for filter options
   });
+
+  // State to control entire tutorial section visibility
+  const [showTutorialSection, setShowTutorialSection] = useState(true);
+
+  // Load tutorial section visibility preference from localStorage
+  useEffect(() => {
+    const savedSectionPreference = localStorage.getItem('showTutorialSection');
+    if (savedSectionPreference !== null) {
+      setShowTutorialSection(JSON.parse(savedSectionPreference));
+    }
+  }, []);
+
+  // Save tutorial section visibility preference to localStorage
+  const handleToggleTutorialSection = () => {
+    const newValue = !showTutorialSection;
+    setShowTutorialSection(newValue);
+    localStorage.setItem('showTutorialSection', JSON.stringify(newValue));
+  };
 
   const listSettleTime = [
     { id: '1', name: '1 Hr' },
@@ -229,6 +249,60 @@ export default function FilterContent({
           Apply Filters
         </Button> */}
         <Button onClick={handleClearFilters}>Clear Filters</Button>
+
+        {/* Tutorial Section Toggle Button */}
+        <div className="flex justify-center">
+          <button
+            onClick={handleToggleTutorialSection}
+            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors px-3 py-1 rounded-full border border-gray-300 hover:border-gray-400"
+          >
+            {showTutorialSection ? (
+              <>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+                Hide Tutorial
+              </>
+            ) : (
+              <>
+                <Play className="w-4 h-4" />
+                Show Tutorial
+              </>
+            )}
+          </button>
+        </div>
+
+        {/* YouTube Tutorial Section */}
+        {showTutorialSection && (
+          <div className="px-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
+            <div className="flex items-center gap-3 mb-4 pt-4">
+              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <Play className="w-4 h-4 text-white ml-0.5" />
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">How to Buy Token</h4>
+                <p className="text-sm text-gray-600">Watch our tutorial guide</p>
+              </div>
+            </div>
+
+            {/* Video Content */}
+            <div className="relative w-full pb-4" style={{ paddingBottom: '56.25%' }}>
+              <iframe
+                className="absolute top-0 left-0 w-full h-full rounded-lg"
+                src="https://www.youtube.com/embed/hfuW_KH50_A?si=mrgCl5PiIK_ly39v"
+                title="How to Buy Token Tutorial"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        )}
       </CardContent>
     </>
   );
