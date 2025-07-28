@@ -85,7 +85,7 @@ PretGe Market is a pre-market token trading platform with advanced SEO implement
 User-agent: *
 Allow: /
 Disallow: /api/, /test/, /my-orders, /profile
-Sitemap: https://pretgemarket.xyz/sitemap.xml
+Sitemap: https://app.otccrypto.xyz/sitemap.xml
 ```
 
 #### PWA Manifest (`src/app/manifest.ts`)
@@ -164,7 +164,7 @@ import { generateStructuredData } from '@/constants/seo';
 {
   "@type": "Organization",
   "name": "PretGe Market",
-  "url": "https://pretgemarket.xyz",
+  "url": "https://app.otccrypto.xyz",
   "description": "Pre-market token trading platform"
 }
 ```

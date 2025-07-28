@@ -29,7 +29,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${sellerName} - PretGe Market`,
       description: sellerDescription,
-      url: `https://pretgemarket.xyz/sellers/${sellerId}`,
+      url: `https://app.otccrypto.xyz/sellers/${sellerId}`,
       type: 'profile',
       images: [
         {
@@ -46,7 +46,7 @@ export async function generateMetadata({
       images: ['/banner.png'],
     },
     alternates: {
-      canonical: `https://pretgemarket.xyz/sellers/${sellerId}`,
+      canonical: `https://app.otccrypto.xyz/sellers/${sellerId}`,
     },
   };
 }

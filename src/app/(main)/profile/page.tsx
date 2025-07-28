@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'My Profile - PretGe Market',
     description: 'Manage your PretGe Market profile, wallet connections, and account settings.',
-    url: 'https://pretgemarket.xyz/profile',
+    url: 'https://app.otccrypto.xyz/profile',
     type: 'website',
   },
   twitter: {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     description: 'Manage your PretGe Market profile, wallet connections, and account settings.',
   },
   alternates: {
-    canonical: 'https://pretgemarket.xyz/profile',
+    canonical: 'https://app.otccrypto.xyz/profile',
   },
   robots: {
     index: false, // Private user data should not be indexed
