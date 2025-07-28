@@ -1,10 +1,10 @@
-# SEO Implementation Guide - PretGe Market
+# SEO Implementation Guide - PreTGE Market
 
-This document outlines the comprehensive SEO implementation for the PretGe Market platform.
+This document outlines the comprehensive SEO implementation for the PreTGE Market platform.
 
 ## Overview
 
-PretGe Market is a pre-market token trading platform with advanced SEO implementation including:
+PreTGE Market is a pre-market token trading platform with advanced SEO implementation including:
 
 - ✅ Meta tags optimization
 - ✅ Open Graph & Twitter Cards
@@ -31,7 +31,7 @@ PretGe Market is a pre-market token trading platform with advanced SEO implement
 **Meta Tags:**
 
 ```html
-<title>PretGe Market - Pre-Market Token Trading Platform | Early Access Crypto Deals</title>
+<title>PreTGE Market - Pre-Market Token Trading Platform | Early Access Crypto Deals</title>
 <meta name="description" content="Discover exclusive pre-market token opportunities..." />
 <meta name="keywords" content="pre-market tokens, cryptocurrency trading..." />
 ```
@@ -112,7 +112,7 @@ Sitemap: https://app.pretgemarket.xyz/sitemap.xml
 import { SEO_CONSTANTS, generatePageTitle } from '@/constants/seo';
 
 const title = generatePageTitle('Token Offers');
-// Result: "Token Offers | PretGe Market"
+// Result: "Token Offers | PreTGE Market"
 ```
 
 ### SEO Components (`src/components/SEOHead.tsx`)
@@ -163,7 +163,7 @@ import { generateStructuredData } from '@/constants/seo';
 ```json
 {
   "@type": "Organization",
-  "name": "PretGe Market",
+  "name": "PreTGE Market",
   "url": "https://app.pretgemarket.xyz",
   "description": "Pre-market token trading platform"
 }
@@ -301,4 +301,4 @@ For SEO-related questions or improvements, refer to:
 ---
 
 **Last Updated:** January 2025
-**Maintained By:** PretGe Market Development Team
+**Maintained By:** PreTGE Market Development Team

@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'PretGe Market - Pre-Market Token Trading Platform',
-    short_name: 'PretGe Market',
+    name: 'PreTGE Market - Pre-Market Token Trading Platform',
+    short_name: 'PreTGE Market',
     description: 'Discover exclusive pre-market token opportunities and crypto deals',
     start_url: '/',
     display: 'standalone',

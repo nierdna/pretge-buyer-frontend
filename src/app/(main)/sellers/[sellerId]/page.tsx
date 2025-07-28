@@ -26,7 +26,7 @@ export async function generateMetadata({
       'blockchain dealer',
     ],
     openGraph: {
-      title: `${sellerName} - PretGe Market`,
+      title: `${sellerName} - PreTGE Market`,
       description: sellerDescription,
       url: `https://app.pretgemarket.xyz/sellers/${sellerId}`,
       type: 'profile',
@@ -40,7 +40,7 @@ export async function generateMetadata({
       ],
     },
     twitter: {
-      title: `${sellerName} - PretGe Market`,
+      title: `${sellerName} - PreTGE Market`,
       description: sellerDescription,
       images: ['/banner.png'],
     },

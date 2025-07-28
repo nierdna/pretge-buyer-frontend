@@ -36,7 +36,7 @@ export async function generateMetadata({
 
   // Use token data if available, otherwise fallback to default values
   const tokenName = tokenData?.name || `${symbol} Token`;
-  const tokenDescription = `Explore ${symbol} token offers and pre-market opportunities. View current prices, seller listings, and exclusive deals for ${tokenName} on PretGe Market.`;
+  const tokenDescription = `Explore ${symbol} token offers and pre-market opportunities. View current prices, seller listings, and exclusive deals for ${tokenName} on PreTGE Market.`;
 
   // Use banner_url from database if available, otherwise fallback to default banner
   const imageUrl = tokenData?.banner_url || '/banner.png';
@@ -57,7 +57,7 @@ export async function generateMetadata({
       'digital asset',
     ],
     openGraph: {
-      title: `${symbol} Token - PretGe Market`,
+      title: `${symbol} Token - PreTGE Market`,
       description: tokenDescription,
       url: `https://app.pretgemarket.xyz/token/${symbolParam.toLowerCase()}`,
       type: 'website',
@@ -71,7 +71,7 @@ export async function generateMetadata({
       ],
     },
     twitter: {
-      title: `${symbol} Token - PretGe Market`,
+      title: `${symbol} Token - PreTGE Market`,
       description: tokenDescription,
       images: [imageUrl],
     },

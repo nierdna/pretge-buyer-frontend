@@ -4,7 +4,7 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Home - Exclusive Pre-Market Token Deals & Flash Sales',
   description:
-    'Explore trending tokens, flash sale opportunities, and exclusive pre-market deals on PretGe Market. Find the best early-stage cryptocurrency investments from verified sellers.',
+    'Explore trending tokens, flash sale opportunities, and exclusive pre-market deals on PreTGE Market. Find the best early-stage cryptocurrency investments from verified sellers.',
   keywords: [
     'crypto flash sales',
     'trending tokens',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     'blockchain investments',
   ],
   openGraph: {
-    title: 'PretGe Market - Exclusive Pre-Market Token Deals & Flash Sales',
+    title: 'PreTGE Market - Exclusive Pre-Market Token Deals & Flash Sales',
     description:
       'Explore trending tokens, flash sale opportunities, and exclusive pre-market deals. Find the best early-stage cryptocurrency investments.',
     url: 'https://app.pretgemarket.xyz',
@@ -25,12 +25,12 @@ export const metadata: Metadata = {
         url: '/banner.png',
         width: 1200,
         height: 630,
-        alt: 'PretGe Market Homepage - Flash Sales and Trending Tokens',
+        alt: 'PreTGE Market Homepage - Flash Sales and Trending Tokens',
       },
     ],
   },
   twitter: {
-    title: 'PretGe Market - Exclusive Pre-Market Token Deals & Flash Sales',
+    title: 'PreTGE Market - Exclusive Pre-Market Token Deals & Flash Sales',
     description:
       'Explore trending tokens, flash sale opportunities, and exclusive pre-market deals.',
   },
