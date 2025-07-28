@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/test/', '/my-orders', '/profile', '/admin', '/private', '/*.json$'],
     },
-    sitemap: 'https://app.otccrypto.xyz/sitemap.xml',
-    host: 'https://app.otccrypto.xyz',
+    sitemap: 'https://app.pretgemarket.xyz/sitemap.xml',
+    host: 'https://app.pretgemarket.xyz',
   };
 }

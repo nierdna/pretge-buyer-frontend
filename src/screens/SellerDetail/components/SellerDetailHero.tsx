@@ -8,7 +8,7 @@ import dayjs from 'dayjs';
 import { Star } from 'lucide-react';
 
 interface SellerDetailHeroProps {
-  seller: ISeller;
+  seller?: ISeller;
 }
 
 export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {

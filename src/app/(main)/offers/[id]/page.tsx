@@ -1,6 +1,5 @@
 import OfferDetailScreen from '@/screens/OfferDetail';
 import { Metadata } from 'next';
-import React from 'react';
 
 // This would normally fetch offer data for metadata
 export async function generateMetadata({
@@ -31,7 +30,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${offerTitle} - PretGe Market`,
       description: offerDescription,
-      url: `https://app.otccrypto.xyz/offers/${offerId}`,
+      url: `https://app.pretgemarket.xyz/offers/${offerId}`,
       type: 'website',
       images: [
         {
@@ -48,7 +47,7 @@ export async function generateMetadata({
       images: ['/banner.png'],
     },
     alternates: {
-      canonical: `https://app.otccrypto.xyz/offers/${offerId}`,
+      canonical: `https://app.pretgemarket.xyz/offers/${offerId}`,
     },
   };
 }

@@ -1,6 +1,5 @@
 import OrderHistoryScreen from '@/screens/OrderHistory';
 import { Metadata } from 'next';
-import React from 'react';
 
 export const metadata: Metadata = {
   title: 'My Orders - Order History & Transaction Status',
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
     title: 'My Orders - PretGe Market',
     description:
       'View your token purchase history, track order status, and manage your cryptocurrency transactions.',
-    url: 'https://app.otccrypto.xyz/my-orders',
+    url: 'https://app.pretgemarket.xyz/my-orders',
     type: 'website',
   },
   twitter: {
@@ -29,7 +28,7 @@ export const metadata: Metadata = {
       'View your token purchase history, track order status, and manage your cryptocurrency transactions.',
   },
   alternates: {
-    canonical: 'https://app.otccrypto.xyz/my-orders',
+    canonical: 'https://app.pretgemarket.xyz/my-orders',
   },
   robots: {
     index: false, // Private user data should not be indexed

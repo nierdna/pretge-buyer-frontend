@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://app.otccrypto.xyz';
+  const baseUrl = 'https://app.pretgemarket.xyz';
 
   // Static pages
   const staticPages = [

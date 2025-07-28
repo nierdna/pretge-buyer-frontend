@@ -59,7 +59,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${symbol} Token - PretGe Market`,
       description: tokenDescription,
-      url: `https://app.otccrypto.xyz/token/${symbolParam.toLowerCase()}`,
+      url: `https://app.pretgemarket.xyz/token/${symbolParam.toLowerCase()}`,
       type: 'website',
       images: [
         {
@@ -76,7 +76,7 @@ export async function generateMetadata({
       images: [imageUrl],
     },
     alternates: {
-      canonical: `https://app.otccrypto.xyz/token/${symbolParam.toLowerCase()}`,
+      canonical: `https://app.pretgemarket.xyz/token/${symbolParam.toLowerCase()}`,
     },
   };
 }

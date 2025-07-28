@@ -36,14 +36,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://app.otccrypto.xyz'),
+  metadataBase: new URL('https://app.pretgemarket.xyz'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://app.otccrypto.xyz',
+    url: 'https://app.pretgemarket.xyz',
     title: 'PretGe Market - Pre-Market Token Trading Platform',
     description:
       'Discover exclusive pre-market token opportunities. Access early-stage crypto projects, flash sales, and premium token deals before they hit mainstream exchanges.',
@@ -125,8 +125,8 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'Organization',
               name: 'PretGe Market',
-              url: 'https://app.otccrypto.xyz',
-              logo: 'https://app.otccrypto.xyz/banner.png',
+              url: 'https://app.pretgemarket.xyz',
+              logo: 'https://app.pretgemarket.xyz/banner.png',
               description: 'Pre-market token trading platform for exclusive cryptocurrency deals',
               sameAs: [
                 // 'https://twitter.com/pretgemarket',

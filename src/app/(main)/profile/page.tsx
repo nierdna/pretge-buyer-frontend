@@ -1,6 +1,5 @@
 import ProfileScreen from '@/screens/Profile';
 import { Metadata } from 'next';
-import React from 'react';
 
 export const metadata: Metadata = {
   title: 'My Profile - Account Settings & Wallet Management',
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'My Profile - PretGe Market',
     description: 'Manage your PretGe Market profile, wallet connections, and account settings.',
-    url: 'https://app.otccrypto.xyz/profile',
+    url: 'https://app.pretgemarket.xyz/profile',
     type: 'website',
   },
   twitter: {
@@ -27,7 +26,7 @@ export const metadata: Metadata = {
     description: 'Manage your PretGe Market profile, wallet connections, and account settings.',
   },
   alternates: {
-    canonical: 'https://app.otccrypto.xyz/profile',
+    canonical: 'https://app.pretgemarket.xyz/profile',
   },
   robots: {
     index: false, // Private user data should not be indexed

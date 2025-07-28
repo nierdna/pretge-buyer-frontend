@@ -1,6 +1,5 @@
 import SellerDetailScreen from '@/screens/SellerDetail';
 import { Metadata } from 'next';
-import React from 'react';
 
 export async function generateMetadata({
   params,
@@ -29,7 +28,7 @@ export async function generateMetadata({
     openGraph: {
       title: `${sellerName} - PretGe Market`,
       description: sellerDescription,
-      url: `https://app.otccrypto.xyz/sellers/${sellerId}`,
+      url: `https://app.pretgemarket.xyz/sellers/${sellerId}`,
       type: 'profile',
       images: [
         {
@@ -46,7 +45,7 @@ export async function generateMetadata({
       images: ['/banner.png'],
     },
     alternates: {
-      canonical: `https://app.otccrypto.xyz/sellers/${sellerId}`,
+      canonical: `https://app.pretgemarket.xyz/sellers/${sellerId}`,
     },
   };
 }
