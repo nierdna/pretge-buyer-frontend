@@ -836,10 +836,7 @@ export default function OfferDetailPageContent({
   const unitPrice = Number(offer?.price || 0);
   const subtotal = unitPrice * buyQuantity;
   const fees = 0;
-  const totalValue =
-    subtotal +
-    fees +
-    (isEligible ? (subtotal * (offer?.promotion?.discountPercent || 0)) / 100 : 0);
+  const totalValue = subtotal * (1 - (offer?.promotion?.discountPercent || 0) / 100) + fees;
 
   const eventTitle = offer?.title;
 

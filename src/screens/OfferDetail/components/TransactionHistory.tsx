@@ -148,7 +148,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                         >
                           <div className="relative flex items-center justify-end gap-2 w-fit min-w-9">
                             {order.discountPercent > 0 && (
-                              <div className="absolute h-px -right-1 top-1/2 -translate-y-1/2 left-0 w-full bg-primary z-10"></div>
+                              <div className="absolute h-px -right-0.5 top-1/2 -translate-y-1/2 w-full bg-content z-10"></div>
                             )}
                             {formatNumberShort(order.amount * order.offer.price, {
                               maxDecimalCount: 4,

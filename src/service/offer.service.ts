@@ -546,7 +546,7 @@ export class OfferService {
 
   async getOrdersByOffer(
     offerId: string,
-    params?: { page?: number; limit?: number }
+    params?: { page?: number; limit?: number; address?: string }
   ): Promise<OrdersResponse> {
     const response = await axiosInstance.get(`/offers/${offerId}/orders`, { params });
     return response.data;

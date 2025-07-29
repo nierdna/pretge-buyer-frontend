@@ -2,6 +2,7 @@
 
 import { useFilterCache } from '@/hooks/useFilterCache';
 import { Service } from '@/service';
+import { useAuthStore } from '@/store/authStore';
 import { IOffer } from '@/types/offer';
 import { CACHE_KEYS } from '@/utils/filterCache';
 import { extractTokenSymbol } from '@/utils/helpers/string';
@@ -85,14 +86,16 @@ export const useGetOfferById = (id: string) => {
 };
 
 export const useGetOrdersByOffer = (offerId: string) => {
+  const { walletAddress } = useAuthStore();
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const { data, isLoading, isError, fetchNextPage, hasNextPage, refetch } = useInfiniteQuery({
-    queryKey: ['orders', offerId, page],
+    queryKey: ['orders', offerId, page, walletAddress],
     queryFn: async () => {
       const response = await Service.offer.getOrdersByOffer(offerId, {
         page: page,
         limit: 5,
+        address: walletAddress,
       });
       setTotalPages(response.data.pagination.totalPages);
       return response.data;
@@ -103,6 +106,7 @@ export const useGetOrdersByOffer = (offerId: string) => {
       }
       return pages.length + 1;
     },
+    enabled: !!offerId && !!walletAddress,
     initialPageParam: 1,
   });
 

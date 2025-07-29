@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '10', 10);
     const status = searchParams.get('status') as 'pending' | 'settled' | 'cancelled' | undefined;
-
+    const address = searchParams.get('address') as string | undefined;
     const offset = (Number(page) - 1) * Number(limit);
     // Validate pagination parameters
     if (page < 1 || limit < 1 || limit > 100) {
@@ -56,6 +56,19 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     // Add status filter if provided
     if (status) {
       query = query.eq('status', status);
+    }
+
+    const { data: wallet, error: walletError } = await supabase
+      .from('wallets')
+      .select('id')
+      .eq('address', address)
+      .single();
+
+    if (walletError) {
+      return NextResponse.json({ success: false, message: 'Wallet not found' }, { status: 404 });
+    }
+    if (address) {
+      query = query.eq('buyer_wallet_id', wallet?.id);
     }
 
     // Execute query
