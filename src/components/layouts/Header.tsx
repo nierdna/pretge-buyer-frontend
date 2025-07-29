@@ -37,8 +37,8 @@ export default function Header() {
       <header className="container sticky top-0 z-40 px-4 lg:px-8">
         <div className="flex h-16 px-4 lg:px-6 items-center justify-between rounded-2xl bg-primary border-line border rounded-t-none">
           <Link href="/" className="flex items-center gap-2 font-bold" prefetch={false}>
-            <img src="/logo.png" alt="PretGe Market" className="w-auto h-10 md:block hidden" />
-            <img src="/logo-mb.png" alt="PretGe Market" className="w-auto h-8 md:hidden block" />
+            <img src="/logo.png" alt="PreTGE Market" className="w-auto h-10 md:block hidden" />
+            <img src="/logo-mb.png" alt="PreTGE Market" className="w-auto h-8 md:hidden block" />
           </Link>
           <ButtonConnectWallet />
         </div>

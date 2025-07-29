@@ -1,8 +1,8 @@
 export const SEO_CONSTANTS = {
-  SITE_NAME: 'PretGe Market',
+  SITE_NAME: 'PreTGE Market',
   SITE_URL: 'https://app.pretgemarket.xyz',
   SITE_DESCRIPTION:
-    'Discover exclusive pre-market token opportunities on PretGe Market. Access early-stage crypto projects, flash sales, and premium token deals before they hit mainstream exchanges.',
+    'Discover exclusive pre-market token opportunities on PreTGE Market. Access early-stage crypto projects, flash sales, and premium token deals before they hit mainstream exchanges.',
   SITE_KEYWORDS: [
     'pre-market tokens',
     'cryptocurrency trading',
@@ -24,7 +24,7 @@ export const SEO_CONSTANTS = {
   DEFAULT_IMAGE_HEIGHT: 630,
   TWITTER_HANDLE: '@pretgemarket',
   ORGANIZATION: {
-    name: 'PretGe Market',
+    name: 'PreTGE Market',
     url: 'https://app.pretgemarket.xyz',
     logo: 'https://app.pretgemarket.xyz/banner.png',
     description: 'Pre-market token trading platform for exclusive cryptocurrency deals',

@@ -103,7 +103,7 @@ export default function FilledOrdersList() {
   return (
     <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
       <CardHeader className="p-6 pb-4">
-        <CardTitle className="text-xl">Orders History</CardTitle>
+        <CardTitle className="text-xl">My Orders</CardTitle>
       </CardHeader>
       <CardContent className="p-6 pt-0">
         {isLoading && <FilledOrdersListSkeleton />}

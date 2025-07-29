@@ -26,7 +26,7 @@ export const staticPageMetadata: Metadata = {
     ...SEO_CONSTANTS.SITE_KEYWORDS,
   ],
   openGraph: {
-    title: 'Flash Sale Offers - PretGe Market',
+    title: 'Flash Sale Offers - PreTGE Market',
     description: 'Discover limited-time flash sale offers on pre-market tokens.',
     url: `${SEO_CONSTANTS.SITE_URL}/flash-sale`,
     images: [generateOpenGraphImage('Flash Sale Offers')],
@@ -49,7 +49,7 @@ export async function generateOfferMetadata(offerId: string, offerData: any): Pr
       ...SEO_CONSTANTS.SITE_KEYWORDS,
     ],
     openGraph: {
-      title: `${offerData.name} - PretGe Market`,
+      title: `${offerData.name} - PreTGE Market`,
       description: offerData.description,
       url: `${SEO_CONSTANTS.SITE_URL}/offers/${offerId}`,
       type: 'website',
@@ -63,7 +63,7 @@ export async function generateOfferMetadata(offerId: string, offerData: any): Pr
       ],
     },
     twitter: {
-      title: `${offerData.name} - PretGe Market`,
+      title: `${offerData.name} - PreTGE Market`,
       description: offerData.description,
       images: [offerData.image || SEO_CONSTANTS.DEFAULT_IMAGE],
     },
