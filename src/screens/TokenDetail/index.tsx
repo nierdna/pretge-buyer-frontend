@@ -1,9 +1,13 @@
 'use client';
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbSeparator } from '@/components/ui/breadcrumb';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 import { useGetOffersByToken } from '@/queries';
 import { useTokenBySymbol } from '@/queries/useTokenQueries';
-import Link from 'next/link';
 import { useCallback } from 'react';
 import FilterSidebar from '../../components/filter/FilterSidebar';
 import OfferList from '../../components/OfferList';
@@ -36,9 +40,9 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
     <section className="flex-1">
       <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
         <BreadcrumbItem>
-          <Link className="text-gray-500 hover:text-primary transition-colors" href="/">
+          <BreadcrumbLink className="text-content hover:text-head transition-colors" href="/">
             Home
-          </Link>
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator className="flex items-center" />
         {/* <BreadcrumbItem>Token Detail</BreadcrumbItem>

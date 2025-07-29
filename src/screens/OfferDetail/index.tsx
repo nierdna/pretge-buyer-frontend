@@ -30,12 +30,17 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
     <section className="flex-1 sm:px-4">
       <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink href="/" className="text-content hover:text-head transition-colors">
+            Home
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator className="flex items-center" />
         {/* <BreadcrumbItem>Token Detail</BreadcrumbItem>
         <BreadcrumbSeparator className="flex items-center" /> */}
-        <BreadcrumbLink href={`/token/${offer?.tokens?.symbol?.toLowerCase()}`}>
+        <BreadcrumbLink
+          href={`/token/${offer?.tokens?.symbol?.toLowerCase()}`}
+          className="text-content hover:text-head transition-colors"
+        >
           {offer?.tokens?.symbol.toUpperCase()}
         </BreadcrumbLink>
         <BreadcrumbSeparator className="flex items-center" />

@@ -1,8 +1,8 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import { DESCRIPTION_TOKEN } from '@/constants/description-token';
 import { IToken } from '@/types/token';
-import { normalizeNetworkName } from '@/utils/helpers/string';
 import { Globe, MessageCircle, Twitter } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,7 +18,7 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
       <CardContent className="p-6 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
         {/* Left side: Token Image, Name, Symbol, Network */}
 
-        <div className="flex items-center gap-12 flex-shrink-0">
+        <div className="flex items-center gap-12 flex-1 w-full">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 min-w-16 min-h-16 relative">
               <div className="absolute inset-0 z-20 flex items-center justify-center">
@@ -40,15 +40,25 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
                 </div>
               </div>
             </div>
-            <div className="grid gap-1">
-              <CardTitle className="text-3xl font-bold">{token?.name}</CardTitle>
-              <div className="flex items-center gap-2">
+            <div className="flex flex-col gap-1">
+              <CardTitle className="text-3xl font-bold flex items-center gap-2">
+                {token?.name}
                 <Badge variant="outline">
                   <span className="inline-block align-middle">{token?.symbol}</span>
                 </Badge>
-                <Badge variant="outline" className="flex items-center">
+              </CardTitle>
+              <div className="flex items-center gap-2 w-full break-words">
+                {DESCRIPTION_TOKEN[token?.symbol || ''] && (
+                  <p className="text-sm text-content w-full break-words">
+                    {DESCRIPTION_TOKEN[token?.symbol || '']}
+                  </p>
+                )}
+                {/* <Badge variant="outline">
+                  <span className="inline-block align-middle">{token?.symbol}</span>
+                </Badge> */}
+                {/* <Badge variant="outline" className="flex items-center">
                   {normalizeNetworkName(token?.networks?.name)}
-                </Badge>
+                </Badge> */}
               </div>
             </div>
           </div>

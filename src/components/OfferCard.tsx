@@ -22,21 +22,21 @@ interface OfferCardProps {
   offer: IOffer;
 }
 export const getColorFromCollateral = (collateral: number) => {
-  if (collateral >= 100) return 'text-green-500'; // 100% - green (most reliable)
-  if (collateral >= 75) return 'text-cyan-500'; // 75% - cyan (very reliable)
-  if (collateral >= 50) return 'text-orange-500'; // 50% - orange (moderate)
-  return 'text-red-500'; // 25% - red (least reliable)
+  if (collateral >= 100) return 'bg-green-500/90 text-primary'; // 100% - green (most reliable)
+  if (collateral >= 75) return 'bg-cyan-500/90 text-primary'; // 75% - cyan (very reliable)
+  if (collateral >= 50) return 'bg-orange-500/90 text-primary'; // 50% - orange (moderate)
+  return 'bg-red-500/90 text-primary'; // 25% - red (least reliable)
 };
 
 export const getSettleDurationColor = (settleDuration: number) => {
-  if (settleDuration <= 2) return 'bg-green-500 text-white'; // 1h, 2h - green (fast)
-  if (settleDuration <= 6) return 'bg-yellow-500 text-white'; // 4h, 6h - yellow (medium)
-  return 'bg-red-500 text-white'; // 12h - red (slow)
+  if (settleDuration <= 2) return 'bg-green-500/90 text-primary'; // 1h, 2h - green (fast)
+  if (settleDuration <= 6) return 'bg-yellow-500/90 text-primary'; // 4h, 6h - yellow (medium)
+  return 'bg-red-500/90 text-primary'; // 12h - red (slow)
 };
 
 export const formatSettleDuration = (settleDuration: number) => {
   if (settleDuration <= 0) return 'N/A';
-  return `${settleDuration}h`;
+  return `${settleDuration}h${settleDuration > 1 ? 's' : ''}`;
 };
 
 export const formatCollateralPercent = (collateralPercent: number) => {
@@ -69,20 +69,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
               Discount
             </Badge>
           )}
-          <Badge
-            className={`absolute bottom-2 left-2 z-10 ${getSettleDurationColor(
-              offer.settleDuration
-            )}`}
-          >
-            {formatSettleDuration(offer.settleDuration)}
-          </Badge>
-          <Badge
-            className={`absolute bottom-2 left-12 z-10 ${getColorFromCollateral(
-              offer.collateralPercent
-            )}`}
-          >
-            {formatCollateralPercent(offer.collateralPercent)}
-          </Badge>
+          <div className="absolute bottom-2 left-2 w-full flex gap-1 items-center">
+            <Badge className={` font-medium ${getSettleDurationColor(offer.settleDuration)}`}>
+              {formatSettleDuration(offer.settleDuration)}
+            </Badge>
+            <Badge className={` font-medium ${getColorFromCollateral(offer.collateralPercent)}`}>
+              {formatCollateralPercent(offer.collateralPercent)}
+            </Badge>
+          </div>
         </div>
         <CardHeader className="p-3">
           <div className="flex flex-col gap-2">
