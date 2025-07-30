@@ -15,12 +15,12 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
   console.log(token);
   return (
     <Card>
-      <CardContent className="p-6 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+      <CardContent className="flex flex-col items-start justify-between gap-6 p-6 md:flex-row md:items-end">
         {/* Left side: Token Image, Name, Symbol, Network */}
 
-        <div className="flex items-center gap-12 flex-1 w-full">
+        <div className="flex w-full flex-1 items-center gap-12">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 min-w-16 min-h-16 relative">
+            <div className="relative h-16 min-h-16 w-16 min-w-16">
               <div className="absolute inset-0 z-20 flex items-center justify-center">
                 <div className="relative">
                   <Image
@@ -35,21 +35,21 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
                     alt={token?.networks?.name || 'Token Image'}
                     width={24}
                     height={24}
-                    className="rounded-full absolute bottom-0 right-0 border border-content"
+                    className="absolute bottom-0 right-0 rounded-full border border-content"
                   />
                 </div>
               </div>
             </div>
             <div className="flex flex-col gap-1">
-              <CardTitle className="text-3xl font-bold flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-3xl font-bold">
                 {token?.name}
                 <Badge variant="outline">
                   <span className="inline-block align-middle">{token?.symbol}</span>
                 </Badge>
               </CardTitle>
-              <div className="flex items-center gap-2 w-full break-words">
+              <div className="flex w-full items-center gap-2 break-words">
                 {DESCRIPTION_TOKEN[token?.symbol || ''] && (
-                  <p className="text-sm text-content w-full break-words">
+                  <p className="w-full break-words text-sm text-content">
                     {DESCRIPTION_TOKEN[token?.symbol || '']}
                   </p>
                 )}
@@ -92,15 +92,15 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
         {/* Right side: Stats (24h Volume, Total Volume, Settle Time) */}
         {/* <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm md:ml-auto w-full md:w-auto">
           <div className="flex flex-col">
-            <span className="text-xs text-gray-500">24h Volume</span>
+            <span className="text-xs text-content">24h Volume</span>
             <span className="text-lg font-bold text-primary">N/A</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs text-gray-500">Total Volume</span>
+            <span className="text-xs text-content">Total Volume</span>
             <span className="text-lg font-bold text-primary">N/A</span>
           </div>
           <div className="flex flex-col">
-            <span className="text-xs text-gray-500">Settle Time</span>
+            <span className="text-xs text-content">Settle Time</span>
             <span className="text-lg font-bold text-primary">N/A</span>
           </div>
         </div> */}

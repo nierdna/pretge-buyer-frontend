@@ -1,16 +1,15 @@
 // Example usage of SEO components and constants
 // This file demonstrates how to implement SEO in new pages
 
-import React from 'react';
-import { Metadata } from 'next';
+import { StructuredData } from '@/components/SEOHead';
 import {
   SEO_CONSTANTS,
-  generatePageTitle,
-  generatePageDescription,
   generateOpenGraphImage,
+  generatePageDescription,
+  generatePageTitle,
   generateStructuredData,
 } from '@/constants/seo';
-import { StructuredData } from '@/components/SEOHead';
+import { Metadata } from 'next';
 
 // Example 1: Static page metadata
 export const staticPageMetadata: Metadata = {

@@ -1,0 +1,109 @@
+# Shadcn Components CSS Class Mapping
+
+## Background Classes
+
+- `bg-background` → `bg-primary-foreground`
+- `bg-muted` → `bg-content`
+
+## Border Classes
+
+- `border-border` → `border-line`
+
+## Text Classes
+
+- `text-card-foreground` → `text-secondary`
+- `text-muted-foreground` → `text-content`
+
+## Focus/Outline/Shadow Policy
+
+**QUAN TRỌNG**: Tất cả UI components phải sử dụng `outline-none ring-0` để disable hoàn toàn outline và ring cho mọi trạng thái focus/focus-within.
+
+### Classes Bị Cấm
+
+- `ring`, `outline`, `focus:outline-none`, `focus-visible:outline-none`, `focus-visible:ring`, `focus-visible:ring-offset`
+- `focus-visible:ring-ring`, `focus-visible:ring-2`, `focus-visible:ring-offset-2`
+
+### Classes Bắt Buộc
+
+- `outline-none ring-0` - Phải có trong tất cả className chính của components có thể focus
+
+## Components Đã Cập Nhật
+
+- [button.tsx](mdc:src/components/ui/button.tsx): Thêm `outline-none ring-0` vào buttonVariants
+- [input.tsx](mdc:src/components/ui/input.tsx): Thêm `outline-none ring-0` vào className chính
+- [select.tsx](mdc:src/components/ui/select.tsx): Thêm `outline-none ring-0` vào các item có thể focus
+- [textarea.tsx](mdc:src/components/ui/textarea.tsx): Thêm `outline-none ring-0` vào className chính
+- [toggle.tsx](mdc:src/components/ui/toggle.tsx): Thêm `outline-none ring-0` vào toggleVariants
+- [tabs.tsx](mdc:src/components/ui/tabs.tsx): Thêm `outline-none ring-0` vào TabsList, TabsTrigger, TabsContent
+- [dialog.tsx](mdc:src/components/ui/dialog.tsx): Thêm `outline-none ring-0` vào DialogPrimitive.Close
+- [sheet.tsx](mdc:src/components/ui/sheet.tsx): Thêm `outline-none ring-0` vào SheetPrimitive.Close
+- [sonner.tsx](mdc:src/components/ui/sonner.tsx): Cập nhật toast styling classes
+- [drawer.tsx](mdc:src/components/ui/drawer.tsx): Cập nhật DrawerContent và DrawerDescription classes
+- [slider.tsx](mdc:src/components/ui/slider.tsx): Cập nhật SliderPrimitive.Thumb class
+- [table.tsx](mdc:src/components/ui/table.tsx): Cập nhật TableCaption class
+- [card.tsx](mdc:src/components/ui/card.tsx): Cập nhật CardDescription class
+
+## Usage Guidelines
+
+### Khi Tạo Component Mới
+
+```tsx
+// ✅ ĐÚNG - Luôn thêm outline-none ring-0
+const MyComponent = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, ...props }, ref) => (
+  <button
+    ref={ref}
+    className={cn(
+      'hover:bg-primary-hover inline-flex items-center justify-center rounded-md text-sm font-medium outline-none ring-0 transition-colors disabled:pointer-events-none disabled:opacity-50',
+      className
+    )}
+    {...props}
+  />
+));
+
+// ❌ SAI - Không sử dụng các class bị cấm
+const BadComponent = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, ...props }, ref) => (
+  <button
+    ref={ref}
+    className={cn(
+      'focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-2', // ❌ BỊ CẤM
+      className
+    )}
+    {...props}
+  />
+));
+```
+
+### Khi Sử Dụng cva (class-variance-authority)
+
+```tsx
+// ✅ ĐÚNG
+const componentVariants = cva(
+  'base-classes outline-none ring-0 transition-colors disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        default: 'bg-primary text-secondary hover:bg-primary/90',
+        outline: 'border border-line text-head bg-transparent hover:bg-primary-hover',
+      },
+    },
+    defaultVariants: {
+      variant: 'default',
+    },
+  }
+);
+```
+
+## Design System Consistency
+
+Đảm bảo tất cả UI components tuân thủ:
+
+1. Sử dụng class mapping mới (bg-primary-foreground, border-line, text-secondary, text-content)
+2. Luôn có `outline-none ring-0` trong className chính
+3. Không sử dụng bất kỳ class nào liên quan đến ring/outline/focus-visible
+4. Duy trì tính nhất quán trong toàn bộ ứng dụng

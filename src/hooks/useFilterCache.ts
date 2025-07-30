@@ -1,11 +1,11 @@
 import { IOfferFilter } from '@/service/offer.service';
+import {
+  clearFilterFromStorage,
+  loadFilterFromStorage,
+  saveFilterToStorage,
+} from '@/utils/filterCache';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import {
-  saveFilterToStorage,
-  loadFilterFromStorage,
-  clearFilterFromStorage,
-} from '@/utils/filterCache';
 
 interface UseFilterCacheOptions {
   key: string;

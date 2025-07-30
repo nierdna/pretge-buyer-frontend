@@ -4,12 +4,12 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="bg-opensea-darkBorder border-t border-opensea-darkBorder">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+    <footer className="bg-opensea-darkBorder border-opensea-darkBorder border-t">
+      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Company Info */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-lg font-bold text-white mb-4">Pre-Market Store</h3>
+            <h3 className="mb-4 text-lg font-bold text-primary">Pre-Market Store</h3>
             <p className="text-opensea-lightGray mb-4 max-w-md">
               Get early access to innovative offers before they hit the mainstream market.
             </p>
@@ -31,7 +31,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
+            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-primary">
               Quick Links
             </h3>
             <ul className="space-y-2">
@@ -55,7 +55,7 @@ export default function Footer() {
 
           {/* Categories */}
           <div>
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-4">
+            <h3 className="mb-4 text-sm font-bold uppercase tracking-wider text-primary">
               Categories
             </h3>
             <ul className="space-y-2">
@@ -87,8 +87,8 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-opensea-darkBorder">
-          <p className="text-center text-opensea-lightGray">
+        <div className="border-opensea-darkBorder mt-8 border-t pt-8">
+          <p className="text-opensea-lightGray text-center">
             © 2024 Pre-Market Store. All rights reserved.
           </p>
         </div>

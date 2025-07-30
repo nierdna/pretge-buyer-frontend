@@ -1,0 +1,236 @@
+---
+description: khi nào nhắc đến component-patterns hoặc thiết kế component có list các component card và có scroll load thì đọc rules này
+alwaysApply: false
+---
+
+# Component Patterns
+
+## Component Organization
+
+Components được tổ chức theo chức năng:
+
+- `src/components/ui/` - UI primitives (shadcn/ui)
+- `src/components/layouts/` - Layout components
+- `src/components/filter/` - Filter components
+- `src/screens/` - Page-level components
+
+## Screen Component Pattern
+
+Screen components quản lý queries và state, truyền data xuống components con:
+
+```typescript
+// src/screens/Example/index.tsx
+'use client';
+
+import { useGetExamples } from '@/queries/useExampleQueries';
+import { useCallback } from 'react';
+import FilterSidebar from '@/components/filter/FilterSidebar';
+import ExampleList from '@/components/ExampleList';
+
+export default function ExamplePage() {
+  const {
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    filters,
+    setFilters,
+    handleSearch,
+    inputSearch,
+    fetchNextPage,
+    hasNextPage,
+  } = useGetExamples();
+
+  const examples = data?.pages.flatMap((page) => page.data) || [];
+
+  const handleLoadMore = useCallback(() => {
+    if (isLoading || isFetching || !hasNextPage) return;
+    fetchNextPage();
+  }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
+
+  return (
+    <div className="flex-1">
+      <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
+        <FilterSidebar filters={filters} setFilters={setFilters} />
+        <ExampleList
+          inputSearch={inputSearch}
+          handleSearch={handleSearch}
+          examples={examples}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          onLoadMore={handleLoadMore}
+          hasNextPage={hasNextPage}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+## List Component Pattern
+
+List components nhận data qua props và xử lý rendering:
+
+```typescript
+// src/components/ExampleList.tsx
+'use client';
+
+interface ExampleListProps {
+  examples: any[];
+  isLoading: boolean;
+  isFetching: boolean;
+  inputSearch: string;
+  handleSearch: (search: string) => void;
+  onLoadMore: () => void;
+  hasNextPage: boolean;
+}
+
+export const ExampleList = ({
+  examples,
+  isLoading,
+  isFetching,
+  inputSearch,
+  handleSearch,
+  onLoadMore,
+  hasNextPage,
+}: ExampleListProps) => {
+  const lastItemRef = useRef<HTMLDivElement>(null);
+
+  // Intersection Observer for infinite scroll
+  const observerCallback = useCallback(
+    (entries: IntersectionObserverEntry[]) => {
+      const [target] = entries;
+      if (target.isIntersecting && hasNextPage && !isLoading && !isFetching) {
+        onLoadMore();
+      }
+    },
+    [hasNextPage, isLoading, isFetching, onLoadMore]
+  );
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(observerCallback, {
+      root: null,
+      rootMargin: '100px',
+      threshold: 0.1,
+    });
+
+    if (lastItemRef.current) {
+      observer.observe(lastItemRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [observerCallback]);
+
+  if (isLoading) {
+    return <ExampleListSkeleton />;
+  }
+
+  return (
+    <div className="space-y-4">
+      <SearchInput value={inputSearch} onChange={handleSearch} />
+      <div className="grid gap-4">
+        {examples.map((example) => (
+          <ExampleCard key={example.id} example={example} />
+        ))}
+        {hasNextPage && (
+          <div ref={lastItemRef} className="flex h-10 items-center justify-center">
+            {isFetching && <Loader2 className="h-6 w-6 animate-spin" />}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+```
+
+## Card Component Pattern
+
+Card components là pure components chỉ render UI:
+
+```typescript
+// src/components/ExampleCard.tsx
+'use client';
+
+interface ExampleCardProps {
+  example: any;
+  onClick?: (example: any) => void;
+}
+
+export const ExampleCard = ({ example, onClick }: ExampleCardProps) => {
+  return (
+    <Card
+      className="cursor-pointer transition-all hover:shadow-md"
+      onClick={() => onClick?.(example)}
+    >
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg">{example.name}</CardTitle>
+          {example.isHot && <Badge variant="destructive">HOT</Badge>}
+        </div>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">{example.description}</p>
+        <div className="mt-2 flex items-center justify-between">
+          <span className="font-semibold">${example.price}</span>
+          <span className="text-sm text-muted-foreground">
+            {example.inventory} available
+          </span>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+```
+
+## Skeleton Component Pattern
+
+Luôn tạo skeleton components cho loading states:
+
+```typescript
+// src/components/ExampleCardSkeleton.tsx
+export const ExampleCardSkeleton = () => {
+  return (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-6 w-32" />
+          <Skeleton className="h-5 w-12" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <Skeleton className="h-4 w-full mb-2" />
+        <div className="flex items-center justify-between">
+          <Skeleton className="h-5 w-16" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+```
+
+## Component Export Pattern
+
+Export components qua index file:
+
+```typescript
+// src/components/index.ts
+export { ExampleList } from './ExampleList';
+export { ExampleCard } from './ExampleCard';
+export { ExampleCardSkeleton } from './ExampleCardSkeleton';
+```
+
+## Best Practices
+
+- **Props Interface**: Luôn định nghĩa interface cho props
+- **TypeScript**: Sử dụng TypeScript cho tất cả components
+- **Loading States**: Luôn có loading states và skeleton components
+- **Error Handling**: Xử lý error states gracefully
+- **Accessibility**: Sử dụng proper ARIA labels và semantic HTML
+- **Responsive Design**: Components phải responsive
+- **Performance**: Sử dụng React.memo cho components được render nhiều lần
+  description:
+  globs:
+  alwaysApply: false
+
+---

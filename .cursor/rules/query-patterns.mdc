@@ -1,0 +1,295 @@
+---
+description: khi nào nhắc đến query-patterns hoặc cấu trúc call api hoặc sử dụng @tanstack/react-query để làm 1 chức năng nào đó thì đọc rules này
+alwaysApply: false
+---
+
+# Query Patterns
+
+## Query Organization
+
+Queries được tổ chức theo domain:
+
+- `src/queries/useOfferQueries.ts` - Offer-related queries với infinite queries
+- `src/queries/useProfile.ts` - Profile queries (balance, orders)
+- `src/queries/useSellerQueries.ts` - Seller queries
+- `src/queries/useTokenQueries.ts` - Token queries
+
+## Infinite Query Pattern
+
+Sử dụng infinite queries cho pagination với filter cache:
+
+```typescript
+// src/queries/useExampleQueries.ts
+'use client';
+
+import { useFilterCache } from '@/hooks/useFilterCache';
+import { Service } from '@/service';
+import { CACHE_KEYS } from '@/utils/filterCache';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
+
+export const useGetExamples = (queryKey: any[] = []) => {
+  // Use filter cache to save filter state
+  const { filters, setFilters, resetToDefault, clearCache } = useFilterCache({
+    key: CACHE_KEYS.EXAMPLES_FILTER,
+    defaultFilter: {
+      limit: 12,
+      page: 1,
+      sortField: 'created_at',
+      sortOrder: 'desc',
+    },
+  });
+
+  const [inputSearch, setInputSearch] = useState('');
+
+  // Debounced search to avoid calling API too frequently
+  const debouncedSearch = useDebouncedCallback((search: string) => {
+    setFilters({ ...filters, search });
+  }, 500);
+
+  const handleSearch = (search: string) => {
+    setInputSearch(search);
+    debouncedSearch(search);
+  };
+
+  const { data, isLoading, isError, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ['examples', filters, ...queryKey],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await Service.example.getExamples({
+        page: pageParam,
+        limit: filters.limit,
+        sortField: filters.sortField,
+        sortOrder: filters.sortOrder,
+        search: filters.search,
+      });
+      return response.data;
+    },
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.pagination.totalPages > pages.length) {
+        return pages.length + 1;
+      }
+      return undefined;
+    },
+    initialPageParam: 1,
+  });
+
+  return {
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    filters,
+    inputSearch,
+    handleSearch,
+    setFilters,
+    fetchNextPage,
+    hasNextPage,
+    resetToDefault,
+    clearCache,
+  };
+};
+```
+
+## Single Data Query Pattern
+
+Sử dụng useQuery cho single data fetching:
+
+```typescript
+export const useGetExampleById = (id: string) => {
+  return useQuery({
+    queryKey: ['example', id],
+    queryFn: async () => {
+      const response = await Service.example.getExampleById(id);
+      return response.data;
+    },
+    enabled: !!id, // Chỉ query khi có id
+  });
+};
+
+export const useGetMyBalance = () => {
+  const { accessToken } = useAuthStore();
+  return useQuery({
+    queryKey: ['my-balance'],
+    queryFn: async () => {
+      try {
+        const response = await Service.auth.getBalance();
+        return response.data;
+      } catch (error) {
+        console.error('Failed to fetch balance', error);
+        toast.error('Failed to fetch balance');
+        return null;
+      }
+    },
+    enabled: !!accessToken, // Only query when logged in
+  });
+};
+```
+
+## Mutation Pattern
+
+Sử dụng mutations cho create, update, delete operations:
+
+```typescript
+export const useCreateExample = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data: any) => Service.example.createExample(data),
+    onSuccess: () => {
+      // Invalidate and refetch queries
+      queryClient.invalidateQueries({ queryKey: ['examples'] });
+    },
+  });
+};
+
+export const useUpdateExample = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, data }: { id: string; data: any }) =>
+      Service.example.updateExample(id, data),
+    onSuccess: (_, { id }) => {
+      queryClient.invalidateQueries({ queryKey: ['examples'] });
+      queryClient.invalidateQueries({ queryKey: ['example', id] });
+    },
+  });
+};
+```
+
+## Filter Cache Hook Pattern
+
+Sử dụng filter cache để lưu trữ filter state:
+
+```typescript
+// src/hooks/useFilterCache.ts
+export const useFilterCache = ({ key, defaultFilter }: { key: string; defaultFilter: any }) => {
+  const [filters, setFilters] = useState(() => {
+    // Load from cache if exists
+    const cached = localStorage.getItem(key);
+    return cached ? JSON.parse(cached) : defaultFilter;
+  });
+
+  const updateFilters = useCallback(
+    (newFilters: any) => {
+      const updated = { ...filters, ...newFilters };
+      setFilters(updated);
+      localStorage.setItem(key, JSON.stringify(updated));
+    },
+    [filters, key]
+  );
+
+  const resetToDefault = useCallback(() => {
+    setFilters(defaultFilter);
+    localStorage.setItem(key, JSON.stringify(defaultFilter));
+  }, [defaultFilter, key]);
+
+  const clearCache = useCallback(() => {
+    localStorage.removeItem(key);
+  }, [key]);
+
+  return {
+    filters,
+    setFilters: updateFilters,
+    resetToDefault,
+    clearCache,
+  };
+};
+```
+
+## Intersection Observer Pattern
+
+Sử dụng Intersection Observer cho automatic infinite scroll:
+
+```typescript
+// Intersection Observer implementation
+const observerCallback = useCallback(
+  (entries: IntersectionObserverEntry[]) => {
+    const [target] = entries;
+    if (target.isIntersecting && hasNextPage && !isLoading && !isFetching) {
+      onLoadMore();
+    }
+  },
+  [hasNextPage, isLoading, isFetching, onLoadMore]
+);
+
+useEffect(() => {
+  const observer = new IntersectionObserver(observerCallback, {
+    root: null,
+    rootMargin: '100px', // Start loading 100px before reaching the trigger
+    threshold: 0.1, // Trigger when 10% of the element is visible
+  });
+
+  if (lastItemRef.current) {
+    observer.observe(lastItemRef.current);
+  }
+
+  return () => {
+    observer.disconnect();
+  };
+}, [observerCallback]);
+```
+
+## Query Key Patterns
+
+Sử dụng consistent query key patterns:
+
+```typescript
+// List queries
+['examples', filters][('offers', filters)][('tokens', filters)][
+  // Single item queries
+  ('example', id)
+][('offer', id)][('token', symbol)][
+  // User-specific queries
+  'my-balance'
+]['my-orders']['my-profile'][
+  // With additional context
+  ('examples', filters, userId)
+][('offers', filters, sellerId)];
+```
+
+## Error Handling Pattern
+
+Xử lý errors gracefully trong queries:
+
+```typescript
+export const useGetExamples = () => {
+  return useInfiniteQuery({
+    queryKey: ['examples'],
+    queryFn: async ({ pageParam = 1 }) => {
+      try {
+        const response = await Service.example.getExamples({ page: pageParam });
+        return response.data;
+      } catch (error) {
+        console.error('Failed to fetch examples:', error);
+        toast.error('Failed to load examples');
+        throw error;
+      }
+    },
+    retry: (failureCount, error) => {
+      // Don't retry on 4xx errors
+      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+        return false;
+      }
+      return failureCount < 3;
+    },
+  });
+};
+```
+
+## Best Practices
+
+- **Infinite Queries**: Sử dụng cho lists với pagination
+- **Single Queries**: Sử dụng cho detail pages
+- **Filter Cache**: Lưu và restore filter state
+- **Debounced Search**: Tối ưu performance khi search
+- **Intersection Observer**: Automatic infinite scroll
+- **Error Handling**: Xử lý errors gracefully
+- **Query Keys**: Sử dụng consistent patterns
+- **Enabled Option**: Chỉ query khi có required data
+- **Retry Logic**: Cấu hình retry phù hợp
+  description:
+  globs:
+  alwaysApply: false
+
+---

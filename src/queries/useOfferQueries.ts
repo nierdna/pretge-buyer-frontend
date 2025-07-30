@@ -200,7 +200,7 @@ export const useGetOffersByUserId = (userId: string) => {
   const { filters, setFilters, resetToDefault, clearCache, loadFromCache } = useFilterCache({
     key: `${CACHE_KEYS.OFFERS_BY_USER_FILTER}_${userId}`,
     defaultFilter: {
-      limit: 12,
+      limit: 6,
       page: 1,
       sortField: 'created_at',
       sortOrder: 'desc',
@@ -221,6 +221,7 @@ export const useGetOffersByUserId = (userId: string) => {
   const { data, isLoading, isError, refetch } = useInfiniteQuery({
     queryKey: ['offers', userId, filters],
     queryFn: async () => {
+      console.log('filters', filters);
       const response = await Service.offer.getOffersByUserId(userId, {
         ...filters,
       });

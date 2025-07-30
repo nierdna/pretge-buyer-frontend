@@ -101,7 +101,7 @@ export default function FilledOrdersList() {
     }
   };
   return (
-    <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
+    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">My Orders</CardTitle>
       </CardHeader>
@@ -132,7 +132,7 @@ export default function FilledOrdersList() {
                   <TableCell>
                     <div className="flex flex-col gap-2">
                       <div>{dayjs(order?.createdAt).format('DD/MM/YYYY')}</div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-content">
                         {dayjs(order?.createdAt).format('HH:mm')}
                       </div>
                     </div>
@@ -141,7 +141,7 @@ export default function FilledOrdersList() {
                     <div className="min-w-40">
                       <Link
                         href={`/offers/${order.offer?.id}`}
-                        className="break-words whitespace-normal text-green-600 hover:underline"
+                        className="whitespace-normal break-words text-green-600 hover:underline"
                       >
                         {`${order?.offer?.title || ''} - ${order?.offer?.tokens?.symbol || ''} - ${
                           normalizeNetworkName(order?.offer?.exToken?.network?.name) || ''
@@ -151,7 +151,7 @@ export default function FilledOrdersList() {
                   </TableCell>
                   <TableCell>
                     <div className="flex items-center gap-2">
-                      <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                      <div className="relative h-4 w-4 min-w-4 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
                         <Image
                           src={order.offer?.tokens?.logo || '/placeholder.svg'}
                           alt={`${order.offer?.tokens?.symbol} symbol`}
@@ -172,11 +172,11 @@ export default function FilledOrdersList() {
                   </TableCell>
                   <TableCell className="text-center">{formatNumberShort(order.amount)}</TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center gap-2 justify-end">
+                    <div className="flex items-center justify-end gap-2">
                       {formatNumberShort(order.offer?.price, {
                         maxDecimalCount: 4,
                       })}
-                      <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                      <div className="relative h-4 w-4 min-w-4 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
                         <Image
                           src={order.offer?.exToken?.logo || '/placeholder.svg'}
                           alt={`${order.offer?.exToken?.symbol} symbol`}
@@ -187,12 +187,12 @@ export default function FilledOrdersList() {
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center gap-2 justify-end">
+                    <div className="flex items-center justify-end gap-2">
                       {formatNumberShort(order.offer?.promotion?.discountPercent)}%
                     </div>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center gap-2 justify-end">
+                    <div className="flex items-center justify-end gap-2">
                       {formatNumberShort(
                         order.amount *
                           order.offer?.price *
@@ -201,7 +201,7 @@ export default function FilledOrdersList() {
                           maxDecimalCount: 4,
                         }
                       )}
-                      <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                      <div className="relative h-4 w-4 min-w-4 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
                         <Image
                           src={order.offer?.exToken?.logo || '/placeholder.svg'}
                           alt={`${order.offer?.exToken?.symbol} symbol`}
@@ -235,7 +235,7 @@ export default function FilledOrdersList() {
                       </Button>
                     </TableCell>
                   ) : (
-                    <TableCell className="text-right text-gray-500">N/A</TableCell>
+                    <TableCell className="text-right text-content">N/A</TableCell>
                   )}
                   <TableCell className="text-center">{getReviewStatus(order)}</TableCell>
                 </TableRow>
@@ -244,7 +244,7 @@ export default function FilledOrdersList() {
           </Table>
         )}
         {!isLoading && orders.length === 0 && (
-          <p className="text-center text-gray-500 py-4">You have no filled orders.</p>
+          <p className="py-4 text-center text-content">You have no filled orders.</p>
         )}
         {totalPages > 1 && (
           <PaginationCustom
@@ -307,19 +307,19 @@ function FilledOrdersListSkeleton() {
               <Skeleton className="h-4 w-1/2" />
             </TableCell>
             <TableCell>
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
             <TableCell>
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
             <TableCell>
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
             <TableCell>
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
             <TableCell>
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
           </TableRow>
         ))}

@@ -84,29 +84,29 @@ export default function ProductDetailTestPage() {
     }
   };
 
-  if (loading) return <div className="text-gray-300 p-8">Đang tải...</div>;
-  if (!offer) return <div className="text-red-400 p-8">Không tìm thấy sản phẩm</div>;
+  if (loading) return <div className="p-8 text-gray-300">Đang tải...</div>;
+  if (!offer) return <div className="p-8 text-red-400">Không tìm thấy sản phẩm</div>;
 
   return (
-    <div className="min-h-[80vh] bg-[#10141c] flex flex-col items-center py-10">
-      <div className="w-full max-w-lg bg-[#181e2a] rounded-xl p-8 shadow border border-[#232a3a]">
-        <h1 className="text-2xl font-bold text-blue-400 mb-4">Chi tiết sản phẩm</h1>
-        <div className="mb-2 text-lg text-white font-bold">
+    <div className="flex min-h-[80vh] flex-col items-center bg-[#10141c] py-10">
+      <div className="w-full max-w-lg rounded-xl border border-[#232a3a] bg-[#181e2a] p-8 shadow">
+        <h1 className="mb-4 text-2xl font-bold text-blue-400">Chi tiết sản phẩm</h1>
+        <div className="mb-2 text-lg font-bold text-primary">
           {offer.tokens?.name} ({offer.tokens?.symbol})
         </div>
         <div className="mb-2 text-gray-300">
-          Giá: <span className="text-green-400 font-bold">{offer.price}</span>
+          Giá: <span className="font-bold text-green-400">{offer.price}</span>
         </div>
         <div className="mb-2 text-gray-300">
           Số lượng còn: <span className="font-bold">{offer.quantity}</span>
         </div>
-        <div className="mb-2 text-gray-400 text-xs">Seller: {offer.seller_wallet?.address}</div>
-        <div className="mb-2 text-gray-400 text-xs">
+        <div className="mb-2 text-xs text-gray-400">Seller: {offer.seller_wallet?.address}</div>
+        <div className="mb-2 text-xs text-gray-400">
           Thời gian: {offer.start_time?.slice(0, 10)} - {offer.end_time?.slice(0, 10)}
         </div>
-        <div className="mb-2 text-gray-500 text-xs">Trạng thái: {offer.status}</div>
+        <div className="mb-2 text-xs text-content">Trạng thái: {offer.status}</div>
         {offer.ex_token && (
-          <div className="bg-[#232a3a] rounded p-2 mt-2 text-xs text-gray-200">
+          <div className="mt-2 rounded bg-[#232a3a] p-2 text-xs text-gray-200">
             ExToken: <b>{offer.ex_token.name}</b> ({offer.ex_token.symbol})
             {offer.ex_token.network && (
               <span>
@@ -126,19 +126,19 @@ export default function ProductDetailTestPage() {
             handleBuy();
           }}
         >
-          <label className="text-gray-300 text-sm">Số lượng muốn mua:</label>
+          <label className="text-sm text-gray-300">Số lượng muốn mua:</label>
           <input
             type="number"
             min={1}
             max={offer.quantity}
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
-            className="px-3 py-2 rounded bg-[#232a3a] border border-[#232a3a] text-gray-200 w-full"
+            className="w-full rounded border border-[#232a3a] bg-[#232a3a] px-3 py-2 text-gray-200"
             required
           />
           <button
             type="submit"
-            className="mt-2 px-4 py-2 rounded bg-blue-600 text-white font-bold hover:bg-blue-700 transition"
+            className="mt-2 rounded bg-blue-600 px-4 py-2 font-bold text-primary transition hover:bg-blue-700"
             disabled={buying}
           >
             {buying ? 'Đang mua...' : 'Mua ngay'}

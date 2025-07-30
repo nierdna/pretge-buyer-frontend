@@ -1,6 +1,6 @@
 import OfferDetailScreen from '@/screens/OfferDetail';
-import { Metadata } from 'next';
 import { supabase } from '@/server/db/supabase';
+import { Metadata } from 'next';
 
 // Fetch offer data for metadata
 async function getOfferData(offerId: string) {

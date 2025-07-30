@@ -23,9 +23,9 @@ const PaginationCustom = ({ pageNumber, totalPages, paginate }: PaginationCustom
             <PaginationPrevious
               size={'sm'}
               className={cn(
-                'min-w-9 cursor-pointer text-muted-foreground p-0 px-1 text-xs font-bold',
+                'text-muted-foreground min-w-9 cursor-pointer p-0 px-1 text-xs font-bold',
                 {
-                  'text-gray-500': pageNumber === 1,
+                  'text-content': pageNumber === 1,
                   'hover:text-primary': pageNumber !== 1,
                 }
               )}
@@ -58,9 +58,9 @@ const PaginationCustom = ({ pageNumber, totalPages, paginate }: PaginationCustom
             <PaginationNext
               size={'icon'}
               className={cn(
-                'min-w-9 cursor-pointer text-muted-foreground p-0 px-1 text-xs font-bold',
+                'text-muted-foreground min-w-9 cursor-pointer p-0 px-1 text-xs font-bold',
                 {
-                  'text-gray-500': pageNumber === totalPages,
+                  'text-content': pageNumber === totalPages,
                   'hover:text-primary': pageNumber !== totalPages,
                 }
               )}

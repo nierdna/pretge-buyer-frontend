@@ -59,23 +59,23 @@ export default function SearchTestPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="mx-auto max-w-7xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Search Demo</h1>
+          <h1 className="mb-2 text-3xl font-bold text-gray-900">Search Demo</h1>
           <p className="text-gray-600">
             Test the enhanced search functionality with autocomplete and suggestions
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-[400px_1fr] gap-8">
+        <div className="grid gap-8 lg:grid-cols-[400px_1fr]">
           {/* Search Panel */}
           <div className="space-y-6">
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <h2 className="text-lg font-semibold mb-4">Search Options</h2>
+            <div className="rounded-lg border bg-white p-6 shadow-sm">
+              <h2 className="mb-4 text-lg font-semibold">Search Options</h2>
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="mb-2 block text-sm font-medium text-gray-700">
                     Search Tokens
                   </label>
                   <SearchInput
@@ -87,8 +87,8 @@ export default function SearchTestPage() {
                   />
                 </div>
 
-                <div className="pt-4 border-t">
-                  <h3 className="text-sm font-medium text-gray-700 mb-2">Current Filters</h3>
+                <div className="border-t pt-4">
+                  <h3 className="mb-2 text-sm font-medium text-gray-700">Current Filters</h3>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div>Search: {inputSearch || 'None'}</div>
                     <div>
@@ -103,8 +103,8 @@ export default function SearchTestPage() {
             </div>
 
             {/* Search Tips */}
-            <div className="bg-blue-50 rounded-lg p-6 border border-blue-200">
-              <h3 className="text-lg font-semibold text-blue-900 mb-3">Search Tips</h3>
+            <div className="rounded-lg border border-blue-200 bg-blue-50 p-6">
+              <h3 className="mb-3 text-lg font-semibold text-blue-900">Search Tips</h3>
               <ul className="space-y-2 text-sm text-blue-800">
                 <li>• Try searching by token symbol (BTC, ETH, SOL)</li>
                 <li>• Search by token name (Bitcoin, Ethereum, Solana)</li>
@@ -116,8 +116,8 @@ export default function SearchTestPage() {
           </div>
 
           {/* Results Panel */}
-          <div className="bg-white rounded-lg p-6 shadow-sm border">
-            <h2 className="text-lg font-semibold mb-4">Search Results</h2>
+          <div className="rounded-lg border bg-white p-6 shadow-sm">
+            <h2 className="mb-4 text-lg font-semibold">Search Results</h2>
 
             <SearchResults
               offers={offers}
@@ -132,7 +132,7 @@ export default function SearchTestPage() {
                 <button
                   onClick={handleLoadMore}
                   disabled={isFetching}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="rounded-lg bg-blue-600 px-6 py-2 text-primary hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isFetching ? 'Loading...' : 'Load More'}
                 </button>

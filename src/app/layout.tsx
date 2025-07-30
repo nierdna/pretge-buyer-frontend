@@ -142,12 +142,12 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`min-h-screen flex flex-col bg-gradient-page-bg`}>
+      <body className={`bg-gradient-page-bg flex min-h-screen flex-col`}>
         <Provider>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex min-h-screen flex-col">
             <Header />
             <main className="flex-grow">
-              <div className="container mx-auto px-4 lg:px-6 py-4 lg:py-8">{children}</div>
+              <div className="container mx-auto px-4 py-4 lg:px-6 lg:py-8">{children}</div>
             </main>
             <Separator />
             {/* <Footer /> */}

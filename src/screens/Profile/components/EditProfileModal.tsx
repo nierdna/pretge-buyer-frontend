@@ -71,7 +71,7 @@ export default function EditProfileModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
+      <DialogContent className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Edit Profile</DialogTitle>
           <DialogDescription>
@@ -80,11 +80,11 @@ export default function EditProfileModal({
         </DialogHeader>
         <div className="grid gap-4 pb-4">
           <div className="flex flex-col items-center gap-4">
-            <div className="relative group">
+            <div className="group relative">
               <Avatar className="h-24 w-24">
                 <AvatarImage src={avatar || getFallbackAvatar(walletAddress)} alt="Avatar" />
               </Avatar>
-              <div className="absolute inset-0 -z-10 opacity-0 group-hover:z-10 group-hover:opacity-80 transition-opacity duration-300 flex items-center justify-center">
+              <div className="absolute inset-0 -z-10 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:z-10 group-hover:opacity-80">
                 <UploadButton
                   onUploadSuccess={handleAvatarUploadSuccess}
                   onUploadError={handleAvatarUploadError}

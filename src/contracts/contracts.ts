@@ -1,5 +1,13 @@
-import { arbitrumSepolia, baseSepolia, mainnet, base, arbitrum, bsc } from '@reown/appkit/networks';
-import { solana, solanaDevnet } from '@reown/appkit/networks';
+import {
+  arbitrum,
+  arbitrumSepolia,
+  base,
+  baseSepolia,
+  bsc,
+  mainnet,
+  solana,
+  solanaDevnet,
+} from '@reown/appkit/networks';
 
 export const CONTRACTS = {
   [baseSepolia.id.toString()]: {

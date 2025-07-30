@@ -169,13 +169,13 @@ export default function ProductsTestPage() {
   };
 
   return (
-    <div className="min-h-[80vh] bg-[#10141c] flex flex-col items-center py-10">
-      <h1 className="text-2xl font-bold text-blue-400 mb-6">Danh sách sản phẩm (Offers)</h1>
+    <div className="flex min-h-[80vh] flex-col items-center bg-[#10141c] py-10">
+      <h1 className="mb-6 text-2xl font-bold text-blue-400">Danh sách sản phẩm (Offers)</h1>
 
       {/* Main filters */}
-      <div className="flex flex-col md:flex-row gap-4 mb-6 w-full max-w-5xl items-center">
+      <div className="mb-6 flex w-full max-w-5xl flex-col items-center gap-4 md:flex-row">
         <input
-          className="px-3 py-2 rounded bg-[#181e2a] border border-[#232a3a] text-gray-200 w-full md:w-1/2"
+          className="w-full rounded border border-[#232a3a] bg-[#181e2a] px-3 py-2 text-gray-200 md:w-1/2"
           placeholder="Search token name..."
           value={search}
           onChange={(e) => {
@@ -184,7 +184,7 @@ export default function ProductsTestPage() {
           }}
         />
         <select
-          className="px-3 py-2 rounded bg-[#181e2a] border border-[#232a3a] text-gray-200"
+          className="rounded border border-[#232a3a] bg-[#181e2a] px-3 py-2 text-gray-200"
           value={sort}
           onChange={(e) => {
             setSort(e.target.value);
@@ -199,23 +199,23 @@ export default function ProductsTestPage() {
         </select>
         <button
           onClick={clearAllFilters}
-          className="px-4 py-2 rounded bg-red-600 text-white hover:bg-red-700 transition"
+          className="rounded bg-red-600 px-4 py-2 text-primary transition hover:bg-red-700"
         >
           Clear Filters
         </button>
       </div>
 
       {/* Advanced filters */}
-      <div className="w-full max-w-5xl mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="mb-6 w-full max-w-5xl">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           {/* Network filter */}
-          <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
-            <h3 className="text-white font-bold mb-3">Networks</h3>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
+          <div className="rounded-xl border border-[#232a3a] bg-[#181e2a] p-4">
+            <h3 className="mb-3 font-bold text-primary">Networks</h3>
+            <div className="max-h-40 space-y-2 overflow-y-auto">
               {networks.map((network) => (
                 <label
                   key={network.id}
-                  className="flex items-center space-x-2 text-gray-300 text-sm"
+                  className="flex items-center space-x-2 text-sm text-gray-300"
                 >
                   <input
                     type="checkbox"
@@ -230,13 +230,13 @@ export default function ProductsTestPage() {
           </div>
 
           {/* Collateral Percent filter */}
-          <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
-            <h3 className="text-white font-bold mb-3">Collateral Percent</h3>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
+          <div className="rounded-xl border border-[#232a3a] bg-[#181e2a] p-4">
+            <h3 className="mb-3 font-bold text-primary">Collateral Percent</h3>
+            <div className="max-h-40 space-y-2 overflow-y-auto">
               {COLLATERAL_PERCENT_OPTIONS.map((option) => (
                 <label
                   key={option.value}
-                  className="flex items-center space-x-2 text-gray-300 text-sm"
+                  className="flex items-center space-x-2 text-sm text-gray-300"
                 >
                   <input
                     type="checkbox"
@@ -251,13 +251,13 @@ export default function ProductsTestPage() {
           </div>
 
           {/* Settle Duration filter */}
-          <div className="bg-[#181e2a] rounded-xl p-4 border border-[#232a3a]">
-            <h3 className="text-white font-bold mb-3">Settle Duration</h3>
-            <div className="space-y-2 max-h-40 overflow-y-auto">
+          <div className="rounded-xl border border-[#232a3a] bg-[#181e2a] p-4">
+            <h3 className="mb-3 font-bold text-primary">Settle Duration</h3>
+            <div className="max-h-40 space-y-2 overflow-y-auto">
               {SETTLE_DURATION_OPTIONS.map((option) => (
                 <label
                   key={option.value}
-                  className="flex items-center space-x-2 text-gray-300 text-sm"
+                  className="flex items-center space-x-2 text-sm text-gray-300"
                 >
                   <input
                     type="checkbox"
@@ -277,28 +277,31 @@ export default function ProductsTestPage() {
       {(selectedNetworkIds.length > 0 ||
         selectedCollateralPercents.length > 0 ||
         selectedSettleDurations.length > 0) && (
-        <div className="w-full max-w-5xl mb-4">
-          <div className="bg-[#232a3a] rounded-lg p-3">
-            <h4 className="text-white font-bold mb-2">Active Filters:</h4>
+        <div className="mb-4 w-full max-w-5xl">
+          <div className="rounded-lg bg-[#232a3a] p-3">
+            <h4 className="mb-2 font-bold text-primary">Active Filters:</h4>
             <div className="flex flex-wrap gap-2">
               {selectedNetworkIds.map((networkId) => {
                 const network = networks.find((n) => n.id === networkId);
                 return (
                   <span
                     key={networkId}
-                    className="px-2 py-1 bg-blue-600 text-white text-xs rounded"
+                    className="rounded bg-blue-600 px-2 py-1 text-xs text-primary"
                   >
                     Network: {network?.name || networkId}
                   </span>
                 );
               })}
               {selectedCollateralPercents.map((percent) => (
-                <span key={percent} className="px-2 py-1 bg-green-600 text-white text-xs rounded">
+                <span key={percent} className="rounded bg-green-600 px-2 py-1 text-xs text-primary">
                   Collateral: {percent}%
                 </span>
               ))}
               {selectedSettleDurations.map((duration) => (
-                <span key={duration} className="px-2 py-1 bg-purple-600 text-white text-xs rounded">
+                <span
+                  key={duration}
+                  className="rounded bg-purple-600 px-2 py-1 text-xs text-primary"
+                >
                   Duration: {duration} days
                 </span>
               ))}
@@ -310,56 +313,56 @@ export default function ProductsTestPage() {
       {loading ? (
         <div className="text-gray-300">Đang tải...</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
+        <div className="grid w-full max-w-5xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {products.map((offer) => (
             <div
               key={offer.id}
-              className="bg-[#181e2a] rounded-xl p-5 shadow border border-[#232a3a] flex flex-col gap-2"
+              className="flex flex-col gap-2 rounded-xl border border-[#232a3a] bg-[#181e2a] p-5 shadow"
             >
-              <div className="flex items-center gap-3 mb-2">
+              <div className="mb-2 flex items-center gap-3">
                 {offer.tokens?.logo && (
                   <img
                     src={offer.tokens.logo}
                     alt={offer.tokens.name}
-                    className="w-10 h-10 rounded-full"
+                    className="h-10 w-10 rounded-full"
                   />
                 )}
                 <div>
-                  <div className="text-lg font-bold text-white">
+                  <div className="text-lg font-bold text-primary">
                     {offer.tokens?.name || 'Token'}
                   </div>
                   <div className="text-xs text-gray-400">{offer.tokens?.symbol}</div>
                 </div>
               </div>
               <div className="text-gray-300">
-                Giá: <span className="text-green-400 font-bold">{offer.price}</span>
+                Giá: <span className="font-bold text-green-400">{offer.price}</span>
               </div>
               <div className="text-gray-300">
                 Số lượng: <span className="font-bold">{offer.quantity}</span>
                 {offer.filled > 0 && (
-                  <span className="text-gray-500 ml-2">(Đã bán: {offer.filled})</span>
+                  <span className="ml-2 text-content">(Đã bán: {offer.filled})</span>
                 )}
               </div>
               <div className="text-gray-300">
                 Collateral:{' '}
-                <span className="text-yellow-400 font-bold">{offer.collateral_percent}%</span>
+                <span className="font-bold text-yellow-400">{offer.collateral_percent}%</span>
               </div>
               <div className="text-gray-300">
                 Duration:{' '}
-                <span className="text-blue-400 font-bold">{offer.settle_duration} days</span>
+                <span className="font-bold text-blue-400">{offer.settle_duration} days</span>
               </div>
-              <div className="text-gray-400 text-xs">
+              <div className="text-xs text-gray-400">
                 Seller: {offer.seller_wallet?.address?.slice(0, 8)}...
               </div>
-              <div className="text-gray-400 text-xs">
+              <div className="text-xs text-gray-400">
                 Thời gian: {offer.start_time?.slice(0, 10)} - {offer.end_time?.slice(0, 10)}
               </div>
-              <div className="text-gray-500 text-xs">Trạng thái: {offer.status}</div>
+              <div className="text-xs text-content">Trạng thái: {offer.status}</div>
               {offer.ex_token_id && (
-                <div className="text-xs text-blue-300 mt-2">ex_token_id: {offer.ex_token_id}</div>
+                <div className="mt-2 text-xs text-blue-300">ex_token_id: {offer.ex_token_id}</div>
               )}
               {offer.ex_token && (
-                <div className="bg-[#232a3a] rounded p-2 mt-1 text-xs text-gray-200">
+                <div className="mt-1 rounded bg-[#232a3a] p-2 text-xs text-gray-200">
                   ExToken: <b>{offer.ex_token.name}</b> ({offer.ex_token.symbol})
                   {offer.ex_token.network && (
                     <span>
@@ -371,7 +374,7 @@ export default function ProductsTestPage() {
               )}
               <Link
                 href={`/test/v1/products/${offer.id}`}
-                className="mt-3 px-4 py-2 rounded bg-blue-600 text-white text-center font-bold hover:bg-blue-700 transition"
+                className="mt-3 rounded bg-blue-600 px-4 py-2 text-center font-bold text-primary transition hover:bg-blue-700"
               >
                 Chi tiết & Mua
               </Link>
@@ -379,9 +382,9 @@ export default function ProductsTestPage() {
           ))}
         </div>
       )}
-      <div className="flex gap-2 mt-8">
+      <div className="mt-8 flex gap-2">
         <button
-          className="px-3 py-1 rounded bg-blue-600 text-white disabled:bg-gray-700"
+          className="rounded bg-blue-600 px-3 py-1 text-primary disabled:bg-gray-700"
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page === 1}
         >
@@ -391,7 +394,7 @@ export default function ProductsTestPage() {
           Trang {page} / {totalPages}
         </span>
         <button
-          className="px-3 py-1 rounded bg-blue-600 text-white disabled:bg-gray-700"
+          className="rounded bg-blue-600 px-3 py-1 text-primary disabled:bg-gray-700"
           onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
           disabled={page === totalPages}
         >

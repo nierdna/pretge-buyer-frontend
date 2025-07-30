@@ -76,7 +76,7 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
 
   return (
     <section className="flex-1 sm:px-4">
-      <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
+      <Breadcrumb className="mb-6 flex items-center gap-2 px-4 text-sm font-medium">
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>
         </BreadcrumbItem>
@@ -87,17 +87,9 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
       </Breadcrumb>
 
       <div className="grid gap-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="">
           {/* Section 1: Seller Information */}
           <SellerDetailHero seller={seller} />
-
-          <SellerReviews
-            reviews={reviewsData}
-            pageNumber={paginationReviews.page}
-            totalPages={paginationReviews.totalPages}
-            paginate={paginateReviews}
-            isLoading={isReviewsLoading}
-          />
         </div>
 
         <SellerOffersList
@@ -106,6 +98,13 @@ export default function SellerDetailScreen({ sellerId }: SellerDetailScreenProps
           totalPages={paginationOffers.totalPages}
           paginate={paginateOffers}
           isLoading={isOffersLoading}
+        />
+        <SellerReviews
+          reviews={reviewsData}
+          pageNumber={paginationReviews.page}
+          totalPages={paginationReviews.totalPages}
+          paginate={paginateReviews}
+          isLoading={isReviewsLoading}
         />
       </div>
     </section>

@@ -178,15 +178,15 @@ export default function OfferList({
   console.log(hasNextPage);
 
   return (
-    <div className="grid gap-4 h-fit">
+    <div className="grid h-fit gap-4">
       <div
         ref={searchBarRef}
         className={cn(
-          'sticky h-fit top-[4.5rem] z-30 rounded-2xl flex flex-col justify-between sm:flex-row p-4 items-center gap-4 transition-colors duration-300',
-          'bg-primary-foreground border-line border'
+          'sticky top-[4.5rem] z-30 flex h-fit flex-col items-center justify-between gap-4 rounded-2xl p-4 transition-colors duration-300 sm:flex-row',
+          'border border-line bg-primary-foreground'
         )}
       >
-        <div className="flex flex-col sm:flex-row sm:items-center gap-4 w-full md:w-auto">
+        <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
           <div className="flex items-center gap-4">
             <FilterSheet
               filters={filters}
@@ -197,7 +197,7 @@ export default function OfferList({
 
             {/* Mobile Sort Field Select */}
             <Select value={sortField} onValueChange={handleSortFieldChange}>
-              <SelectTrigger className={`w-32 flex-1 md:w-[180px] flex sm:hidden`}>
+              <SelectTrigger className={`flex w-32 flex-1 sm:hidden md:w-[180px]`}>
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -211,7 +211,7 @@ export default function OfferList({
 
             {/* Mobile Sort Order Select */}
             <Select value={sortOrder} onValueChange={handleSortOrderChange}>
-              <SelectTrigger className="w-28 flex sm:hidden">
+              <SelectTrigger className="flex w-28 sm:hidden">
                 <SelectValue placeholder="Order">
                   {sortOrder === 'asc' ? (
                     <div className="flex items-center gap-2">
@@ -244,7 +244,7 @@ export default function OfferList({
           </div>
 
           {/* Enhanced Search Input */}
-          <div className="flex-1 min-w-60">
+          <div className="min-w-60 flex-1">
             <SearchInput
               value={inputSearch}
               onChange={handleEnhancedSearch}
@@ -257,7 +257,7 @@ export default function OfferList({
 
           {/* Desktop Sort Field Select */}
           <Select value={sortField} onValueChange={handleSortFieldChange}>
-            <SelectTrigger className={`w-32 md:w-[180px] hidden sm:flex`}>
+            <SelectTrigger className={`hidden w-32 sm:flex md:w-[180px]`}>
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -271,7 +271,7 @@ export default function OfferList({
 
           {/* Desktop Sort Order Select */}
           <Select value={sortOrder} onValueChange={handleSortOrderChange}>
-            <SelectTrigger className="w-40 hidden sm:flex">
+            <SelectTrigger className="hidden w-40 sm:flex">
               <SelectValue placeholder="Order">
                 {sortOrder === 'asc' ? (
                   <div className="flex items-center gap-2">
@@ -308,7 +308,7 @@ export default function OfferList({
           value={viewType}
           variant="outline"
           onValueChange={(value: 'card' | 'list') => value && setViewType(value)}
-          className="flex-shrink-0 hidden md:flex"
+          className="hidden flex-shrink-0 md:flex"
         >
           <ToggleGroupItem value="card" aria-label="Toggle card view">
             <LayoutGrid className="h-4 w-4" />
@@ -320,7 +320,7 @@ export default function OfferList({
       </div>
 
       {viewType === 'card' ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {isLoading && (
             <>
               {Array.from({ length: 6 }).map((_, index) => (
@@ -331,7 +331,7 @@ export default function OfferList({
           {!isLoading && offers.map((offer, index) => <OfferCard key={index} offer={offer} />)}
           {/* Separate trigger element for infinite scroll */}
           {hasNextPage && (
-            <div ref={lastItemRef} className="col-span-full h-10 flex items-center justify-center">
+            <div ref={lastItemRef} className="col-span-full flex h-10 items-center justify-center">
               {isFetching && <Loader2 className="h-6 w-6 animate-spin" />}
             </div>
           )}
@@ -339,14 +339,14 @@ export default function OfferList({
       ) : (
         <div className="grid gap-4">
           {isLoading && (
-            <div className="col-span-full flex justify-center items-center">
+            <div className="col-span-full flex items-center justify-center">
               <Loader2 className="h-4 w-4 animate-spin" />
             </div>
           )}
           {!isLoading && offers.map((offer, index) => <OfferListItem key={index} offer={offer} />)}
           {/* Separate trigger element for infinite scroll */}
           {hasNextPage && (
-            <div ref={lastItemRef} className="h-10 flex items-center justify-center">
+            <div ref={lastItemRef} className="flex h-10 items-center justify-center">
               {isFetching && <Loader2 className="h-6 w-6 animate-spin" />}
             </div>
           )}

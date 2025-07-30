@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/server/db/supabase';
 import { CONTRACTS } from '@/contracts/contracts';
 import { EscrowFactory } from '@/contracts/factory/escrow-factory';
-import { Keypair } from '@solana/web3.js';
+import { supabase } from '@/server/db/supabase';
 import { ChainType } from '@/server/enums/chain';
+import { Keypair } from '@solana/web3.js';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {

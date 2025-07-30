@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { generateBaseLoginMessage } from '@/server/utils/base';
 import { generateSolanaLoginMessage } from '@/server/utils/solana';
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {

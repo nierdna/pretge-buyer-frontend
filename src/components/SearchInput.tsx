@@ -109,7 +109,7 @@ export default function SearchInput({
   return (
     <div className={`relative ${className}`}>
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-content" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-content" />
         <Input
           ref={inputRef}
           value={value}
@@ -123,7 +123,7 @@ export default function SearchInput({
         {value && (
           <button
             onClick={handleClear}
-            className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-content hover:text-foreground hover:bg-gray-100 rounded-full p-1 transition-all duration-200"
+            className="hover:text-foreground absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform rounded-full p-1 text-content transition-all duration-200 hover:bg-gray-100"
             type="button"
           >
             <X className="h-4 w-4" />
@@ -133,10 +133,10 @@ export default function SearchInput({
 
       {/* Search Status */}
       {value && (
-        <div className="absolute top-full left-0 right-0 mt-1 text-xs text-white bg-gray-800 p-2 rounded-md border border-gray-700 z-10">
+        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border border-gray-700 bg-gray-800 p-2 text-xs text-primary">
           {isLoading ? (
             <div className="flex items-center gap-2">
-              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-blue-400"></div>
+              <div className="h-3 w-3 animate-spin rounded-full border-b-2 border-blue-400"></div>
               Searching for token symbol:{' '}
               <span className="font-medium text-blue-300">"{extractTokenSymbol(value)}"</span>
             </div>
@@ -153,12 +153,12 @@ export default function SearchInput({
       {showSuggestions && (
         <div
           ref={suggestionsRef}
-          className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-md shadow-lg z-20 max-h-64 overflow-y-auto"
+          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-64 overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg"
         >
           {/* Token Suggestions */}
           {suggestions.length > 0 && (
             <div className="p-2">
-              <div className="text-xs font-medium text-gray-600 mb-2 flex items-center gap-1">
+              <div className="mb-2 flex items-center gap-1 text-xs font-medium text-gray-600">
                 <Coins className="h-3 w-3" />
                 Token Suggestions
               </div>
@@ -166,9 +166,9 @@ export default function SearchInput({
                 <button
                   key={suggestion.id}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors duration-200 flex items-center gap-3"
+                  className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm transition-colors duration-200 hover:bg-blue-50 hover:text-blue-700"
                 >
-                  <div className="relative w-6 h-6 flex-shrink-0">
+                  <div className="relative h-6 w-6 flex-shrink-0">
                     <Image
                       src={suggestion.logo || '/logo-mb.png'}
                       alt={suggestion.symbol}
@@ -177,12 +177,12 @@ export default function SearchInput({
                       className="rounded-full"
                     />
                   </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <div className="font-medium truncate">{suggestion.symbol}</div>
-                    <div className="text-xs text-gray-500 truncate">{suggestion.name}</div>
+                  <div className="flex min-w-0 flex-1 flex-col">
+                    <div className="truncate font-medium">{suggestion.symbol}</div>
+                    <div className="truncate text-xs text-content">{suggestion.name}</div>
                   </div>
                   {suggestion.network && (
-                    <div className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded flex-shrink-0">
+                    <div className="flex-shrink-0 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">
                       {suggestion.network}
                     </div>
                   )}
@@ -193,8 +193,8 @@ export default function SearchInput({
 
           {/* Recent Searches */}
           {recentSearches.length > 0 && (
-            <div className="p-2 border-t border-gray-200">
-              <div className="text-xs font-medium text-gray-600 mb-2 flex items-center gap-1">
+            <div className="border-t border-gray-200 p-2">
+              <div className="mb-2 flex items-center gap-1 text-xs font-medium text-gray-600">
                 <Clock className="h-3 w-3" />
                 Recent Searches
               </div>
@@ -202,7 +202,7 @@ export default function SearchInput({
                 <button
                   key={index}
                   onClick={() => handleRecentSearchClick(search)}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-blue-50 hover:text-blue-700 rounded-md transition-colors duration-200 flex items-center gap-2"
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors duration-200 hover:bg-blue-50 hover:text-blue-700"
                 >
                   <Clock className="h-3 w-3 text-gray-400" />
                   {search}
@@ -213,7 +213,7 @@ export default function SearchInput({
 
           {/* No Results */}
           {suggestions.length === 0 && recentSearches.length === 0 && value.length > 0 && (
-            <div className="p-4 text-center text-sm text-gray-500">
+            <div className="p-4 text-center text-sm text-content">
               No suggestions found for "{value}"
             </div>
           )}

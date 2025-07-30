@@ -12,15 +12,15 @@ interface FlashSaleCardProps {
 
 export default function FlashSaleCard({ offer }: FlashSaleCardProps) {
   return (
-    <Card className="relative flex-col flex flex-shrink-0 w-full max-w-[calc(90%)] bg-white/95 backdrop-blur-md shadow-lg border-gray-300 hover:shadow-xl transition-shadow">
+    <Card className="relative flex w-full max-w-[calc(90%)] flex-shrink-0 flex-col border-gray-300 bg-white/95 shadow-lg backdrop-blur-md transition-shadow hover:shadow-xl">
       {/* Discount Badge - now absolute */}
-      <Badge className="absolute top-2 right-2 bg-orange-500 text-white text-xs font-bold px-2 py-0.5 z-10 hover:bg-orange-600">
+      <Badge className="absolute right-2 top-2 z-10 bg-orange-500 px-2 py-0.5 text-xs font-bold text-primary hover:bg-orange-600">
         -{offer.promotion?.discountPercent}%
       </Badge>
 
-      <CardHeader className="flex flex-col items-start gap-2 p-3 pb-1 flex-grow">
-        <div className="flex items-center gap-2 w-full ">
-          <div className="w-8 h-8 relative min-w-8 min-h-8 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+      <CardHeader className="flex flex-grow flex-col items-start gap-2 p-3 pb-1">
+        <div className="flex w-full items-center gap-2">
+          <div className="relative h-8 min-h-8 w-8 min-w-8 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
             <Image
               src={offer.tokens?.logo || '/placeholder.svg'}
               alt={`${offer.tokens?.symbol} symbol`}
@@ -28,22 +28,22 @@ export default function FlashSaleCard({ offer }: FlashSaleCardProps) {
               className="rounded-full object-cover"
             />
           </div>
-          <div className="grid gap-0.5 flex-grow">
-            <CardTitle className="text-base font-bold truncate w-4/5">{offer.title}</CardTitle>
+          <div className="grid flex-grow gap-0.5">
+            <CardTitle className="w-4/5 truncate text-base font-bold">{offer.title}</CardTitle>
             <div className="flex flex-wrap items-center gap-1">
-              <Badge className="text-xs px-1 py-0.5 w-fit bg-gray-200">
+              <Badge className="w-fit bg-gray-200 px-1 py-0.5 text-xs">
                 {offer.tokens?.symbol}
               </Badge>
-              <Badge className="text-xs px-1 py-0.5 w-fit bg-gray-200">
+              <Badge className="w-fit bg-gray-200 px-1 py-0.5 text-xs">
                 {normalizeNetworkName(offer.exToken?.network?.name)}
               </Badge>
             </div>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="p-3 grid gap-2 text-xs">
+      <CardContent className="grid gap-2 p-3 text-xs">
         <div className="flex flex-col items-start gap-0.5">
-          <span className="text-gray-600 line-through text-sm">
+          <span className="text-sm text-gray-600 line-through">
             Original: ${offer.price.toLocaleString()}
           </span>
           <span className="text-2xl font-extrabold text-orange-500">
@@ -51,7 +51,7 @@ export default function FlashSaleCard({ offer }: FlashSaleCardProps) {
             {(offer.price * (1 - Number(offer.promotion?.discountPercent || 0) / 100)).toFixed(2)}
           </span>
         </div>
-        <Button className="w-full mt-1 h-8 text-sm">
+        <Button className="mt-1 h-8 w-full text-sm">
           View Deal
           <ArrowRight className="ml-1 h-3 w-3" />
         </Button>

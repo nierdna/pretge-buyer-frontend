@@ -11,6 +11,7 @@ import Separator from '@/components/ui/separator';
 import { IOffer } from '@/types/offer';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { div, formatNumberShort, minus } from '@/utils/helpers/number';
+import { normalizeNetworkName } from '@/utils/helpers/string';
 import { Dot, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -49,10 +50,10 @@ export default function OfferCard({ offer }: OfferCardProps) {
 
   return (
     <Link href={`/offers/${offerId}`} className="cursor-pointer">
-      <Card className="backdrop-blur-md hover:scale-[1.015] hover:bg-primary-foreground transition-all p-3 duration-300 flex flex-col relative">
+      <Card className="relative flex flex-col p-3 backdrop-blur-md transition-all duration-300 hover:scale-[1.015] hover:bg-primary-foreground">
         {/* {offer?.promotion?.isActive && (
         <div className="absolute -top-3 -right-0">
-          <Badge className="text-xs bg-orange-500 text-white">
+          <Badge className="text-xs bg-orange-500 text-primary">
             -{offer?.promotion?.discountPercent}%
           </Badge>
         </div>
@@ -61,19 +62,21 @@ export default function OfferCard({ offer }: OfferCardProps) {
           <img
             src={offer?.imageUrl || offer.tokens?.bannerUrl || offer.tokens?.logo || '/logo-mb.png'}
             alt={`${offer.tokens?.symbol} symbol`}
-            className="object-cover w-full h-48 border-line border rounded-2xl"
+            className="h-48 w-full rounded-2xl border border-line object-cover"
           />
-          <Badge className="absolute top-2 left-2 z-10">{offer.exToken?.network?.name}</Badge>
+          <Badge className="absolute left-2 top-2 z-10">
+            {normalizeNetworkName(offer.exToken?.network?.name)}
+          </Badge>
           {!!offer?.promotion?.isActive && (
-            <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
+            <Badge variant={'danger'} className="absolute right-2 top-2 z-10">
               Discount
             </Badge>
           )}
-          <div className="absolute bottom-2 left-2 w-full flex gap-1 items-center">
-            <Badge className={` font-medium ${getSettleDurationColor(offer.settleDuration)}`}>
+          <div className="absolute bottom-2 left-2 flex w-full items-center gap-1">
+            <Badge className={`font-medium ${getSettleDurationColor(offer.settleDuration)}`}>
               {formatSettleDuration(offer.settleDuration)}
             </Badge>
-            <Badge className={` font-medium ${getColorFromCollateral(offer.collateralPercent)}`}>
+            <Badge className={`font-medium ${getColorFromCollateral(offer.collateralPercent)}`}>
               {formatCollateralPercent(offer.collateralPercent)}
             </Badge>
           </div>
@@ -83,11 +86,11 @@ export default function OfferCard({ offer }: OfferCardProps) {
             {/* <div className="text-content text-sm">
             {dayjs(offer.createdAt).format('MMM DD, YYYY - HH:mm A')}
           </div> */}
-            <CardTitle className="text-lg w-full truncate">
+            <CardTitle className="w-full truncate text-lg">
               {offer?.title || offer?.tokens?.symbol}
             </CardTitle>
 
-            <CardDescription className="text-sm line-clamp-2 text-content truncate">
+            <CardDescription className="line-clamp-2 truncate text-sm text-content">
               {offer?.description || 'No description'}
             </CardDescription>
           </div>
@@ -143,7 +146,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
               </span>
             </div>
             {offer?.promotion?.isActive && (
-              <div className="text-sm relative text-gray-500 flex items-center gap-1">
+              <div className="text-sm relative text-content flex items-center gap-1">
                 <span className="font-medium line-through">
                   $
                   {formatNumberShort(offer.price, {
@@ -155,14 +158,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
                 {offer?.promotion?.isActive && (
                   <Badge
                     variant="outline"
-                    className="text-xs bg-orange-500 text-white px-1.5 hover:bg-orange-600"
+                    className="text-xs bg-orange-500 text-primary px-1.5 hover:bg-orange-600"
                   >
                     -{offer?.promotion?.discountPercent}%
                   </Badge>
                 )}
               </div>
             )}
-            <div className="mt-1 text-sm font-medium text-gray-500">
+            <div className="mt-1 text-sm font-medium text-content">
               Sold:{' '}
               <span className="font-bold text-foreground">{`${formatNumberShort(offer.filled, {
                 useShorterExpression: true,
@@ -171,10 +174,10 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </div>
         </div>
       </CardHeader> */}
-        <CardContent className="p-3 flex flex-col gap-4 text-sm">
-          <div className="flex items-end gap-4 justify-between">
-            <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(60%)]">
-              <div className="text-xs text-content inline-flex items-center">
+        <CardContent className="flex flex-col gap-4 p-3 text-sm">
+          <div className="flex items-end justify-between gap-4">
+            <div className="relative flex max-w-[calc(60%)] flex-1 flex-col gap-2">
+              <div className="inline-flex items-center text-xs text-content">
                 <span>
                   {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
                     maxDecimalCount: 0,
@@ -191,7 +194,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
                 />
               </div>
             </div>
-            <span className="text-2xl leading-none flex flex-col gap-1 items-end">
+            <span className="flex flex-col items-end gap-1 text-2xl leading-none">
               $
               {offer?.promotion?.isActive
                 ? formatNumberShort(
@@ -211,14 +214,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
                   alt={offer?.tokens?.symbol || 'Token Image'}
                   width={16}
                   height={16}
-                  className="rounded-full border border-line"
+                  className="min-h-4 min-w-4 rounded-full border border-line"
                 />
-                <span className="text-xs text-content leading-none">{offer.tokens?.symbol}</span>
+                <span className="text-xs leading-none text-content">{offer.tokens?.symbol}</span>
               </div>
             </span>
           </div>
           {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
-          <span className="text-2xs text-gray-500">Total Amount</span>
+          <span className="text-2xs text-content">Total Amount</span>
           <span className="text-base font-bold text-primary">
             {formatNumberShort(offer.quantity, {
               useShorterExpression: true,
@@ -227,7 +230,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div>
 
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
-          <span className="text-2xs text-gray-500">Payment with</span>
+          <span className="text-2xs text-content">Payment with</span>
           <div className="flex items-end gap-1 h-6 font-bold">
             <Image
               src={
@@ -243,14 +246,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
         </div>
 
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
-          <span className="text-2xs text-gray-500">Collateral</span>
+          <span className="text-2xs text-content">Collateral</span>
           <span
             className={cn('text-base font-bold', getColorFromCollateral(offer.collateralPercent))}
           >{`${offer.collateralPercent}%`}</span>
         </div>
 
         <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
-          <span className="text-2xs text-gray-500">Settle After TGE</span>
+          <span className="text-2xs text-content">Settle After TGE</span>
           <span className="text-base font-bold">
             {offer.settleDuration > 0
               ? `${
@@ -265,7 +268,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         <Separator className="w-full" />
         <CardFooter className="flex flex-col items-center p-0">
           {/* Block 3: Seller Info */}
-          <div className="flex items-center gap-2 w-full pt-3">
+          <div className="flex w-full items-center gap-2 pt-3">
             <Avatar className="h-8 w-8 flex-shrink-0">
               <AvatarImage
                 src={
@@ -273,12 +276,12 @@ export default function OfferCard({ offer }: OfferCardProps) {
                 }
               />
             </Avatar>
-            <div className="grid gap-0.5 min-w-0 flex-grow">
+            <div className="grid min-w-0 flex-grow gap-0.5">
               <div className="truncate text-sm text-content">{offer.sellerWallet?.user?.name}</div>
-              {/* <div className="text-xs text-gray-500 truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
+              {/* <div className="text-xs text-content truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
             </div>
-            <div className="flex items-center gap-0.5 ml-auto flex-shrink-0">
-              <span className="text-sm leading-none mt-1 text-content">
+            <div className="ml-auto flex flex-shrink-0 items-center gap-0.5">
+              <span className="mt-1 text-sm leading-none text-content">
                 {Number(offer.sellerWallet?.user?.rating || 0)}
               </span>
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
@@ -300,7 +303,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
 
 function OfferCardSkeleton() {
   return (
-    <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 flex flex-col">
+    <Card className="flex flex-col border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -312,31 +315,31 @@ function OfferCardSkeleton() {
           </div>
           <div className="flex flex-col items-end text-right">
             <Skeleton className="h-6 w-[100px]" />
-            <Skeleton className="h-4 w-[70px] mt-1" />
+            <Skeleton className="mt-1 h-4 w-[70px]" />
           </div>
         </div>
       </CardHeader>
       <div className="mx-6 h-[1px] bg-gray-200" /> {/* Separator skeleton */}
-      <CardContent className="p-6 grid grid-cols-2 gap-4 text-sm flex-grow">
+      <CardContent className="grid flex-grow grid-cols-2 gap-4 p-6 text-sm">
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md"
+            className="flex flex-col rounded-md border border-gray-200 bg-neutral-800/5 p-3 shadow-md"
           >
-            <Skeleton className="h-3 w-[60px] mb-1" />
+            <Skeleton className="mb-1 h-3 w-[60px]" />
             <Skeleton className="h-5 w-[80px]" />
           </div>
         ))}
       </CardContent>
       <div className="mx-6 h-[1px] bg-gray-200" /> {/* Separator skeleton */}
-      <CardFooter className="p-6 flex flex-col items-start gap-4 pt-4">
-        <div className="flex items-center gap-2 w-full">
+      <CardFooter className="flex flex-col items-start gap-4 p-6 pt-4">
+        <div className="flex w-full items-center gap-2">
           <Skeleton className="h-8 w-8 rounded-full" />
-          <div className="grid gap-0.5 flex-grow min-w-0">
+          <div className="grid min-w-0 flex-grow gap-0.5">
             <Skeleton className="h-4 w-[120px]" />
             <Skeleton className="h-3 w-[100px]" />
           </div>
-          <Skeleton className="h-4 w-[40px] ml-auto" />
+          <Skeleton className="ml-auto h-4 w-[40px]" />
         </div>
         <Skeleton className="h-10 w-full" />
       </CardFooter>

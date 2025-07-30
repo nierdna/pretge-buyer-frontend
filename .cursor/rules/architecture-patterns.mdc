@@ -1,0 +1,71 @@
+---
+description: khi nào nhắc đến architecture hoặc thiết kế hệ thống thì đọc rules này
+alwaysApply: false
+---
+
+# Architecture Patterns
+
+## Project Structure
+
+Dự án sử dụng Next.js App Router với cấu trúc thư mục rõ ràng:
+
+- `src/app/` - Next.js App Router pages
+- `src/components/` - Reusable UI components
+- `src/screens/` - Page-level components
+- `src/queries/` - React Query hooks
+- `src/service/` - API service layer
+- `src/store/` - Zustand state management
+- `src/hooks/` - Custom React hooks
+- `src/types/` - TypeScript type definitions
+
+## Data Flow Pattern
+
+1. **Screen Component** → Sử dụng query hooks để fetch data
+2. **Query Hooks** → Gọi services và quản lý cache
+3. **Services** → Gọi API endpoints
+4. **Components** → Nhận props và render UI
+
+## Layout Architecture
+
+- `src/app/layout.tsx` - Root layout với providers
+- `src/app/(main)/layout.tsx` - Main layout với authentication logic
+- Layout groups được sử dụng để tổ chức pages theo chức năng
+
+## Provider Pattern
+
+Providers được tổ chức theo thứ tự dependency:
+
+```typescript
+<AppKitProvider>        {/* Wallet connection */}
+  <QueryProvider>       {/* React Query */}
+    {children}
+    <Toaster />         {/* Toast notifications */}
+  </QueryProvider>
+</AppKitProvider>
+```
+
+## Service Pattern
+
+Services sử dụng singleton pattern và được export qua `src/service/index.ts`:
+
+```typescript
+export const Service = Object.freeze({
+  order: new OrderService(),
+  chain: new ChainsService(),
+  offer: new OfferService(),
+  user: new UserService(),
+  auth: new AuthService(),
+});
+```
+
+## Component Architecture
+
+- **Screen Components**: Quản lý queries và state, truyền data xuống components
+- **List Components**: Nhận data qua props, xử lý rendering và pagination
+- **Card Components**: Pure components chỉ render UI
+- **Filter Components**: Quản lý filter state và callbacks
+  description:
+  globs:
+  alwaysApply: false
+
+---

@@ -1,0 +1,389 @@
+---
+description: khi nào nhắc đến service-patterns hoặc cấu trúc service cho dự án hoặc cấu trúc service cho cái gì đó gồm các tính năng theo yêu cầu thì đọc rules này
+alwaysApply: false
+---
+
+# Service Patterns
+
+## Service Organization
+
+Services được tổ chức theo domain và sử dụng singleton pattern:
+
+```typescript
+// src/service/index.ts
+export const Service = Object.freeze({
+  order: new OrderService(),
+  chain: new ChainsService(),
+  offer: new OfferService(),
+  user: new UserService(),
+  auth: new AuthService(),
+  token: new TokenService(),
+  search: new SearchService(),
+  upload: new UploadService(),
+});
+```
+
+## Service Class Pattern
+
+Tạo service class với consistent interface:
+
+```typescript
+// src/service/example.service.ts
+import axiosInstance from './axios';
+import type { ExampleType } from '@/types/example';
+
+interface ExampleResponse {
+  data: ExampleType[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+  success: boolean;
+}
+
+interface SingleExampleResponse {
+  data: ExampleType;
+  success: boolean;
+}
+
+export class ExampleService {
+  async getExamples(params?: {
+    page?: number;
+    limit?: number;
+    search?: string;
+    sortField?: string;
+    sortOrder?: 'asc' | 'desc';
+  }): Promise<ExampleResponse> {
+    const response = await axiosInstance.get('/examples', { params });
+    return response.data;
+  }
+
+  async getExampleById(id: string): Promise<SingleExampleResponse> {
+    const response = await axiosInstance.get(`/examples/${id}`);
+    return response.data;
+  }
+
+  async createExample(data: Partial<ExampleType>): Promise<SingleExampleResponse> {
+    const response = await axiosInstance.post('/examples', data);
+    return response.data;
+  }
+
+  async updateExample(id: string, data: Partial<ExampleType>): Promise<SingleExampleResponse> {
+    const response = await axiosInstance.patch(`/examples/${id}`, data);
+    return response.data;
+  }
+
+  async deleteExample(id: string): Promise<{ success: boolean }> {
+    const response = await axiosInstance.delete(`/examples/${id}`);
+    return response.data;
+  }
+}
+```
+
+## Axios Instance Configuration
+
+Sử dụng configured axios instance với interceptors:
+
+```typescript
+// src/service/axios.ts
+import axios from 'axios';
+import { toast } from 'sonner';
+
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor
+axiosInstance.interceptors.request.use(
+  (config) => {
+    // Add auth token if available
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    // Handle common errors
+    if (error.response?.status === 401) {
+      // Handle unauthorized
+      localStorage.removeItem('accessToken');
+      window.location.href = '/login';
+    } else if (error.response?.status === 500) {
+      toast.error('Internal server error. Please try again later.');
+    } else if (error.response?.data?.message) {
+      toast.error(error.response.data.message);
+    } else {
+      toast.error('Something went wrong. Please try again.');
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;
+```
+
+## API Response Pattern
+
+Sử dụng consistent response format:
+
+```typescript
+// Success response
+{
+  success: true,
+  data: any,
+  pagination?: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  }
+}
+
+// Error response
+{
+  success: false,
+  message: string,
+  errors?: any
+}
+```
+
+## Service Method Patterns
+
+### List Methods
+
+```typescript
+async getExamples(params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+  filters?: Record<string, any>;
+}): Promise<ExampleResponse> {
+  const response = await axiosInstance.get('/examples', { params });
+  return response.data;
+}
+```
+
+### Single Item Methods
+
+```typescript
+async getExampleById(id: string): Promise<SingleExampleResponse> {
+  const response = await axiosInstance.get(`/examples/${id}`);
+  return response.data;
+}
+```
+
+### Create Methods
+
+```typescript
+async createExample(data: Partial<ExampleType>): Promise<SingleExampleResponse> {
+  const response = await axiosInstance.post('/examples', data);
+  return response.data;
+}
+```
+
+### Update Methods
+
+```typescript
+async updateExample(id: string, data: Partial<ExampleType>): Promise<SingleExampleResponse> {
+  const response = await axiosInstance.patch(`/examples/${id}`, data);
+  return response.data;
+}
+```
+
+### Delete Methods
+
+```typescript
+async deleteExample(id: string): Promise<{ success: boolean }> {
+  const response = await axiosInstance.delete(`/examples/${id}`);
+  return response.data;
+}
+```
+
+## File Upload Service Pattern
+
+Service cho file upload với Zipline:
+
+```typescript
+// src/service/upload.service.ts
+import axiosInstance from './axios';
+
+export class UploadService {
+  async uploadImage(file: File): Promise<{ url: string; success: boolean }> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await axiosInstance.post('/upload/image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  }
+
+  async uploadMultipleImages(files: File[]): Promise<{ urls: string[]; success: boolean }> {
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append('files', file);
+    });
+
+    const response = await axiosInstance.post('/upload/images', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    return response.data;
+  }
+}
+```
+
+## Search Service Pattern
+
+Service cho search functionality:
+
+```typescript
+// src/service/search.service.ts
+import axiosInstance from './axios';
+
+export class SearchService {
+  async search(query: string, filters?: Record<string, any>): Promise<any> {
+    const response = await axiosInstance.get('/search', {
+      params: { q: query, ...filters },
+    });
+    return response.data;
+  }
+
+  async getSuggestions(query: string): Promise<{ suggestions: string[]; success: boolean }> {
+    const response = await axiosInstance.get('/search/suggestions', {
+      params: { q: query },
+    });
+    return response.data;
+  }
+}
+```
+
+## Error Handling Pattern
+
+Xử lý errors trong services:
+
+```typescript
+export class ExampleService {
+  async getExamples(params?: any): Promise<ExampleResponse> {
+    try {
+      const response = await axiosInstance.get('/examples', { params });
+      return response.data;
+    } catch (error) {
+      // Log error for debugging
+      console.error('Failed to fetch examples:', error);
+
+      // Re-throw to let React Query handle it
+      throw error;
+    }
+  }
+}
+```
+
+## TypeScript Types for Services
+
+Định nghĩa types cho service responses:
+
+```typescript
+// src/types/api.ts
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data: T;
+  message?: string;
+}
+
+export interface PaginatedResponse<T = any> extends ApiResponse<T[]> {
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
+export interface ErrorResponse {
+  success: false;
+  message: string;
+  errors?: Record<string, string[]>;
+}
+```
+
+## Service Testing Pattern
+
+Pattern cho testing services:
+
+```typescript
+// src/service/__tests__/example.service.test.ts
+import { ExampleService } from '../example.service';
+import axiosInstance from '../axios';
+
+jest.mock('../axios');
+
+describe('ExampleService', () => {
+  let service: ExampleService;
+
+  beforeEach(() => {
+    service = new ExampleService();
+  });
+
+  describe('getExamples', () => {
+    it('should fetch examples successfully', async () => {
+      const mockResponse = {
+        data: {
+          success: true,
+          data: [{ id: '1', name: 'Example 1' }],
+          pagination: { total: 1, page: 1, limit: 10, totalPages: 1 },
+        },
+      };
+
+      (axiosInstance.get as jest.Mock).mockResolvedValue(mockResponse);
+
+      const result = await service.getExamples();
+
+      expect(result.success).toBe(true);
+      expect(result.data).toHaveLength(1);
+      expect(axiosInstance.get).toHaveBeenCalledWith('/examples', { params: undefined });
+    });
+  });
+});
+```
+
+## Best Practices
+
+- **Singleton Pattern**: Sử dụng singleton cho services
+- **Consistent Interface**: Tất cả services có cùng interface pattern
+- **TypeScript**: Sử dụng TypeScript cho type safety
+- **Error Handling**: Xử lý errors gracefully
+- **Response Format**: Sử dụng consistent response format
+- **Axios Interceptors**: Sử dụng interceptors cho common logic
+- **File Upload**: Xử lý file upload với proper headers
+- **Testing**: Viết tests cho services
+- **Documentation**: Comment cho complex methods
+  description:
+  globs:
+  alwaysApply: false
+
+---

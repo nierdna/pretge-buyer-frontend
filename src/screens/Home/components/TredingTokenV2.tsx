@@ -84,14 +84,14 @@ export default function TredingTokenV2({
   const renderBadge = (token: IToken) => {
     if (token.isHot) {
       return (
-        <Badge className="bg-red-500 absolute -top-2 -right-3.5 text-2xs font-bold px-2 py-0.5 z-10 text-white">
+        <Badge className="absolute -right-3.5 -top-2 z-10 bg-red-500 px-2 py-0.5 text-2xs font-bold text-primary">
           HOT
         </Badge>
       );
     }
     if (token.isNew) {
       return (
-        <Badge className="bg-blue-500 absolute -top-2 -right-3.5 text-2xs font-bold px-2 py-0.5 z-10 text-white">
+        <Badge className="absolute -right-3.5 -top-2 z-10 bg-blue-500 px-2 py-0.5 text-2xs font-bold text-primary">
           NEW
         </Badge>
       );
@@ -126,7 +126,7 @@ export default function TredingTokenV2({
   const activeDotIndex = getActiveDotIndex();
 
   return (
-    <section className="pb-4 md:pb-6 pt-0 sm:px-4">
+    <section className="pb-4 pt-0 sm:px-4 md:pb-6">
       <Card>
         {/* <CardHeadper className="p-4 pb-2 flex flex-row items-center justify-between">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>
@@ -143,10 +143,10 @@ export default function TredingTokenV2({
           >
             <CarouselContent>
               {trendingTokens.map((token, index) => (
-                <CarouselItem key={index} className="basis-full md:basis-1/2 lg:basis-1/3 pl-4">
+                <CarouselItem key={index} className="basis-full pl-4 md:basis-1/2 lg:basis-1/3">
                   <Link
                     href={`/token/${token?.symbol?.toLowerCase()}`}
-                    className="group relative flex flex-col gap-2 items-center justify-center p-3 pt-6 rounded-lg border border-gray-300 bg-white/80 backdrop-blur-sm shadow-sm cursor-pointer hover:bg-gray-100 transition-all duration-300 h-full overflow-hidden"
+                    className="group relative flex h-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white/80 p-3 pt-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-gray-100"
                   >
                     <Image
                       src={
@@ -156,11 +156,11 @@ export default function TredingTokenV2({
                       }
                       alt={`${token?.symbol} banner`}
                       fill
-                      className="object-cover rounded-lg absolute top-0 left-0 z-0 transition-all duration-300 group-hover:blur-sm"
+                      className="absolute left-0 top-0 z-0 rounded-lg object-cover transition-all duration-300 group-hover:blur-sm"
                     />
-                    <div className="relative opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                    <div className="relative z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       {renderBadge(token)}
-                      <div className="w-12 h-12 relative min-w-12 rounded-full bg-gray-300 flex-shrink-0">
+                      <div className="relative h-12 w-12 min-w-12 flex-shrink-0 rounded-full bg-gray-300">
                         <Image
                           src={
                             token?.logo ||
@@ -168,7 +168,7 @@ export default function TredingTokenV2({
                           }
                           alt={`${token?.symbol} symbol`}
                           fill
-                          className="object-cover rounded-full border border-gray-500"
+                          className="rounded-full border border-gray-500 object-cover"
                         />
                         {token?.networks?.logo && (
                           <Image
@@ -176,24 +176,24 @@ export default function TredingTokenV2({
                             alt={`${token?.symbol} network`}
                             width={20}
                             height={20}
-                            className="object-cover z-10 absolute -bottom-0 -right-0 min-w-5 min-h-5 rounded-full"
+                            className="absolute -bottom-0 -right-0 z-10 min-h-5 min-w-5 rounded-full object-cover"
                           />
                         )}
                       </div>
                     </div>
-                    <span className="text-lg font-medium text-primary z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <span className="z-10 text-lg font-medium text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                       {token?.symbol}
                     </span>
                   </Link>
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <div className="flex items-center justify-center gap-1 mt-4">
+            <div className="mt-4 flex items-center justify-center gap-1">
               {Array.from({ length: numberOfDots }).map((_, i) => (
                 <button
                   key={i}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    i === activeDotIndex ? 'bg-secondary w-4' : 'bg-secondary-foreground/50'
+                  className={`h-2 w-2 rounded-full transition-colors ${
+                    i === activeDotIndex ? 'w-4 bg-secondary' : 'bg-secondary-foreground/50'
                   }`}
                   onClick={() => handleDotClick(i)}
                   aria-label={`Go to slide group ${i + 1}`}

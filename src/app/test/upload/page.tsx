@@ -21,10 +21,10 @@ export default function UploadTestPage() {
   };
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
+    <div className="container mx-auto max-w-4xl p-6">
       <div className="space-y-6">
         <div>
-          <h1 className="text-3xl font-bold mb-2">Upload Test Page</h1>
+          <h1 className="mb-2 text-3xl font-bold">Upload Test Page</h1>
           <p className="text-gray-600">Test the Zipline image upload functionality</p>
         </div>
 
@@ -46,14 +46,14 @@ export default function UploadTestPage() {
             />
 
             {uploadedUrl && (
-              <div className="mt-4 p-4 bg-green-50 rounded-lg">
-                <h3 className="font-bold text-green-800 mb-2">Latest Upload:</h3>
+              <div className="mt-4 rounded-lg bg-green-50 p-4">
+                <h3 className="mb-2 font-bold text-green-800">Latest Upload:</h3>
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
                     <AvatarImage src={uploadedUrl} alt="Uploaded image" />
                   </Avatar>
                   <div className="flex-1">
-                    <p className="text-sm text-green-700 break-all">{uploadedUrl}</p>
+                    <p className="break-all text-sm text-green-700">{uploadedUrl}</p>
                   </div>
                 </div>
               </div>
@@ -69,16 +69,16 @@ export default function UploadTestPage() {
               <CardDescription>Previously uploaded images</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
                 {uploadHistory.map((item, index) => (
-                  <div key={index} className="border rounded-lg p-3">
-                    <Avatar className="h-20 w-20 mx-auto mb-2">
+                  <div key={index} className="rounded-lg border p-3">
+                    <Avatar className="mx-auto mb-2 h-20 w-20">
                       <AvatarImage src={item.url} alt={`Upload ${index + 1}`} />
                     </Avatar>
-                    <p className="text-xs text-gray-500 text-center">
+                    <p className="text-center text-xs text-content">
                       {item.timestamp.toLocaleString()}
                     </p>
-                    <p className="text-xs text-blue-600 text-center break-all mt-1">{item.url}</p>
+                    <p className="mt-1 break-all text-center text-xs text-blue-600">{item.url}</p>
                   </div>
                 ))}
               </div>
@@ -92,7 +92,7 @@ export default function UploadTestPage() {
             <CardTitle>How to Use</CardTitle>
           </CardHeader>
           <CardContent className="space-y-2">
-            <ol className="list-decimal list-inside space-y-1 text-sm">
+            <ol className="list-inside list-decimal space-y-1 text-sm">
               <li>Click the "Upload Image" button</li>
               <li>Select an image file from your device</li>
               <li>Wait for the upload to complete</li>

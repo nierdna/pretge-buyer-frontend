@@ -27,13 +27,13 @@ export default function SearchResults({
           <Search className="h-4 w-4" />
           Searching for token symbol "{searchQuery}"...
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div key={index} className="animate-pulse">
-              <div className="bg-secondary h-48 rounded-2xl mb-4"></div>
+              <div className="mb-4 h-48 rounded-2xl bg-secondary"></div>
               <div className="space-y-2">
-                <div className="bg-secondary h-4 rounded w-3/4"></div>
-                <div className="bg-secondary h-3 rounded w-1/2"></div>
+                <div className="h-4 w-3/4 rounded bg-secondary"></div>
+                <div className="h-3 w-1/2 rounded bg-secondary"></div>
               </div>
             </div>
           ))}
@@ -48,7 +48,7 @@ export default function SearchResults({
 
   if (offers.length === 0) {
     return (
-      <div className="text-center py-12">
+      <div className="py-12 text-center">
         <div className="flex flex-col items-center gap-4">
           <Search className="h-12 w-12 text-content" />
           <div>
@@ -79,10 +79,10 @@ export default function SearchResults({
       </div>
 
       {/* Results Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {offers.map((offer, index) => (
           <Link key={offer.id || index} href={`/offers/${offer.id}`}>
-            <Card className="hover:scale-[1.02] transition-transform duration-200 cursor-pointer">
+            <Card className="cursor-pointer transition-transform duration-200 hover:scale-[1.02]">
               <div className="relative">
                 <Image
                   src={
@@ -94,11 +94,11 @@ export default function SearchResults({
                   alt={`${offer.tokens?.symbol} banner`}
                   width={400}
                   height={200}
-                  className="w-full h-48 object-cover rounded-t-lg"
+                  className="h-48 w-full rounded-t-lg object-cover"
                 />
-                <Badge className="absolute top-2 left-2">{offer.exToken?.network?.name}</Badge>
+                <Badge className="absolute left-2 top-2">{offer.exToken?.network?.name}</Badge>
                 {offer?.promotion?.isActive && (
-                  <Badge variant="danger" className="absolute top-2 right-2">
+                  <Badge variant="danger" className="absolute right-2 top-2">
                     -{offer.promotion.discountPercent}%
                   </Badge>
                 )}
@@ -120,17 +120,17 @@ export default function SearchResults({
               </CardHeader>
               <CardContent className="p-4 pt-0">
                 <div className="space-y-2">
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <span className="text-sm text-content">Price</span>
-                    <span className="font-bold text-lg">${offer.price?.toLocaleString()}</span>
+                    <span className="text-lg font-bold">${offer.price?.toLocaleString()}</span>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <span className="text-sm text-content">Available</span>
                     <span className="font-medium">
                       {offer.quantity?.toLocaleString()} {offer.tokens?.symbol}
                     </span>
                   </div>
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <span className="text-sm text-content">Sold</span>
                     <span className="font-medium">
                       {offer.filled?.toLocaleString()} {offer.tokens?.symbol}
@@ -144,12 +144,12 @@ export default function SearchResults({
       </div>
 
       {/* Search Tips */}
-      <div className="mt-8 p-4 bg-secondary rounded-lg">
-        <h4 className="font-medium mb-2 flex items-center gap-2">
+      <div className="mt-8 rounded-lg bg-secondary p-4">
+        <h4 className="mb-2 flex items-center gap-2 font-medium">
           <TrendingUp className="h-4 w-4" />
           Search Tips
         </h4>
-        <ul className="text-sm text-content space-y-1">
+        <ul className="space-y-1 text-sm text-content">
           <li>• Search by token symbol (e.g., "BTC", "ETH", "WLFI")</li>
           <li>• Use partial symbol matches for broader results</li>
           <li>• Symbols are case-sensitive</li>

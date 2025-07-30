@@ -121,7 +121,7 @@ export default function FilterContent({
   };
   return (
     <>
-      <CardHeader className="lg:block hidden pb-0">
+      <CardHeader className="hidden pb-0 lg:block">
         <CardTitle className="text-xl">Filters</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-6">
@@ -139,12 +139,12 @@ export default function FilterContent({
                     />
                     <div className="flex items-center gap-2">
                       {chain.logo && (
-                        <div className="w-5 h-5 relative flex-shrink-0">
+                        <div className="relative h-5 w-5 flex-shrink-0">
                           <Image
                             src={chain.logo}
                             alt={`${chain.name} logo`}
                             fill
-                            className="object-cover rounded-full"
+                            className="rounded-full object-cover"
                           />
                         </div>
                       )}
@@ -177,7 +177,7 @@ export default function FilterContent({
               <AccordionTrigger className="text-base">Token</AccordionTrigger>
               <AccordionContent className="grid gap-2 pt-2">
                 {isLoadingTokens ? (
-                  <div className="text-sm text-gray-500">Loading tokens...</div>
+                  <div className="text-sm text-content">Loading tokens...</div>
                 ) : tokensData?.data?.length > 0 ? (
                   tokensData.data.map((token: IToken) => (
                     <div className="flex items-center gap-2" key={token.id}>
@@ -188,12 +188,12 @@ export default function FilterContent({
                       />
                       <div className="flex items-center gap-2">
                         {token.logo && (
-                          <div className="w-5 h-5 relative flex-shrink-0">
+                          <div className="relative h-5 w-5 flex-shrink-0">
                             <Image
                               src={token.logo}
                               alt={`${token.symbol} logo`}
                               fill
-                              className="object-cover rounded-full"
+                              className="rounded-full object-cover"
                             />
                           </div>
                         )}
@@ -202,7 +202,7 @@ export default function FilterContent({
                     </div>
                   ))
                 ) : (
-                  <div className="text-sm text-gray-500">No tokens available</div>
+                  <div className="text-sm text-content">No tokens available</div>
                 )}
               </AccordionContent>
             </AccordionItem>
@@ -254,11 +254,11 @@ export default function FilterContent({
         <div className="flex justify-center">
           <button
             onClick={handleToggleTutorialSection}
-            className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800 transition-colors px-3 py-1 rounded-full border border-gray-300 hover:border-gray-400"
+            className="flex items-center gap-2 rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 transition-colors hover:border-gray-400 hover:text-gray-800"
           >
             {showTutorialSection ? (
               <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -270,7 +270,7 @@ export default function FilterContent({
               </>
             ) : (
               <>
-                <Play className="w-4 h-4" />
+                <Play className="h-4 w-4" />
                 Show Tutorial
               </>
             )}
@@ -279,10 +279,10 @@ export default function FilterContent({
 
         {/* YouTube Tutorial Section */}
         {showTutorialSection && (
-          <div className="px-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg border border-blue-200">
-            <div className="flex items-center gap-3 mb-4 pt-4">
-              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center flex-shrink-0">
-                <Play className="w-4 h-4 text-white ml-0.5" />
+          <div className="rounded-lg border border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50 px-4">
+            <div className="mb-4 flex items-center gap-3 pt-4">
+              <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-red-500">
+                <Play className="ml-0.5 h-4 w-4 text-primary" />
               </div>
               <div>
                 <h4 className="font-semibold text-gray-900">How to Buy Token</h4>
@@ -293,7 +293,7 @@ export default function FilterContent({
             {/* Video Content */}
             <div className="relative w-full pb-4" style={{ paddingBottom: '56.25%' }}>
               <iframe
-                className="absolute top-0 left-0 w-full h-full rounded-lg"
+                className="absolute left-0 top-0 h-full w-full rounded-lg"
                 src="https://www.youtube.com/embed/hfuW_KH50_A?si=mrgCl5PiIK_ly39v"
                 title="How to Buy Token Tutorial"
                 frameBorder="0"

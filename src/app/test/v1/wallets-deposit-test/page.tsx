@@ -90,30 +90,30 @@ export default function WalletDepositTestPage() {
   };
 
   return (
-    <div className="min-h-[80vh] bg-[#10141c] flex flex-col items-center py-10">
-      <h1 className="text-2xl font-bold text-blue-400 mb-6">Demo Nạp Tiền Test cho User</h1>
-      <div className="bg-[#181e2a] rounded-xl shadow-xl p-8 w-full max-w-md flex flex-col gap-4 border border-[#232a3a]">
+    <div className="flex min-h-[80vh] flex-col items-center bg-[#10141c] py-10">
+      <h1 className="mb-6 text-2xl font-bold text-blue-400">Demo Nạp Tiền Test cho User</h1>
+      <div className="flex w-full max-w-md flex-col gap-4 rounded-xl border border-[#232a3a] bg-[#181e2a] p-8 shadow-xl">
         {!walletId ? (
           <>
             <button
-              className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
+              className="w-full rounded-lg bg-blue-600 px-5 py-2 font-bold text-primary transition hover:bg-blue-700"
               onClick={handleLogin}
               disabled={loginLoading}
             >
               {loginLoading ? 'Đang đăng nhập...' : 'Đăng nhập bằng ví (MetaMask)'}
             </button>
-            {loginError && <div className="text-red-400 text-sm text-center">{loginError}</div>}
+            {loginError && <div className="text-center text-sm text-red-400">{loginError}</div>}
             <div className="mt-2 text-center text-xs text-yellow-400">
               Vui lòng login để lấy Wallet ID.
             </div>
           </>
         ) : (
           <>
-            <div className="text-gray-300 text-sm mb-2">
-              Wallet ID: <span className="text-blue-400 font-mono">{walletId}</span>
+            <div className="mb-2 text-sm text-gray-300">
+              Wallet ID: <span className="font-mono text-blue-400">{walletId}</span>
             </div>
             <select
-              className="px-3 py-2 rounded bg-[#232a3a] border border-[#232a3a] text-gray-200"
+              className="rounded border border-[#232a3a] bg-[#232a3a] px-3 py-2 text-gray-200"
               value={tokenId}
               onChange={(e) => setTokenId(e.target.value)}
             >
@@ -125,14 +125,14 @@ export default function WalletDepositTestPage() {
               ))}
             </select>
             <input
-              className="px-3 py-2 rounded bg-[#232a3a] border border-[#232a3a] text-gray-200"
+              className="rounded border border-[#232a3a] bg-[#232a3a] px-3 py-2 text-gray-200"
               placeholder="Số tiền muốn nạp"
               type="number"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
             <button
-              className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
+              className="w-full rounded-lg bg-green-600 px-5 py-2 font-bold text-primary transition hover:bg-green-700"
               onClick={handleDeposit}
               disabled={loading || !walletId || !tokenId || !amount}
             >

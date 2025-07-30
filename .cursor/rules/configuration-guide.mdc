@@ -1,0 +1,219 @@
+# Configuration Guide Rules
+
+## Tailwind CSS Configuration
+
+### Setup và Installation
+
+- Luôn sử dụng `pnpm` để cài đặt dependencies
+- Cài đặt Tailwind CSS với các plugin cần thiết: `@tailwindcss/aspect-ratio`, `@tailwindcss/forms`, `@tailwindcss/typography`
+- Sử dụng `tailwindcss-animate` cho animations và `tailwind-scrollbar` cho custom scrollbar
+- Luôn sử dụng `tailwind-merge` và `clsx` cho className management
+
+### Configuration Files
+
+- Main config file: [tailwind.config.ts](mdc:tailwind.config.ts)
+- Global CSS: [src/app/globals.css](mdc:src/app/globals.css)
+- Utility functions: [src/lib/utils.ts](mdc:src/lib/utils.ts)
+
+### Color System
+
+- Tất cả màu sắc được định nghĩa trong `tailwind.config.ts`
+- Primary colors: white/black theme với hover states
+- Status colors: success (#A3E635), danger (#F97373), warning (#FBBF24), info (#60A5FA)
+- Gradient colors: pink-gd, blue-gd, green-gd, yellow-gd
+- Utility colors: line, head, content, input
+- Sử dụng Tailwind classes trực tiếp thay vì CSS variables
+
+### Font Configuration
+
+- Font family: Helvetica Neue
+- Font files trong [src/assets/fonts/](mdc:src/assets/fonts/)
+- Custom font size: text-2xs (0.625rem)
+
+### Best Practices
+
+- Sử dụng `cn()` utility function cho className merging
+- Mobile-first responsive design với breakpoint `mb: 480px`
+- Sử dụng CSS variables cho dark mode support
+- Custom scrollbar styling với OpenSea colors
+
+## Reown AppKit Configuration
+
+### Setup và Installation
+
+- Cài đặt: `@reown/appkit`, `@reown/appkit-adapter-ethers`, `@reown/appkit-adapter-solana`, `@reown/appkit-adapter-wagmi`
+- Sử dụng `lynx-reown-dapp-kit` cho provider
+
+### Configuration Files
+
+- Provider setup: [src/providers/appkit-provider.tsx](mdc:src/providers/appkit-provider.tsx)
+- Chain configs: [src/configs/chains.ts](mdc:src/configs/chains.ts)
+
+### Supported Networks
+
+- EVM: Ethereum, Base, Base Sepolia, Arbitrum, Arbitrum Sepolia
+- Solana: Mainnet, Devnet
+- Environment-based network selection (mainnet vs testnet)
+
+### Best Practices
+
+- Sử dụng environment variables cho projectId
+- Separate public và private RPC URLs
+- Proper chain type mapping (EVM vs SOLANA)
+- Metadata configuration cho dApp
+
+## shadcn/ui Components
+
+### Setup và Installation
+
+- Cài đặt CLI: `pnpm add -D shadcn`
+- Configuration file: [components.json](mdc:components.json)
+- Style: "new-york", RSC enabled, TypeScript
+
+### Available Components
+
+Tất cả components trong [src/components/ui/](mdc:src/components/ui/):
+
+- Basic: button, card, input, label, select
+- Layout: accordion, tabs, separator, breadcrumb
+- Feedback: dialog, popover, tooltip, toast (sonner)
+- Navigation: pagination, dropdown-menu
+- Data: table, carousel, progress
+- Form: checkbox, switch, slider, textarea
+- Media: avatar, aspect-ratio
+- Advanced: command, drawer, sheet, skeleton, resizable
+
+### Best Practices
+
+- Sử dụng composition pattern cho complex components
+- Import từ `@/components/ui/` path
+- Type-safe props với proper interfaces
+- Consistent styling với design system
+
+## Development Tools
+
+### Package Manager
+
+- Luôn sử dụng `pnpm` thay vì npm/yarn
+- Scripts trong [package.json](mdc:package.json)
+
+### Code Quality
+
+- ESLint config: [eslint.config.mjs](mdc:eslint.config.mjs)
+- Prettier với plugins: organize-imports, tailwindcss
+- TypeScript strict mode enabled
+
+### Build Tools
+
+- Next.js 15 với Turbopack
+- PostCSS với autoprefixer
+- Path aliases: `@/*` -> `./src/*`
+
+## Color Palette Reference
+
+Tất cả màu sắc được định nghĩa trong [tailwind.config.ts](mdc:tailwind.config.ts):
+
+### Primary Colors
+
+```typescript
+primary: {
+  DEFAULT: '#ffffff',
+  foreground: '#F8F9FA',
+  hover: '#F1F3F5',
+},
+secondary: {
+  DEFAULT: '#000000',
+  foreground: '#1F2937',
+  hover: '#111827',
+},
+```
+
+### Status Colors
+
+```typescript
+success: {
+  DEFAULT: '#A3E635',
+  foreground: '#D9F99D',
+},
+danger: {
+  DEFAULT: '#F97373',
+},
+warning: {
+  DEFAULT: '#FBBF24',
+},
+info: {
+  DEFAULT: '#60A5FA',
+},
+```
+
+### Gradient Colors
+
+```typescript
+'pink-gd': {
+  DEFAULT: '#EBCEEA',
+},
+'blue-gd': {
+  DEFAULT: '#CCDFF2',
+},
+'green-gd': {
+  DEFAULT: '#DCFCE7',
+},
+'yellow-gd': {
+  DEFAULT: '#FEF3C7',
+},
+```
+
+### Utility Colors
+
+```typescript
+line: '#E5E7EB',
+head: '#111827',
+content: '#6B7280',
+input: '#F0F0F0',
+```
+
+### Usage Examples
+
+```typescript
+// Primary colors
+className = 'bg-primary text-secondary hover:bg-primary-hover';
+
+// Status colors
+className = 'bg-success text-success-foreground';
+className = 'bg-danger text-primary';
+className = 'bg-warning text-black';
+className = 'bg-info text-primary';
+
+// Gradient colors
+className = 'bg-pink-gd';
+className = 'bg-blue-gd';
+className = 'bg-green-gd';
+className = 'bg-yellow-gd';
+
+// Utility colors
+className = 'border-line';
+className = 'text-head';
+className = 'text-content';
+className = 'bg-input';
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. Tailwind classes không hoạt động: Kiểm tra content paths trong config
+2. shadcn/ui components missing: Chạy lại `npx shadcn@latest add [component]`
+3. Font loading issues: Kiểm tra font files trong assets
+4. AppKit connection: Kiểm tra projectId và network config
+
+### Performance Tips
+
+1. Sử dụng `tailwind-merge` để tránh duplicate classes
+2. Lazy load components khi cần thiết
+3. Optimize images và assets
+4. Sử dụng React.memo cho stable components
+   description:
+   globs:
+   alwaysApply: false
+
+---

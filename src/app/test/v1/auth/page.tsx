@@ -115,23 +115,21 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] bg-[#10141c]">
-      <div className="bg-[#181e2a] rounded-2xl shadow-2xl p-8 w-full max-w-sm flex flex-col items-center border border-[#232a3a]">
-        <h1 className="text-3xl font-bold mb-2 text-blue-400">Đăng nhập bằng Wallet</h1>
-        <p className="text-gray-400 mb-6 text-center">Chọn loại ví và đăng nhập để tiếp tục</p>
-        <div className="w-full mb-4">
-          <label className="block mb-1 font-medium text-gray-300">Chọn loại ví:</label>
+    <div className="flex min-h-[80vh] flex-col items-center justify-center bg-[#10141c]">
+      <div className="flex w-full max-w-sm flex-col items-center rounded-2xl border border-[#232a3a] bg-[#181e2a] p-8 shadow-2xl">
+        <h1 className="mb-2 text-3xl font-bold text-blue-400">Đăng nhập bằng Wallet</h1>
+        <p className="mb-6 text-center text-gray-400">Chọn loại ví và đăng nhập để tiếp tục</p>
+        <div className="mb-4 w-full">
+          <label className="mb-1 block font-medium text-gray-300">Chọn loại ví:</label>
           <div className="flex gap-2">
             {WALLET_TYPES.map((w) => (
               <button
                 key={w.value}
-                className={`flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg border transition text-base font-bold shadow-sm
-                  ${
-                    chainType === w.value
-                      ? 'bg-blue-600 text-white border-blue-500'
-                      : 'bg-[#232a3a] text-gray-200 border-[#232a3a] hover:border-blue-400'
-                  }
-                `}
+                className={`flex flex-1 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-base font-bold shadow-sm transition ${
+                  chainType === w.value
+                    ? 'border-blue-500 bg-blue-600 text-primary'
+                    : 'border-[#232a3a] bg-[#232a3a] text-gray-200 hover:border-blue-400'
+                } `}
                 onClick={() => setChainType(w.value)}
                 type="button"
                 disabled={loading}
@@ -142,9 +140,9 @@ export default function AuthPage() {
             ))}
           </div>
         </div>
-        <div className="w-full mb-4 flex flex-col items-center">
+        <div className="mb-4 flex w-full flex-col items-center">
           <button
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
+            className="w-full rounded-lg bg-blue-600 px-5 py-2 font-bold text-primary transition hover:bg-blue-700"
             onClick={connectWallet}
             disabled={loading}
             type="button"
@@ -152,14 +150,14 @@ export default function AuthPage() {
             Kết nối ví
           </button>
           {address && (
-            <span className="mt-2 text-green-400 text-xs break-all">
+            <span className="mt-2 break-all text-xs text-green-400">
               Đã kết nối: <b>{address}</b>
             </span>
           )}
         </div>
-        <div className="w-full mb-4">
+        <div className="mb-4 w-full">
           <button
-            className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold w-full transition"
+            className="w-full rounded-lg bg-green-600 px-5 py-2 font-bold text-primary transition hover:bg-green-700"
             onClick={handleLogin}
             disabled={loading || !address}
             type="button"
@@ -168,16 +166,16 @@ export default function AuthPage() {
           </button>
         </div>
         {message && (
-          <div className="mb-2 text-xs text-gray-400 w-full">
+          <div className="mb-2 w-full text-xs text-gray-400">
             <div>Message để ký:</div>
-            <pre className="bg-[#232a3a] p-2 rounded break-all text-gray-300">{message}</pre>
+            <pre className="break-all rounded bg-[#232a3a] p-2 text-gray-300">{message}</pre>
           </div>
         )}
         {status && (
-          <div className="mt-4 text-sm text-green-400 font-bold w-full text-center">{status}</div>
+          <div className="mt-4 w-full text-center text-sm font-bold text-green-400">{status}</div>
         )}
         {error && (
-          <div className="mt-4 text-sm text-red-400 font-bold w-full text-center">{error}</div>
+          <div className="mt-4 w-full text-center text-sm font-bold text-red-400">{error}</div>
         )}
       </div>
     </div>

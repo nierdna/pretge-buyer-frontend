@@ -1,7 +1,7 @@
-import { IToken } from '../tokens/types';
+import { ChainType } from '@/server/enums/chain';
 import { TokenEvm } from '../tokens/evm';
 import { TokenSolana } from '../tokens/solana';
-import { ChainType } from '@/server/enums/chain';
+import { IToken } from '../tokens/types';
 
 export class TokenFactory {
   static create(

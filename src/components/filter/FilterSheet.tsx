@@ -16,7 +16,7 @@ export default function FilterSheet({
   hideTokenFilter?: boolean;
 }) {
   return (
-    <div className="lg:hidden flex justify-end">
+    <div className="flex justify-end lg:hidden">
       <Sheet>
         <SheetTrigger asChild>
           <Button
@@ -30,12 +30,12 @@ export default function FilterSheet({
         </SheetTrigger>
         <SheetContent
           side="bottom"
-          className="w-full max-h-[80vh] p-0 rounded-t-lg flex flex-col gap-0"
+          className="flex max-h-[80vh] w-full flex-col gap-0 rounded-t-lg p-0"
         >
-          <SheetHeader className="p-4 border-b">
+          <SheetHeader className="border-b p-4">
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
-          <div className="p-0 overflow-y-auto grow">
+          <div className="grow overflow-y-auto p-0">
             <FilterContent
               filters={filters}
               setFilters={setFilters}

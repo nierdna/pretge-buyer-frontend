@@ -74,15 +74,15 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
     };
     return (
       <Card className="overflow-x-auto">
-        <CardHeader className="p-6 pb-4 flex justify-between">
-          <CardTitle className="text-xl flex justify-between">
+        <CardHeader className="flex justify-between p-6 pb-4">
+          <CardTitle className="flex justify-between text-xl">
             <span className="inline-block">My Orders</span>
-            <Link href="/my-orders" className="underline text-end text-base">
+            <Link href="/my-orders" className="text-end text-base underline">
               View All
             </Link>
           </CardTitle>
         </CardHeader>
-        <CardContent className="p-6 pt-0 w-full overflow-x-auto">
+        <CardContent className="w-full overflow-x-auto p-6 pt-0">
           {isLoading && <TransactionHistorySkeleton />}
           {!isLoading && orders.length > 0 && (
             <Table>
@@ -112,9 +112,9 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                     </TableCell>
                     <TableCell colSpan={1}>{truncateAddress(order.buyer?.address, 4)}</TableCell>
                     <TableCell colSpan={2}>
-                      <div className="flex items-center gap-2 justify-end">
+                      <div className="flex items-center justify-end gap-2">
                         {formatNumberShort(order.amount)}
-                        <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                        <div className="relative h-4 w-4 min-w-4 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
                           <Image
                             src={order.offer?.tokens?.logo || '/placeholder.svg'}
                             alt={`${order.offer?.tokens?.symbol} symbol`}
@@ -127,11 +127,11 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                     <TableCell colSpan={2}>
                       <div className="flex flex-col gap-1">
                         {order.discountPercent > 0 && (
-                          <div className="flex items-center gap-2 justify-end text-red-500">
+                          <div className="flex items-center justify-end gap-2 text-red-500">
                             {formatNumberShort(
                               order.amount * order.offer.price * (1 - order.discountPercent / 100)
                             )}
-                            <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                            <div className="relative h-4 w-4 min-w-4 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
                               <Image
                                 src={order.offer?.exToken?.logo || '/placeholder.svg'}
                                 alt={`${order.offer?.exToken?.symbol} symbol`}
@@ -146,14 +146,14 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                             // 'line-through': order.discountPercent > 0,
                           })}
                         >
-                          <div className="relative flex items-center justify-end gap-2 w-fit min-w-9">
+                          <div className="relative flex w-fit min-w-9 items-center justify-end gap-2">
                             {order.discountPercent > 0 && (
-                              <div className="absolute h-px -right-0.5 top-1/2 -translate-y-1/2 w-full bg-content z-10"></div>
+                              <div className="absolute -right-0.5 top-1/2 z-10 h-px w-full -translate-y-1/2 bg-content"></div>
                             )}
                             {formatNumberShort(order.amount * order.offer.price, {
                               maxDecimalCount: 4,
                             })}
-                            <div className="w-4 h-4 relative min-w-4 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+                            <div className="relative h-4 w-4 min-w-4 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
                               <Image
                                 src={order.offer?.exToken?.logo || '/placeholder.svg'}
                                 alt={`${order.offer?.exToken?.symbol} symbol`}
@@ -190,7 +190,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                         </Button>
                       </TableCell>
                     ) : (
-                      <TableCell className="text-right text-gray-500">N/A</TableCell>
+                      <TableCell className="text-right text-content">N/A</TableCell>
                     )}
                   </TableRow>
                 ))}
@@ -198,7 +198,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
             </Table>
           )}
           {!isLoading && orders.length === 0 && (
-            <p className="text-center text-gray-500 py-4">No transactions for this offer.</p>
+            <p className="py-4 text-center text-content">No transactions for this offer.</p>
           )}
           {totalPages > 1 && (
             <PaginationCustom pageNumber={pageNumber} totalPages={totalPages} paginate={paginate} />
@@ -240,16 +240,16 @@ export function TransactionHistorySkeleton() {
               <Skeleton className="h-4 w-1/2" />
             </TableCell>
             <TableCell colSpan={2} className="text-right">
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
             <TableCell colSpan={2} className="text-right">
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
             <TableCell colSpan={1} className="text-right">
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
             <TableCell colSpan={1} className="text-right">
-              <Skeleton className="h-4 w-1/2 ml-auto" />
+              <Skeleton className="ml-auto h-4 w-1/2" />
             </TableCell>
           </TableRow>
         ))}

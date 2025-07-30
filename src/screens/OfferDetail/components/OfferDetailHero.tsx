@@ -183,10 +183,10 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
   };
 
   return (
-    <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
+    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 relative min-w-12 rounded-full overflow-hidden bg-gray-800 flex-shrink-0">
+          <div className="relative h-12 w-12 min-w-12 flex-shrink-0 overflow-hidden rounded-full bg-gray-800">
             <Image
               src={offer?.tokens?.logo || '/placeholder.svg'}
               alt={`${offer?.tokens?.symbol} symbol`}
@@ -212,25 +212,25 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
         <Separator className="bg-gray-200" />
       </div>
 
-      <CardContent className="p-6 grid gap-6">
+      <CardContent className="grid gap-6 p-6">
         {/* Price and Quantity */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label className="text-gray-600 text-sm">Price per Token</Label>
-            <div className="text-2xl font-extrabold text-primary mt-1">
+            <Label className="text-sm text-gray-600">Price per Token</Label>
+            <div className="mt-1 text-2xl font-extrabold text-primary">
               ${offer?.price.toLocaleString()}
             </div>
           </div>
           <div>
-            <Label className="text-gray-600 text-sm">Quantity Available</Label>
-            <div className="text-2xl font-extrabold text-gray-800 mt-1">
+            <Label className="text-sm text-gray-600">Quantity Available</Label>
+            <div className="mt-1 text-2xl font-extrabold text-gray-800">
               {offer?.filled} / {offer?.quantity}
             </div>
           </div>
         </div>
 
         {/* Payment, Collateral, Settle Time */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-x-6 gap-y-3 text-sm">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
           <div className="flex items-center gap-1">
             <span className="text-gray-600">Payment with:</span>
             <div className="flex items-center gap-1 font-medium">
@@ -259,10 +259,10 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
         <div className="grid gap-4">
           <h3 className="text-xl font-bold">Purchase Offer</h3>
           {/* Show balance (placeholder) */}
-          <div className="text-sm text-gray-500 mb-2">
+          <div className="mb-2 text-sm text-content">
             Balance: {balance !== null ? balance : '...'} {offer?.exToken?.symbol}
           </div>
-          <div className="grid sm:grid-cols-2 gap-4 items-end">
+          <div className="grid items-end gap-4 sm:grid-cols-2">
             <div>
               <Label htmlFor="buy-quantity" className="text-gray-600">
                 Quantity to Buy
@@ -278,12 +278,12 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
                 }
                 min={1}
                 max={offer?.quantity || 0}
-                className="mt-1 bg-white/80 backdrop-blur-sm shadow-sm border-gray-200"
+                className="mt-1 border-gray-200 bg-white/80 shadow-sm backdrop-blur-sm"
               />
             </div>
             <div>
               <Label className="text-gray-600">Estimated Cost</Label>
-              <div className="text-2xl font-bold text-primary mt-1">
+              <div className="mt-1 text-2xl font-bold text-primary">
                 ${estimatedCost.toLocaleString()}
               </div>
             </div>
@@ -291,31 +291,31 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
           <Button
             id="buy-now-offer-detail"
             onClick={handleBuy}
-            className="w-full mt-4"
+            className="mt-4 w-full"
             disabled={buyQuantity === 0}
           >
             Buy Now
           </Button>
           {/* Deposit Modal (placeholder) */}
           <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
-            <DialogContent className="sm:max-w-md bg-primary-foreground border-gray-200 text-center">
+            <DialogContent className="border-gray-200 bg-primary-foreground text-center sm:max-w-md">
               <DialogHeader className="flex flex-col items-center gap-2">
                 <CheckCircle className="h-12 w-12" /> {/* Success/Info icon */}
-                <DialogTitle className="text-xl  mt-2">Confirm Deposit</DialogTitle>
+                <DialogTitle className="mt-2 text-xl">Confirm Deposit</DialogTitle>
                 {/* <DialogDescription>
                   Your balance is not enough to complete this purchase. Please deposit{' '}
                   {offer?.exToken?.symbol} to continue.
                 </DialogDescription> */}
               </DialogHeader>
-              <div className="py-4 grid gap-2">
-                <div className="flex items-center text-center justify-center gap-2 text-base sm:text-lg font-bold text-gray-800">
+              <div className="grid gap-2 py-4">
+                <div className="flex items-center justify-center gap-2 text-center text-base font-bold text-gray-800 sm:text-lg">
                   <Wallet className="h-5 w-5 text-gray-600" />
                   <span>Required Deposit:</span>
                   <span className="">
                     ${estimatedCost - balance} {offer?.exToken?.symbol}
                   </span>
                 </div>
-                <p className="text-xs sm:text-sm text-content text-center">
+                <p className="text-center text-xs text-content sm:text-sm">
                   Your balance is not enough to complete this purchase. Please deposit{' '}
                   {offer?.exToken?.symbol} to continue.
                 </p>
@@ -326,14 +326,14 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
                     Cancel
                   </Button>
                 </DialogClose>
-                <div className="text-center text-content flex-1">
+                <div className="flex-1 text-center text-content">
                   {/* Deposit modal logic */}
                   {allowance !== undefined && estimatedCost !== undefined ? (
                     allowance < estimatedCost ? (
                       <Button onClick={handleApprove} disabled={approveLoading} className="w-full">
                         {approveLoading ? (
                           <>
-                            <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                            <svg className="mr-2 inline h-4 w-4 animate-spin" viewBox="0 0 24 24">
                               <circle
                                 className="opacity-25"
                                 cx="12"
@@ -359,7 +359,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
                       <Button onClick={handleDeposit} disabled={depositLoading} className="w-full">
                         {depositLoading ? (
                           <>
-                            <svg className="animate-spin h-4 w-4 mr-2 inline" viewBox="0 0 24 24">
+                            <svg className="mr-2 inline h-4 w-4 animate-spin" viewBox="0 0 24 24">
                               <circle
                                 className="opacity-25"
                                 cx="12"

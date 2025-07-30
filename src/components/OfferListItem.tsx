@@ -15,10 +15,10 @@ interface OfferListItemProps {
 
 export default function OfferListItem({ offer }: OfferListItemProps) {
   return (
-    <Card className="bg-primary-foreground border-gray-200 hover:scale-[1.01] transition-all duration-300 flex flex-col sm:flex-row items-center p-4 gap-4">
+    <Card className="flex flex-col items-center gap-4 border-gray-200 bg-primary-foreground p-4 transition-all duration-300 hover:scale-[1.01] sm:flex-row">
       {/* Token Info */}
-      <div className="flex items-center gap-4 w-full sm:w-40 xl:w-48 flex-shrink-0">
-        <div className="relative w-8 h-8 xl:w-12 xl:h-12">
+      <div className="flex w-full flex-shrink-0 items-center gap-4 sm:w-40 xl:w-48">
+        <div className="relative h-8 w-8 xl:h-12 xl:w-12">
           <div className="absolute inset-0 z-20 flex items-center justify-center">
             <div className="relative">
               <Image
@@ -33,23 +33,23 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
                 alt={offer?.exToken?.network?.name || 'Token Image'}
                 width={20}
                 height={20}
-                className="rounded-full absolute bottom-0 right-0 border border-content"
+                className="absolute bottom-0 right-0 rounded-full border border-content"
               />
             </div>
           </div>
         </div>
         <div className="grid gap-0.5">
-          <div className="font-medium text-lg truncate">{offer.tokens?.symbol}</div>
+          <div className="truncate text-lg font-medium">{offer.tokens?.symbol}</div>
         </div>
       </div>
 
       {/* Price & Sold */}
-      <div className="flex flex-col items-start w-full sm:w-32 xl:w-64 flex-shrink-0">
+      <div className="flex w-full flex-shrink-0 flex-col items-start sm:w-32 xl:w-64">
         {/* <span className="text-sm text-gray-600">Price</span> */}
 
-        <div className="flex items-end gap-4 w-full">
-          <div className="flex flex-col gap-2 flex-1 relative max-w-[calc(60%)]">
-            <div className="text-xs text-content inline-flex items-center">
+        <div className="flex w-full items-end gap-4">
+          <div className="relative flex max-w-[calc(60%)] flex-1 flex-col gap-2">
+            <div className="inline-flex items-center text-xs text-content">
               <span>
                 {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
                   maxDecimalCount: 0,
@@ -86,13 +86,13 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
       </div>
 
       {/* Payment, Collateral, Settle Time */}
-      <div className="grid gap-1 text-sm min-w-24 flex-1 xl:min-w-[150px] lg:w-auto lg:flex-1">
+      <div className="grid min-w-24 flex-1 gap-1 text-sm lg:w-auto lg:flex-1 xl:min-w-[150px]">
         <div className="flex items-center gap-1">
-          <span className="text-gray-500">Collateral:</span>
+          <span className="text-content">Collateral:</span>
           <span className={cn('font-medium')}>{`${offer.collateralPercent}%`}</span>
         </div>
         <div className="flex items-center gap-1">
-          <span className="text-gray-500">Settle Duration:</span>
+          <span className="text-content">Settle Duration:</span>
           <span className="font-medium">
             {offer.settleDuration} {offer.settleDuration > 1 ? 'hrs' : 'hr'}
           </span>
@@ -100,7 +100,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
       </div>
 
       {/* Seller Info */}
-      <div className="flex flex-col items-start w-full sm:w-32 xl:w-48 md:flex-1 flex-shrink-0">
+      <div className="flex w-full flex-shrink-0 flex-col items-start sm:w-32 md:flex-1 xl:w-48">
         {/* <span className="text-sm text-gray-600">Seller</span> */}
         <div className="flex items-start gap-2">
           <Avatar className="h-6 w-6">
@@ -114,8 +114,8 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
             </AvatarFallback> */}
           </Avatar>
           <div className="grid gap-0.5">
-            <div className="font-bold text-sm truncate">{offer.sellerWallet?.user?.name}</div>
-            <div className="flex items-center gap-0.5 text-sm text-gray-500">
+            <div className="truncate text-sm font-bold">{offer.sellerWallet?.user?.name}</div>
+            <div className="flex items-center gap-0.5 text-sm text-content">
               <span className="font-bold">{Number(offer.sellerWallet?.user?.rating || 0)}</span>
               <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
             </div>
@@ -126,7 +126,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
       {/* View Offer Button */}
       <Link
         href={`/offers/${offer.id}`}
-        className="ml-auto flex-shrink-0 w-full sm:w-auto underline text-end text-base"
+        className="ml-auto w-full flex-shrink-0 text-end text-base underline sm:w-auto"
       >
         View Offer
       </Link>

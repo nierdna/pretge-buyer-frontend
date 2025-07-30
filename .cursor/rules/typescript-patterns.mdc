@@ -1,0 +1,503 @@
+---
+description: khi nào nhắc đến typescript-patterns hoặc viết types cho đối tượng nào đó hoặc type global cho dự án hoặc các interface cho các api request và response thì đọc rules này
+alwaysApply: false
+---
+
+# TypeScript Patterns
+
+## Type Organization
+
+Types được tổ chức theo domain:
+
+- `src/types/` - Shared TypeScript interfaces và types
+- `src/server/types/` - Server-side types
+- `src/contracts/` - Blockchain contract types
+
+## Interface Patterns
+
+### API Response Interfaces
+
+```typescript
+// src/types/api.ts
+export interface ApiResponse<T = any> {
+  success: boolean;
+  data: T;
+  message?: string;
+}
+
+export interface PaginatedResponse<T = any> extends ApiResponse<T[]> {
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+}
+
+export interface ErrorResponse {
+  success: false;
+  message: string;
+  errors?: Record<string, string[]>;
+}
+```
+
+### Entity Interfaces
+
+```typescript
+// src/types/example.ts
+export interface Example {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  status: 'active' | 'inactive' | 'pending';
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateExampleRequest {
+  name: string;
+  description?: string;
+  price: number;
+}
+
+export interface UpdateExampleRequest extends Partial<CreateExampleRequest> {
+  status?: Example['status'];
+}
+```
+
+### Component Props Interfaces
+
+```typescript
+// src/components/ExampleCard.tsx
+interface ExampleCardProps {
+  example: Example;
+  onClick?: (example: Example) => void;
+  variant?: 'default' | 'compact';
+  showActions?: boolean;
+}
+
+interface ExampleListProps {
+  examples: Example[];
+  isLoading: boolean;
+  isFetching: boolean;
+  inputSearch: string;
+  handleSearch: (search: string) => void;
+  onLoadMore: () => void;
+  hasNextPage: boolean;
+}
+```
+
+## Type Guards
+
+Sử dụng type guards để kiểm tra types:
+
+```typescript
+// src/types/guards.ts
+export function isExample(obj: any): obj is Example {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    typeof obj.id === 'string' &&
+    typeof obj.name === 'string' &&
+    typeof obj.price === 'number'
+  );
+}
+
+export function isPaginatedResponse(obj: any): obj is PaginatedResponse {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    typeof obj.success === 'boolean' &&
+    Array.isArray(obj.data) &&
+    obj.pagination &&
+    typeof obj.pagination.total === 'number'
+  );
+}
+```
+
+## Utility Types
+
+Sử dụng utility types để tạo derived types:
+
+```typescript
+// src/types/utils.ts
+export type ExampleStatus = Example['status'];
+
+export type CreateExampleFields = keyof CreateExampleRequest;
+
+export type OptionalExample = Partial<Example>;
+
+export type ExampleWithoutId = Omit<Example, 'id' | 'createdAt' | 'updatedAt'>;
+
+export type ExampleWithRelations = Example & {
+  category?: Category;
+  seller?: User;
+};
+
+export type ApiError = {
+  message: string;
+  code: string;
+  details?: any;
+};
+```
+
+## Enum Patterns
+
+Sử dụng enums cho constants:
+
+```typescript
+// src/types/enums.ts
+export enum ExampleStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  PENDING = 'pending',
+}
+
+export enum SortOrder {
+  ASC = 'asc',
+  DESC = 'desc',
+}
+
+export enum ChainType {
+  SOLANA = 'solana',
+  EVM = 'evm',
+}
+
+// String literal unions thay vì enums khi có thể
+export type SortField = 'created_at' | 'name' | 'price' | 'status';
+export type FilterType = 'category' | 'price_range' | 'status';
+```
+
+## Generic Types
+
+Sử dụng generics cho reusable types:
+
+```typescript
+// src/types/generics.ts
+export interface PaginationParams {
+  page?: number;
+  limit?: number;
+  sortField?: string;
+  sortOrder?: 'asc' | 'desc';
+}
+
+export interface FilterParams {
+  search?: string;
+  filters?: Record<string, any>;
+}
+
+export interface QueryParams extends PaginationParams, FilterParams {}
+
+export interface ApiListResponse<T> {
+  data: T[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
+  success: boolean;
+}
+
+export interface ApiSingleResponse<T> {
+  data: T;
+  success: boolean;
+}
+```
+
+## Function Types
+
+Định nghĩa function types:
+
+```typescript
+// src/types/functions.ts
+export type SearchHandler = (query: string) => void;
+
+export type FilterHandler = (filters: Record<string, any>) => void;
+
+export type LoadMoreHandler = () => void;
+
+export type ClickHandler<T> = (item: T) => void;
+
+export type AsyncFunction<T, R> = (params: T) => Promise<R>;
+
+export type ServiceMethod<T = any, R = any> = AsyncFunction<T, R>;
+```
+
+## Hook Types
+
+Types cho custom hooks:
+
+```typescript
+// src/types/hooks.ts
+export interface UseQueryResult<T> {
+  data: T | undefined;
+  isLoading: boolean;
+  isError: boolean;
+  isFetching: boolean;
+  error: Error | null;
+  refetch: () => void;
+}
+
+export interface UseInfiniteQueryResult<T> extends UseQueryResult<T[]> {
+  fetchNextPage: () => void;
+  hasNextPage: boolean;
+  isFetchingNextPage: boolean;
+}
+
+export interface UseMutationResult<T, R> {
+  mutate: (data: T) => void;
+  mutateAsync: (data: T) => Promise<R>;
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+  data: R | undefined;
+}
+```
+
+## Component Types
+
+Types cho React components:
+
+```typescript
+// src/types/components.ts
+import { ReactNode } from 'react';
+
+export interface BaseComponentProps {
+  className?: string;
+  children?: ReactNode;
+}
+
+export interface LoadingProps {
+  isLoading: boolean;
+  skeleton?: ReactNode;
+}
+
+export interface ErrorProps {
+  isError: boolean;
+  error?: Error | null;
+  onRetry?: () => void;
+}
+
+export interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+export interface SearchProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  debounceMs?: number;
+}
+```
+
+## Service Types
+
+Types cho service layer:
+
+```typescript
+// src/types/services.ts
+export interface ServiceResponse<T = any> {
+  success: boolean;
+  data: T;
+  message?: string;
+}
+
+export interface ServiceError {
+  success: false;
+  message: string;
+  code?: string;
+  details?: any;
+}
+
+export interface ServiceMethod<T = any, R = any> {
+  (params: T): Promise<ServiceResponse<R>>;
+}
+
+export interface ServiceClass<T = any> {
+  getList(params?: QueryParams): Promise<ServiceResponse<ApiListResponse<T>>>;
+  getById(id: string): Promise<ServiceResponse<T>>;
+  create(data: Partial<T>): Promise<ServiceResponse<T>>;
+  update(id: string, data: Partial<T>): Promise<ServiceResponse<T>>;
+  delete(id: string): Promise<ServiceResponse<void>>;
+}
+```
+
+## Event Types
+
+Types cho events và callbacks:
+
+```typescript
+// src/types/events.ts
+export interface FormSubmitEvent {
+  preventDefault: () => void;
+  target: HTMLFormElement;
+}
+
+export interface InputChangeEvent {
+  target: {
+    value: string;
+    name: string;
+  };
+}
+
+export interface SelectChangeEvent {
+  target: {
+    value: string | string[];
+    name: string;
+  };
+}
+
+export interface FileUploadEvent {
+  target: {
+    files: FileList | null;
+  };
+}
+```
+
+## Configuration Types
+
+Types cho configuration:
+
+```typescript
+// src/types/config.ts
+export interface AppConfig {
+  apiUrl: string;
+  appUrl: string;
+  environment: 'development' | 'staging' | 'production';
+}
+
+export interface ChainConfig {
+  id: string;
+  name: string;
+  rpcUrl: string;
+  explorerUrl: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
+  };
+}
+
+export interface FeatureFlags {
+  enableNewUI: boolean;
+  enableBetaFeatures: boolean;
+  enableAnalytics: boolean;
+}
+```
+
+## Best Practices
+
+### Type Naming Conventions
+
+- **Interfaces**: PascalCase với descriptive names (`UserProfile`, `ApiResponse`)
+- **Types**: PascalCase cho complex types, camelCase cho simple types
+- **Enums**: PascalCase (`UserStatus`, `ChainType`)
+- **Constants**: UPPER_SNAKE_CASE (`API_BASE_URL`, `DEFAULT_LIMIT`)
+
+### Type Safety
+
+```typescript
+// ✅ Good - Strict typing
+function processUser(user: User): UserResult {
+  return {
+    id: user.id,
+    name: user.name,
+    status: user.status,
+  };
+}
+
+// ❌ Bad - Any type
+function processUser(user: any): any {
+  return {
+    id: user.id,
+    name: user.name,
+    status: user.status,
+  };
+}
+```
+
+### Optional Properties
+
+```typescript
+// ✅ Good - Use optional properties
+interface UserProfile {
+  id: string;
+  name: string;
+  email?: string;
+  avatar?: string;
+}
+
+// ❌ Bad - Use union with undefined
+interface UserProfile {
+  id: string;
+  name: string;
+  email: string | undefined;
+  avatar: string | undefined;
+}
+```
+
+### Union Types
+
+```typescript
+// ✅ Good - Use union types for variants
+type ButtonVariant = 'primary' | 'secondary' | 'danger';
+type UserStatus = 'active' | 'inactive' | 'pending';
+
+// ❌ Bad - Use string
+type ButtonVariant = string;
+type UserStatus = string;
+```
+
+### Generic Constraints
+
+```typescript
+// ✅ Good - Use generic constraints
+function sortByField<T extends { [key: string]: any }>(items: T[], field: keyof T): T[] {
+  return items.sort((a, b) => {
+    if (a[field] < b[field]) return -1;
+    if (a[field] > b[field]) return 1;
+    return 0;
+  });
+}
+```
+
+### Type Assertions
+
+```typescript
+// ✅ Good - Use type guards
+if (isUser(obj)) {
+  console.log(obj.name); // TypeScript knows obj is User
+}
+
+// ❌ Bad - Use type assertions without checks
+console.log((obj as User).name); // Unsafe
+```
+
+### Exhaustive Checks
+
+```typescript
+// ✅ Good - Exhaustive switch
+function getStatusColor(status: UserStatus): string {
+  switch (status) {
+    case 'active':
+      return 'green';
+    case 'inactive':
+      return 'red';
+    case 'pending':
+      return 'yellow';
+    default:
+      const _exhaustiveCheck: never = status;
+      throw new Error(`Unhandled status: ${_exhaustiveCheck}`);
+  }
+}
+```
+
+description:
+globs:
+alwaysApply: false
+
+---

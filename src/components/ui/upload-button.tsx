@@ -82,15 +82,15 @@ export default function UploadButton({
     if (isUploading) {
       return (
         <div className="flex items-center gap-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-current"></div>
+          <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-current"></div>
           <span>Uploading...</span>
         </div>
       );
     }
 
     return (
-      <div className="flex flex-col items-center justify-center gap-2 h-full">
-        <Upload className="h-6 w-6 min-h-6 min-w-6" />
+      <div className="flex h-full flex-col items-center justify-center gap-2">
+        <Upload className="h-6 min-h-6 w-6 min-w-6" />
         <span>Upload Image</span>
       </div>
     );
@@ -120,7 +120,7 @@ export default function UploadButton({
 
       {/* Progress bar */}
       {isUploading && (
-        <div className="absolute -bottom-1 left-0 right-0 h-1 bg-gray-200 rounded-full overflow-hidden">
+        <div className="absolute -bottom-1 left-0 right-0 h-1 overflow-hidden rounded-full bg-gray-200">
           <div
             className="h-full bg-blue-500 transition-all duration-300 ease-out"
             style={{ width: `${uploadProgress}%` }}

@@ -13,9 +13,9 @@ import {
   type Provider,
 } from '@reown/appkit/react';
 import { useMutation } from '@tanstack/react-query';
+import bs58 from 'bs58';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import bs58 from 'bs58';
 
 export const useAuth = () => {
   const { address, isConnected } = useAppKitAccount();

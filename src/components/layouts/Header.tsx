@@ -9,18 +9,18 @@ export default function Header() {
       {/* Top bar with seller links */}
       <div className="container px-4 lg:px-8">
         <div className="bg-primary">
-          <div className="flex h-8 px-4 lg:px-8 items-center justify-between text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex h-8 items-center justify-between px-4 text-xs lg:px-8">
             <div className="flex items-center gap-4">
               <Link
                 href="https://seller.pretgemarket.xyz"
-                className="hover:text-foreground transition-colors underline"
+                className="hover:text-foreground underline transition-colors"
                 prefetch={false}
               >
                 Seller Centre
               </Link>
               <Link
                 href="https://seller.pretgemarket.xyz/auth/login"
-                className="hover:text-foreground transition-colors underline"
+                className="hover:text-foreground underline transition-colors"
                 prefetch={false}
               >
                 Start Selling
@@ -35,10 +35,10 @@ export default function Header() {
 
       {/* Main header */}
       <header className="container sticky top-0 z-40 px-4 lg:px-8">
-        <div className="flex h-16 px-4 lg:px-6 items-center justify-between rounded-2xl bg-primary border-line border rounded-t-none">
+        <div className="flex h-16 items-center justify-between rounded-2xl rounded-t-none border border-line bg-primary px-4 lg:px-6">
           <Link href="/" className="flex items-center gap-2 font-bold" prefetch={false}>
-            <img src="/logo.png" alt="PreTGE Market" className="w-auto h-10 md:block hidden" />
-            <img src="/logo-mb.png" alt="PreTGE Market" className="w-auto h-8 md:hidden block" />
+            <img src="/logo.png" alt="PreTGE Market" className="hidden h-10 w-auto md:block" />
+            <img src="/logo-mb.png" alt="PreTGE Market" className="block h-8 w-auto md:hidden" />
           </Link>
           <ButtonConnectWallet />
         </div>

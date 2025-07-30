@@ -14,7 +14,7 @@ const ProfilePage = () => {
   }, [accessToken]);
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[360px_1fr] max-w-screen-lg mx-auto">
+    <div className="mx-auto grid max-w-screen-lg gap-8 lg:grid-cols-[360px_1fr]">
       {/* User Info and Balance Sections */}
       {/* <div className="lg:col-span-1 grid gap-8"> */}
       <UserInfoSection />

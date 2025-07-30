@@ -66,11 +66,11 @@ export const ButtonConnectWallet = () => {
               }}
             >
               Copy Address
-              <Copy className="h-4 w-4 ml-2" />
+              <Copy className="ml-2 h-4 w-4" />
             </DropdownMenuItem>
             <DropdownMenuItem className="justify-between" onClick={handleAuthAction}>
               Logout
-              <LogOut className="h-4 w-4 ml-2" />
+              <LogOut className="ml-2 h-4 w-4" />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

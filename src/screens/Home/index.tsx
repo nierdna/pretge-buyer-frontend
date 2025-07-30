@@ -5,6 +5,7 @@ import { useTokenQueries } from '@/queries/useTokenQueries';
 import { useCallback } from 'react';
 import FilterSidebar from '../../components/filter/FilterSidebar';
 import OfferList from '../../components/OfferList';
+import ScrollToTop from '../../components/ScrollToTop';
 import TredingTokenV2 from './components/TredingTokenV2';
 
 export default function HomePage() {
@@ -38,8 +39,8 @@ export default function HomePage() {
       {/* Applied the main page background gradient here */}
       <TredingTokenV2 trendingTokens={tokens?.data || []} isLoading={isLoadingTokens} />
       {/* <FlashSale /> */}
-      <div className="sm:px-4 w-full">
-        <div className="grid lg:grid-cols-[280px_1fr] gap-4">
+      <div className="w-full sm:px-4">
+        <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
           <FilterSidebar filters={filters} setFilters={setFilters} />
           <OfferList
             inputSearch={inputSearch}
@@ -54,6 +55,7 @@ export default function HomePage() {
           />
         </div>
       </div>
+      <ScrollToTop />
     </div>
     // </div>
   );

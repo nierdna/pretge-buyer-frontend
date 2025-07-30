@@ -38,9 +38,9 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
   const offersForToken = offers?.pages.flatMap((page) => page.data) || [];
   return (
     <section className="flex-1">
-      <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
+      <Breadcrumb className="mb-6 flex items-center gap-2 px-4 text-sm font-medium">
         <BreadcrumbItem>
-          <BreadcrumbLink className="text-content hover:text-head transition-colors" href="/">
+          <BreadcrumbLink className="text-content transition-colors hover:text-head" href="/">
             Home
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -54,7 +54,7 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
         <TokenInfoSection token={token} />
       </div>
       {/* <FilterSheet hideNetworkFilter={true} filters={filters} setFilters={setFilters} /> */}
-      <div className="grid lg:grid-cols-[280px_1fr] gap-4">
+      <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
         <FilterSidebar
           hideNetworkFilter={true}
           hideTokenFilter={true}

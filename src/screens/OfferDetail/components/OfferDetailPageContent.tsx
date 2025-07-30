@@ -36,9 +36,9 @@ interface OfferDetailPageContentProps {
 
 // Color functions for styling
 export const getSettleDurationColor = (settleDuration: number) => {
-  if (settleDuration <= 2) return 'bg-green-500 text-white'; // 1h, 2h - green (fast)
-  if (settleDuration <= 6) return 'bg-yellow-500 text-white'; // 4h, 6h - yellow (medium)
-  return 'bg-red-500 text-white'; // 12h - red (slow)
+  if (settleDuration <= 2) return 'bg-green-500 text-primary'; // 1h, 2h - green (fast)
+  if (settleDuration <= 6) return 'bg-yellow-500 text-primary'; // 4h, 6h - yellow (medium)
+  return 'bg-red-500 text-primary'; // 12h - red (slow)
 };
 
 export const getSettleDurationTextColor = (settleDuration: number) => {
@@ -287,7 +287,7 @@ export const formatCollateralPercent = (collateralPercent: number) => {
 //           {offer?.promotionId && (
 //             <Badge
 //               variant="outline"
-//               className="w-fit bg-orange-500 hover:bg-orange-600 text-white px-2 py-0.5 text-xs font-bold"
+//               className="w-fit bg-orange-500 hover:bg-orange-600 text-primary px-2 py-0.5 text-xs font-bold"
 //             >
 //               Hot Deals
 //             </Badge>
@@ -317,10 +317,10 @@ export const formatCollateralPercent = (collateralPercent: number) => {
 //           <span className="text-orange-500 text-2xl md:text-3xl font-bold">
 //             {formatNumberShort(offer?.price)} {offer?.exToken?.symbol}
 //           </span>
-//           {/* <span className="text-gray-500 line-through text-sm md:text-base">
+//           {/* <span className="text-content line-through text-sm md:text-base">
 //             ${offer.originalPriceUSD.toLocaleString()}
 //           </span> */}
-//           {/* <Badge className="bg-shopee-red text-white text-sm font-bold px-2 py-0.5">
+//           {/* <Badge className="bg-shopee-red text-primary text-sm font-bold px-2 py-0.5">
 //             -{offer.discountPercent}%
 //           </Badge> */}
 //         </div>
@@ -383,7 +383,7 @@ export const formatCollateralPercent = (collateralPercent: number) => {
 //         <div className="grid gap-3">
 //           <div className="flex items-center justify-between gap-2">
 //             <span className="text-gray-600 text-sm">Quantity</span>
-//             <div className="text-gray-500 text-sm">
+//             <div className="text-content text-sm">
 //               Balance:{' '}
 //               <span className="text-primary font-bold">
 //                 {balance !== null ? balance : '...'} {offer?.exToken?.symbol}
@@ -486,7 +486,7 @@ export const formatCollateralPercent = (collateralPercent: number) => {
 //             <Button
 //               onClick={handleBuy}
 //               size="xl"
-//               className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+//               className="flex-1 bg-orange-500 hover:bg-orange-600 text-primary"
 //               disabled={buyQuantity === 0}
 //             >
 //               Buy Now
@@ -846,8 +846,8 @@ export default function OfferDetailPageContent({
   }
 
   return (
-    <Card className="h-fit rounded-3xl shadow-lg flex flex-col md:flex-row gap-8 py-6 px-4 md:px-8">
-      <div className="w-full md:w-[40%] flex flex-col gap-4 rounded-2xl border border-gray-200 p-4">
+    <Card className="flex h-fit flex-col gap-8 rounded-3xl px-4 py-6 shadow-lg md:flex-row md:px-8">
+      <div className="flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-4 md:w-[40%]">
         {/* Event details */}
         <div className="rounded-2xl border border-gray-200">
           <div className="relative">
@@ -856,11 +856,11 @@ export default function OfferDetailPageContent({
                 offer?.imageUrl || offer?.tokens?.bannerUrl || offer?.tokens?.logo || '/logo.png'
               }
               alt={offer?.tokens?.symbol || 'Offer Image'}
-              className="w-full h-40 sm:h-52 object-cover rounded-2xl"
+              className="h-40 w-full rounded-2xl object-cover sm:h-52"
             />
-            <Badge className="absolute top-2 left-2 z-10">{offer?.exToken?.network?.name}</Badge>
+            <Badge className="absolute left-2 top-2 z-10">{offer?.exToken?.network?.name}</Badge>
             {!!offer?.promotion?.isActive && (
-              <Badge variant={'danger'} className="absolute top-2 right-2 z-10">
+              <Badge variant={'danger'} className="absolute right-2 top-2 z-10">
                 Discount
               </Badge>
             )}
@@ -881,15 +881,15 @@ export default function OfferDetailPageContent({
           </div>
 
           <div className="p-4">
-            <h1 className="text-xl mb-2 text-head">{eventTitle}</h1>
-            <div className="text-content text-sm">{offer?.description || 'No description'}</div>
+            <h1 className="mb-2 text-xl text-head">{eventTitle}</h1>
+            <div className="text-sm text-content">{offer?.description || 'No description'}</div>
           </div>
           <div className="px-4">
             <Separator />
           </div>
-          <div className="space-y-2 text-sm p-4">
-            <div className="flex flex-col gap-1 flex-1 relative">
-              <div className="text-xs text-content inline-flex items-center">
+          <div className="space-y-2 p-4 text-sm">
+            <div className="relative flex flex-1 flex-col gap-1">
+              <div className="inline-flex items-center text-xs text-content">
                 <span>
                   {formatNumberShort(
                     div(Number(offer?.filled || 0), Number(offer?.quantity || 0)) * 100,
@@ -909,10 +909,10 @@ export default function OfferDetailPageContent({
                 />
               </div>
             </div>
-            <div className="flex justify-between items-center pt-2">
+            <div className="flex items-center justify-between pt-2">
               <div>Total Amount</div>
               <div className="flex items-center gap-1">
-                <div className="font-medium pt-0.5">{formatNumberShort(offer?.quantity || 0)}</div>
+                <div className="pt-0.5 font-medium">{formatNumberShort(offer?.quantity || 0)}</div>
                 <Image
                   src={offer?.tokens?.logo || '/logo-mb.png'}
                   alt={offer?.tokens?.symbol || 'Token Image'}
@@ -923,7 +923,7 @@ export default function OfferDetailPageContent({
               </div>
             </div>
 
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <div className="flex items-center gap-1">
                 <span>Collateral</span>
                 <span
@@ -933,7 +933,7 @@ export default function OfferDetailPageContent({
                 </span>
               </div>
               <div className="flex items-center gap-1">
-                <div className="font-medium pt-0.5">
+                <div className="pt-0.5 font-medium">
                   {formatNumberShort(
                     mul(offer?.quantity || 0, offer?.price || 0) *
                       div(offer?.collateralPercent || 0, 100)
@@ -949,7 +949,7 @@ export default function OfferDetailPageContent({
               </div>
             </div>
 
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <div>Settle Duration</div>
               <div className="flex items-center gap-1">
                 <div
@@ -965,19 +965,19 @@ export default function OfferDetailPageContent({
         </div>
 
         {/* Price section */}
-        <div className="text-center mt-2">
-          <div className="text-xl md:text-5xl font-medium">${unitPrice}</div>
+        <div className="mt-2 text-center">
+          <div className="text-xl font-medium md:text-5xl">${unitPrice}</div>
         </div>
       </div>
-      <div className="flex-1 w-full md:w-[60%] md:flex md:justify-end mt-6 md:mt-0">
-        <div className="flex flex-col gap-6 w-full md:w-[90%]">
+      <div className="mt-6 w-full flex-1 md:mt-0 md:flex md:w-[60%] md:justify-end">
+        <div className="flex w-full flex-col gap-6 md:w-[90%]">
           <div>
             <SellerInfoSection seller={offer?.sellerWallet} />
             <Separator className="bg-gray-200" />
           </div>
           <div>
             {/* Quantity selector */}
-            <div className="p-2 px-3 border border-line rounded-xl mb-4 flex justify-between items-center">
+            <div className="mb-4 flex items-center justify-between rounded-xl border border-line p-2 px-3">
               <div className="font-medium">Quantity</div>
               <div className="flex items-center">
                 <Input
@@ -986,7 +986,7 @@ export default function OfferDetailPageContent({
                   pattern="[0-9]*"
                   value={buyQuantity}
                   onChange={handleQuantityInputChange}
-                  className="text-center rounded-lg bg-primary focus:bg-primary"
+                  className="rounded-lg bg-primary text-center focus:bg-primary"
                   min={1}
                 />
               </div>
@@ -994,8 +994,8 @@ export default function OfferDetailPageContent({
 
             {/* Price breakdown */}
             <div className="space-y-4 text-sm">
-              <div className="flex justify-between items-center flex-wrap gap-2">
-                <div className="flex items-center gap-1 flex-wrap">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-1">
                   <span>Order Value</span>
                   <span className="text-info">
                     ({buyQuantity} x $
@@ -1009,7 +1009,7 @@ export default function OfferDetailPageContent({
               </div>
 
               <Separator />
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <div>No Fees</div>
                 <div className="font-medium">${fees}</div>
               </div>
@@ -1018,7 +1018,7 @@ export default function OfferDetailPageContent({
 
               {!isShowPromotion && offer?.promotion?.isActive && (
                 <Button
-                  className="w-full justify-between group bg-line text-head hover:bg-line/70 disabled:bg-line/90"
+                  className="group w-full justify-between bg-line text-head hover:bg-line/70 disabled:bg-line/90"
                   disabled={isCheckingEligibility}
                   onClick={handleCheckEligibility}
                 >
@@ -1026,13 +1026,13 @@ export default function OfferDetailPageContent({
                   {isCheckingEligibility ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-content group-hover:translate-x-2 transition-all duration-300 group-hover:text-head" />
+                    <ChevronRight className="h-4 w-4 text-content transition-all duration-300 group-hover:translate-x-2 group-hover:text-head" />
                   )}
                 </Button>
               )}
               {(isShowPromotion || !offer?.promotion?.isActive) && (
                 <>
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between">
                     <div>Discount</div>
                     <div className="font-medium">
                       {isEligible ? offer?.promotion?.discountPercent || 0 : 0}%
@@ -1042,9 +1042,9 @@ export default function OfferDetailPageContent({
                 </>
               )}
 
-              <div className="flex justify-between items-center">
+              <div className="flex items-center justify-between">
                 <div className="font-bold">Total:</div>
-                <div className="font-bold text-xl md:text-2xl">
+                <div className="text-xl font-bold md:text-2xl">
                   $
                   {formatNumberShort(totalValue, {
                     maxDecimalCount: 4,
@@ -1066,7 +1066,7 @@ export default function OfferDetailPageContent({
                     buyLoading
                   }
                 >
-                  {buyLoading ? <Loader2 className="animate-spin mr-2" /> : null}
+                  {buyLoading ? <Loader2 className="mr-2 animate-spin" /> : null}
                   Buy Now
                 </Button>
               )}
@@ -1074,7 +1074,7 @@ export default function OfferDetailPageContent({
                 <Button
                   size="xl"
                   variant={'danger'}
-                  className="w-full disabled:opacity-100 disabled:bg-danger/80"
+                  className="w-full disabled:bg-danger/80 disabled:opacity-100"
                   disabled
                 >
                   Offer Closed
@@ -1083,15 +1083,15 @@ export default function OfferDetailPageContent({
             </div>
 
             {/* Note section explaining settle duration and collateral */}
-            <Separator className="bg-gray-200 mt-6" />
-            <div className="mt-4 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl shadow-sm">
-              <div className="flex items-center gap-2 mb-3">
-                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+            <Separator className="mt-6 bg-gray-200" />
+            <div className="mt-4 rounded-xl border border-orange-200 bg-gradient-to-r from-orange-50 to-yellow-50 p-4 shadow-sm">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-orange-500"></div>
                 <h4 className="font-semibold text-orange-800">Key Information</h4>
               </div>
               <div className="space-y-3 text-sm text-orange-700">
                 <div className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500"></div>
                   <div>
                     <span className="font-medium text-orange-800">Settle Duration:</span>
                     <span className="ml-1">
@@ -1100,7 +1100,7 @@ export default function OfferDetailPageContent({
                   </div>
                 </div>
                 <div className="flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                  <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500"></div>
                   <div>
                     <span className="font-medium text-orange-800">Collateral Percent:</span>
                     <span className="ml-1">

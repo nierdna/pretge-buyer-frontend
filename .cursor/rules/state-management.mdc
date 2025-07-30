@@ -1,0 +1,532 @@
+---
+description: khi nào nhắc đến state-management hoặc cấu trúc store cho tính năng nào đó hoặc sử dụng để lưu thông tin nào đó vào store để sử dụng chung cho cả dự án thì đọc rules này
+alwaysApply: false
+---
+
+# State Management Patterns
+
+## State Management Architecture
+
+Dự án sử dụng kết hợp Zustand và React Query:
+
+- **Zustand**: Global state (auth, chains, UI state)
+- **React Query**: Server state (API data, caching)
+- **Local State**: Component-specific state
+
+## Zustand Store Patterns
+
+### Store Organization
+
+```typescript
+// src/store/index.ts
+export { useAuthStore } from './authStore';
+export { useChainStore } from './chainStore';
+export { useUIStore } from './uiStore';
+```
+
+### Auth Store Pattern
+
+```typescript
+// src/store/authStore.ts
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+
+interface AuthState {
+  accessToken: string | null;
+  refreshToken: string | null;
+  user: User | null;
+  isAuthenticated: boolean;
+
+  // Actions
+  setTokens: (accessToken: string, refreshToken: string) => void;
+  setUser: (user: User) => void;
+  logout: () => void;
+  updateUser: (updates: Partial<User>) => void;
+}
+
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      accessToken: null,
+      refreshToken: null,
+      user: null,
+      isAuthenticated: false,
+
+      setTokens: (accessToken, refreshToken) =>
+        set({
+          accessToken,
+          refreshToken,
+          isAuthenticated: true,
+        }),
+
+      setUser: (user) =>
+        set({
+          user,
+          isAuthenticated: true,
+        }),
+
+      logout: () =>
+        set({
+          accessToken: null,
+          refreshToken: null,
+          user: null,
+          isAuthenticated: false,
+        }),
+
+      updateUser: (updates) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...updates } : null,
+        })),
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
+        user: state.user,
+      }),
+    }
+  )
+);
+```
+
+### Chain Store Pattern
+
+```typescript
+// src/store/chainStore.ts
+import { create } from 'zustand';
+import { Service } from '@/service';
+
+interface ChainState {
+  chains: Chain[];
+  selectedChain: Chain | null;
+  loading: boolean;
+  error: string | null;
+
+  // Actions
+  fetchChains: () => Promise<void>;
+  setSelectedChain: (chain: Chain) => void;
+  clearError: () => void;
+}
+
+export const useChainStore = create<ChainState>((set, get) => ({
+  chains: [],
+  selectedChain: null,
+  loading: false,
+  error: null,
+
+  fetchChains: async () => {
+    try {
+      set({ loading: true, error: null });
+      const result = await Service.chain.getChains();
+
+      if (result.success) {
+        set({ chains: result.data, loading: false });
+
+        // Auto-select first chain if none selected
+        if (!get().selectedChain && result.data.length > 0) {
+          set({ selectedChain: result.data[0] });
+        }
+      } else {
+        set({ error: 'Failed to fetch chains', loading: false });
+      }
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  setSelectedChain: (chain) => set({ selectedChain: chain }),
+
+  clearError: () => set({ error: null }),
+}));
+```
+
+### UI Store Pattern
+
+```typescript
+// src/store/uiStore.ts
+import { create } from 'zustand';
+
+interface UIState {
+  sidebarOpen: boolean;
+  theme: 'light' | 'dark';
+  notifications: Notification[];
+  modals: {
+    [key: string]: boolean;
+  };
+
+  // Actions
+  toggleSidebar: () => void;
+  setTheme: (theme: 'light' | 'dark') => void;
+  addNotification: (notification: Notification) => void;
+  removeNotification: (id: string) => void;
+  openModal: (modalId: string) => void;
+  closeModal: (modalId: string) => void;
+}
+
+export const useUIStore = create<UIState>((set, get) => ({
+  sidebarOpen: false,
+  theme: 'light',
+  notifications: [],
+  modals: {},
+
+  toggleSidebar: () => set((state) => ({ sidebarOpen: !state.sidebarOpen })),
+
+  setTheme: (theme) => set({ theme }),
+
+  addNotification: (notification) =>
+    set((state) => ({
+      notifications: [...state.notifications, notification],
+    })),
+
+  removeNotification: (id) =>
+    set((state) => ({
+      notifications: state.notifications.filter((n) => n.id !== id),
+    })),
+
+  openModal: (modalId) =>
+    set((state) => ({
+      modals: { ...state.modals, [modalId]: true },
+    })),
+
+  closeModal: (modalId) =>
+    set((state) => ({
+      modals: { ...state.modals, [modalId]: false },
+    })),
+}));
+```
+
+## React Query Integration
+
+### Query State Management
+
+```typescript
+// src/queries/useExampleQueries.ts
+export const useGetExamples = () => {
+  const { selectedChain } = useChainStore();
+  const { accessToken } = useAuthStore();
+
+  return useInfiniteQuery({
+    queryKey: ['examples', selectedChain?.id],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await Service.example.getExamples({
+        page: pageParam,
+        chainId: selectedChain?.id,
+      });
+      return response.data;
+    },
+    enabled: !!selectedChain && !!accessToken,
+  });
+};
+```
+
+### Mutation State Management
+
+```typescript
+export const useCreateExample = () => {
+  const queryClient = useQueryClient();
+  const { addNotification } = useUIStore();
+
+  return useMutation({
+    mutationFn: (data: CreateExampleRequest) => Service.example.createExample(data),
+    onSuccess: (result) => {
+      // Invalidate queries
+      queryClient.invalidateQueries({ queryKey: ['examples'] });
+
+      // Show notification
+      addNotification({
+        id: Date.now().toString(),
+        type: 'success',
+        message: 'Example created successfully!',
+      });
+    },
+    onError: (error) => {
+      addNotification({
+        id: Date.now().toString(),
+        type: 'error',
+        message: error.message || 'Failed to create example',
+      });
+    },
+  });
+};
+```
+
+## Local State Patterns
+
+### Component State
+
+```typescript
+// src/components/ExampleForm.tsx
+export const ExampleForm = () => {
+  const [formData, setFormData] = useState<CreateExampleRequest>({
+    name: '',
+    description: '',
+    price: 0,
+  });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const createExample = useCreateExample();
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setErrors({});
+
+    try {
+      await createExample.mutateAsync(formData);
+      setFormData({ name: '', description: '', price: 0 });
+    } catch (error) {
+      if (error.response?.data?.errors) {
+        setErrors(error.response.data.errors);
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* Form fields */}
+    </form>
+  );
+};
+```
+
+### Custom Hook State
+
+```typescript
+// src/hooks/useForm.ts
+export const useForm = <T extends Record<string, any>>(initialData: T) => {
+  const [data, setData] = useState<T>(initialData);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isDirty, setIsDirty] = useState(false);
+
+  const updateField = useCallback(
+    (field: keyof T, value: T[keyof T]) => {
+      setData((prev) => ({ ...prev, [field]: value }));
+      setIsDirty(true);
+
+      // Clear field error when user starts typing
+      if (errors[field as string]) {
+        setErrors((prev) => ({ ...prev, [field]: '' }));
+      }
+    },
+    [errors]
+  );
+
+  const reset = useCallback(() => {
+    setData(initialData);
+    setErrors({});
+    setIsDirty(false);
+  }, [initialData]);
+
+  const validate = useCallback(
+    (validationRules: ValidationRules<T>) => {
+      const newErrors: Record<string, string> = {};
+
+      Object.keys(validationRules).forEach((field) => {
+        const value = data[field];
+        const rules = validationRules[field];
+
+        if (rules.required && !value) {
+          newErrors[field] = `${field} is required`;
+        } else if (rules.minLength && value.length < rules.minLength) {
+          newErrors[field] = `${field} must be at least ${rules.minLength} characters`;
+        }
+      });
+
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+    },
+    [data]
+  );
+
+  return {
+    data,
+    errors,
+    isDirty,
+    updateField,
+    reset,
+    validate,
+  };
+};
+```
+
+## State Synchronization
+
+### Cross-Store Communication
+
+```typescript
+// src/store/authStore.ts
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      // ... existing state
+
+      logout: () => {
+        // Clear auth state
+        set({
+          accessToken: null,
+          refreshToken: null,
+          user: null,
+          isAuthenticated: false,
+        });
+
+        // Clear other stores
+        useChainStore.getState().setSelectedChain(null);
+        useUIStore.getState().clearNotifications();
+
+        // Clear React Query cache
+        queryClient.clear();
+      },
+    }),
+    {
+      name: 'auth-storage',
+    }
+  )
+);
+```
+
+### React Query + Zustand Integration
+
+```typescript
+// src/hooks/useAuth.ts
+export const useAuth = () => {
+  const { accessToken, user, isAuthenticated, setTokens, setUser, logout } = useAuthStore();
+  const { address, isConnected } = useWallet();
+
+  // Auto-login when wallet connected
+  useEffect(() => {
+    if (address && isConnected && !accessToken) {
+      handleLogin();
+    }
+  }, [address, isConnected, accessToken]);
+
+  // Auto-logout when wallet disconnected
+  useEffect(() => {
+    if ((!address || !isConnected) && accessToken) {
+      logout();
+    }
+  }, [address, isConnected, accessToken]);
+
+  const handleLogin = async () => {
+    try {
+      const result = await Service.auth.login({ address });
+      if (result.success) {
+        setTokens(result.data.accessToken, result.data.refreshToken);
+        setUser(result.data.user);
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
+
+  return {
+    accessToken,
+    user,
+    isAuthenticated,
+    handleLogin,
+    logout,
+  };
+};
+```
+
+## Performance Optimization
+
+### Selective State Updates
+
+```typescript
+// ✅ Good - Update only specific fields
+const updateUser = (updates: Partial<User>) =>
+  set((state) => ({
+    user: state.user ? { ...state.user, ...updates } : null,
+  }));
+
+// ❌ Bad - Update entire state
+const updateUser = (updates: Partial<User>) =>
+  set((state) => ({
+    ...state,
+    user: state.user ? { ...state.user, ...updates } : null,
+  }));
+```
+
+### Memoized Selectors
+
+```typescript
+// src/store/authStore.ts
+export const useAuthStore = create<AuthState>()((set, get) => ({
+  // ... state and actions
+
+  // Memoized selectors
+  getIsAdmin: () => {
+    const state = get();
+    return state.user?.role === 'admin';
+  },
+
+  getDisplayName: () => {
+    const state = get();
+    return state.user?.displayName || state.user?.email || 'Anonymous';
+  },
+}));
+```
+
+### State Persistence
+
+```typescript
+// src/store/authStore.ts
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set, get) => ({
+      // ... state and actions
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state) => ({
+        // Only persist necessary data
+        accessToken: state.accessToken,
+        refreshToken: state.refreshToken,
+        user: state.user,
+      }),
+      // Custom serialization
+      serialize: (state) => JSON.stringify(state),
+      deserialize: (str) => JSON.parse(str),
+    }
+  )
+);
+```
+
+## Best Practices
+
+### State Organization
+
+- **Global State**: Auth, chains, UI settings
+- **Server State**: API data, caching
+- **Local State**: Form data, component state
+- **Derived State**: Computed values from other state
+
+### State Updates
+
+- **Immutable Updates**: Always create new objects/arrays
+- **Selective Updates**: Update only changed fields
+- **Batch Updates**: Group related state changes
+- **Async Updates**: Handle loading and error states
+
+### Performance
+
+- **Memoization**: Use React.memo, useMemo, useCallback
+- **Selective Subscriptions**: Subscribe only to needed state
+- **Debouncing**: Debounce frequent state updates
+- **Cleanup**: Clean up subscriptions and timers
+
+### Error Handling
+
+- **Error Boundaries**: Catch and handle errors gracefully
+- **Error State**: Track error states in stores
+- **Retry Logic**: Implement retry mechanisms
+- **User Feedback**: Show meaningful error messages
+  description:
+  globs:
+  alwaysApply: false
+
+---

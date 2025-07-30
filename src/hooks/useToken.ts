@@ -1,7 +1,7 @@
-import { ChainType, useLynxReown } from 'lynx-reown-dapp-kit';
+import { useLynxReown } from 'lynx-reown-dapp-kit';
 import { useMemo } from 'react';
-import { IToken } from '../contracts/tokens/types';
 import { TokenFactory } from '../contracts/factory/token-factory';
+import { IToken } from '../contracts/tokens/types';
 
 export const useToken = (
   token: string,

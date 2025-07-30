@@ -28,9 +28,9 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
 
   return (
     <section className="flex-1 sm:px-4">
-      <Breadcrumb className="flex items-center gap-2 text-sm mb-6 px-4 font-medium">
+      <Breadcrumb className="mb-6 flex items-center gap-2 px-4 text-sm font-medium">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="text-content hover:text-head transition-colors">
+          <BreadcrumbLink href="/" className="text-content transition-colors hover:text-head">
             Home
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -39,14 +39,14 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
         <BreadcrumbSeparator className="flex items-center" /> */}
         <BreadcrumbLink
           href={`/token/${offer?.tokens?.symbol?.toLowerCase()}`}
-          className="text-content hover:text-head transition-colors"
+          className="text-content transition-colors hover:text-head"
         >
           {offer?.tokens?.symbol.toUpperCase()}
         </BreadcrumbLink>
         <BreadcrumbSeparator className="flex items-center" />
         <BreadcrumbItem className="truncate">{offer?.title}</BreadcrumbItem>
       </Breadcrumb>
-      <div className="grid grid-cols-1 gap-4 w-full">
+      <div className="grid w-full grid-cols-1 gap-4">
         <OfferDetailPageContent
           isLoading={isLoading}
           offer={offer}
@@ -55,7 +55,7 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
             refetch();
           }}
         />
-        <div className="flex flex-col gap-4 w-full">
+        <div className="flex w-full flex-col gap-4">
           <TransactionHistory ref={transactionHistoryRef} offerId={id} />
         </div>
       </div>

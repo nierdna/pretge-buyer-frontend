@@ -35,12 +35,12 @@ export default function UserInfoSection() {
   };
 
   return (
-    <Card className="bg-white/95 backdrop-blur-md shadow-2xl border-gray-300 h-fit">
+    <Card className="h-fit border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">User Information</CardTitle>
       </CardHeader>
-      <CardContent className="p-6 grid gap-6">
-        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6">
+      <CardContent className="grid gap-6 p-6">
+        <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
           <Avatar className="h-16 w-16 flex-shrink-0">
             <AvatarImage
               src={user?.avatar || getFallbackAvatar(walletAddress)}
@@ -56,15 +56,15 @@ export default function UserInfoSection() {
                 variant="ghost"
                 size="icon"
                 onClick={handleOpenEditModal}
-                className="h-6 w-6 text-gray-500 hover:text-gray-700"
+                className="h-6 w-6 text-content hover:text-gray-700"
               >
                 <Edit className="h-4 w-4" />
                 <span className="sr-only">Edit profile</span>
               </Button>
             </div>
-            <div className="text-sm text-gray-500">{truncateAddress(walletAddress)}</div>
-            <p className="text-gray-500 mt-1">
-              <span className="font-medium text-sm">Member since:</span>{' '}
+            <div className="text-sm text-content">{truncateAddress(walletAddress)}</div>
+            <p className="mt-1 text-content">
+              <span className="text-sm font-medium">Member since:</span>{' '}
               {dayjs(user?.createdAt).format('DD/MM/YYYY')}
             </p>
           </div>

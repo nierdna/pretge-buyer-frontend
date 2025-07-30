@@ -55,7 +55,7 @@ export default function ReviewModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px] bg-white/95 backdrop-blur-md shadow-2xl border-gray-300">
+      <DialogContent className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Review Order for {order?.offer?.sellerWallet?.user?.name}</DialogTitle>
           <DialogDescription>Share your experience with this order.</DialogDescription>
@@ -94,7 +94,7 @@ export default function ReviewModal({
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={rating === 0 || isLoading}>
-            {isLoading && <Loader2 className="w-4 h-4 animate-spin" />}
+            {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
             Send
           </Button>
         </DialogFooter>
