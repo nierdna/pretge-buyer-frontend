@@ -1,3 +1,8 @@
+---
+description: khi nào nhắc đến shadcn hoặc cấu trúc shadcn-components cho dự án thì đọc rules này
+alwaysApply: false
+---
+
 # Shadcn Components CSS Class Mapping
 
 ## Background Classes
