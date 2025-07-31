@@ -1071,11 +1071,11 @@ export default function OfferDetailPageContent({
                   disabled={
                     buyQuantity === 0 ||
                     (offer?.promotion?.isActive && !isShowPromotion) ||
-                    buyLoading ||
-                    !address
+                    buyLoading
                   }
                 >
-                  {chainId.toLowerCase() !== chainIdConnect?.toString().toLowerCase() ? (
+                  {!!address &&
+                  chainId.toLowerCase() !== chainIdConnect?.toString().toLowerCase() ? (
                     'Switch Network'
                   ) : (
                     <>
