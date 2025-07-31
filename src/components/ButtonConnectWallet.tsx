@@ -80,7 +80,7 @@ export const ButtonConnectWallet = () => {
             handleConnectWallet();
           }}
         >
-          Connect Wallet
+          Login
         </Button>
       )}
     </>

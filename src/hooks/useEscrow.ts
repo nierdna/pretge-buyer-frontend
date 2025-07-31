@@ -8,7 +8,7 @@ import { IEscrow } from '../contracts/escrow/types';
 import { useWallet } from './useWallet';
 
 export const useEscrow = (
-  chainId: string
+  chainId: string | undefined
 ): {
   escrowContract: IEscrow | undefined;
 } => {

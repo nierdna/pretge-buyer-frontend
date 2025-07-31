@@ -14,7 +14,6 @@ import {
 } from '@reown/appkit/react';
 import { useMutation } from '@tanstack/react-query';
 import bs58 from 'bs58';
-import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 export const useAuth = () => {
@@ -152,18 +151,11 @@ export const useAuth = () => {
     return false;
   };
 
-  // Auto-update chain type when wallet connects
-  useEffect(() => {
-    if (isConnected && address) {
-      // You can add logic here to detect the chain type from the connected wallet
-      // For now, we'll keep the user's selection
-    }
-  }, [isConnected, address]);
-
   return {
     // State
     address,
     isConnected,
+    chainId,
     user,
     accessToken,
     isAuthenticated: !!accessToken && !!walletAddress,

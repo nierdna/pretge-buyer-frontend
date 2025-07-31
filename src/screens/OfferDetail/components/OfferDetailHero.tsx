@@ -294,7 +294,7 @@ export default function OfferDetailHero({ offer, onOrderPlaced }: OfferDetailHer
             className="mt-4 w-full"
             disabled={buyQuantity === 0}
           >
-            Buy Now
+            Place Order
           </Button>
           {/* Deposit Modal (placeholder) */}
           <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>

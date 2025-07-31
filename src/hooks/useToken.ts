@@ -5,7 +5,7 @@ import { IToken } from '../contracts/tokens/types';
 
 export const useToken = (
   token: string,
-  chainId: string
+  chainId: string | undefined
 ): {
   tokenContract: IToken | undefined;
 } => {

@@ -16,7 +16,7 @@ import { useMemo } from 'react';
  * @param chainId - id của chain muốn lấy wallet
  * @returns Wallet instance hoặc undefined nếu không tìm thấy chain
  */
-export function useWallet(chainId: string): Wallet | undefined {
+export function useWallet(chainId: string | undefined): Wallet | undefined {
   const { walletProvider: solanaProvider } = useAppKitProvider<SolanaProvider>('solana');
   const { walletProvider: wagmiProvider } = useAppKitProvider<Provider>('eip155');
   const { address: wagmiAddress } = useAppKitAccount({ namespace: 'eip155' });

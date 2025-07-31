@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import Separator from '@/components/ui/separator';
 import { CONTRACTS } from '@/contracts/contracts';
+import { useAuth } from '@/hooks/useAuth';
 import { useEscrow } from '@/hooks/useEscrow';
 import { useToken } from '@/hooks/useToken';
 import { useWallet } from '@/hooks/useWallet';
@@ -36,9 +37,9 @@ interface OfferDetailPageContentProps {
 
 // Color functions for styling
 export const getSettleDurationColor = (settleDuration: number) => {
-  if (settleDuration <= 2) return 'bg-green-500 text-primary'; // 1h, 2h - green (fast)
-  if (settleDuration <= 6) return 'bg-yellow-500 text-primary'; // 4h, 6h - yellow (medium)
-  return 'bg-red-500 text-primary'; // 12h - red (slow)
+  if (settleDuration <= 2) return 'bg-green-500/90 text-primary'; // 1h, 2h - green (fast)
+  if (settleDuration <= 6) return 'bg-yellow-500/90 text-primary'; // 4h, 6h - yellow (medium)
+  return 'bg-red-500/90 text-primary'; // 12h - red (slow)
 };
 
 export const getSettleDurationTextColor = (settleDuration: number) => {
@@ -48,15 +49,21 @@ export const getSettleDurationTextColor = (settleDuration: number) => {
 };
 
 export const getColorFromCollateral = (collateral: number) => {
+  if (collateral >= 100) return 'bg-green-500/90 text-primary'; // 100% - green (most reliable)
+  if (collateral >= 75) return 'bg-cyan-500/90 text-primary'; // 75% - cyan (very reliable)
+  if (collateral >= 50) return 'bg-orange-500/90 text-primary'; // 50% - orange (moderate)
+  return 'bg-red-500/90 text-primary';
+};
+export const getTextColorFromCollateral = (collateral: number) => {
   if (collateral >= 100) return 'text-green-500'; // 100% - green (most reliable)
   if (collateral >= 75) return 'text-cyan-500'; // 75% - cyan (very reliable)
   if (collateral >= 50) return 'text-orange-500'; // 50% - orange (moderate)
-  return 'text-red-500'; // 25% - red (least reliable)
+  return 'text-red-500';
 };
 
 export const formatSettleDuration = (settleDuration: number) => {
   if (settleDuration <= 0) return 'N/A';
-  return `${settleDuration}h`;
+  return `${settleDuration}hr${settleDuration > 1 ? 's' : ''}`;
 };
 
 export const formatCollateralPercent = (collateralPercent: number) => {
@@ -626,6 +633,7 @@ export default function OfferDetailPageContent({
   const { walletAddress: address } = useAuthStore();
   const queryClient = useQueryClient();
   const { open } = useAppKit();
+  const { chainId: chainIdConnect } = useAuth();
 
   const [buyQuantity, setBuyQuantity] = useState(1);
   const [showDepositModal, setShowDepositModal] = useState(false);
@@ -652,8 +660,8 @@ export default function OfferDetailPageContent({
       });
       setBalance(Number(res.data?.balance ?? 0));
     } catch (err: any) {
-      console.error('Failed to fetch ex token balance', err);
-      toast.error(err?.message || 'Failed to fetch ex token balance');
+      console.log('Failed to fetch ex token balance', err);
+      toast.error(err?.response?.data?.message || 'Failed to fetch ex token balance');
       setBalance(0);
     }
   };
@@ -666,8 +674,8 @@ export default function OfferDetailPageContent({
   const wallet = useWallet(chainId);
 
   const tokenAddress = offer?.exToken?.address;
-
   const { tokenContract } = useToken(tokenAddress || '', chainId);
+
   const contractAddress = CONTRACTS[chainId]?.ESCROW;
 
   const { data: allowance, refetch: refetchAllowance } = useQuery({
@@ -690,8 +698,12 @@ export default function OfferDetailPageContent({
   });
 
   const handleApprove = async () => {
-    setApproveLoading(true);
+    if (!wallet) {
+      toast.error('Please connect your wallet to approve');
+      return;
+    }
     try {
+      setApproveLoading(true);
       const txData = await tokenContract?.buildApprove(contractAddress, Number.MAX_SAFE_INTEGER);
       if (!txData) return;
       const tx = await wallet?.sendTransaction(txData);
@@ -707,8 +719,12 @@ export default function OfferDetailPageContent({
   };
 
   const handleDeposit = async () => {
-    setDepositLoading(true);
+    if (!wallet) {
+      toast.error('Please connect your wallet to deposit');
+      return;
+    }
     try {
+      setDepositLoading(true);
       const amount = isEligible
         ? estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100)
         : estimatedCost;
@@ -765,7 +781,7 @@ export default function OfferDetailPageContent({
   };
 
   const handleBuy = () => {
-    if (!address) {
+    if (!address || chainId.toLowerCase() !== chainIdConnect?.toString().toLowerCase()) {
       open();
       return;
     }
@@ -815,13 +831,6 @@ export default function OfferDetailPageContent({
     );
   };
 
-  const getCollateralColorClass = (percent: number) => {
-    if (percent >= 100) return 'text-green-500';
-    if (percent >= 75) return 'text-cyan-500';
-    if (percent >= 50) return 'text-orange-500';
-    return '';
-  };
-
   const handleQuantityInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = transformToNumber(e.target.value);
     const availableQuantity = (offer?.quantity || 0) - (offer?.filled || 0);
@@ -832,7 +841,6 @@ export default function OfferDetailPageContent({
     }
   };
 
-  const collateralColorClass = getCollateralColorClass(Number(offer?.collateralPercent || 0));
   const unitPrice = Number(offer?.price || 0);
   const subtotal = unitPrice * buyQuantity;
   const fees = 0;
@@ -918,7 +926,7 @@ export default function OfferDetailPageContent({
                   alt={offer?.tokens?.symbol || 'Token Image'}
                   width={16}
                   height={16}
-                  className="rounded-full"
+                  className="min-h-4 min-w-4 rounded-full object-cover"
                 />
               </div>
             </div>
@@ -927,7 +935,7 @@ export default function OfferDetailPageContent({
               <div className="flex items-center gap-1">
                 <span>Collateral</span>
                 <span
-                  className={`font-medium ${getColorFromCollateral(offer?.collateralPercent || 0)}`}
+                  className={`font-medium ${getTextColorFromCollateral(offer?.collateralPercent || 0)}`}
                 >
                   ({offer?.collateralPercent || 0}%)
                 </span>
@@ -1063,11 +1071,18 @@ export default function OfferDetailPageContent({
                   disabled={
                     buyQuantity === 0 ||
                     (offer?.promotion?.isActive && !isShowPromotion) ||
-                    buyLoading
+                    buyLoading ||
+                    !address
                   }
                 >
-                  {buyLoading ? <Loader2 className="mr-2 animate-spin" /> : null}
-                  Buy Now
+                  {chainId.toLowerCase() !== chainIdConnect?.toString().toLowerCase() ? (
+                    'Switch Network'
+                  ) : (
+                    <>
+                      {buyLoading ? <Loader2 className="mr-2 animate-spin" /> : null}
+                      Place Order
+                    </>
+                  )}
                 </Button>
               )}
               {offer?.status === EOfferStatus.CLOSED && (

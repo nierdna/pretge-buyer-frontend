@@ -37,7 +37,7 @@ export const getSettleDurationColor = (settleDuration: number) => {
 
 export const formatSettleDuration = (settleDuration: number) => {
   if (settleDuration <= 0) return 'N/A';
-  return `${settleDuration}h${settleDuration > 1 ? 's' : ''}`;
+  return `${settleDuration}hr${settleDuration > 1 ? 's' : ''}`;
 };
 
 export const formatCollateralPercent = (collateralPercent: number) => {

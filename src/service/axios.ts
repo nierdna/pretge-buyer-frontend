@@ -161,7 +161,7 @@ axiosInstance.interceptors.response.use(
       }
     } else {
       // Something happened in setting up the request that triggered an Error
-      console?.error('Error setting up request:', error?.message);
+      console?.error('Error setting up request:', error?.response?.data?.message);
     }
     return Promise.reject(error);
   }

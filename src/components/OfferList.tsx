@@ -175,8 +175,6 @@ export default function OfferList({
     }
   }, [isMobile]);
 
-  console.log(hasNextPage);
-
   return (
     <div className="grid h-fit gap-4">
       <div
