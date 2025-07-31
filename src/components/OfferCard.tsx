@@ -73,10 +73,10 @@ export default function OfferCard({ offer }: OfferCardProps) {
             </Badge>
           )}
           <div className="absolute bottom-2 left-2 flex w-full items-center gap-1">
-            <Badge className={`font-medium ${getSettleDurationColor(offer.settleDuration)}`}>
+            <Badge className={`${getSettleDurationColor(offer.settleDuration)}`}>
               {formatSettleDuration(offer.settleDuration)}
             </Badge>
-            <Badge className={`font-medium ${getColorFromCollateral(offer.collateralPercent)}`}>
+            <Badge className={`${getColorFromCollateral(offer.collateralPercent)}`}>
               {formatCollateralPercent(offer.collateralPercent)}
             </Badge>
           </div>
