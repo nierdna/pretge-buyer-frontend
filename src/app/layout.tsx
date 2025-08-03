@@ -1,3 +1,4 @@
+import Footer from '@/components/footer';
 import Header from '@/components/layouts/Header';
 import Separator from '@/components/ui/separator';
 import Provider from '@/providers';
@@ -150,7 +151,7 @@ export default function RootLayout({
               <div className="container mx-auto px-4 py-4 lg:px-6 lg:py-8">{children}</div>
             </main>
             <Separator />
-            {/* <Footer /> */}
+            <Footer />
           </div>
         </Provider>
       </body>
