@@ -131,12 +131,11 @@ export default function FilterContent({
               <AccordionTrigger className="text-base">Network</AccordionTrigger>
               <AccordionContent className="grid gap-2 pt-2">
                 {chains.map((chain) => (
-                  <div className="grid grid-cols-[24px_1fr] items-center gap-3" key={chain.id}>
+                  <div className="flex items-center gap-2" key={chain.id}>
                     <Checkbox
                       id={`network-${chain.id}`}
                       checked={filters.networkIds?.includes(chain.id)}
                       onCheckedChange={() => handleChangeNetwork(chain.id)}
-                      className="flex-shrink-0"
                     />
                     <div className="flex items-center gap-2">
                       {chain.logo && (
@@ -149,9 +148,7 @@ export default function FilterContent({
                           />
                         </div>
                       )}
-                      <Label className="truncate" htmlFor={`network-${chain.id}`}>
-                        {chain.name}
-                      </Label>
+                      <Label htmlFor={`network-${chain.id}`}>{chain.name}</Label>
                     </div>
                   </div>
                 ))}
@@ -183,12 +180,11 @@ export default function FilterContent({
                   <div className="text-sm text-content">Loading tokens...</div>
                 ) : tokensData?.data?.length > 0 ? (
                   tokensData.data.map((token: IToken) => (
-                    <div className="grid grid-cols-[24px_1fr] items-center gap-3" key={token.id}>
+                    <div className="flex items-center gap-2" key={token.id}>
                       <Checkbox
                         id={`token-${token.id}`}
                         checked={filters.tokenId === token.id}
                         onCheckedChange={() => handleChangeToken(token.id)}
-                        className="flex-shrink-0"
                       />
                       <div className="flex items-center gap-2">
                         {token.logo && (
@@ -201,9 +197,7 @@ export default function FilterContent({
                             />
                           </div>
                         )}
-                        <Label className="truncate" htmlFor={`token-${token.id}`}>
-                          {token.symbol}
-                        </Label>
+                        <Label htmlFor={`token-${token.id}`}>{token.symbol}</Label>
                       </div>
                     </div>
                   ))
@@ -216,16 +210,15 @@ export default function FilterContent({
 
           <AccordionItem value="settle-time">
             <AccordionTrigger className="text-base">Settle Duration</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-2 gap-2 pt-2">
+            <AccordionContent className="flex flex-wrap gap-4 pt-2">
               {listSettleTime.map((item) => (
-                <div className="grid grid-cols-[24px_1fr] items-center gap-3" key={item.id}>
+                <div className="flex items-center gap-2" key={item.id}>
                   <Checkbox
                     id={`settle-${item.id}`}
                     checked={filters.settleDurations?.includes(item.id)}
                     onCheckedChange={() => handleChangeSettleTime(item.id)}
-                    className="flex-shrink-0"
                   />
-                  <Label className="truncate font-normal" htmlFor={`settle-${item.id}`}>
+                  <Label className="font-normal" htmlFor={`settle-${item.id}`}>
                     {item.name}
                   </Label>
                 </div>
@@ -237,14 +230,13 @@ export default function FilterContent({
             <AccordionTrigger className="text-base">Percent Collateral</AccordionTrigger>
             <AccordionContent className="grid grid-cols-2 gap-2 pt-2">
               {listCollateral.map((item) => (
-                <div className="grid grid-cols-[24px_1fr] items-center gap-3" key={item.id}>
+                <div className="flex items-center gap-2" key={item.id}>
                   <Checkbox
                     id={`collateral-${item.id}`}
                     checked={filters.collateralPercents?.includes(item.id)}
                     onCheckedChange={() => handleChangeCollateral(item.id)}
-                    className="flex-shrink-0"
                   />
-                  <Label className="truncate font-normal" htmlFor={`collateral-${item.id}`}>
+                  <Label className="font-normal" htmlFor={`collateral-${item.id}`}>
                     {item.name}
                   </Label>
                 </div>
