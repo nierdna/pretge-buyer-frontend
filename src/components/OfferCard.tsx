@@ -272,7 +272,8 @@ export default function OfferCard({ offer }: OfferCardProps) {
             <Avatar className="h-8 w-8 flex-shrink-0">
               <AvatarImage
                 src={
-                  offer.sellerWallet?.user?.avatar || getFallbackAvatar(offer.sellerWallet.address)
+                  // offer.sellerWallet?.user?.avatar || getFallbackAvatar(offer.sellerWallet.address)
+                  getFallbackAvatar(offer.sellerWallet.address)
                 }
               />
             </Avatar>
