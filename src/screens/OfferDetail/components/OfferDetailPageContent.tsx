@@ -978,7 +978,7 @@ export default function OfferDetailPageContent({
                   <Link
                     href={offer?.tokens?.twitterUrl}
                     target="_blank"
-                    className="flex items-center gap-1 text-primary hover:underline"
+                    className="flex items-center gap-1 text-content hover:underline"
                   >
                     <Twitter className="h-4 w-4" />
                     {offer?.tokens?.twitterUrl.replace('https://twitter.com/', '@')}
@@ -994,7 +994,7 @@ export default function OfferDetailPageContent({
                   <Link
                     href={offer?.tokens?.websiteUrl}
                     target="_blank"
-                    className="flex items-center gap-1 text-primary hover:underline"
+                    className="flex items-center gap-1 text-content hover:underline"
                   >
                     <Globe className="h-4 w-4" />
                     {offer?.tokens?.websiteUrl.replace(/^https?:\/\/(www\.)?/, '')}
