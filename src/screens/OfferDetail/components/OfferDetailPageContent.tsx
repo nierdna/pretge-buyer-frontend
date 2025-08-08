@@ -91,7 +91,7 @@ export default function OfferDetailPageContent({
 
   const [buyQuantity, setBuyQuantity] = useState(1);
   const [collateralPercent, setCollateralPercent] = useState<string>(
-    (offer?.collateralPercent || 25).toString()
+    (offer?.collateralPercent || 100).toString()
   );
   const [showDepositModal, setShowDepositModal] = useState(false);
   const [approveLoading, setApproveLoading] = useState(false);
@@ -307,6 +307,9 @@ export default function OfferDetailPageContent({
       setCollateralPercent((offer?.collateralPercent || 25)?.toString());
     } else {
       setCollateralPercent(value);
+    }
+    if (Number(value) < 100) {
+      setIsEligible(false);
     }
   };
 
