@@ -13,14 +13,14 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <Link
                 href="https://seller.pretgemarket.xyz"
-                className="hover:text-foreground underline transition-colors"
+                className="underline transition-colors hover:text-head"
                 prefetch={false}
               >
                 Seller Centre
               </Link>
               <Link
                 href="https://seller.pretgemarket.xyz/auth/login"
-                className="hover:text-foreground underline transition-colors"
+                className="underline transition-colors hover:text-head"
                 prefetch={false}
               >
                 Start Selling

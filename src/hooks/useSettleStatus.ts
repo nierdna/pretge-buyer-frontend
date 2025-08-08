@@ -36,7 +36,7 @@ export const useSettleStatus = ({
     status: 'purchase',
     canPurchase: true,
     message:
-      'Complete payment for all pending orders before TGE + 1 day. If not completed, you will lose your collateral.',
+      'Complete payment for all pending orders at least 1 day before token TGE. If not completed, you will lose your collateral and seller will lose their collateral.',
     color: 'yellow',
   });
 
@@ -69,7 +69,7 @@ export const useSettleStatus = ({
         status: 'purchase',
         canPurchase: true,
         message:
-          'Complete payment for all pending orders before TGE + 1 day. If not completed, you will lose your collateral.',
+          'Complete payment for all pending orders at least 1 day before token TGE. If not completed, you will lose your collateral and seller will lose their collateral.',
         color: 'yellow',
       };
     }
@@ -84,7 +84,7 @@ export const useSettleStatus = ({
         timeUntilStart,
         canPurchase: false,
         message:
-          'Payment deadline has passed. No more purchases allowed before TGE. Incomplete orders will lose collateral.',
+          'Payment deadline has passed. No more purchases allowed before TGE. Incomplete orders will lose collateral and seller will lose their collateral.',
         color: 'red',
       };
     }
@@ -136,7 +136,7 @@ export const useSettleStatus = ({
       status: 'purchase',
       timeUntilStart,
       canPurchase: true,
-      message: `Complete payment for all pending orders within ${Math.ceil(timeUntilStart)} day${Math.ceil(timeUntilStart) > 1 ? 's' : ''} before TGE. If not completed, you will lose your collateral.`,
+      message: `Complete payment for all pending orders within ${Math.ceil(timeUntilStart)} day${Math.ceil(timeUntilStart) > 1 ? 's' : ''} before TGE. If not completed, you will lose your collateral and seller will lose their collateral.`,
       color: 'yellow',
     };
   };

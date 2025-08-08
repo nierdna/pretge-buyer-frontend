@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { DESCRIPTION_TOKEN } from '@/constants/description-token';
 import { IToken } from '@/types/token';
-import { Globe, MessageCircle, Twitter } from 'lucide-react';
+import { ArrowRight, Globe, MessageCircle, Twitter } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -21,20 +21,20 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
           <div className="flex items-center gap-4">
             <div className="relative h-16 min-h-16 w-16 min-w-16">
               <div className="absolute inset-0 z-20 flex items-center justify-center">
-                <div className="relative">
+                <div className="relative min-h-16 min-w-16">
                   <Image
                     src={token?.logo || '/logo-mb.png'}
                     alt={token?.symbol || 'Token Image'}
                     width={64}
                     height={64}
-                    className="rounded-full border border-content"
+                    className="rounded-full border border-content object-cover"
                   />
                   <Image
                     src={token?.networks?.logo || '/logo-mb.png'}
                     alt={token?.networks?.name || 'Token Image'}
                     width={24}
                     height={24}
-                    className="absolute bottom-0 right-0 rounded-full border border-content"
+                    className="absolute bottom-0 right-0 min-h-6 min-w-6 rounded-full border border-content object-cover"
                   />
                 </div>
               </div>
@@ -46,46 +46,70 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
                   <span className="inline-block align-middle">{token?.symbol}</span>
                 </Badge>
               </CardTitle>
-              <div className="flex w-full items-center gap-2 break-words">
-                {DESCRIPTION_TOKEN[token?.symbol || ''] && (
+              {DESCRIPTION_TOKEN[token?.symbol || ''] && (
+                <div className="flex w-full items-center gap-2 break-words">
                   <p className="w-full break-words text-sm text-content">
                     {DESCRIPTION_TOKEN[token?.symbol || '']}
                   </p>
-                )}
-                {/* <Badge variant="outline">
+                  {/* <Badge variant="outline">
                   <span className="inline-block align-middle">{token?.symbol}</span>
-                </Badge> */}
-                {/* <Badge variant="outline" className="flex items-center">
+                  </Badge> */}
+                  {/* <Badge variant="outline" className="flex items-center">
                   {normalizeNetworkName(token?.networks?.name)}
-                </Badge> */}
-              </div>
+                  </Badge> */}
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Social Links */}
-        <div className="flex items-center gap-2">
-          {token?.websiteUrl && (
-            <Link href={token.websiteUrl} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
-                <Globe className="h-4 w-4" />
-              </Button>
+        <div className="flex flex-col items-end gap-2">
+          <Button size="sm" asChild className="gap-0.5">
+            <Link
+              href="https://seller.pretgemarket.xyz/auth/login"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Start Selling
+              <ArrowRight className="mb-0.5 h-4 w-4" />
             </Link>
-          )}
-          {token?.twitterUrl && (
-            <Link href={token.twitterUrl} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
-                <Twitter className="h-4 w-4" />
-              </Button>
-            </Link>
-          )}
-          {token?.telegramUrl && (
-            <Link href={token.telegramUrl} target="_blank" rel="noopener noreferrer">
-              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
-                <MessageCircle className="h-4 w-4" />
-              </Button>
-            </Link>
-          )}
+          </Button>
+          <div className="flex items-center gap-2">
+            {token?.websiteUrl && (
+              <Link href={token.websiteUrl} target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
+                >
+                  <Globe className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+            {token?.twitterUrl && (
+              <Link href={token.twitterUrl} target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
+                >
+                  <Twitter className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+            {token?.telegramUrl && (
+              <Link href={token.telegramUrl} target="_blank" rel="noopener noreferrer">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Right side: Stats (24h Volume, Total Volume, Settle Time) */}
