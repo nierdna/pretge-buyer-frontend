@@ -21,12 +21,12 @@ const PaginationCustom = ({ pageNumber, totalPages, paginate }: PaginationCustom
         <PaginationContent className="gap-2">
           <PaginationItem>
             <PaginationPrevious
-              size={'sm'}
+              size={'icon'}
               className={cn(
-                'text-muted-foreground min-w-9 cursor-pointer p-0 px-1 text-xs font-bold',
+                'min-w-9 cursor-pointer p-0 px-1 text-xs font-bold text-secondary-foreground',
                 {
                   'text-content': pageNumber === 1,
-                  'hover:text-primary': pageNumber !== 1,
+                  'hover:text-secondary-hover': pageNumber !== 1,
                 }
               )}
               onClick={() => paginate(Math.max(1, pageNumber - 1))}
@@ -58,10 +58,10 @@ const PaginationCustom = ({ pageNumber, totalPages, paginate }: PaginationCustom
             <PaginationNext
               size={'icon'}
               className={cn(
-                'text-muted-foreground min-w-9 cursor-pointer p-0 px-1 text-xs font-bold',
+                'min-w-9 cursor-pointer p-0 px-1 text-xs font-bold text-secondary-foreground',
                 {
                   'text-content': pageNumber === totalPages,
-                  'hover:text-primary': pageNumber !== totalPages,
+                  'hover:text-secondary-hover': pageNumber !== totalPages,
                 }
               )}
               onClick={() => paginate(Math.min(totalPages, pageNumber + 1))}

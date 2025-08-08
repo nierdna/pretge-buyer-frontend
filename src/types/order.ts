@@ -104,6 +104,7 @@ export interface OrderUpdateInput {
 
 export enum EOrderStatus {
   PENDING = 'pending',
+  SETTLING = 'settling',
   SETTLED = 'settled',
   CANCELLED = 'cancelled',
 }
@@ -135,4 +136,5 @@ export interface IOrder {
   discountPercent: number;
   promotionId: string | null;
   review: IReview | null;
+  collateralPercent: number;
 }

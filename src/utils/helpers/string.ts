@@ -9,12 +9,21 @@ const normalizeNetworkName = (networkName?: string) => {
 };
 const specialSymbolsRegex = /[.*+?^${}()|[\]\\]/g;
 const currencyRegex = RegExp(`^\\d*(?:\\\\[.])?\\d*$`);
+const integerRegex = /^\d*$/;
 
 const transformToNumber = (value: string): string => {
   const transformComma = value.replace(/,/g, '.');
   const escapeRegExp = transformComma.replace(specialSymbolsRegex, '\\$&');
   if (transformComma === '' || currencyRegex.test(escapeRegExp)) {
     return transformComma;
+  }
+  return '';
+};
+
+export const transformToIntegerNumber = (value: string): string => {
+  // Remove any non-digit characters except for empty string
+  if (value === '' || integerRegex.test(value)) {
+    return value;
   }
   return '';
 };

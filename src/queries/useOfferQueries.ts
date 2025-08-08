@@ -221,7 +221,6 @@ export const useGetOffersByUserId = (userId: string) => {
   const { data, isLoading, isError, refetch } = useInfiniteQuery({
     queryKey: ['offers', userId, filters],
     queryFn: async () => {
-      console.log('filters', filters);
       const response = await Service.offer.getOffersByUserId(userId, {
         ...filters,
       });

@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
-  console.log('body', body);
   const { promotion_id, address } = body;
 
   const { data: promotion, error: promotionError } = await supabase
@@ -12,7 +11,6 @@ export async function POST(request: NextRequest) {
     .select('*')
     .eq('id', promotion_id)
     .single();
-  console.log('promotion', promotion);
 
   if (promotionError) {
     return NextResponse.json({ success: false, message: promotionError.message }, { status: 500 });
@@ -39,8 +37,6 @@ export async function POST(request: NextRequest) {
   const { data } = await axiosInstance.post('/api/promotion-mock', {
     address,
   });
-
-  console.log('data', data);
 
   return NextResponse.json({
     message: 'Hello, world!',

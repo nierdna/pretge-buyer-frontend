@@ -6,9 +6,9 @@ const OfferDetailContentSkeleton = () => {
   return (
     <Card className="flex h-fit flex-col gap-8 rounded-3xl px-4 py-6 shadow-lg md:flex-row md:px-8">
       {/* Left Column: Event Details Card (40%) */}
-      <div className="flex w-full flex-col gap-4 rounded-2xl border border-gray-200 p-4 md:w-[40%]">
+      <div className="flex w-full flex-col gap-4 rounded-2xl border border-line p-4 md:w-[40%]">
         {/* Event details card */}
-        <div className="rounded-2xl border border-gray-200">
+        <div className="rounded-2xl border border-line">
           {/* Image section */}
           <div className="relative">
             <Skeleton className="h-40 w-full rounded-2xl sm:h-52" />

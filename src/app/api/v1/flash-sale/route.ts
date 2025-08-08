@@ -30,7 +30,6 @@ export async function GET() {
     if (promotionsError) {
       throw promotionsError;
     }
-    console.log('promotions', promotions);
 
     // Extract and get unique offerIds from promotions
     const offerIds = [...new Set((promotions as Promotion[]).flatMap((promo) => promo.offer_id))];

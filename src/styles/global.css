@@ -137,8 +137,12 @@
 
 @layer base {
   body {
-    @apply bg-primary text-secondary align-middle;
+    @apply bg-primary align-middle text-secondary;
     font-family: 'Helvetica Neue', sans-serif;
+  }
+  button,
+  button:focus-visible {
+    outline: none !important;
   }
 }
 /* ::-webkit-scrollbar {

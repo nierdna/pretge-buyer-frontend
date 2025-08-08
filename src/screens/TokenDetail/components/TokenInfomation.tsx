@@ -8,11 +8,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface TokenInfoSectionProps {
-  token: IToken;
+  token?: IToken;
 }
 
 export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
-  console.log(token);
   return (
     <Card>
       <CardContent className="flex flex-col items-start justify-between gap-6 p-6 md:flex-row md:items-end">

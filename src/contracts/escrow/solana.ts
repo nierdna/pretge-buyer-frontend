@@ -55,8 +55,6 @@ export class EscrowSolana extends SolanaContract implements IEscrow {
         BigInt(Number(amount) * 10 ** decimals) // Token amount, need to convert to BigInt
       );
 
-      console.log('tx', tx);
-
       // Convert transaction to TransactionSerializable format
       return this.build(tx);
     } catch (error) {

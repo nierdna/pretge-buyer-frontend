@@ -6,7 +6,6 @@ export async function GET(
   { params }: { params: Promise<{ symbol: string }> }
 ) {
   const { symbol } = await params;
-  console.log('symbol', symbol);
   const { data, error } = await supabase
     .from('tokens')
     .select('*,networks:network_id(*)')

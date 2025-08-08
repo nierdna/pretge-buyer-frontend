@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/breadcrumb';
 import { useGetOfferById } from '@/queries';
 import { useRef } from 'react';
+import TokenInfoSection from '../TokenDetail/components/TokenInfomation';
 import OfferDetailPageContent from './components/OfferDetailPageContent';
 import TransactionHistory, { TransactionHistoryRef } from './components/TransactionHistory';
 
@@ -27,7 +28,7 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
   // }
 
   return (
-    <section className="flex-1 sm:px-4">
+    <section className="flex-1">
       <Breadcrumb className="mb-6 flex items-center gap-2 px-4 text-sm font-medium">
         <BreadcrumbItem>
           <BreadcrumbLink href="/" className="text-content transition-colors hover:text-head">
@@ -55,8 +56,14 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
             refetch();
           }}
         />
+        <TokenInfoSection token={offer?.tokens} />
         <div className="flex w-full flex-col gap-4">
-          <TransactionHistory ref={transactionHistoryRef} offerId={id} />
+          <TransactionHistory
+            ref={transactionHistoryRef}
+            offerId={id}
+            token={offer?.tokens}
+            offer={offer}
+          />
         </div>
       </div>
       {/* <div className="grid gap-8 w-full">

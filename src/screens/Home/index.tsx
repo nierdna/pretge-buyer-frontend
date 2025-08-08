@@ -40,7 +40,7 @@ export default function HomePage() {
       <TredingTokenV2 trendingTokens={tokens?.data || []} isLoading={isLoadingTokens} />
       {/* <FlashSale /> */}
       <div className="w-full sm:px-4">
-        <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
+        <div className="grid w-full gap-4 lg:grid-cols-[280px_1fr]">
           <FilterSidebar filters={filters} setFilters={setFilters} />
           <OfferList
             inputSearch={inputSearch}

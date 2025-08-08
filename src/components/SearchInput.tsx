@@ -107,7 +107,7 @@ export default function SearchInput({
   }, []);
 
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} w-full`}>
       <div className="relative">
         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-content" />
         <Input
@@ -118,7 +118,7 @@ export default function SearchInput({
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className="pl-10 pr-10"
+          className="pl-10 pr-10 leading-none"
         />
         {value && (
           <button

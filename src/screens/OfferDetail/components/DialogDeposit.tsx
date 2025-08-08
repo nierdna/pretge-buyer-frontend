@@ -1,16 +1,17 @@
 import { Button } from '@/components/ui/button';
 import { DialogClose, DialogContent, DialogFooter, DialogHeader } from '@/components/ui/dialog';
-import { IOffer } from '@/types/offer';
-import { formatNumberShort } from '@/utils/helpers/number';
+import { formatNumberShort, minus } from '@/utils/helpers/number';
 import { Dialog, DialogTitle } from '@radix-ui/react-dialog';
 import { CheckCircle, Wallet } from 'lucide-react';
 
 interface DialogDepositProps {
   showDepositModal: boolean;
   setShowDepositModal: (show: boolean) => void;
-  isEligible: boolean;
-  estimatedCost: number;
-  offer?: IOffer;
+  // isEligible: boolean;
+  // estimatedCost: number;
+  totalValue: number;
+  // offer?: IOffer;
+  exTokenSymbol: string;
   balance: number;
   allowance: number;
   approveLoading: boolean;
@@ -22,9 +23,10 @@ interface DialogDepositProps {
 const DialogDeposit = ({
   showDepositModal,
   setShowDepositModal,
-  isEligible,
-  estimatedCost,
-  offer,
+  // isEligible,
+  // estimatedCost,
+  exTokenSymbol,
+  totalValue,
   balance,
   allowance,
   approveLoading,
@@ -34,7 +36,7 @@ const DialogDeposit = ({
 }: DialogDepositProps) => {
   return (
     <Dialog open={showDepositModal} onOpenChange={setShowDepositModal}>
-      <DialogContent className="border-gray-200 bg-primary-foreground text-center shadow-2xl sm:max-w-md">
+      <DialogContent className="text-center sm:max-w-md">
         <DialogHeader className="flex flex-col items-center gap-2">
           <CheckCircle className="h-12 w-12" /> {/* Success/Info icon */}
           <DialogTitle className="mt-2 text-xl font-bold">Confirm Deposit</DialogTitle>
@@ -48,22 +50,13 @@ const DialogDeposit = ({
             <Wallet className="h-5 w-5 text-content" />
             <span>Required Deposit:</span>
             <span className="">
-              {isEligible
-                ? formatNumberShort(
-                    estimatedCost * (1 - (offer?.promotion?.discountPercent || 0) / 100) - balance,
-                    {
-                      maxDecimalCount: 4,
-                    }
-                  )
-                : formatNumberShort(estimatedCost - balance, {
-                    maxDecimalCount: 4,
-                  })}{' '}
-              {offer?.exToken?.symbol}
+              {formatNumberShort(minus(totalValue, balance))}
+              {exTokenSymbol}
             </span>
           </div>
           <p className="text-center text-xs text-gray-600 sm:text-sm">
-            Your balance is not enough to complete this purchase. Please deposit{' '}
-            {offer?.exToken?.symbol} to continue.
+            Your balance is not enough to complete this purchase. Please deposit {exTokenSymbol} to
+            continue.
           </p>
         </div>
         <DialogFooter>
@@ -74,8 +67,8 @@ const DialogDeposit = ({
           </DialogClose>
           <div className="flex-1 text-center text-gray-700">
             {/* Deposit modal logic */}
-            {allowance !== undefined && estimatedCost !== undefined ? (
-              allowance < estimatedCost ? (
+            {allowance !== undefined && totalValue !== undefined ? (
+              allowance < totalValue ? (
                 <Button onClick={handleApprove} disabled={approveLoading} className="w-full">
                   {approveLoading ? (
                     <>

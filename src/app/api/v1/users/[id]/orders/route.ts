@@ -113,13 +113,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     // Get list of offer IDs from orders
-    const offerIds = orders?.map((order) => order.offer_id) || [];
+    const promotionIds = orders?.map((order) => order.promotion_id).filter((id) => !!id) || [];
 
     // Query active promotions for these offers
     const { data: promotions, error: promotionsError } = await supabase
       .from('promotions')
       .select('*')
-      .in('offer_id', offerIds)
+      .in('id', promotionIds)
       .eq('is_active', true)
       .order('created_at', { ascending: false })
       .limit(1);
@@ -134,7 +134,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     // Map promotions to orders
     const ordersWithPromotions = orders?.map((order) => {
-      const promotion = promotions?.find((p) => p.offer_id === order.offer_id);
+      const promotion = promotions?.find((p) => p.id === order.promotion_id);
       return {
         ...order,
         offer: {
@@ -143,6 +143,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         },
       };
     });
+    console.log('ordersWithPromotions', ordersWithPromotions);
 
     // Get reviews for these orders
     const { data: reviews, error: reviewsError } = await supabase

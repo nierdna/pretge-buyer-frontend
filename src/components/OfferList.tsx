@@ -176,7 +176,7 @@ export default function OfferList({
   }, [isMobile]);
 
   return (
-    <div className="grid h-fit gap-4">
+    <div className="grid h-fit w-full gap-4">
       <div
         ref={searchBarRef}
         className={cn(
@@ -184,7 +184,7 @@ export default function OfferList({
           'border border-line bg-primary-foreground'
         )}
       >
-        <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
+        <div className="flex w-full flex-1 flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
           <div className="flex items-center gap-4">
             <FilterSheet
               filters={filters}
@@ -193,7 +193,6 @@ export default function OfferList({
               hideTokenFilter={hideTokenFilter}
             />
 
-            {/* Mobile Sort Field Select */}
             <Select value={sortField} onValueChange={handleSortFieldChange}>
               <SelectTrigger className={`flex w-32 flex-1 sm:hidden md:w-[180px]`}>
                 <SelectValue placeholder="Sort by" />
@@ -207,9 +206,8 @@ export default function OfferList({
               </SelectContent>
             </Select>
 
-            {/* Mobile Sort Order Select */}
             <Select value={sortOrder} onValueChange={handleSortOrderChange}>
-              <SelectTrigger className="flex w-28 sm:hidden">
+              <SelectTrigger className="flex w-28 mb:flex-1 sm:hidden">
                 <SelectValue placeholder="Order">
                   {sortOrder === 'asc' ? (
                     <div className="flex items-center gap-2">
@@ -241,8 +239,7 @@ export default function OfferList({
             </Select>
           </div>
 
-          {/* Enhanced Search Input */}
-          <div className="min-w-60 flex-1">
+          <div className="flex-1">
             <SearchInput
               value={inputSearch}
               onChange={handleEnhancedSearch}
@@ -253,9 +250,8 @@ export default function OfferList({
             />
           </div>
 
-          {/* Desktop Sort Field Select */}
           <Select value={sortField} onValueChange={handleSortFieldChange}>
-            <SelectTrigger className={`hidden w-32 sm:flex md:w-[180px]`}>
+            <SelectTrigger className={`hidden w-36 sm:flex lg:w-[160px]`}>
               <SelectValue placeholder="Sort by" />
             </SelectTrigger>
             <SelectContent>
@@ -267,7 +263,6 @@ export default function OfferList({
             </SelectContent>
           </Select>
 
-          {/* Desktop Sort Order Select */}
           <Select value={sortOrder} onValueChange={handleSortOrderChange}>
             <SelectTrigger className="hidden w-40 sm:flex">
               <SelectValue placeholder="Order">
