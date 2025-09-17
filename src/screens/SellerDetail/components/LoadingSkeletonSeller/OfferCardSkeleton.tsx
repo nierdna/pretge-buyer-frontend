@@ -1,4 +1,4 @@
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function OfferCardSkeleton() {
@@ -31,8 +31,9 @@ export default function OfferCardSkeleton() {
           </div>
         ))}
       </CardContent>
-      <div className="mx-6 h-[1px] bg-gray-200" /> {/* Separator skeleton */}
-      <CardFooter className="flex flex-col items-start gap-4 px-6">
+      {/* <div className="mx-6 h-[1px] bg-gray-200" />  */}
+      {/* Separator skeleton */}
+      {/* <CardFooter className="flex flex-col items-start gap-4 px-6">
         <div className="flex w-full items-center gap-2">
           <Skeleton className="h-8 w-8 rounded-full" />
           <div className="grid min-w-0 flex-grow gap-0.5">
@@ -40,7 +41,7 @@ export default function OfferCardSkeleton() {
             <Skeleton className="h-3 w-[100px]" />
           </div>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }
