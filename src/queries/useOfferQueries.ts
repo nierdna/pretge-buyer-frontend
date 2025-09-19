@@ -32,6 +32,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
     setInputSearch(search);
     debouncedSearch(search);
   };
+
   const { data, isLoading, isError, isFetching, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ['offers', filters, ...queryKey],
     queryFn: async ({ pageParam = 1 }) => {

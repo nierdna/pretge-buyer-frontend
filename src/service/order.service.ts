@@ -78,4 +78,17 @@ export class OrderService {
     });
     return response.data;
   }
+
+  async createMockOrder() {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_ENDPOINT_NOTI_URL}/market/create-mock-order`,
+      {},
+      {
+        headers: {
+          accept: 'application/json',
+        },
+      }
+    );
+    return response.data;
+  }
 }
