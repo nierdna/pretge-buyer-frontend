@@ -70,4 +70,12 @@ export class OrderService {
 
     return response.data;
   }
+
+  async purchaseOrder(orderId: string, walletId: string) {
+    const response = await axiosInstance.put(`/orders`, {
+      order_id: orderId,
+      wallet_id: walletId,
+    });
+    return response.data;
+  }
 }
