@@ -184,8 +184,8 @@ export default function OfferList({
           'border border-line bg-primary-foreground'
         )}
       >
-        <div className="flex w-full flex-1 flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
-          <div className="flex items-center gap-4">
+        <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
+          <div className="flex items-start gap-4 lg:hidden">
             <FilterSheet
               filters={filters}
               setFilters={setFilters}

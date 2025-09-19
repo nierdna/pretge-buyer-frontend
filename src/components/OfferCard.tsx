@@ -1,4 +1,3 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import {
   Card,
   CardContent,
@@ -9,10 +8,9 @@ import {
 } from '@/components/ui/card';
 import Separator from '@/components/ui/separator';
 import { IOffer } from '@/types/offer';
-import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { div, formatNumberShort, minus } from '@/utils/helpers/number';
 import { normalizeNetworkName } from '@/utils/helpers/string';
-import { Dot, Star } from 'lucide-react';
+import { Dot } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from './ui/badge';
@@ -265,20 +263,19 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </span>
         </div> */}
         </CardContent>
-        <Separator className="w-full" />
-        <CardFooter className="flex flex-col items-center p-0">
-          {/* Block 3: Seller Info */}
-          <div className="flex w-full items-center gap-2 pt-3">
+        {/* <Separator className="w-full" /> */}
+        {/* <CardFooter className="flex flex-col items-center p-0"> */}
+        {/* Block 3: Seller Info */}
+        {/* <div className="flex w-full items-center gap-2 pt-3">
             <Avatar className="h-8 w-8 flex-shrink-0">
               <AvatarImage
                 src={
-                  offer.sellerWallet?.user?.avatar || getFallbackAvatar(offer.sellerWallet.address)
+                  getFallbackAvatar(offer.sellerWallet.address)
                 }
               />
             </Avatar>
             <div className="grid min-w-0 flex-grow gap-0.5">
               <div className="truncate text-sm text-content">{offer.sellerWallet?.user?.name}</div>
-              {/* <div className="text-xs text-content truncate">{truncateAddress(offer.sellerWallet.address)}</div> */}
             </div>
             <div className="ml-auto flex flex-shrink-0 items-center gap-0.5">
               <span className="mt-1 text-sm leading-none text-content">
@@ -286,8 +283,8 @@ export default function OfferCard({ offer }: OfferCardProps) {
               </span>
               <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
             </div>
-          </div>
-          {/* <Link href={`/offers/${offerId}`} className="w-full">
+          </div> */}
+        {/* <Link href={`/offers/${offerId}`} className="w-full">
           {offer.status === EOfferStatus.OPEN && <Button className="w-full">View Offer</Button>}
           {offer.status === EOfferStatus.CLOSED && (
             <Button variant={'danger'} className="w-full">
@@ -295,7 +292,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
             </Button>
           )}
         </Link> */}
-        </CardFooter>
+        {/* </CardFooter> */}
       </Card>
     </Link>
   );

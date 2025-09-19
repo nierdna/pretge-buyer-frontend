@@ -26,7 +26,7 @@ import { transformToIntegerNumber } from '@/utils/helpers/string';
 import { useAppKit } from '@reown/appkit/react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { ChevronRight, Dot, Loader2 } from 'lucide-react';
+import { ChevronRight, Dot, Globe, Loader2, Twitter } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -436,6 +436,38 @@ export default function OfferDetailPageContent({
                 </div>
               </div>
             </div>
+
+            {offer?.tokens?.twitterUrl && (
+              <div className="flex items-center justify-between">
+                <div>Twitter</div>
+                <div className="flex items-center gap-1">
+                  <Link
+                    href={offer?.tokens?.twitterUrl}
+                    target="_blank"
+                    className="flex items-center gap-1 text-content hover:underline"
+                  >
+                    <Twitter className="h-4 w-4" />
+                    {offer?.tokens?.twitterUrl.replace('https://twitter.com/', '@')}
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {offer?.tokens?.websiteUrl && (
+              <div className="flex items-center justify-between">
+                <div>Website</div>
+                <div className="flex items-center gap-1">
+                  <Link
+                    href={offer?.tokens?.websiteUrl}
+                    target="_blank"
+                    className="flex items-center gap-1 text-content hover:underline"
+                  >
+                    <Globe className="h-4 w-4" />
+                    {offer?.tokens?.websiteUrl.replace(/^https?:\/\/(www\.)?/, '')}
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
