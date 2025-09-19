@@ -14,7 +14,6 @@ import { useTokenQueries } from '@/queries/useTokenQueries';
 import { IOfferFilter } from '@/service/offer.service';
 import { useChainStore } from '@/store/chainStore';
 import { IToken } from '@/types/token';
-import { Play } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
@@ -175,7 +174,7 @@ export default function FilterContent({
           {!hideTokenFilter && (
             <AccordionItem value="token">
               <AccordionTrigger className="text-base">Token</AccordionTrigger>
-              <AccordionContent className="grid gap-2 pt-2">
+              <AccordionContent className="flex grid-cols-2 flex-wrap gap-2 pt-2 lg:grid">
                 {isLoadingTokens ? (
                   <div className="text-sm text-content">Loading tokens...</div>
                 ) : tokensData?.data?.length > 0 ? (
@@ -251,7 +250,7 @@ export default function FilterContent({
         <Button onClick={handleClearFilters}>Clear Filters</Button>
 
         {/* Tutorial Section Toggle Button */}
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <button
             onClick={handleToggleTutorialSection}
             className="flex items-center gap-2 rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 transition-colors hover:border-gray-400 hover:text-gray-800"
@@ -275,10 +274,10 @@ export default function FilterContent({
               </>
             )}
           </button>
-        </div>
+        </div> */}
 
         {/* YouTube Tutorial Section */}
-        {showTutorialSection && (
+        {/* {showTutorialSection && (
           <div className="rounded-lg border border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50 px-4">
             <div className="mb-4 flex items-center gap-3 pt-4">
               <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-red-500">
@@ -290,7 +289,6 @@ export default function FilterContent({
               </div>
             </div>
 
-            {/* Video Content */}
             <div className="relative w-full pb-4" style={{ paddingBottom: '56.25%' }}>
               <iframe
                 className="absolute left-0 top-0 h-full w-full rounded-lg"
@@ -302,7 +300,7 @@ export default function FilterContent({
               ></iframe>
             </div>
           </div>
-        )}
+        )} */}
       </CardContent>
     </>
   );

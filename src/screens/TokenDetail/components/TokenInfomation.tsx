@@ -3,15 +3,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { DESCRIPTION_TOKEN } from '@/constants/description-token';
 import { IToken } from '@/types/token';
-import { ArrowRight, Globe, MessageCircle, Twitter } from 'lucide-react';
+import { ITokenProjectExternal } from '@/types/tokenProject';
+import { Globe, MessageCircle, Twitter } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaDiscord } from 'react-icons/fa';
 
 interface TokenInfoSectionProps {
-  token?: IToken;
+  token: IToken;
+  tokenExternal: ITokenProjectExternal;
 }
 
-export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
+export default function TokenInfoSection({ token, tokenExternal }: TokenInfoSectionProps) {
   return (
     <Card>
       <CardContent className="flex flex-col items-start justify-between gap-6 p-6 md:flex-row md:items-end">
@@ -64,52 +67,54 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
         </div>
 
         {/* Social Links */}
-        <div className="flex flex-col items-end gap-2">
-          <Button size="sm" asChild className="gap-0.5">
+        <div className="flex items-center gap-2">
+          {tokenExternal?.data?.web3Project?.website && (
             <Link
-              href="https://seller.pretgemarket.xyz/auth/login"
+              href={tokenExternal.data.web3Project.website}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Start Selling
-              <ArrowRight className="mb-0.5 h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <Globe className="h-4 w-4" />
+              </Button>
             </Link>
-          </Button>
-          <div className="flex items-center gap-2">
-            {token?.websiteUrl && (
-              <Link href={token.websiteUrl} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
-                >
-                  <Globe className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-            {token?.twitterUrl && (
-              <Link href={token.twitterUrl} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
-                >
-                  <Twitter className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-            {token?.telegramUrl && (
-              <Link href={token.telegramUrl} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-          </div>
+          )}
+
+          {tokenExternal?.data?.socials?.telegram && (
+            <Link
+              href={tokenExternal.data.socials.telegram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+
+          {tokenExternal?.data?.socials?.twitter && (
+            <Link
+              href={tokenExternal.data.socials.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <Twitter className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+
+          {tokenExternal?.data?.socials?.discord && (
+            <Link
+              href={tokenExternal.data.socials.discord}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <FaDiscord className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Right side: Stats (24h Volume, Total Volume, Settle Time) */}

@@ -148,7 +148,7 @@ export default function RootLayout({
           <div className="flex min-h-screen flex-col">
             <Header />
             <main className="flex-grow">
-              <div className="container mx-auto p-4 lg:p-8">{children}</div>
+              <div className="container mx-auto px-4 py-4 lg:px-4 lg:py-6">{children}</div>
             </main>
             <Separator />
             <Footer />
