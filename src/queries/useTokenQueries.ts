@@ -42,3 +42,35 @@ export const useTokenBySymbol = (symbol: string) => {
   });
   return { data, isLoading, isError };
 };
+
+export const useTokenBySymbolExternal = (symbol: string) => {
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['web3-radar-project', symbol.toUpperCase()],
+    queryFn: async () => {
+      const response = await tokenService.getProjectBySymbol(symbol.toUpperCase());
+
+      if (!response.success) {
+        throw new Error(response.message || 'Failed to fetch project data');
+      }
+
+      return response.data;
+    },
+    enabled: !!symbol, // Chỉ query khi có symbol
+    retry: (failureCount, error) => {
+      // Không retry với 4xx errors
+      if (error?.message?.includes('404') || error?.message?.includes('400')) {
+        return false;
+      }
+      return failureCount < 2; // Retry tối đa 2 lần
+    },
+    staleTime: 5 * 60 * 1000, // Cache 5 phút
+    gcTime: 10 * 60 * 1000, // Giữ cache 10 phút
+  });
+
+  return {
+    data,
+    isLoading,
+    isError,
+    error: error as Error | null,
+  };
+};
