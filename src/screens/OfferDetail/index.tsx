@@ -8,7 +8,6 @@ import {
 } from '@/components/ui/breadcrumb';
 import { useGetOfferById } from '@/queries';
 import { useRef } from 'react';
-import TokenInfoSection from '../TokenDetail/components/TokenInfomation';
 import OfferDetailPageContent from './components/OfferDetailPageContent';
 import TransactionHistory, { TransactionHistoryRef } from './components/TransactionHistory';
 
@@ -56,7 +55,7 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
             refetch();
           }}
         />
-        <TokenInfoSection token={offer?.tokens} />
+        {/* <TokenInfoSection token={offer?.tokens} /> */}
         <div className="flex w-full flex-col gap-4">
           <TransactionHistory
             ref={transactionHistoryRef}

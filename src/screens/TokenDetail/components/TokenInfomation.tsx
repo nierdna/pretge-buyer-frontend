@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { FaDiscord } from 'react-icons/fa';
 
 interface TokenInfoSectionProps {
-  token: IToken;
+  token?: IToken;
   tokenExternal: ITokenProjectExternal;
 }
 
