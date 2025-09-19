@@ -200,7 +200,7 @@ const TokenExternal = ({
       <Card>
         <CardContent className="p-0">
           <ChartSection
-            currencyId={tokenExternal.projectId}
+            // currencyId={tokenExternal.projectId}
             tokenSymbol={token?.symbol || web3Project?.symbol}
           />
         </CardContent>

@@ -6,6 +6,28 @@ export interface ChartDataPoint {
   change?: number;
 }
 
+// Updated interface to match actual API response
+export interface APIPrice {
+  USD: number;
+  BTC: number;
+  ETH: number;
+  BNB: number;
+  SOL: number;
+}
+
+export interface APIResponse {
+  timestamps: number[];
+  data: {
+    [currencyId: string]: {
+      prices: APIPrice[];
+      fdv: number[];
+      volumes24h: number[];
+      marketCaps: number[];
+      // ... other fields
+    };
+  };
+}
+
 export interface ChartHistoricalResponse {
   success: boolean;
   data: {
@@ -46,15 +68,45 @@ export const chartService = {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
+      const apiData: APIResponse = await response.json();
 
-      return {
-        success: true,
-        data: {
-          historical: data.historical || [],
-          priceChange: data.priceChange,
-        },
-      };
+      // Transform API data to our expected format
+      const currencyData = apiData.data[currencyId.toString()];
+
+      if (
+        apiData.timestamps &&
+        currencyData &&
+        currencyData.prices &&
+        apiData.timestamps.length > 0 &&
+        currencyData.prices.length > 0
+      ) {
+        // Combine timestamps with prices to create historical data
+        const historical: ChartDataPoint[] = apiData.timestamps
+          .map((timestamp, index) => ({
+            time: new Date(timestamp).toISOString(),
+            price: currencyData.prices[index]?.USD || 0,
+          }))
+          .filter((point) => point.price > 0);
+
+        // Calculate price change
+        const firstPrice = historical[0]?.price || 0;
+        const lastPrice = historical[historical.length - 1]?.price || 0;
+        const absoluteChange = lastPrice - firstPrice;
+        const percentageChange = firstPrice > 0 ? (absoluteChange / firstPrice) * 100 : 0;
+
+        return {
+          success: true,
+          data: {
+            historical,
+            priceChange: {
+              absolute: absoluteChange,
+              percentage: percentageChange,
+            },
+          },
+        };
+      } else {
+        throw new Error('Invalid or empty historical data from API');
+      }
     } catch (error) {
       console.error('Direct fetch failed, trying axios:', error);
 
@@ -78,13 +130,43 @@ export const chartService = {
           }
         );
 
-        return {
-          success: true,
-          data: {
-            historical: response.data.historical || [],
-            priceChange: response.data.priceChange,
-          },
-        };
+        const apiData: APIResponse = response.data;
+        const currencyData = apiData.data[currencyId.toString()];
+
+        if (
+          apiData.timestamps &&
+          currencyData &&
+          currencyData.prices &&
+          apiData.timestamps.length > 0 &&
+          currencyData.prices.length > 0
+        ) {
+          // Combine timestamps with prices to create historical data
+          const historical: ChartDataPoint[] = apiData.timestamps
+            .map((timestamp, index) => ({
+              time: new Date(timestamp).toISOString(),
+              price: currencyData.prices[index]?.USD || 0,
+            }))
+            .filter((point) => point.price > 0);
+
+          // Calculate price change
+          const firstPrice = historical[0]?.price || 0;
+          const lastPrice = historical[historical.length - 1]?.price || 0;
+          const absoluteChange = lastPrice - firstPrice;
+          const percentageChange = firstPrice > 0 ? (absoluteChange / firstPrice) * 100 : 0;
+
+          return {
+            success: true,
+            data: {
+              historical,
+              priceChange: {
+                absolute: absoluteChange,
+                percentage: percentageChange,
+              },
+            },
+          };
+        } else {
+          throw new Error('Invalid or empty historical data from axios');
+        }
       } catch (axiosError) {
         console.error('Both fetch methods failed:', axiosError);
         return {
@@ -106,7 +188,8 @@ export const chartService = {
         time: (new Date(point.time).getTime() / 1000) as any,
         value: parseFloat(String(point.price)) || 0,
       }))
-      .filter((point) => point.value > 0); // Filter out invalid prices
+      .filter((point) => point.value > 0) // Filter out invalid prices
+      .sort((a, b) => a.time - b.time); // Ensure chronological order
   },
 
   /**

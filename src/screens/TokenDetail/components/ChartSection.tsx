@@ -35,6 +35,25 @@ const ChartSection = ({
     changePercent: 0.0,
   });
 
+  // Tooltip state
+  const [tooltipData, setTooltipData] = useState<{
+    visible: boolean;
+    x: number;
+    y: number;
+    price: number;
+    marketCap: number;
+    volume: number;
+    time: string;
+  }>({
+    visible: false,
+    x: 0,
+    y: 0,
+    price: 0,
+    marketCap: 0,
+    volume: 0,
+    time: '',
+  });
+
   const timeframes: { label: string; value: ChartTimeframe }[] = [
     { label: '24h', value: '1D' },
     { label: '7d', value: '1W' },
@@ -79,11 +98,29 @@ const ChartSection = ({
       },
       rightPriceScale: {
         borderColor: '#e0e0e0',
+        scaleMargins: {
+          top: 0.1,
+          bottom: 0.1,
+        },
       },
       timeScale: {
         borderColor: '#e0e0e0',
         timeVisible: true,
         secondsVisible: false,
+        fixLeftEdge: true,
+        fixRightEdge: true,
+      },
+      handleScroll: {
+        mouseWheel: false,
+        pressedMouseMove: false,
+        horzTouchDrag: false,
+        vertTouchDrag: false,
+      },
+      handleScale: {
+        axisPressedMouseMove: false,
+        mouseWheel: false,
+        pinch: false,
+        axisDoubleClickReset: false,
       },
     });
 
@@ -102,6 +139,44 @@ const ChartSection = ({
 
     chartRef.current = chart;
     seriesRef.current = areaSeries;
+
+    // Add crosshair move handler for tooltip
+    chart.subscribeCrosshairMove((param) => {
+      if (!param.point || !param.time || !param.seriesPrices) {
+        setTooltipData((prev) => ({ ...prev, visible: false }));
+        return;
+      }
+
+      const seriesPrice = param.seriesPrices.get(areaSeries);
+      if (!seriesPrice) {
+        setTooltipData((prev) => ({ ...prev, visible: false }));
+        return;
+      }
+
+      const price = typeof seriesPrice === 'number' ? seriesPrice : (seriesPrice as any).value || 0;
+      // Mock market cap and volume based on price (in real app, these would come from API)
+      const marketCap = price * 1000000000; // Mock market cap
+      const volume = price * 50000000; // Mock volume
+
+      // Format time
+      const timeStr = new Date((param.time as number) * 1000).toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+
+      setTooltipData({
+        visible: true,
+        x: param.point.x,
+        y: param.point.y,
+        price,
+        marketCap,
+        volume,
+        time: timeStr,
+      });
+    });
 
     // Handle resize
     const handleResize = () => {
@@ -127,21 +202,56 @@ const ChartSection = ({
       // Try to fetch real data first
       const response = await chartService.getHistoricalData(currencyId, timeframe);
 
-      let chartData;
       if (response.success && response.data.historical && response.data.historical.length > 0) {
-        chartData = chartService.transformToTradingViewData(response.data.historical);
-      } else {
-        // Fallback to mock data
-        console.log('Using mock data as fallback');
-        chartData = chartService.generateMockData();
+        // Use real data from API
+        const chartData = chartService.transformToTradingViewData(response.data.historical);
+
+        if (chartData.length > 0 && seriesRef.current) {
+          seriesRef.current.setData(chartData);
+
+          // Use price change from API if available, otherwise calculate
+          const current = chartData[chartData.length - 1]?.value || 0;
+          let change = 0;
+          let changePercent = 0;
+
+          if (response.data.priceChange) {
+            // Use API provided price change data
+            change = response.data.priceChange.absolute || 0;
+            changePercent = response.data.priceChange.percentage || 0;
+          } else {
+            // Fallback: calculate from chart data
+            const firstPrice = chartData[0]?.value || 0;
+            change = current - firstPrice;
+            changePercent = firstPrice > 0 ? (change / firstPrice) * 100 : 0;
+          }
+
+          setPriceData({
+            current,
+            change,
+            changePercent,
+          });
+
+          // Fit chart to data
+          if (chartRef.current?.timeScale) {
+            chartRef.current.timeScale().fitContent();
+          }
+
+          console.log(
+            `Successfully loaded ${chartData.length} data points from API for ${timeframe}`
+          );
+          return; // Exit early on success
+        }
       }
 
-      if (seriesRef.current && chartData.length > 0) {
-        seriesRef.current.setData(chartData);
+      // Only use mock data if API completely fails or returns no data
+      console.warn('API returned no valid data, using mock data as fallback');
+      const mockData = chartService.generateMockData();
+      if (seriesRef.current && mockData.length > 0) {
+        seriesRef.current.setData(mockData);
 
-        // Update price data
-        const latestPrice = chartData[chartData.length - 1]?.value || 0;
-        const firstPrice = chartData[0]?.value || 0;
+        // Calculate mock price data
+        const latestPrice = mockData[mockData.length - 1]?.value || 0;
+        const firstPrice = mockData[0]?.value || 0;
         const priceChange = latestPrice - firstPrice;
         const changePercent = firstPrice > 0 ? (priceChange / firstPrice) * 100 : 0;
 
@@ -150,18 +260,26 @@ const ChartSection = ({
           change: priceChange,
           changePercent: changePercent,
         });
-
-        // Fit chart to data
-        if (chartRef.current?.timeScale) {
-          chartRef.current.timeScale().fitContent();
-        }
       }
     } catch (error) {
       console.error('Failed to fetch chart data:', error);
-      // Use mock data on error
+
+      // Use mock data only as last resort
       const mockData = chartService.generateMockData();
-      if (seriesRef.current) {
+      if (seriesRef.current && mockData.length > 0) {
         seriesRef.current.setData(mockData);
+
+        // Calculate mock price data
+        const latestPrice = mockData[mockData.length - 1]?.value || 0;
+        const firstPrice = mockData[0]?.value || 0;
+        const priceChange = latestPrice - firstPrice;
+        const changePercent = firstPrice > 0 ? (priceChange / firstPrice) * 100 : 0;
+
+        setPriceData({
+          current: latestPrice,
+          change: priceChange,
+          changePercent: changePercent,
+        });
       }
     } finally {
       setIsLoading(false);
@@ -180,6 +298,28 @@ const ChartSection = ({
       minimumFractionDigits: 4,
       maximumFractionDigits: 6,
     }).format(price);
+  };
+
+  const formatMarketCap = (value: number) => {
+    if (value >= 1e9) {
+      return `$${(value / 1e9).toFixed(2)}B`;
+    } else if (value >= 1e6) {
+      return `$${(value / 1e6).toFixed(2)}M`;
+    } else if (value >= 1e3) {
+      return `$${(value / 1e3).toFixed(2)}K`;
+    }
+    return `$${value.toFixed(2)}`;
+  };
+
+  const formatVolume = (value: number) => {
+    if (value >= 1e9) {
+      return `$${(value / 1e9).toFixed(2)}B`;
+    } else if (value >= 1e6) {
+      return `$${(value / 1e6).toFixed(2)}M`;
+    } else if (value >= 1e3) {
+      return `$${(value / 1e3).toFixed(2)}K`;
+    }
+    return `$${value.toFixed(2)}`;
   };
 
   const isPositive = priceData.changePercent >= 0;
@@ -254,6 +394,41 @@ const ChartSection = ({
           ref={chartContainerRef}
           className="h-[400px] w-full rounded-lg border border-gray-200 bg-white"
         />
+
+        {/* Custom Tooltip */}
+        {tooltipData.visible && (
+          <div
+            className="pointer-events-none absolute z-20 rounded-lg border border-gray-200 bg-white p-3 shadow-lg"
+            style={{
+              left: tooltipData.x > 200 ? tooltipData.x - 180 : tooltipData.x + 10,
+              top: tooltipData.y > 100 ? tooltipData.y - 100 : tooltipData.y + 10,
+            }}
+          >
+            <div className="space-y-2 text-xs">
+              <div className="border-b border-gray-100 pb-2">
+                <span className="font-medium text-gray-600">{tooltipData.time}</span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-gray-500">Price:</span>
+                <span className="font-semibold text-gray-900">
+                  {formatPrice(tooltipData.price)}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-gray-500">Market Cap:</span>
+                <span className="font-semibold text-gray-900">
+                  {formatMarketCap(tooltipData.marketCap)}
+                </span>
+              </div>
+              <div className="flex justify-between gap-4">
+                <span className="text-gray-500">Volume:</span>
+                <span className="font-semibold text-gray-900">
+                  {formatVolume(tooltipData.volume)}
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Chart info footer */}
