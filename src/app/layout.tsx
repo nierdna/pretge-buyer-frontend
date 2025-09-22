@@ -1,4 +1,6 @@
+import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
+import SupportFixed from '@/components/SupportFixed';
 import Separator from '@/components/ui/separator';
 import Provider from '@/providers';
 import '@/styles/global.css';
@@ -143,16 +145,20 @@ export default function RootLayout({
         />
       </head>
       <body className={`bg-gradient-page-bg flex min-h-screen flex-col`}>
+        {/* <SocketProvider> */}
         <Provider>
           <div className="flex min-h-screen flex-col">
+            {/* <Topbar /> */}
             <Header />
             <main className="flex-grow">
-              <div className="container mx-auto p-4 lg:p-8">{children}</div>
+              <div className="container mx-auto px-4 py-4 lg:px-4 lg:py-6">{children}</div>
             </main>
             <Separator />
-            {/* <Footer /> */}
+            <Footer />
+            <SupportFixed />
           </div>
         </Provider>
+        {/* </SocketProvider> */}
       </body>
     </html>
   );
