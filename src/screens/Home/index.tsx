@@ -1,8 +1,11 @@
 'use client';
 
+import { ESocketEvent, useSocket } from '@/context/SocketContext';
 import { useGetOffers } from '@/queries/useOfferQueries';
 import { useTokenQueries } from '@/queries/useTokenQueries';
-import { useCallback } from 'react';
+import { Service } from '@/service';
+import { useQueryClient } from '@tanstack/react-query';
+import { useCallback, useEffect } from 'react';
 import FilterSidebar from '../../components/filter/FilterSidebar';
 import OfferList from '../../components/OfferList';
 import ScrollToTop from '../../components/ScrollToTop';
@@ -24,6 +27,55 @@ export default function HomePage() {
   const offers = data?.pages.flatMap((page) => page.data) || [];
 
   const { data: tokens, isLoading: isLoadingTokens } = useTokenQueries();
+
+  const { socket, subscribe, unsubscribe } = useSocket();
+  const queryClient = useQueryClient();
+
+  const handleOfferUpdate = (data: any) => {
+    console.log('dataaaa', data);
+    queryClient.setQueryData(['offers', filters], (oldData: any) => {
+      // Validate oldData structure for infinite query
+      if (!oldData || !oldData.pages || oldData.pages.length === 0) {
+        return oldData;
+      }
+
+      // Add new offer to the first page
+      const firstPage = oldData.pages[0];
+      const newOffers = [data.data, ...firstPage.data];
+
+      // Update the infinite query structure
+      return {
+        ...oldData,
+        pages: [
+          {
+            ...firstPage,
+            data: newOffers,
+            pagination: {
+              ...firstPage.pagination,
+              total: firstPage.pagination.total + 1,
+            },
+          },
+          ...oldData.pages.slice(1),
+        ],
+      };
+    });
+  };
+
+  useEffect(() => {
+    subscribe(ESocketEvent.OfferUpdate, handleOfferUpdate);
+
+    return () => {
+      unsubscribe(ESocketEvent.OfferUpdate, handleOfferUpdate);
+    };
+  }, [socket]);
+
+  const randomSeconds = Math.floor(Math.random() * 10000) + 7000; // 7s - 10s
+
+  useEffect(() => {
+    setTimeout(() => {
+      Service.order.createMockOrder();
+    }, randomSeconds);
+  }, []);
 
   // Callback to handle load more
   const handleLoadMore = useCallback(() => {

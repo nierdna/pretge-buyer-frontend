@@ -180,12 +180,12 @@ export default function OfferList({
       <div
         ref={searchBarRef}
         className={cn(
-          'sticky top-[4.5rem] z-30 flex h-fit flex-col items-center justify-between gap-4 rounded-2xl p-4 transition-colors duration-300 sm:flex-row',
+          'sticky top-[6.5rem] z-30 flex h-fit flex-col items-center justify-between gap-4 rounded-2xl p-4 transition-colors duration-300 sm:flex-row',
           'border border-line bg-primary-foreground'
         )}
       >
-        <div className="flex w-full flex-1 flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
-          <div className="flex items-center gap-4">
+        <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
+          <div className="flex items-start gap-4 lg:hidden">
             <FilterSheet
               filters={filters}
               setFilters={setFilters}

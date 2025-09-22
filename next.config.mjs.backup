@@ -52,6 +52,10 @@ const nextConfig = {
     // Custom webpack config
     return config;
   },
+  // Enable App Router
+  experimental: {
+    serverActions: true,
+  },
   // Disable ESLint during development
   eslint: {
     // Warning: This allows production builds to successfully complete even if

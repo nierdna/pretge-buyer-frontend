@@ -14,7 +14,7 @@ export default function FilterSidebar({
   hideTokenFilter?: boolean;
 }) {
   return (
-    <Card className="sticky top-[4.5rem] hidden h-fit overflow-y-auto lg:block">
+    <Card className="sticky top-[6.5rem] hidden h-fit overflow-y-auto lg:block">
       <FilterContent
         filters={filters}
         setFilters={setFilters}

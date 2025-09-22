@@ -1,7 +1,9 @@
-import Footer from '@/components/layouts/Footer';
+import Footer from '@/components/footer';
 import Header from '@/components/layouts/Header';
+import Topbar from '@/components/layouts/Topbar';
 import SupportFixed from '@/components/SupportFixed';
 import Separator from '@/components/ui/separator';
+import { SocketProvider } from '@/context/SocketContext';
 import Provider from '@/providers';
 import '@/styles/global.css';
 import type { Metadata } from 'next';
@@ -145,20 +147,20 @@ export default function RootLayout({
         />
       </head>
       <body className={`bg-gradient-page-bg flex min-h-screen flex-col`}>
-        {/* <SocketProvider> */}
-        <Provider>
-          <div className="flex min-h-screen flex-col">
-            {/* <Topbar /> */}
-            <Header />
-            <main className="flex-grow">
-              <div className="container mx-auto px-4 py-4 lg:px-4 lg:py-6">{children}</div>
-            </main>
-            <Separator />
-            <Footer />
-            <SupportFixed />
-          </div>
-        </Provider>
-        {/* </SocketProvider> */}
+        <SocketProvider>
+          <Provider>
+            <div className="flex min-h-screen flex-col">
+              <Topbar />
+              <Header />
+              <main className="flex-grow">
+                <div className="container mx-auto px-4 py-4 lg:px-4 lg:py-6">{children}</div>
+              </main>
+              <Separator />
+              <Footer />
+              <SupportFixed />
+            </div>
+          </Provider>
+        </SocketProvider>
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 'use client';
 
+import DialogHowToPlay from '@/components/DialogHowToPlay';
 import { useAuth } from '@/hooks/useAuth';
 import { useAuthStore } from '@/store/authStore';
 import { useChainStore } from '@/store/chainStore';
@@ -62,7 +63,12 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
     }
   }, [accessToken]);
 
-  return children;
+  return (
+    <>
+      <DialogHowToPlay />
+      {children}
+    </>
+  );
 };
 
 export default MainLayout;

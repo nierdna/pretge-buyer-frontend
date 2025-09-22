@@ -12,7 +12,7 @@ const SupportFixed = () => {
             target="_blank"
             className="flex items-center gap-3 px-3 py-2 text-black transition-colors hover:bg-gray-100"
           >
-            <FaDiscord className="h-4 w-4 text-[#5865F2]" />
+            <FaDiscord className="h-4 w-4 text-black" />
             <span className="text-sm font-normal">Discord</span>
           </a>
           <a

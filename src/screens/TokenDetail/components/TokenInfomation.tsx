@@ -3,15 +3,18 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { DESCRIPTION_TOKEN } from '@/constants/description-token';
 import { IToken } from '@/types/token';
-import { ArrowRight, Globe, MessageCircle, Twitter } from 'lucide-react';
+import { ITokenProjectExternal } from '@/types/tokenProject';
+import { Globe, MessageCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { FaDiscord } from 'react-icons/fa';
 
 interface TokenInfoSectionProps {
   token?: IToken;
+  tokenExternal: ITokenProjectExternal;
 }
 
-export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
+export default function TokenInfoSection({ token, tokenExternal }: TokenInfoSectionProps) {
   return (
     <Card>
       <CardContent className="flex flex-col items-start justify-between gap-6 p-6 md:flex-row md:items-end">
@@ -64,52 +67,63 @@ export default function TokenInfoSection({ token }: TokenInfoSectionProps) {
         </div>
 
         {/* Social Links */}
-        <div className="flex flex-col items-end gap-2">
-          <Button size="sm" asChild className="gap-0.5">
+        <div className="flex items-center gap-2">
+          {tokenExternal?.data?.web3Project?.website && (
             <Link
-              href="https://seller.pretgemarket.xyz/auth/login"
+              href={tokenExternal.data.web3Project.website}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Start Selling
-              <ArrowRight className="mb-0.5 h-4 w-4" />
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <Globe className="h-4 w-4" />
+              </Button>
             </Link>
-          </Button>
-          <div className="flex items-center gap-2">
-            {token?.websiteUrl && (
-              <Link href={token.websiteUrl} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
-                >
-                  <Globe className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-            {token?.twitterUrl && (
-              <Link href={token.twitterUrl} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
-                >
-                  <Twitter className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-            {token?.telegramUrl && (
-              <Link href={token.telegramUrl} target="_blank" rel="noopener noreferrer">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 bg-gray-100 hover:bg-gray-200"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                </Button>
-              </Link>
-            )}
-          </div>
+          )}
+
+          {tokenExternal?.data?.socials?.telegram && (
+            <Link
+              href={tokenExternal.data.socials.telegram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <MessageCircle className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
+
+          {tokenExternal?.data?.socials?.twitter && (
+            <Link
+              href={tokenExternal.data.socials.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <title>social_x_line</title>
+                  <g id="social_x_line" fill="none" fill-rule="evenodd">
+                    <path d="M24 0v24H0V0zM12.594 23.258l-.012.002-.071.035-.02.004-.014-.004-.071-.036c-.01-.003-.019 0-.024.006l-.004.01-.017.428.005.02.01.013.104.074.015.004.012-.004.104-.074.012-.016.004-.017-.017-.427c-.002-.01-.009-.017-.016-.018m.264-.113-.014.002-.184.093-.01.01-.003.011.018.43.005.012.008.008.201.092c.012.004.023 0 .029-.008l.004-.014-.034-.614c-.003-.012-.01-.02-.02-.022m-.715.002a.023.023 0 0 0-.027.006l-.006.014-.034.614c0 .012.007.02.017.024l.015-.002.201-.093.01-.008.003-.011.018-.43-.003-.012-.01-.01z" />
+                    <path
+                      fill="currentColor"
+                      d="M19.753 4.659a1 1 0 0 0-1.506-1.317l-5.11 5.84L8.8 3.4A1 1 0 0 0 8 3H4a1 1 0 0 0-.8 1.6l6.437 8.582-5.39 6.16a1 1 0 0 0 1.506 1.317l5.11-5.841L15.2 20.6a1 1 0 0 0 .8.4h4a1 1 0 0 0 .8-1.6l-6.437-8.582 5.39-6.16ZM16.5 19 6 5h1.5L18 19z"
+                    />
+                  </g>
+                </svg>
+              </Button>
+            </Link>
+          )}
+
+          {tokenExternal?.data?.socials?.discord && (
+            <Link
+              href={tokenExternal.data.socials.discord}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button variant="ghost" size="icon" className="h-8 w-8 bg-gray-100 hover:bg-gray-200">
+                <FaDiscord className="h-4 w-4" />
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Right side: Stats (24h Volume, Total Volume, Settle Time) */}
