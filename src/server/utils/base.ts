@@ -5,6 +5,7 @@ export interface BaseLoginRequest {
   signature: string;
   message: string;
   timestamp: number;
+  referralCode?: string; // Optional referral code
 }
 
 export interface BaseLoginResponse {

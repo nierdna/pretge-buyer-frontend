@@ -1,6 +1,7 @@
 import Footer from '@/components/footer';
 import Header from '@/components/layouts/Header';
 import Topbar from '@/components/layouts/Topbar';
+import SupportFixed from '@/components/SupportFixed';
 import Separator from '@/components/ui/separator';
 import { SocketProvider } from '@/context/SocketContext';
 import Provider from '@/providers';
@@ -156,6 +157,7 @@ export default function RootLayout({
               </main>
               <Separator />
               <Footer />
+              <SupportFixed />
             </div>
           </Provider>
         </SocketProvider>

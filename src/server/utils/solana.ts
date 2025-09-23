@@ -7,6 +7,7 @@ export interface SolanaLoginRequest {
   signature: string;
   message: string;
   timestamp: number;
+  referralCode?: string; // Optional referral code
 }
 
 export interface SolanaLoginResponse {

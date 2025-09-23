@@ -14,6 +14,9 @@ export interface User {
   };
   kycStatus: 'pending' | 'verified' | 'rejected';
   status: 'active' | 'banned' | 'pending';
+  // Referral fields
+  inviteCode?: string;
+  referredByUserId?: string;
   createdAt: Date;
   updatedAt: Date;
 }

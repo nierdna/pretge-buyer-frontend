@@ -38,14 +38,14 @@ export class AuthService {
         };
       }
 
-      const { walletAddress } = loginRequest;
+      const { walletAddress, referralCode } = loginRequest;
 
       // Check if wallet exists
       let wallet = await this.getWalletByAddress(walletAddress, 'evm');
 
       if (!wallet) {
         // Create new user and wallet
-        const user = await this.createUser(walletAddress);
+        const user = await this.createUser(walletAddress, referralCode);
         wallet = await this.createWallet(user.id, walletAddress, 'evm');
       } else {
         if (wallet.roles.includes('seller')) {
@@ -107,14 +107,14 @@ export class AuthService {
         };
       }
 
-      const { walletAddress } = loginRequest;
+      const { walletAddress, referralCode } = loginRequest;
 
       // Check if wallet exists
       let wallet = await this.getWalletByAddress(walletAddress, 'sol');
 
       if (!wallet) {
         // Create new user and wallet
-        const user = await this.createUser(walletAddress);
+        const user = await this.createUser(walletAddress, referralCode);
         wallet = await this.createWallet(user.id, walletAddress, 'sol');
       } else {
         if (wallet.roles.includes('seller')) {
@@ -255,7 +255,22 @@ export class AuthService {
   }
 
   // Create new user
-  private static async createUser(walletAddress: string): Promise<User> {
+  private static async createUser(walletAddress: string, referralCode?: string): Promise<User> {
+    let referredByUserId = null;
+
+    // If referral code provided, find the referrer
+    if (referralCode) {
+      const { data: referrer } = await supabase
+        .from('users')
+        .select('id')
+        .eq('invite_code', referralCode.toUpperCase())
+        .single();
+
+      if (referrer) {
+        referredByUserId = referrer.id;
+      }
+    }
+
     const { data, error } = await supabase
       .from('users')
       .insert({
@@ -273,6 +288,7 @@ export class AuthService {
         },
         kyc_status: 'pending',
         status: 'active',
+        referred_by_user_id: referredByUserId,
       })
       .select()
       .single();
@@ -290,6 +306,8 @@ export class AuthService {
       socialMedia: data.social_media,
       kycStatus: data.kyc_status,
       status: data.status,
+      inviteCode: data.invite_code,
+      referredByUserId: data.referred_by_user_id,
       createdAt: data.created_at,
       updatedAt: data.updated_at,
     } as User;
