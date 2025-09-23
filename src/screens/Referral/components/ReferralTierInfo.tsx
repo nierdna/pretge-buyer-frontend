@@ -2,85 +2,58 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface TierInfo {
-  tier: number;
-  emoji: string;
-  rewards: string;
-  requirements: string;
-}
-
-const tierData: TierInfo[] = [
-  {
-    tier: 1,
-    emoji: '',
-    rewards: '2.5% fee collected from referee paid in xWHALES',
-    requirements: 'No requirements.',
-  },
-  {
-    tier: 2,
-    emoji: '🥉',
-    rewards: '5% fee collected from referee paid in xWHALES',
-    requirements: 'Combined filled volume over $200K from referee.',
-  },
-  {
-    tier: 3,
-    emoji: '🔥',
-    rewards: '7.5% fee collected from referee paid in xWHALES',
-    requirements: 'Combined filled volume over $500K from referee.',
-  },
-  {
-    tier: 4,
-    emoji: '👑',
-    rewards: '10% fee collected from referee paid in xWHALES',
-    requirements: 'Combined filled volume over $1M from referee.',
-  },
-];
-
 export default function ReferralTierInfo() {
   return (
     <Card className="bg-card border-gray-200">
       <CardHeader>
         <div className="flex items-center gap-2">
-          <div className="text-blue-400">📊</div>
-          <CardTitle className="text-gray-900">Referral Tier Info</CardTitle>
+          <div className="text-blue-400">🎁</div>
+          <CardTitle className="text-gray-900">Referral Rewards</CardTitle>
         </div>
         <p className="text-sm text-content">
-          The Referral Program Reward will be distributed{' '}
-          <span className="font-medium text-gray-900">monthly</span> based on the User Tier
-          accumulated through the combined{' '}
-          <span className="font-medium text-gray-900">filled volume from referees</span>.
+          Earn rewards by inviting friends to join our platform. Both you and your friends will
+          benefit from our referral program.
         </p>
-        <button className="flex w-fit items-center gap-1 text-sm text-yellow-500 transition-colors hover:text-yellow-400">
-          Learn more ↗
-        </button>
       </CardHeader>
-      <CardContent className="">
-        <div className="grid gap-1 text-xs">
-          <div className="grid grid-cols-3 border-b border-gray-200 font-medium text-content">
-            <div className="border-r border-gray-200 py-3 pr-4">REFERRAL TIER</div>
-            <div className="border-r border-gray-200 px-4 py-3">REWARDS</div>
-            <div className="py-3 pl-4">REQUIREMENTS</div>
+      <CardContent className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {/* Referrer Reward */}
+          <div className="rounded-lg border border-blue-200 bg-gradient-to-r from-blue-50 to-indigo-50 p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="text-lg">💰</span>
+              <h3 className="font-medium text-gray-900">For You (Referrer)</h3>
+            </div>
+            <p className="mb-1 text-sm text-content">
+              Receive <span className="font-semibold text-blue-600">10% of trading fees</span> from
+              your referred friends
+            </p>
+          </div>
+
+          {/* Referee Reward */}
+          <div className="rounded-lg border border-green-200 bg-gradient-to-r from-green-50 to-emerald-50 p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <span className="text-lg">⭐</span>
+              <h3 className="font-medium text-gray-900">For Your Friend (Referee)</h3>
+            </div>
+            <p className="mb-1 text-sm text-content">
+              Your friend receives{' '}
+              <span className="font-semibold text-green-600">10% bonus points</span> on their
+              activities
+            </p>
           </div>
         </div>
 
-        <div className="">
-          {tierData.map((tier) => (
-            <div
-              key={tier.tier}
-              className="grid grid-cols-3 border-b border-gray-200 last:border-0"
-            >
-              <div className="flex items-center gap-2 border-r border-gray-200 pr-4">
-                <span className="text-xs font-medium text-gray-900">TIER {tier.tier}</span>
-                {tier.emoji && <span className="text-sm">{tier.emoji}</span>}
-              </div>
-
-              <div className="border-r border-gray-200 px-4 py-2 text-xs text-content">
-                {tier.rewards}
-              </div>
-
-              <div className="px-4 py-2 text-xs text-content">{tier.requirements}</div>
+        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
+          <div className="flex items-start gap-2">
+            <span className="mt-0.5 text-yellow-600">ℹ️</span>
+            <div>
+              <p className="text-sm text-gray-700">
+                <span className="font-medium">How it works:</span> When someone uses your referral
+                code and makes trades, you automatically earn 10% of their trading fees, while they
+                get 10% bonus points on their account.
+              </p>
             </div>
-          ))}
+          </div>
         </div>
       </CardContent>
     </Card>

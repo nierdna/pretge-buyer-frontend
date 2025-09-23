@@ -32,7 +32,6 @@ export default function HomePage() {
   const queryClient = useQueryClient();
 
   const handleOfferUpdate = (data: any) => {
-    console.log('dataaaa', data);
     queryClient.setQueryData(['offers', filters], (oldData: any) => {
       // Validate oldData structure for infinite query
       if (!oldData || !oldData.pages || oldData.pages.length === 0) {

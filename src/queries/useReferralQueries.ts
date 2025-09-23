@@ -1,11 +1,17 @@
 'use client';
 
+import { useFilterCache } from '@/hooks/useFilterCache';
 import { Service } from '@/service';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAuthStore } from '@/store/authStore';
+import { ReferralRewardsQueryParams } from '@/types/referral';
+import { CACHE_KEYS } from '@/utils/filterCache';
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 // Get my referral code and stats
 export const useGetMyReferralCode = () => {
+  const { accessToken } = useAuthStore();
+
   return useQuery({
     queryKey: ['my-referral-code'],
     queryFn: async () => {
@@ -18,6 +24,7 @@ export const useGetMyReferralCode = () => {
         return null;
       }
     },
+    enabled: !!accessToken, // Only fetch when user is authenticated
     retry: 2,
   });
 };
@@ -65,6 +72,8 @@ export const useSetReferrer = () => {
 
 // Get referral stats for display
 export const useGetReferralStats = () => {
+  const { accessToken } = useAuthStore();
+
   return useQuery({
     queryKey: ['referral-stats'],
     queryFn: async () => {
@@ -79,9 +88,7 @@ export const useGetReferralStats = () => {
           myInviteCode: response.data.myInviteCode,
           currentTier: calculateTier(response.data.stats?.totalReferralPoints || 0),
           totalReferrals: response.data.stats?.totalReferrals || 0,
-          totalFilledVolume: 0, // TODO: Add this to API response
-          lastEpochRewards: 0, // TODO: Add this to API response
-          totalDistributedRewards: response.data.stats?.totalReferralPoints || 0,
+          totalReferralPoints: response.data.stats?.totalReferralPoints || 0,
           referralLink: generateReferralLink(response.data.myInviteCode),
           referredBy: response.data.referredBy,
           recentReferrals: response.data.recentReferrals || [],
@@ -91,8 +98,71 @@ export const useGetReferralStats = () => {
         return null;
       }
     },
+    enabled: !!accessToken, // Only fetch when user is authenticated
     refetchInterval: 30000, // Refetch every 30 seconds
   });
+};
+
+export const useGetReferralRewards = (queryKey: any[] = []) => {
+  // Use filter cache to save filter state
+  const { filters, setFilters, resetToDefault, clearCache } = useFilterCache({
+    key: CACHE_KEYS.REFERRAL_REWARDS_FILTER,
+    defaultFilter: {
+      limit: 10,
+      page: 1,
+      sortField: 'created_at',
+      sortOrder: 'desc',
+    } as ReferralRewardsQueryParams,
+  });
+
+  const { data, isLoading, isError, isFetching, fetchNextPage, hasNextPage, refetch } =
+    useInfiniteQuery({
+      queryKey: ['referral-rewards', filters, ...queryKey],
+      queryFn: async ({ pageParam = 1 }) => {
+        try {
+          const response = await Service.referral.getReferralRewards({
+            page: pageParam,
+            limit: filters.limit,
+            sortField: filters.sortField as 'created_at' | 'points_earned',
+            sortOrder: filters.sortOrder as 'asc' | 'desc',
+          });
+          return response.data
+            ? response
+            : { data: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 0 } };
+        } catch (error) {
+          console.error('Failed to fetch referral rewards:', error);
+          throw error;
+        }
+      },
+      getNextPageParam: (lastPage, pages) => {
+        if (lastPage.pagination && lastPage.pagination.totalPages > pages.length) {
+          return pages.length + 1;
+        }
+        return undefined;
+      },
+      initialPageParam: 1,
+      retry: (failureCount, error: any) => {
+        // Don't retry on 4xx errors
+        if (error?.response?.status >= 400 && error?.response?.status < 500) {
+          return false;
+        }
+        return failureCount < 3;
+      },
+    });
+
+  return {
+    data,
+    isLoading,
+    isFetching,
+    isError,
+    filters,
+    setFilters,
+    fetchNextPage,
+    hasNextPage,
+    resetToDefault,
+    clearCache,
+    refetch,
+  };
 };
 
 // Helper functions
@@ -105,7 +175,10 @@ function calculateTier(totalPoints: number): number {
   return 1;
 }
 
-function generateReferralLink(inviteCode: string): string {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
-  return `${baseUrl}/register?ref=${inviteCode}`;
+function generateReferralLink(inviteCode: string | null): string | null {
+  if (!inviteCode) return null;
+
+  const baseUrl =
+    typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL || '';
+  return `${baseUrl}?ref=${inviteCode}`;
 }

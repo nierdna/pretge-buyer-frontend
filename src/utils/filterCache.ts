@@ -6,6 +6,7 @@ export const CACHE_KEYS = {
   OFFERS_BY_TOKEN_FILTER: 'offers_by_token_filter',
   OFFERS_BY_USER_FILTER: 'offers_by_user_filter',
   ORDERS_FILTER: 'orders_filter',
+  REFERRAL_REWARDS_FILTER: 'referral_rewards_filter',
 } as const;
 
 // Cache TTL in milliseconds (24 hours)

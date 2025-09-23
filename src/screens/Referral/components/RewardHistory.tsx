@@ -12,14 +12,14 @@ import {
 import { ArrowUpRight, RotateCcw } from 'lucide-react';
 import Image from 'next/image';
 
-interface DistributionRecord {
+interface RewardRecord {
   timestamp: string;
   rewards: number;
   txHash: string;
 }
 
 // Mock data - replace with actual API calls
-const mockDistributions: DistributionRecord[] = [
+const mockRewards: RewardRecord[] = [
   // Empty for now, matching the image
   {
     timestamp: '2025-01-01',
@@ -33,17 +33,17 @@ const mockDistributions: DistributionRecord[] = [
   },
 ];
 
-export default function DistributionHistory() {
+export default function RewardHistory() {
   return (
     <Card className="bg-white/95">
       <CardHeader>
         <div className="flex items-center gap-2">
           <RotateCcw className="h-5 w-5 text-gray-900" />
-          <CardTitle className="text-gray-900">Distribution History</CardTitle>
+          <CardTitle className="text-gray-900">Reward History</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
-        {mockDistributions.length === 0 ? (
+        {mockRewards.length === 0 ? (
           <div className="py-8">
             <Table>
               <TableHeader>
@@ -56,7 +56,7 @@ export default function DistributionHistory() {
               <TableBody>
                 <TableRow className="border-line hover:bg-transparent">
                   <TableCell colSpan={3} className="py-8 text-center text-content">
-                    No distribution history found
+                    No Reward history found
                   </TableCell>
                 </TableRow>
               </TableBody>
@@ -72,7 +72,7 @@ export default function DistributionHistory() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockDistributions.map((record, index) => (
+              {mockRewards.map((record, index) => (
                 <TableRow key={index} className="hover:bg-muted/50 border-line">
                   <TableCell className="text-sm text-gray-900">{record.timestamp}</TableCell>
                   <TableCell className="text-sm text-white">
