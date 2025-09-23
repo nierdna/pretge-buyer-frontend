@@ -1,9 +1,13 @@
 'use client';
 
+import { UserCheck } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { ButtonConnectWallet } from '../ButtonConnectWallet';
+import { Button } from '../ui/button';
 
 export default function Header() {
+  const router = useRouter();
   return (
     <>
       {/* Top bar with seller links */}
@@ -40,7 +44,19 @@ export default function Header() {
             <img src="/logo.png" alt="PreTGE Market" className="hidden h-10 w-auto md:block" />
             <img src="/logo-mb.png" alt="PreTGE Market" className="block h-8 w-auto md:hidden" />
           </Link>
-          <ButtonConnectWallet />
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => {
+                router.push('/referral');
+              }}
+              variant="outline"
+              className="flex items-center gap-2 text-sm font-medium"
+            >
+              <UserCheck className="h-4 w-4" />
+              <p className="text-sm font-medium leading-none">Referral</p>
+            </Button>
+            <ButtonConnectWallet />
+          </div>
         </div>
       </header>
     </>
