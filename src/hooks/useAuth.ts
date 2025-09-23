@@ -12,7 +12,7 @@ import {
   useDisconnect,
   type Provider,
 } from '@reown/appkit/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import bs58 from 'bs58';
 import { toast } from 'sonner';
 
@@ -25,6 +25,7 @@ export const useAuth = () => {
 
   const { disconnect } = useDisconnect();
   const { setTokens, logout, user, accessToken, setWalletAddress, walletAddress } = useAuthStore();
+  const queryClient = useQueryClient();
 
   // Generate login message
   const generateLoginMessage = useMutation({
@@ -136,6 +137,11 @@ export const useAuth = () => {
   const handleLogout = async () => {
     await disconnect();
     logout();
+
+    // Clear referral queries on logout
+    queryClient.invalidateQueries({ queryKey: ['referral-stats'] });
+    queryClient.invalidateQueries({ queryKey: ['my-referral-code'] });
+
     toast.success('Logged out', {
       description: 'You have been successfully logged out',
     });
