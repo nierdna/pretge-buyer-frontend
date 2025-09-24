@@ -5,7 +5,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-postgres",
-        "postgresql://postgres:YAorLHYJDMhyJEhcNzmNuxELuCZNEtWN@interchange.proxy.rlwy.net:22672/railway"
+        "postgresql://postgres.bflvxveokoeybvfhcdux:kv3fphIlrsFod0k@aws-0-ap-southeast-1.pooler.supabase.com:6543/postgres"
       ]
     }
   }

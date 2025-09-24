@@ -3,6 +3,7 @@ import ChainsService from './chains.service';
 import { chartService } from './chart.service';
 import { OfferService } from './offer.service';
 import { OrderService } from './order.service';
+import { QuestService } from './quest.service';
 import { ReferralService } from './referral.service';
 import { UserService } from './user.service';
 
@@ -14,4 +15,5 @@ export const Service = Object.freeze({
   auth: new AuthService(),
   chart: chartService,
   referral: new ReferralService(),
+  quest: new QuestService(),
 });
