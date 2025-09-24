@@ -16,7 +16,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
     defaultFilter: {
       limit: 6,
       page: 1,
-      sortField: 'created_at',
+      sortField: 'updated_at',
       sortOrder: 'desc',
       tokenId: '',
     },
