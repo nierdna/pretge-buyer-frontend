@@ -499,6 +499,70 @@ export class QuestService {
   }
 
   /**
+   * Get all active quests with user completion status
+   */
+  async getAllQuestsWithUserStatus(userId?: string): Promise<
+    (Quest & {
+      isCompleted: boolean;
+      userQuest?: UserQuest;
+    })[]
+  > {
+    // Get all active quests
+    const activeQuests = await this.getActiveQuests();
+
+    if (!userId) {
+      // If no user, all quests are not completed
+      return activeQuests.map((quest) => ({
+        ...quest,
+        isCompleted: false,
+      }));
+    }
+
+    // Get user's completed quests
+    const { data: userQuests, error } = await supabase
+      .from('user_quests')
+      .select('*')
+      .eq('user_id', userId)
+      .eq('status', VerifyStatus.VERIFIED);
+
+    if (error) {
+      console.error('Error fetching user quests:', error);
+      // Return quests without completion status
+      return activeQuests.map((quest) => ({
+        ...quest,
+        isCompleted: false,
+      }));
+    }
+
+    // Create a map of completed quest IDs
+    const completedQuestIds = new Set(userQuests.map((uq) => uq.quest_id));
+    const userQuestMap = new Map(
+      userQuests.map((uq) => [
+        uq.quest_id,
+        {
+          id: uq.id,
+          userId: uq.user_id,
+          questId: uq.quest_id,
+          status: uq.status,
+          proofPayload: uq.proof_payload || {},
+          idempotencyKey: uq.idempotency_key,
+          submittedAt: new Date(uq.submitted_at),
+          verifiedAt: uq.verified_at ? new Date(uq.verified_at) : undefined,
+          rejectedAt: uq.rejected_at ? new Date(uq.rejected_at) : undefined,
+          rejectReason: uq.reject_reason,
+        },
+      ])
+    );
+
+    // Combine quests with completion status
+    return activeQuests.map((quest) => ({
+      ...quest,
+      isCompleted: completedQuestIds.has(quest.id),
+      userQuest: userQuestMap.get(quest.id),
+    }));
+  }
+
+  /**
    * Get user points and referral stats
    */
   async getUserStats(userId: string): Promise<{
