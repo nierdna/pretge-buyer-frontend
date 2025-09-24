@@ -61,7 +61,7 @@ export default function OfferList({
 }) {
   const [isSticky, setIsSticky] = useState(false);
   const [viewType, setViewType] = useState<'card' | 'list'>('card'); // New state for view type
-  const [sortField, setSortField] = useState(filters.sortField || 'created_at');
+  const [sortField, setSortField] = useState(filters.sortField || 'updated_at');
   const [sortOrder, setSortOrder] = useState(filters.sortOrder || 'desc');
   const [apiSuggestions, setApiSuggestions] = useState<SearchSuggestion[]>([]);
   const [isLoadingSuggestions, setIsLoadingSuggestions] = useState(false);
