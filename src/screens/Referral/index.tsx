@@ -60,7 +60,7 @@ export default function ReferralScreen() {
         <Card className="flex flex-col gap-4 bg-white/95 p-6">
           <div className="flex items-center gap-2">
             <ChartNoAxesCombined className="h-5 w-5" />
-            <div className="text-2xl font-bold text-gray-900">Referral Tier Info</div>
+            <div className="text-2xl font-bold text-gray-900">Referral Info</div>
           </div>
           {/* Right Column - Referral Info */}
           <div className="flex w-full flex-col gap-4">
@@ -78,6 +78,7 @@ export default function ReferralScreen() {
                 {data?.referralLink || '--'}{' '}
               </span>
               <Button
+                disabled={!data?.referralLink}
                 size="sm"
                 variant="ghost"
                 onClick={handleCopyLink}
@@ -86,7 +87,7 @@ export default function ReferralScreen() {
                 <Copy className="h-4 w-4" />
               </Button>
             </div>
-            {/* Referral Tier Info */}
+            {/* Referral Info */}
             <ReferralTierInfo />
           </div>
         </Card>

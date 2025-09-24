@@ -6,8 +6,16 @@ import Separator from '@/components/ui/separator';
 import { SocketProvider } from '@/context/SocketContext';
 import Provider from '@/providers';
 import '@/styles/global.css';
+import dayjs from 'dayjs';
+import advancedFormat from 'dayjs/plugin/advancedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
 import type { Metadata } from 'next';
 import React from 'react';
+// import advancedFormat from 'dayjs/plugin/advancedFormat' // ES 2015
+dayjs.extend(advancedFormat);
+
+// Extend dayjs with relativeTime plugin
+dayjs.extend(relativeTime);
 
 export const metadata: Metadata = {
   title: {

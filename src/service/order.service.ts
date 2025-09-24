@@ -66,8 +66,6 @@ export class OrderService {
       }
     );
 
-    console.log('response', response.data);
-
     return response.data;
   }
 
