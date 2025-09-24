@@ -4,6 +4,7 @@ import { chainConfigs } from '@/configs/chains';
 import { ChainType } from '@/server/enums/chain';
 import { Service } from '@/service';
 import { useAuthStore } from '@/store/authStore';
+import { CACHE_KEYS, clearFilterFromStorage } from '@/utils/filterCache';
 import type { Provider as SolanaProvider } from '@reown/appkit-adapter-solana/react';
 import {
   useAppKitAccount,
@@ -142,6 +143,7 @@ export const useAuth = () => {
     queryClient.invalidateQueries({ queryKey: ['referral-stats'] });
     queryClient.invalidateQueries({ queryKey: ['my-referral-code'] });
     queryClient.invalidateQueries({ queryKey: ['referral-rewards'] });
+    clearFilterFromStorage(CACHE_KEYS.REFERRAL_REWARDS_FILTER);
 
     toast.success('Logged out', {
       description: 'You have been successfully logged out',

@@ -77,7 +77,7 @@ export default function RewardHistory() {
 
           {isLoading ? (
             <TableBody>
-              {[...Array(3)].map((_, index) => (
+              {[...Array(4)].map((_, index) => (
                 <TableRow key={index} className="border-line hover:bg-transparent">
                   <TableCell>
                     <Skeleton className="h-4 w-20" />

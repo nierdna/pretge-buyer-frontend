@@ -1,3 +1,4 @@
+import ChatWidget from '@/components/ChatWidget';
 import TokenDetailScreen from '@/screens/TokenDetail';
 import { supabase } from '@/server/db/supabase';
 import { Metadata } from 'next';
@@ -87,6 +88,17 @@ export default async function TokenDetailPage({ params }: { params: Promise<{ sy
   return (
     <>
       <TokenDetailScreen symbol={symbol} />
+      <ChatWidget
+        config={{
+          token: symbol.toLowerCase(),
+          position: 'bottom-right',
+          theme: 'light',
+          width: '400px',
+          height: '600px',
+          autoOpen: true,
+          showNotification: false,
+        }}
+      />
     </>
   );
 }

@@ -22,9 +22,9 @@ export default function ReferralScreen() {
   if (isLoading) {
     return (
       <div className="container mx-auto space-y-8 p-6">
-        <div className="space-y-4">
-          <Skeleton className="h-8 w-32" />
-          <Skeleton className="h-6 w-24" />
+        <div className="grid gap-6 md:grid-cols-2">
+          <Skeleton className="h-32" />
+          <Skeleton className="h-32" />
         </div>
         <div className="grid gap-6 md:grid-cols-2">
           <Skeleton className="h-32" />

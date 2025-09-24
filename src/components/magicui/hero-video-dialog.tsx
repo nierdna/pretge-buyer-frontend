@@ -85,7 +85,7 @@ export function HeroVideoDialog({
       {isButtonPlay ? (
         <Button
           onClick={() => setIsVideoOpen(true)}
-          className="fixed bottom-6 right-6 z-50 h-12 w-12 rounded-full bg-primary p-0 shadow-lg transition-all duration-300 hover:scale-110 hover:bg-primary/90"
+          className="fixed bottom-[100px] right-6 z-50 h-12 w-12 rounded-full bg-primary p-0 shadow-lg transition-all duration-300 hover:scale-110 hover:bg-primary/90"
           aria-label="Scroll to top"
         >
           <Play className="size-4 text-secondary" />
