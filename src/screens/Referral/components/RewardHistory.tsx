@@ -100,7 +100,7 @@ export default function RewardHistory() {
           ) : rewardRecords.length === 0 ? (
             <TableBody>
               <TableRow className="border-line hover:bg-transparent">
-                <TableCell colSpan={4} className="py-8 pt-12 text-center text-content">
+                <TableCell colSpan={4} className="py-16 pt-24 text-center text-content">
                   No reward history found
                 </TableCell>
               </TableRow>
