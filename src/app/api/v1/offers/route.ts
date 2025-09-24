@@ -136,16 +136,17 @@ export async function GET(req: NextRequest) {
         'created_at',
         'collateral_percent',
         'settle_duration',
+        'updated_at',
       ];
       if (validSortFields.includes(sort)) {
         query = query.order(sort, { ascending: sort_order === 'asc' });
       } else {
         // Default to created_at if invalid sort field
-        query = query.order('created_at', { ascending: false });
+        query = query.order('updated_at', { ascending: false });
       }
     } else {
       // Default sorting
-      query = query.order('created_at', { ascending: false });
+      query = query.order('updated_at', { ascending: false });
     }
 
     // Apply pagination at the end

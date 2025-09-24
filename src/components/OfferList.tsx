@@ -25,6 +25,7 @@ import SearchInput from './SearchInput';
 
 // Define sort field options with their display names
 const sortFieldOptions = [
+  { value: 'updated_at', label: 'Default' },
   { value: 'created_at', label: 'Newest' },
   { value: 'price', label: 'Price' },
   { value: 'quantity', label: 'Quantity' },
