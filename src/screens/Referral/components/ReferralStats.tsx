@@ -1,6 +1,8 @@
 'use client';
 
 import { Card } from '@/components/ui/card';
+import { formatNumberShort } from '@/utils/helpers/number';
+import Image from 'next/image';
 
 interface ReferralStatsProps {
   totalReferrals: number;
@@ -13,14 +15,6 @@ export default function ReferralStats({
   totalReferralPoints,
   tier,
 }: ReferralStatsProps) {
-  const formatNumber = (num: number) => {
-    return new Intl.NumberFormat('en-US').format(num);
-  };
-
-  const formatCurrency = (num: number) => {
-    return `$${formatNumber(num)}`;
-  };
-
   return (
     <Card className="grid gap-6 bg-white/95 p-6">
       {/* Header */}
@@ -29,13 +23,18 @@ export default function ReferralStats({
         <div className="flex flex-col">
           <div className="flex w-full items-center divide-x divide-orange-600 rounded-lg border-2 border-orange-600 p-4">
             <div className="w-full text-center">
-              <div className="text-2xl font-bold text-gray-900">{formatNumber(totalReferrals)}</div>
+              <div className="text-2xl font-bold text-gray-900">
+                {formatNumberShort(totalReferrals)}
+              </div>
               <div className="text-sm text-content">Total Referee</div>
             </div>
 
             <div className="w-full text-center">
-              <div className="text-2xl font-bold text-gray-900">
-                {formatCurrency(totalReferralPoints)}
+              <div className="flex items-center justify-center gap-0">
+                <div className="text-2xl font-bold text-gray-900">
+                  {formatNumberShort(totalReferralPoints)}
+                </div>
+                <Image src={'/point.png'} height={24} width={24} alt="points" />
               </div>
               <div className="text-sm text-content">Total Referee Filled Volume</div>
             </div>

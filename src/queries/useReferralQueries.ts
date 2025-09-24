@@ -107,7 +107,7 @@ export const useGetReferralRewards = (queryKey: any[] = []) => {
   const { filters, setFilters, resetToDefault, clearCache } = useFilterCache({
     key: CACHE_KEYS.REFERRAL_REWARDS_FILTER,
     defaultFilter: {
-      limit: 2,
+      limit: 5,
       page: 1,
       sortField: 'created_at',
       sortOrder: 'desc',
