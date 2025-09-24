@@ -47,7 +47,7 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
 
   return (
     <section className="flex-1">
-      <div className="mb-4 flex items-center justify-between px-4">
+      <div className="mb-4 flex items-center justify-between pl-2 lg:px-4 lg:pl-6">
         <Breadcrumb className="flex items-center gap-2 text-sm font-medium">
           <BreadcrumbItem>
             <BreadcrumbLink className="text-content transition-colors hover:text-head" href="/">
@@ -70,50 +70,51 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
           </TabsList>
         </Tabs>
       </div>
-
-      <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'info' | 'trade')}>
-        <TabsContent value="info" className="mt-0">
-          <div className="mb-8">
-            <TokenExternal
-              token={token}
-              tokenExternal={tokenExternal as unknown as ITokenProjectExternal}
-            />
-          </div>
-        </TabsContent>
-
-        <TabsContent value="trade" className="mt-0">
-          {/* New Token Information Section */}
-          <div className="mb-8">
-            <TokenInfoSection
-              token={token}
-              tokenExternal={tokenExternal as unknown as ITokenProjectExternal}
-            />
-          </div>
-          <div className="mb-8">
-            <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
-              <FilterSidebar
-                hideNetworkFilter={true}
-                hideTokenFilter={true}
-                filters={filters}
-                setFilters={setFilters}
-              />
-              <OfferList
-                offers={offersForToken}
-                isLoading={isLoadingOffers}
-                isFetching={isFetchingOffers}
-                filters={filters}
-                setFilters={setFilters}
-                inputSearch={inputSearch}
-                handleSearch={handleSearch}
-                onLoadMore={handleLoadMore}
-                hasNextPage={hasNextPage}
-                hideNetworkFilter={true}
-                hideTokenFilter={true}
+      <div className="lg:px-4">
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'info' | 'trade')}>
+          <TabsContent value="info" className="mt-0">
+            <div className="mb-8">
+              <TokenExternal
+                token={token}
+                tokenExternal={tokenExternal as unknown as ITokenProjectExternal}
               />
             </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+
+          <TabsContent value="trade" className="mt-0">
+            {/* New Token Information Section */}
+            <div className="mb-8">
+              <TokenInfoSection
+                token={token}
+                tokenExternal={tokenExternal as unknown as ITokenProjectExternal}
+              />
+            </div>
+            <div className="mb-8">
+              <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
+                <FilterSidebar
+                  hideNetworkFilter={true}
+                  hideTokenFilter={true}
+                  filters={filters}
+                  setFilters={setFilters}
+                />
+                <OfferList
+                  offers={offersForToken}
+                  isLoading={isLoadingOffers}
+                  isFetching={isFetchingOffers}
+                  filters={filters}
+                  setFilters={setFilters}
+                  inputSearch={inputSearch}
+                  handleSearch={handleSearch}
+                  onLoadMore={handleLoadMore}
+                  hasNextPage={hasNextPage}
+                  hideNetworkFilter={true}
+                  hideTokenFilter={true}
+                />
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
 
       {/* <FilterSheet hideNetworkFilter={true} filters={filters} setFilters={setFilters} /> */}
     </section>

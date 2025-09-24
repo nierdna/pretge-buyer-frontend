@@ -1,3 +1,4 @@
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -138,7 +139,8 @@
 @layer base {
   body {
     @apply bg-primary align-middle text-secondary;
-    font-family: 'Helvetica Neue', sans-serif;
+    /* font-family: 'Helvetica Neue', sans-serif; */
+    font-family: 'SF Pro Display', sans-serif;
   }
   button,
   button:focus-visible {

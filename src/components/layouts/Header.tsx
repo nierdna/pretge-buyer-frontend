@@ -41,8 +41,8 @@ export default function Header() {
       <header className="container sticky top-[26px] z-50 px-4 lg:px-8">
         <div className="flex h-16 items-center justify-between rounded-2xl rounded-t-none border border-line bg-primary px-4 lg:px-6">
           <Link href="/" className="flex items-center gap-2 font-bold" prefetch={false}>
-            <img src="/logo.png" alt="PreTGE Market" className="hidden h-10 w-auto md:block" />
-            <img src="/logo-mb.png" alt="PreTGE Market" className="block h-8 w-auto md:hidden" />
+            <img src="/logo-full.png" alt="PreTGE Market" className="hidden h-6 w-auto md:block" />
+            <img src="/logo-mb.png" alt="PreTGE Market" className="block h-6 w-auto md:hidden" />
           </Link>
           <div className="flex items-center gap-2">
             <Button

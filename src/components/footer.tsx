@@ -14,20 +14,20 @@ export default function Footer() {
 
   return (
     <footer id="footer-section" className="border-t border-gray-200 bg-white px-3 py-4 font-sans">
-      <div className="mx-auto max-w-4xl">
+      <div className="container px-4 lg:px-8">
         <div className="flex items-center justify-between">
           <Image
             height={32}
             width={120}
             alt="PreTGE Logo"
-            className="h-8 w-auto object-contain transition-all group-hover:brightness-110"
-            src="/logo.png"
+            className="h-6 w-auto object-contain transition-all group-hover:brightness-110"
+            src="/logo-full.png"
           />
-          <div className="text-sm text-gray-500">
+          <div className="hidden text-sm text-gray-500 lg:block">
             Copyright © 2025 Pre-TGE. All rights reserved.
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center justify-end gap-2">
             <button
               onClick={() => handleSocialClick(SOCIAL_LINKS.gitbook)}
               className="cursor-pointer rounded p-1 transition-colors duration-200 hover:bg-gray-100"
