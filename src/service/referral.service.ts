@@ -48,7 +48,11 @@ export class ReferralService {
     if (params.sortField) queryParams.append('sortField', params.sortField);
     if (params.sortOrder) queryParams.append('sortOrder', params.sortOrder);
 
-    const response = await axiosInstance.get(`/referral/rewards?${queryParams.toString()}`);
-    return response.data;
+    const response = await axiosInstance.get(`/referral/rewards?${queryParams.toString()}`, {
+      headers: {
+        Authorization: true,
+      },
+    });
+    return response.data?.data;
   }
 }

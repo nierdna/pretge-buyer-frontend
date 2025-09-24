@@ -25,6 +25,9 @@ export interface User {
   status: string;
   updatedAt: string;
   rating: number;
+  // Referral fields
+  inviteCode?: string;
+  referredByUserId?: string;
 }
 
 export interface Wallet {

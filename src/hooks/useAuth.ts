@@ -141,6 +141,7 @@ export const useAuth = () => {
     // Clear referral queries on logout
     queryClient.invalidateQueries({ queryKey: ['referral-stats'] });
     queryClient.invalidateQueries({ queryKey: ['my-referral-code'] });
+    queryClient.invalidateQueries({ queryKey: ['referral-rewards'] });
 
     toast.success('Logged out', {
       description: 'You have been successfully logged out',
