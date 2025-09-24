@@ -5,7 +5,8 @@ import { Service } from '@/service';
 import { useAuthStore } from '@/store/authStore';
 import { ReferralRewardsQueryParams } from '@/types/referral';
 import { CACHE_KEYS } from '@/utils/filterCache';
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { generateReferralLink as generateLink } from '@/utils/referral';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 // Get my referral code and stats
@@ -37,7 +38,7 @@ export const useValidateInviteCode = (code: string | null) => {
       if (!code) return null;
       try {
         const response = await Service.referral.validateCode(code);
-        return response.data;
+        return response;
       } catch (error) {
         console.error('Failed to validate invite code:', error);
         return null;
@@ -79,8 +80,6 @@ export const useGetReferralStats = () => {
     queryFn: async () => {
       try {
         const response = await Service.referral.getMyCode();
-        console.log('response.data', response);
-
         if (!response.data) return null;
 
         // Transform data to match UI expectations
@@ -108,57 +107,50 @@ export const useGetReferralRewards = (queryKey: any[] = []) => {
   const { filters, setFilters, resetToDefault, clearCache } = useFilterCache({
     key: CACHE_KEYS.REFERRAL_REWARDS_FILTER,
     defaultFilter: {
-      limit: 10,
+      limit: 5,
       page: 1,
       sortField: 'created_at',
       sortOrder: 'desc',
     } as ReferralRewardsQueryParams,
   });
 
-  const { data, isLoading, isError, isFetching, fetchNextPage, hasNextPage, refetch } =
-    useInfiniteQuery({
-      queryKey: ['referral-rewards', filters, ...queryKey],
-      queryFn: async ({ pageParam = 1 }) => {
-        try {
-          const response = await Service.referral.getReferralRewards({
-            page: pageParam,
-            limit: filters.limit,
-            sortField: filters.sortField as 'created_at' | 'points_earned',
-            sortOrder: filters.sortOrder as 'asc' | 'desc',
-          });
-          return response.data
-            ? response
-            : { data: [], pagination: { total: 0, page: 1, limit: 10, totalPages: 0 } };
-        } catch (error) {
-          console.error('Failed to fetch referral rewards:', error);
-          throw error;
-        }
-      },
-      getNextPageParam: (lastPage, pages) => {
-        if (lastPage.pagination && lastPage.pagination.totalPages > pages.length) {
-          return pages.length + 1;
-        }
-        return undefined;
-      },
-      initialPageParam: 1,
-      retry: (failureCount, error: any) => {
-        // Don't retry on 4xx errors
-        if (error?.response?.status >= 400 && error?.response?.status < 500) {
-          return false;
-        }
-        return failureCount < 3;
-      },
-    });
+  const { data, isLoading, isError, isFetching, refetch } = useQuery({
+    queryKey: ['referral-rewards', filters, ...queryKey],
+    queryFn: async () => {
+      try {
+        const response = await Service.referral.getReferralRewards({
+          page: filters.page,
+          limit: filters.limit,
+          sortField: filters.sortField as 'created_at' | 'points_earned',
+          sortOrder: filters.sortOrder as 'asc' | 'desc',
+        });
+        return response;
+      } catch (error) {
+        console.error('Failed to fetch referral rewards:', error);
+        throw error;
+      }
+    },
+    retry: (failureCount, error: any) => {
+      // Don't retry on 4xx errors
+      if (error?.response?.status >= 400 && error?.response?.status < 500) {
+        return false;
+      }
+      return failureCount < 3;
+    },
+  });
 
+  const handlePageChange = (page: number) => {
+    setFilters({ ...filters, page });
+  };
   return {
-    data,
+    data: data?.data || [],
+    pagination: data?.pagination,
     isLoading,
     isFetching,
     isError,
     filters,
     setFilters,
-    fetchNextPage,
-    hasNextPage,
+    handlePageChange,
     resetToDefault,
     clearCache,
     refetch,
@@ -177,8 +169,5 @@ function calculateTier(totalPoints: number): number {
 
 function generateReferralLink(inviteCode: string | null): string | null {
   if (!inviteCode) return null;
-
-  const baseUrl =
-    typeof window !== 'undefined' ? window.location.origin : process.env.NEXT_PUBLIC_APP_URL || '';
-  return `${baseUrl}?ref=${inviteCode}`;
+  return generateLink(inviteCode);
 }

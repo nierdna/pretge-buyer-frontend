@@ -1,10 +1,11 @@
 'use client';
 
 import DialogHowToPlay from '@/components/DialogHowToPlay';
+import { ReferralBanner } from '@/components/ReferralBanner';
 import { useAuth } from '@/hooks/useAuth';
 import { useAuthStore } from '@/store/authStore';
 import { useChainStore } from '@/store/chainStore';
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 
 const MainLayout = ({ children }: { children: React.ReactNode }) => {
   const { fetchProfile } = useAuthStore();
@@ -66,6 +67,9 @@ const MainLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <DialogHowToPlay />
+      <Suspense fallback={null}>
+        <ReferralBanner className="mx-4 mb-4" />
+      </Suspense>
       {children}
     </>
   );

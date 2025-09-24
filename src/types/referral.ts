@@ -12,10 +12,10 @@ export interface ReferralReward {
 
 export interface ReferralRewardWithDetails {
   id: string;
-  points_earned: number;
-  percent_bps: number;
-  created_at: string;
-  referred_user: {
+  pointsEarned: number;
+  percentBps: number;
+  createdAt: string;
+  referredUser: {
     id: string;
     name: string;
     avatar?: string;

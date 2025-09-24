@@ -21,7 +21,7 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
 
   const { data: tokenExternal } = useTokenBySymbolExternal(symbol);
 
-  const [activeTab, setActiveTab] = useState<'info' | 'trade'>('info');
+  const [activeTab, setActiveTab] = useState<'info' | 'trade'>('trade');
 
   const {
     data: offers,

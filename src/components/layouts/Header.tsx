@@ -1,5 +1,6 @@
 'use client';
 
+import { useAuth } from '@/hooks/useAuth';
 import { UserCheck } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -8,6 +9,7 @@ import { Button } from '../ui/button';
 
 export default function Header() {
   const router = useRouter();
+  const { isAuthenticated } = useAuth();
   return (
     <>
       {/* Top bar with seller links */}
@@ -45,16 +47,18 @@ export default function Header() {
             <img src="/logo-mb.png" alt="PreTGE Market" className="block h-6 w-auto md:hidden" />
           </Link>
           <div className="flex items-center gap-2">
-            <Button
-              onClick={() => {
-                router.push('/referral');
-              }}
-              variant="outline"
-              className="flex items-center gap-2 text-sm font-medium"
-            >
-              <UserCheck className="h-4 w-4" />
-              <p className="text-sm font-medium leading-none">Referral</p>
-            </Button>
+            {isAuthenticated && (
+              <Button
+                onClick={() => {
+                  router.push('/referral');
+                }}
+                variant="outline"
+                className="flex items-center gap-2 text-sm font-medium"
+              >
+                <UserCheck className="h-4 w-4" />
+                <p className="text-sm font-medium leading-none">Referral</p>
+              </Button>
+            )}
             <ButtonConnectWallet />
           </div>
         </div>
