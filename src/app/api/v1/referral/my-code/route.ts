@@ -2,6 +2,36 @@ import { supabase } from '@/server/db/supabase';
 import { AuthenticatedRequest, withAuth } from '@/server/middleware/auth';
 import { NextResponse } from 'next/server';
 
+// Generate random 6-character alphanumeric code
+function generateInviteCode(): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  for (let i = 0; i < 6; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
+// Check if invite code already exists
+async function isInviteCodeUnique(code: string): Promise<boolean> {
+  const { data } = await supabase.from('users').select('id').eq('invite_code', code).single();
+
+  return !data; // Returns true if no user found with this code
+}
+
+// Generate unique invite code
+async function generateUniqueInviteCode(): Promise<string> {
+  let code: string;
+  let isUnique = false;
+
+  do {
+    code = generateInviteCode();
+    isUnique = await isInviteCodeUnique(code);
+  } while (!isUnique);
+
+  return code;
+}
+
 async function getMyCodeHandler(req: AuthenticatedRequest) {
   try {
     const { user } = req;
@@ -26,6 +56,34 @@ async function getMyCodeHandler(req: AuthenticatedRequest) {
         { success: false, message: 'Failed to fetch user data' },
         { status: 500 }
       );
+    }
+
+    // Generate invite code if user doesn't have one
+    let inviteCode = userData.invite_code;
+    if (!inviteCode) {
+      try {
+        inviteCode = await generateUniqueInviteCode();
+
+        // Update user with new invite code
+        const { error: updateError } = await supabase
+          .from('users')
+          .update({ invite_code: inviteCode })
+          .eq('id', user.userId);
+
+        if (updateError) {
+          console.error('Error updating invite code:', updateError);
+          return NextResponse.json(
+            { success: false, message: 'Failed to generate invite code' },
+            { status: 500 }
+          );
+        }
+      } catch (error) {
+        console.error('Error generating invite code:', error);
+        return NextResponse.json(
+          { success: false, message: 'Failed to generate invite code' },
+          { status: 500 }
+        );
+      }
     }
 
     // Get referrer info separately if exists
@@ -67,7 +125,7 @@ async function getMyCodeHandler(req: AuthenticatedRequest) {
     return NextResponse.json({
       success: true,
       data: {
-        myInviteCode: userData.invite_code,
+        myInviteCode: inviteCode,
         referredBy: referrerData
           ? {
               id: referrerData.id,
