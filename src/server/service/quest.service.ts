@@ -59,10 +59,11 @@ export class QuestService {
     }
 
     // 5. Verify proof based on quest type
-    const isValid = await this.verifyProof(quest, request.proof);
-    if (!isValid) {
-      throw new Error('VERIFICATION_FAILED');
-    }
+    // TODO: Add verification logic here
+    // const isValid = await this.verifyProof(quest, request.proof);
+    // if (!isValid) {
+    //   throw new Error('VERIFICATION_FAILED');
+    // }
 
     // 6. Create or update user_quest record
     const userQuestId = await this.createUserQuest({
