@@ -71,7 +71,9 @@ export class QuestService {
       }
 
       const response = await axiosInstance.post(`/quests/${questCode}/verify`, request, {
-        headers,
+        headers: {
+          Authorization: true,
+        },
       });
       return response.data;
     } catch (error) {
