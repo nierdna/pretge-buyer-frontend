@@ -6,6 +6,7 @@ import { useReferralCode } from '@/hooks/useReferralCode';
 import { cn } from '@/lib/utils';
 import { clearReferralCodeFromUrl } from '@/utils/referral';
 import { Gift, X } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface ReferralBannerProps {
   className?: string;
@@ -26,9 +27,15 @@ export const ReferralBanner = ({ className }: ReferralBannerProps) => {
     dismissReferralCode,
   } = useReferralCode();
 
+  // Clear referral code from URL when conditions are met (moved to useEffect to avoid render-time side effects)
+  useEffect(() => {
+    if (!hasReferralCode || hasExistingReferrer) {
+      clearReferralCodeFromUrl();
+    }
+  }, [hasReferralCode, hasExistingReferrer]);
+
   // Don't show banner if no referral code or already has referrer
   if (!hasReferralCode || hasExistingReferrer) {
-    clearReferralCodeFromUrl();
     return null;
   }
 
