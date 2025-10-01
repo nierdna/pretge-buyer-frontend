@@ -15,7 +15,6 @@ import {
 } from '@reown/appkit/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import bs58 from 'bs58';
-import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 export const useAuth = () => {
@@ -71,6 +70,8 @@ export const useAuth = () => {
       if (data.success && data.data) {
         setTokens(data.data.accessToken, data.data.refreshToken);
         setWalletAddress(data.data.wallet.address);
+        queryClient.invalidateQueries({ queryKey: ['quests'] });
+        queryClient.invalidateQueries({ queryKey: ['my-stats'] });
         toast.success('Login successful', {
           description: `Welcome ${data.data.user.name || data.data.wallet.address}!`,
         });
@@ -144,6 +145,8 @@ export const useAuth = () => {
     queryClient.invalidateQueries({ queryKey: ['referral-stats'] });
     queryClient.invalidateQueries({ queryKey: ['my-referral-code'] });
     queryClient.invalidateQueries({ queryKey: ['referral-rewards'] });
+    queryClient.invalidateQueries({ queryKey: ['quests'] });
+    queryClient.invalidateQueries({ queryKey: ['my-stats'] });
     clearFilterFromStorage(CACHE_KEYS.REFERRAL_REWARDS_FILTER);
 
     toast.success('Logged out', {
@@ -161,18 +164,18 @@ export const useAuth = () => {
     return false;
   };
 
-  // Refetch quest queries when wallet address changes
-  useEffect(() => {
-    if (address && isConnected && accessToken && walletAddress && address !== walletAddress) {
-      // Wallet address changed while user is authenticated
-      // Invalidate and refetch quest-related queries
-      queryClient.invalidateQueries({ queryKey: ['quests'] });
-      queryClient.invalidateQueries({ queryKey: ['my-stats'] });
+  // // Refetch quest queries when wallet address changes
+  // useEffect(() => {
+  //   if (address && isConnected && accessToken && walletAddress && address !== walletAddress) {
+  //     // Wallet address changed while user is authenticated
+  //     // Invalidate and refetch quest-related queries
+  //     queryClient.invalidateQueries({ queryKey: ['quests'] });
+  //     queryClient.invalidateQueries({ queryKey: ['my-stats'] });
 
-      // Update wallet address in store
-      setWalletAddress(address);
-    }
-  }, [address, isConnected, accessToken, walletAddress, queryClient, setWalletAddress]);
+  //     // Update wallet address in store
+  //     setWalletAddress(address);
+  //   }
+  // }, [address, isConnected, accessToken, walletAddress, queryClient, setWalletAddress]);
 
   return {
     // State
