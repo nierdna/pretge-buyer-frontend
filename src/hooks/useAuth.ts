@@ -15,6 +15,7 @@ import {
 } from '@reown/appkit/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import bs58 from 'bs58';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
 
 export const useAuth = () => {
@@ -159,6 +160,19 @@ export const useAuth = () => {
     }
     return false;
   };
+
+  // Refetch quest queries when wallet address changes
+  useEffect(() => {
+    if (address && isConnected && accessToken && walletAddress && address !== walletAddress) {
+      // Wallet address changed while user is authenticated
+      // Invalidate and refetch quest-related queries
+      queryClient.invalidateQueries({ queryKey: ['quests'] });
+      queryClient.invalidateQueries({ queryKey: ['my-stats'] });
+
+      // Update wallet address in store
+      setWalletAddress(address);
+    }
+  }, [address, isConnected, accessToken, walletAddress, queryClient, setWalletAddress]);
 
   return {
     // State

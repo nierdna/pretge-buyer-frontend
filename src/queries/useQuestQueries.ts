@@ -24,26 +24,6 @@ export const useGetQuests = () => {
   });
 };
 
-// Get user's quest completion history
-export const useGetMyQuests = () => {
-  const { accessToken } = useAuthStore();
-
-  return useQuery({
-    queryKey: ['my-quests'],
-    queryFn: async () => {
-      try {
-        const response = await Service.quest.getMyQuests();
-        return response.data;
-      } catch (error) {
-        console.error('Failed to fetch user quests', error);
-        toast.error('Failed to fetch your quest history');
-        return [];
-      }
-    },
-    enabled: !!accessToken,
-  });
-};
-
 // Get user's points and stats
 export const useGetMyStats = () => {
   const { accessToken } = useAuthStore();
@@ -92,7 +72,6 @@ export const useVerifyQuest = () => {
 
         // Invalidate and refetch related queries
         queryClient.invalidateQueries({ queryKey: ['quests'] });
-        queryClient.invalidateQueries({ queryKey: ['my-quests'] });
         queryClient.invalidateQueries({ queryKey: ['my-stats'] });
       }
     },

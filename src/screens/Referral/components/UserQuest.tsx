@@ -12,13 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  useGetMyQuests,
-  useGetMyStats,
-  useGetQuests,
-  useVerifyQuest,
-} from '@/queries/useQuestQueries';
+import { useGetMyStats, useGetQuests, useVerifyQuest } from '@/queries/useQuestQueries';
 import { Service } from '@/service';
 import { useAuthStore } from '@/store/authStore';
 import type {
@@ -482,10 +476,8 @@ function QuestListSkeleton() {
 export default function UserQuest() {
   const { accessToken } = useAuthStore();
   const { data: questsData, isLoading: questsLoading } = useGetQuests();
-  const { data: myQuestsData, isLoading: myQuestsLoading } = useGetMyQuests();
   const { data: statsData, isLoading: statsLoading } = useGetMyStats();
 
-  const [activeTab, setActiveTab] = useState('available');
   const [filterType, setFilterType] = useState<QuestType | 'all'>('all');
 
   const availableQuests = useMemo(() => {
@@ -495,14 +487,6 @@ export default function UserQuest() {
       return quest.status === 'active';
     });
   }, [questsData, filterType]);
-
-  const completedQuests = useMemo(() => {
-    if (!myQuestsData) return [];
-    return myQuestsData.filter((userQuest) => {
-      if (filterType !== 'all' && userQuest.quest.type !== filterType) return false;
-      return true;
-    });
-  }, [myQuestsData, filterType]);
 
   return (
     <Card className="bg-white/95">
@@ -548,58 +532,24 @@ export default function UserQuest() {
           </Select>
         </div>
 
-        {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-2 border outline-none ring-0">
-            <TabsTrigger value="available" className="outline-none ring-0">
-              Available Quests
-            </TabsTrigger>
-            <TabsTrigger value="history" className="outline-none ring-0">
-              My History
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="available" className="mt-4 outline-none ring-0">
-            {questsLoading ? (
-              <QuestListSkeleton />
-            ) : availableQuests.length > 0 ? (
-              <div className="space-y-3">
-                {availableQuests.map((quest) => (
-                  <QuestCard key={quest.id} quest={quest} />
-                ))}
-              </div>
-            ) : (
-              <div className="py-8 text-center">
-                <Target className="mx-auto h-12 w-12 text-gray-300" />
-                <p className="mt-2 text-content">No quests available</p>
-                <p className="text-sm text-content">Check back later for new quests!</p>
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="history" className="mt-4 outline-none ring-0">
-            {!accessToken ? (
-              <div className="py-8 text-center">
-                <Users className="mx-auto h-12 w-12 text-gray-300" />
-                <p className="mt-2 text-content">Please login to view your quest history</p>
-              </div>
-            ) : myQuestsLoading ? (
-              <QuestListSkeleton />
-            ) : completedQuests.length > 0 ? (
-              <div className="space-y-3">
-                {completedQuests.map((userQuest) => (
-                  <QuestHistoryCard key={userQuest.id} userQuest={userQuest} />
-                ))}
-              </div>
-            ) : (
-              <div className="py-8 text-center">
-                <Trophy className="mx-auto h-12 w-12 text-gray-300" />
-                <p className="mt-2 text-content">No completed quests yet</p>
-                <p className="text-sm text-content">Start completing quests to earn points!</p>
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
+        {/* Available Quests */}
+        <div className="mt-4">
+          {questsLoading ? (
+            <QuestListSkeleton />
+          ) : availableQuests.length > 0 ? (
+            <div className="space-y-3">
+              {availableQuests.map((quest) => (
+                <QuestCard key={quest.id} quest={quest} />
+              ))}
+            </div>
+          ) : (
+            <div className="py-8 text-center">
+              <Target className="mx-auto h-12 w-12 text-gray-300" />
+              <p className="mt-2 text-content">No quests available</p>
+              <p className="text-sm text-content">Check back later for new quests!</p>
+            </div>
+          )}
+        </div>
       </CardContent>
     </Card>
   );
