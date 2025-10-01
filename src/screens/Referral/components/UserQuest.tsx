@@ -72,7 +72,7 @@ interface QuestVerificationDialogProps {
 
 function QuestVerificationDialog({ quest, isOpen, onClose }: QuestVerificationDialogProps) {
   const [proofData, setProofData] = useState<Record<string, string>>({
-    username: 'mock value',
+    clickToken: 'mock value',
   });
   const { mutate: verifyQuest, isPending } = useVerifyQuest();
 
