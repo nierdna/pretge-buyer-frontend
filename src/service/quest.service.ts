@@ -3,7 +3,6 @@ import type {
   QuestQueryParams,
   QuestVerifyApiResponse,
   QuestVerifyRequest,
-  UserQuestListResponse,
   UserStatsApiResponse,
 } from '@/types/quest';
 import axiosInstance from './axios';
@@ -23,23 +22,6 @@ export class QuestService {
       return response.data;
     } catch (error) {
       console.error('Failed to fetch quests:', error);
-      throw error;
-    }
-  }
-
-  /**
-   * Get user's quest completion history
-   */
-  async getMyQuests(): Promise<UserQuestListResponse> {
-    try {
-      const response = await axiosInstance.get('/quests/my-quests', {
-        headers: {
-          Authorization: true,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Failed to fetch user quests:', error);
       throw error;
     }
   }
