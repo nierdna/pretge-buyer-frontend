@@ -75,6 +75,19 @@ async function verifyQuestHandler(
       );
     }
 
+    // For LINK_TELE and LINK_X quests, validate clickToken
+    if (code.includes('LINK') && !requestBody.proof.clickToken) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: 'INVALID_PROOF',
+          message:
+            'clickToken is required for link click quests. Example: {"clickToken": "some-token-value"}',
+        },
+        { status: 400 }
+      );
+    }
+
     // Get idempotency key from header
     const idempotencyKey = req.headers.get('Idempotency-Key') || undefined;
 

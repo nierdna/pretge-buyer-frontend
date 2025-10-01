@@ -115,7 +115,14 @@ export class QuestService {
   private async getQuestByCode(code: string): Promise<Quest | null> {
     const { data, error } = await supabase.from('quests').select('*').eq('code', code).single();
 
-    if (error || !data) {
+    if (error) {
+      console.error(`Error fetching quest with code "${code}":`, error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
+      return null;
+    }
+
+    if (!data) {
+      console.log(`Quest with code "${code}" not found in database`);
       return null;
     }
 
@@ -187,6 +194,8 @@ export class QuestService {
 
     if (error) {
       console.error('Error creating user quest:', error);
+      console.error('Error details:', JSON.stringify(error, null, 2));
+      console.error('User quest data:', { userId: userQuest.userId, questId: userQuest.questId });
       throw new Error('INTERNAL_ERROR');
     }
 

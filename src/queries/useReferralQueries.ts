@@ -98,7 +98,7 @@ export const useGetReferralStats = () => {
       }
     },
     enabled: !!accessToken, // Only fetch when user is authenticated
-    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchInterval: 60000, // Refetch every 60 seconds
   });
 };
 
