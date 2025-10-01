@@ -86,9 +86,9 @@ export const useVerifyQuest = () => {
       const response = await Service.quest.verifyQuest(questCode, request, idempotencyKey);
       return response;
     },
-    onSuccess: (data) => {
-      if (data.success && data.data) {
-        toast.success(`Quest verified! You earned ${data.data.result.awardedPoints} points!`);
+    onSuccess: (data: any) => {
+      if (data.success && data.result) {
+        toast.success(`Quest verified! You earned ${data.result.awardedPoints} points!`);
 
         // Invalidate and refetch related queries
         queryClient.invalidateQueries({ queryKey: ['quests'] });

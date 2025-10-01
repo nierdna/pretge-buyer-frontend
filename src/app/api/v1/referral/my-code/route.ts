@@ -114,6 +114,15 @@ async function getMyCodeHandler(req: AuthenticatedRequest) {
     const totalReferralPoints =
       referralRewards?.reduce((sum, reward) => sum + reward.points_earned, 0) || 0;
 
+    // Get user's total points from quests
+    const { data: userPoints } = await supabase
+      .from('user_points')
+      .select('total_points')
+      .eq('user_id', user.userId)
+      .single();
+
+    const totalPoints = userPoints?.total_points || 0;
+
     // Get list of referred users (recent 10)
     const { data: referredUsers } = await supabase
       .from('users')
@@ -136,6 +145,7 @@ async function getMyCodeHandler(req: AuthenticatedRequest) {
         stats: {
           totalReferrals: totalReferrals || 0,
           totalReferralPoints,
+          totalPoints, // Tổng điểm từ quest
         },
         recentReferrals: referredUsers || [],
       },

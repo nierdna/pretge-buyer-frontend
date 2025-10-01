@@ -122,7 +122,7 @@ export class QuestService {
     }
 
     if (!data) {
-      console.log(`Quest with code "${code}" not found in database`);
+      console.log(`Quest with code "${code}" not found`);
       return null;
     }
 
@@ -176,9 +176,13 @@ export class QuestService {
    * Create user quest record
    */
   private async createUserQuest(userQuest: Omit<UserQuest, 'id'>): Promise<string> {
+    // Generate UUID manually to avoid Supabase default value issues
+    const userQuestId = crypto.randomUUID();
+
     const { data, error } = await supabase
       .from('user_quests')
       .insert({
+        id: userQuestId,
         user_id: userQuest.userId,
         quest_id: userQuest.questId,
         status: userQuest.status,

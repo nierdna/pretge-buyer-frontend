@@ -7,12 +7,14 @@ import Image from 'next/image';
 interface ReferralStatsProps {
   totalReferrals: number;
   totalReferralPoints: number;
+  totalPoints: number; // Điểm từ quest
   tier: number;
 }
 
 export default function ReferralStats({
   totalReferrals,
   totalReferralPoints,
+  totalPoints,
   tier,
 }: ReferralStatsProps) {
   return (
@@ -32,11 +34,11 @@ export default function ReferralStats({
             <div className="w-full text-center">
               <div className="flex items-center justify-center gap-0">
                 <div className="text-2xl font-bold text-gray-900">
-                  {formatNumberShort(totalReferralPoints)}
+                  {formatNumberShort(totalPoints)}
                 </div>
                 <Image src={'/point.png'} height={24} width={24} alt="points" />
               </div>
-              <div className="text-sm text-content">Total Referee Filled Volume</div>
+              <div className="text-sm text-content">Total Points from Quests</div>
             </div>
           </div>
         </div>

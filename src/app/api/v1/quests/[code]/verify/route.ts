@@ -116,6 +116,9 @@ async function verifyQuestHandler(
     );
   } catch (error) {
     console.error('Quest verification error:', error);
+    console.error('Error type:', error instanceof Error);
+    console.error('Error message:', error instanceof Error ? error.message : String(error));
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack');
 
     // Handle known errors
     if (error instanceof Error) {
@@ -153,7 +156,8 @@ async function verifyQuestHandler(
             {
               success: false,
               error: 'VERIFICATION_FAILED',
-              message: 'Quest verification failed. Please check your proof.',
+              message:
+                'Quest verification failed. Please check your proof format and ensure it matches the quest type requirements.',
             },
             { status: 400 }
           );
@@ -167,14 +171,24 @@ async function verifyQuestHandler(
         case 'INTERNAL_ERROR':
         default:
           return NextResponse.json(
-            { success: false, error: 'INTERNAL_ERROR', message: 'Internal server error' },
+            {
+              success: false,
+              error: 'INTERNAL_ERROR',
+              message: 'Internal server error',
+              details: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
+            },
             { status: 500 }
           );
       }
     }
 
     return NextResponse.json(
-      { success: false, error: 'INTERNAL_ERROR', message: 'Internal server error' },
+      {
+        success: false,
+        error: 'INTERNAL_ERROR',
+        message: 'Internal server error',
+        details: process.env.NODE_ENV === 'development' ? String(error) : undefined,
+      },
       { status: 500 }
     );
   }
