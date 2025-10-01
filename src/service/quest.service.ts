@@ -14,7 +14,12 @@ export class QuestService {
    */
   async getQuests(params?: QuestQueryParams): Promise<QuestListResponse> {
     try {
-      const response = await axiosInstance.get('/quests', { params });
+      const response = await axiosInstance.get('/quests', {
+        headers: {
+          Authorization: true,
+        },
+        params,
+      });
       return response.data;
     } catch (error) {
       console.error('Failed to fetch quests:', error);
