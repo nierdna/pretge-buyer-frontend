@@ -53,6 +53,7 @@ export default function ReferralScreen() {
           <ReferralStats
             totalReferrals={data?.totalReferrals || 0}
             totalReferralPoints={data?.totalReferralPoints || 0}
+            totalPoints={data?.totalPoints || 0}
             tier={data?.currentTier || 0}
           />
           <RewardHistory />

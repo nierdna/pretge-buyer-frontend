@@ -88,6 +88,7 @@ export const useGetReferralStats = () => {
           currentTier: calculateTier(response.data.stats?.totalReferralPoints || 0),
           totalReferrals: response.data.stats?.totalReferrals || 0,
           totalReferralPoints: response.data.stats?.totalReferralPoints || 0,
+          totalPoints: response.data.stats?.totalPoints || 0, // Điểm từ quest
           referralLink: generateReferralLink(response.data.myInviteCode),
           referredBy: response.data.referredBy,
           recentReferrals: response.data.recentReferrals || [],
