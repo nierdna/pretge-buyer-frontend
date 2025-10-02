@@ -88,6 +88,7 @@ export const useGetReferralStats = () => {
           currentTier: calculateTier(response.data.stats?.totalReferralPoints || 0),
           totalReferrals: response.data.stats?.totalReferrals || 0,
           totalReferralPoints: response.data.stats?.totalReferralPoints || 0,
+          totalPoints: response.data.stats?.totalPoints || 0, // Điểm từ quest
           referralLink: generateReferralLink(response.data.myInviteCode),
           referredBy: response.data.referredBy,
           recentReferrals: response.data.recentReferrals || [],
@@ -98,7 +99,7 @@ export const useGetReferralStats = () => {
       }
     },
     enabled: !!accessToken, // Only fetch when user is authenticated
-    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchInterval: 60000, // Refetch every 60 seconds
   });
 };
 

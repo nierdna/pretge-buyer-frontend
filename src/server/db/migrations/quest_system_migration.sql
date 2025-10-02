@@ -148,7 +148,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_apply_points_on_verify
-AFTER UPDATE ON user_quests
+AFTER INSERT OR UPDATE ON user_quests
 FOR EACH ROW
 WHEN (NEW.status = 'verified')
 EXECUTE FUNCTION apply_points_on_verify();

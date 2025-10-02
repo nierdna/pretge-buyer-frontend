@@ -9,6 +9,7 @@ import { toast } from 'sonner';
 import ReferralStats from './components/ReferralStats';
 import ReferralTierInfo from './components/ReferralTierInfo';
 import RewardHistory from './components/RewardHistory';
+import UserQuest from './components/UserQuest';
 
 export default function ReferralScreen() {
   const { data, isLoading, isError } = useGetReferralStats();
@@ -52,6 +53,7 @@ export default function ReferralScreen() {
           <ReferralStats
             totalReferrals={data?.totalReferrals || 0}
             totalReferralPoints={data?.totalReferralPoints || 0}
+            totalPoints={data?.totalPoints || 0}
             tier={data?.currentTier || 0}
           />
           <RewardHistory />
@@ -92,6 +94,8 @@ export default function ReferralScreen() {
           </div>
         </Card>
       </div>
+
+      <UserQuest />
     </div>
   );
 }
