@@ -50,7 +50,7 @@ const ChatWidget: React.FC<ChatWidgetProps> = ({ config }) => {
 
     // Create script element
     const script = document.createElement('script');
-    script.src = 'https://agent.pretgemarket.xyz/chat-widget-cdn.js';
+    script.src = 'https://cdn-agent.up.railway.app/chat-widget-cdn.js';
     script.async = true;
 
     // Handle script load

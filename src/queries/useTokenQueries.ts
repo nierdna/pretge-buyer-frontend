@@ -1,4 +1,5 @@
-import tokenService, { ITokenFilter } from '@/service/token.service';
+import { Service } from '@/service';
+import { ITokenFilter } from '@/service/token.service';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -16,7 +17,7 @@ export const useTokenQueries = (
     queryKey: ['tokens', filters],
     queryFn: async () => {
       try {
-        const response = await tokenService.getTokens(filters);
+        const response = await Service.token.getTokens(filters);
         return response.data;
       } catch (error) {
         console.error(error);
@@ -32,7 +33,7 @@ export const useTokenBySymbol = (symbol: string) => {
     queryKey: ['token', symbol],
     queryFn: async () => {
       try {
-        const response = await tokenService.getTokenBySymbol(symbol);
+        const response = await Service.token.getTokenBySymbol(symbol);
         return response.data;
       } catch (error) {
         console.error(error);
@@ -47,7 +48,7 @@ export const useTokenBySymbolExternal = (symbol: string) => {
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['web3-radar-project', symbol.toUpperCase()],
     queryFn: async () => {
-      const response = await tokenService.getProjectBySymbol(symbol.toUpperCase());
+      const response = await Service.token.getProjectBySymbol(symbol.toUpperCase());
 
       if (!response.success) {
         throw new Error(response.message || 'Failed to fetch project data');

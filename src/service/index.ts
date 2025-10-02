@@ -4,6 +4,7 @@ import { chartService } from './chart.service';
 import { OfferService } from './offer.service';
 import { OrderService } from './order.service';
 import { ReferralService } from './referral.service';
+import { TokenService } from './token.service';
 import { UserService } from './user.service';
 
 export const Service = Object.freeze({
@@ -14,4 +15,5 @@ export const Service = Object.freeze({
   auth: new AuthService(),
   chart: chartService,
   referral: new ReferralService(),
+  token: new TokenService(),
 });

@@ -34,7 +34,7 @@ export interface IWeb3RadarResponse {
   message?: string;
 }
 
-class TokenService {
+export class TokenService {
   async getTokens(filters: ITokenFilter) {
     const response = await axiosInstance.get('/tokens', {
       params: {
@@ -84,5 +84,3 @@ class TokenService {
     }
   }
 }
-
-export default new TokenService();

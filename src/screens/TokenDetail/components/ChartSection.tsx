@@ -360,7 +360,7 @@ const ChartSection = ({
         </div>
 
         {/* Timeframe controls */}
-        <div className="flex items-center gap-1 rounded-lg bg-white p-1">
+        <div className="flex w-fit items-center gap-1 rounded-lg bg-white p-1">
           {timeframes.map((timeframe) => (
             <Button
               key={timeframe.value}
