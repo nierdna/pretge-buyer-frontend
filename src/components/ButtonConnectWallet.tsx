@@ -43,7 +43,7 @@ export const ButtonConnectWallet = () => {
           <DropdownMenuTrigger asChild>
             <Button size={'sm'}>
               <User className="h-4 w-4" />
-              {truncateAddress(address || '', 4)}
+              <span className="hidden lg:block">{truncateAddress(address || '', 4)}</span>
               <ChevronDown className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
