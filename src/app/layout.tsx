@@ -154,7 +154,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`bg-gradient-page-bg flex min-h-screen flex-col`}>
+      <body className={`flex min-h-screen flex-col bg-background`}>
         <SocketProvider>
           <Provider>
             <div className="flex min-h-screen flex-col">
