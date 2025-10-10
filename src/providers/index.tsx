@@ -1,5 +1,6 @@
 'use client';
 
+import { Toaster } from '@/components/ui/sonner';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -7,7 +8,6 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
 import type React from 'react';
-import { Toaster } from 'sonner';
 import { AppKitProvider } from './appkit-provider';
 import { QueryProvider } from './query-provider';
 // import "../styles/index.scss";
