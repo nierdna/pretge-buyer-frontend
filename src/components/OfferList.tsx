@@ -177,12 +177,12 @@ export default function OfferList({
   }, [isMobile]);
 
   return (
-    <div className="grid h-fit w-full gap-4">
+    <div className="grid h-fit w-full">
       <div
         ref={searchBarRef}
         className={cn(
-          'sticky top-[6.5rem] z-30 flex h-fit flex-col items-center justify-between gap-4 rounded-2xl p-4 transition-colors duration-300 sm:flex-row',
-          'border border-border bg-card'
+          'sticky top-[26px] z-30 flex h-fit flex-col items-center justify-between gap-4 p-4 transition-colors duration-300 sm:flex-row',
+          'border-b border-border bg-background'
         )}
       >
         <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center md:w-auto">
@@ -314,7 +314,7 @@ export default function OfferList({
       </div>
 
       {viewType === 'card' ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 xl:grid-cols-3">
           {isLoading && (
             <>
               {Array.from({ length: 6 }).map((_, index) => (
