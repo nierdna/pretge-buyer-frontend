@@ -356,15 +356,15 @@ export default function OfferDetailPageContent({
           </div>
 
           <div className="p-4">
-            <h1 className="mb-2 text-xl text-head">{eventTitle}</h1>
-            <div className="text-sm text-content">{offer?.description || 'No description'}</div>
+            <h1 className="text-head mb-2 text-xl">{eventTitle}</h1>
+            <div className="text-content text-sm">{offer?.description || 'No description'}</div>
           </div>
           <div className="px-4">
             <Separator />
           </div>
           <div className="space-y-2 p-4 text-sm">
             <div className="relative flex flex-1 flex-col gap-1">
-              <div className="inline-flex items-center text-xs text-content">
+              <div className="text-content inline-flex items-center text-xs">
                 <span>
                   {formatNumberShort(
                     div(Number(offer?.filled || 0), Number(offer?.quantity || 0)) * 100,
@@ -444,7 +444,7 @@ export default function OfferDetailPageContent({
                   <Link
                     href={offer?.tokens?.twitterUrl}
                     target="_blank"
-                    className="flex items-center gap-1 text-content hover:underline"
+                    className="text-content flex items-center gap-1 hover:underline"
                   >
                     <Twitter className="h-4 w-4" />
                     {offer?.tokens?.twitterUrl.replace('https://twitter.com/', '@')}
@@ -460,7 +460,7 @@ export default function OfferDetailPageContent({
                   <Link
                     href={offer?.tokens?.websiteUrl}
                     target="_blank"
-                    className="flex items-center gap-1 text-content hover:underline"
+                    className="text-content flex items-center gap-1 hover:underline"
                   >
                     <Globe className="h-4 w-4" />
                     {offer?.tokens?.websiteUrl.replace(/^https?:\/\/(www\.)?/, '')}
@@ -484,7 +484,7 @@ export default function OfferDetailPageContent({
           </div>
           <div>
             {/* Quantity selector */}
-            <div className="mb-4 flex items-center justify-between rounded-xl border border-line p-2 px-3">
+            <div className="mb-4 flex items-center justify-between rounded-xl border border-border p-2 px-3">
               <div className="font-medium">Quantity</div>
               <div className="flex items-center">
                 <Input
@@ -550,7 +550,7 @@ export default function OfferDetailPageContent({
 
               {!isShowPromotion && offer?.promotion?.isActive && (
                 <Button
-                  className="group w-full justify-between bg-line text-head hover:bg-line/70 disabled:bg-line/90"
+                  className="bg-line text-head hover:bg-line/70 disabled:bg-line/90 group w-full justify-between"
                   disabled={isCheckingEligibility}
                   onClick={handleCheckEligibility}
                 >
@@ -558,7 +558,7 @@ export default function OfferDetailPageContent({
                   {isCheckingEligibility ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <ChevronRight className="h-4 w-4 text-content transition-all duration-300 group-hover:translate-x-2 group-hover:text-head" />
+                    <ChevronRight className="text-content group-hover:text-head h-4 w-4 transition-all duration-300 group-hover:translate-x-2" />
                   )}
                 </Button>
               )}
@@ -621,7 +621,7 @@ export default function OfferDetailPageContent({
 
             {/* Note section explaining settle duration and collateral */}
             <Separator className="mt-6 bg-gray-200" />
-            <div className="py-2d mt-4 rounded-xl border border-orange-200 bg-gradient-to-r from-orange-50 to-yellow-50 p-4 shadow-sm">
+            <div className="py-2d to-yellow-50 mt-4 rounded-xl border border-orange-200 bg-gradient-to-r from-orange-50 p-4 shadow-sm">
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1" className="!border-none">
                   <AccordionTrigger className="hover:no-underline">

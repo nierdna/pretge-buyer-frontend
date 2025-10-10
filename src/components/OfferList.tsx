@@ -182,7 +182,7 @@ export default function OfferList({
         ref={searchBarRef}
         className={cn(
           'sticky top-[6.5rem] z-30 flex h-fit flex-col items-center justify-between gap-4 rounded-2xl p-4 transition-colors duration-300 sm:flex-row',
-          'border border-line bg-primary-foreground'
+          'bg-primary-foreground border border-border'
         )}
       >
         <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center md:w-auto">

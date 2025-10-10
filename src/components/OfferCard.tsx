@@ -48,7 +48,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
 
   return (
     <Link href={`/offers/${offerId}`} className="cursor-pointer">
-      <Card className="relative flex flex-col p-3 backdrop-blur-md transition-all duration-300 hover:scale-[1.015] hover:bg-primary-foreground">
+      <Card className="hover:bg-primary-foreground relative flex flex-col p-3 backdrop-blur-md transition-all duration-300 hover:scale-[1.015]">
         {/* {offer?.promotion?.isActive && (
         <div className="absolute -top-3 -right-0">
           <Badge className="text-xs bg-orange-500 text-primary">
@@ -60,7 +60,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
           <img
             src={offer?.imageUrl || offer.tokens?.bannerUrl || offer.tokens?.logo || '/logo-mb.png'}
             alt={`${offer.tokens?.symbol} symbol`}
-            className="h-48 w-full rounded-2xl border border-line object-cover"
+            className="h-48 w-full rounded-2xl border border-border object-cover"
           />
           <Badge className="absolute left-2 top-2 z-10">
             {normalizeNetworkName(offer.exToken?.network?.name)}
@@ -88,7 +88,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
               {offer?.title || offer?.tokens?.symbol}
             </CardTitle>
 
-            <CardDescription className="line-clamp-2 truncate text-sm text-content">
+            <CardDescription className="text-content line-clamp-2 truncate text-sm">
               {offer?.description || 'No description'}
             </CardDescription>
           </div>
@@ -175,7 +175,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         <CardContent className="flex flex-col gap-4 p-3 text-sm">
           <div className="flex items-end justify-between gap-4">
             <div className="relative flex max-w-[calc(60%)] flex-1 flex-col gap-2">
-              <div className="inline-flex items-center text-xs text-content">
+              <div className="text-content inline-flex items-center text-xs">
                 <span>
                   {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
                     maxDecimalCount: 0,
@@ -212,9 +212,9 @@ export default function OfferCard({ offer }: OfferCardProps) {
                   alt={offer?.tokens?.symbol || 'Token Image'}
                   width={16}
                   height={16}
-                  className="min-h-4 min-w-4 rounded-full border border-line"
+                  className="min-h-4 min-w-4 rounded-full border border-border"
                 />
-                <span className="text-xs leading-none text-content">{offer.tokens?.symbol}</span>
+                <span className="text-content text-xs leading-none">{offer.tokens?.symbol}</span>
               </div>
             </span>
           </div>

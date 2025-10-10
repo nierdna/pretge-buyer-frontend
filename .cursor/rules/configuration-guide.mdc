@@ -191,7 +191,7 @@ className = 'bg-green-gd';
 className = 'bg-yellow-gd';
 
 // Utility colors
-className = 'border-line';
+className = 'border-border';
 className = 'text-head';
 className = 'text-content';
 className = 'bg-input';

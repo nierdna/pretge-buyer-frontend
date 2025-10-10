@@ -21,14 +21,14 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <Link
                 href="https://seller.pretgemarket.xyz"
-                className="underline transition-colors hover:text-head"
+                className="hover:text-head underline transition-colors"
                 prefetch={false}
               >
                 Seller Centre
               </Link>
               <Link
                 href="https://seller.pretgemarket.xyz/auth/login"
-                className="underline transition-colors hover:text-head"
+                className="hover:text-head underline transition-colors"
                 prefetch={false}
               >
                 Start Selling
@@ -40,7 +40,7 @@ export default function Header() {
                 <SparklesText className="group flex flex-1 cursor-pointer items-center justify-center text-sm uppercase">
                   <div className="flex w-full items-center justify-center gap-0.5">
                     <AuroraText>lighter points</AuroraText>
-                    <ChevronRight className="h-5 w-5 text-content transition-all duration-300 group-hover:translate-x-2 group-hover:text-head" />
+                    <ChevronRight className="text-content group-hover:text-head h-5 w-5 transition-all duration-300 group-hover:translate-x-2" />
                   </div>
                 </SparklesText>
               </Link>
@@ -51,7 +51,7 @@ export default function Header() {
 
       {/* Main header */}
       <header className="container sticky top-[26px] z-50 px-4 lg:px-8">
-        <div className="flex h-16 items-center justify-between gap-2 rounded-2xl rounded-t-none border border-line bg-primary px-4 lg:px-6">
+        <div className="flex h-16 items-center justify-between gap-2 rounded-2xl rounded-t-none border border-border bg-primary px-4 lg:px-6">
           <Link href="/" className="flex flex-1 items-center gap-2 font-bold" prefetch={false}>
             <img src="/logo-full.png" alt="PreTGE Market" className="hidden h-6 w-auto md:block" />
             <img src="/logo-mb.png" alt="PreTGE Market" className="block h-6 w-auto md:hidden" />
@@ -60,7 +60,7 @@ export default function Header() {
             <SparklesText className="group flex flex-1 cursor-pointer items-center justify-center text-2xl uppercase">
               <div className="flex w-full items-center justify-center gap-0.5">
                 <AuroraText>lighter points otc</AuroraText>
-                <ChevronRight className="h-5 w-5 text-content transition-all duration-300 group-hover:translate-x-2 group-hover:text-head" />
+                <ChevronRight className="text-content group-hover:text-head h-5 w-5 transition-all duration-300 group-hover:translate-x-2" />
               </div>
             </SparklesText>
           </Link>

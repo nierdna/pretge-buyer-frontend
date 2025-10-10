@@ -31,7 +31,7 @@ const TokenExternal = ({
     return (
       <Card>
         <CardContent className="p-6">
-          <p className="text-center text-content">No external data available</p>
+          <p className="text-content text-center">No external data available</p>
         </CardContent>
       </Card>
     );
@@ -119,14 +119,14 @@ const TokenExternal = ({
                         alt={token?.symbol || 'Token Image'}
                         width={64}
                         height={64}
-                        className="rounded-full border border-content"
+                        className="border-content rounded-full border"
                       />
                       <img
                         src={token?.networks?.logo || '/logo-mb.png'}
                         alt={token?.networks?.name || 'Token Image'}
                         width={24}
                         height={24}
-                        className="absolute bottom-0 right-0 rounded-full border border-content"
+                        className="border-content absolute bottom-0 right-0 rounded-full border"
                       />
                     </div>
                   </div>
@@ -139,7 +139,7 @@ const TokenExternal = ({
                   </Badge>
                 </div>
               </div>
-              <p className="max-w-3xl text-content">{web3Project?.description || '--'}</p>
+              <p className="text-content max-w-3xl">{web3Project?.description || '--'}</p>
               <div className="flex flex-wrap gap-2">
                 <Badge variant="info">{web3Project?.category || '--'}</Badge>
                 <Badge variant="info">{web3Project?.chain || '--'}</Badge>
@@ -216,15 +216,15 @@ const TokenExternal = ({
         </Card>
         <Card className="h-fit">
           <CardContent className="flex flex-col gap-3 p-4">
-            <div className="grid grid-cols-2 items-center divide-x divide-content rounded-lg bg-input p-2">
+            <div className="divide-content bg-input grid grid-cols-2 items-center divide-x rounded-lg p-2">
               <div className="flex flex-col items-center gap-1">
-                <p className="text-sm text-content">Market Cap</p>
+                <p className="text-content text-sm">Market Cap</p>
                 <p className="text-base font-bold">
                   ${formatNumberShort(priceData?.market_cap, { useShorterExpression: true })}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-1">
-                <p className="text-sm text-content">FDV</p>
+                <p className="text-content text-sm">FDV</p>
                 <p className="text-base font-bold">
                   $
                   {formatNumberShort(
@@ -238,14 +238,14 @@ const TokenExternal = ({
             </div>
             <div className="flex flex-col gap-1">
               <div className="flex items-center justify-between">
-                <p className="text-sm text-content">Circ. Supply</p>
+                <p className="text-content text-sm">Circ. Supply</p>
                 <div className="flex items-center gap-1">
-                  <p className="text-sm font-medium text-head">
+                  <p className="text-head text-sm font-medium">
                     {formatNumberShort(tokenomic?.circulatingSupply, {
                       useShorterExpression: true,
                     })}
                   </p>
-                  <p className="text-sm text-content">
+                  <p className="text-content text-sm">
                     {formatNumberShort(
                       ((tokenomic?.circulatingSupply || 0) / (tokenomic?.totalSupply || 0)) * 100
                     )}
@@ -260,7 +260,7 @@ const TokenExternal = ({
             <div className="flex flex-col gap-3 pt-3 text-sm">
               <div className="flex items-center justify-between">
                 <p className="text-content">Total Supply</p>
-                <p className="font-medium text-head">
+                <p className="text-head font-medium">
                   {formatNumberShort(tokenomic?.totalSupply, {
                     useShorterExpression: true,
                   })}
@@ -268,13 +268,13 @@ const TokenExternal = ({
               </div>
               <div className="flex items-center justify-between">
                 <p className="text-content">Max Supply</p>
-                <p className="font-medium text-head">--</p>
+                <p className="text-head font-medium">--</p>
               </div>
             </div>
             <Separator />
             <div className="flex items-center justify-between text-sm">
               <p className="text-content">Volume 24h</p>
-              <p className="font-medium text-head">
+              <p className="text-head font-medium">
                 $
                 {formatNumberShort(priceData?.volume_24h, {
                   useShorterExpression: true,
@@ -284,7 +284,7 @@ const TokenExternal = ({
             <Separator />
             <div className="flex items-center justify-between text-sm">
               <p className="text-content">Total Raised</p>
-              <p className="font-medium text-head">
+              <p className="text-head font-medium">
                 $
                 {formatNumberShort(fundraising?.totalRaised, {
                   useShorterExpression: true,
@@ -311,8 +311,8 @@ const TokenExternal = ({
                     </Select>
                   </div>
                 </div>
-                <div className="grid grid-cols-3 gap-2 text-head">
-                  <div className="flex flex-col items-center gap-1 rounded-lg bg-input p-2">
+                <div className="text-head grid grid-cols-3 gap-2">
+                  <div className="bg-input flex flex-col items-center gap-1 rounded-lg p-2">
                     <p
                       className={cn('text-base font-medium', {
                         'text-green-600': performanceData?.h1 && Number(performanceData.h1) > 0,
@@ -326,9 +326,9 @@ const TokenExternal = ({
                             useShorterExpression: true,
                           }) + '%'}
                     </p>
-                    <p className="text-sm text-content">1h</p>
+                    <p className="text-content text-sm">1h</p>
                   </div>
-                  <div className="flex flex-col items-center gap-1 rounded-lg bg-input p-2">
+                  <div className="bg-input flex flex-col items-center gap-1 rounded-lg p-2">
                     <p
                       className={cn('text-base font-medium', {
                         'text-green-600': performanceData?.h24 && Number(performanceData.h24) > 0,
@@ -342,9 +342,9 @@ const TokenExternal = ({
                             useShorterExpression: true,
                           }) + '%'}
                     </p>
-                    <p className="text-sm text-content">24h</p>
+                    <p className="text-content text-sm">24h</p>
                   </div>{' '}
-                  <div className="flex flex-col items-center gap-1 rounded-lg bg-input p-2">
+                  <div className="bg-input flex flex-col items-center gap-1 rounded-lg p-2">
                     <p
                       className={cn('text-base font-medium', {
                         'text-green-600': performanceData?.d7 && Number(performanceData.d7) > 0,
@@ -358,9 +358,9 @@ const TokenExternal = ({
                             useShorterExpression: true,
                           }) + '%'}
                     </p>
-                    <p className="text-sm text-content">7d</p>
+                    <p className="text-content text-sm">7d</p>
                   </div>{' '}
-                  <div className="flex flex-col items-center gap-1 rounded-lg bg-input p-2">
+                  <div className="bg-input flex flex-col items-center gap-1 rounded-lg p-2">
                     <p
                       className={cn('text-base font-medium', {
                         'text-green-600': performanceData?.mo1 && Number(performanceData.mo1) > 0,
@@ -374,9 +374,9 @@ const TokenExternal = ({
                             useShorterExpression: true,
                           }) + '%'}
                     </p>
-                    <p className="text-sm text-content">1m</p>
+                    <p className="text-content text-sm">1m</p>
                   </div>{' '}
-                  <div className="flex flex-col items-center gap-1 rounded-lg bg-input p-2">
+                  <div className="bg-input flex flex-col items-center gap-1 rounded-lg p-2">
                     <p
                       className={cn('text-base font-medium', {
                         'text-green-600': performanceData?.mo3 && Number(performanceData.mo3) > 0,
@@ -390,9 +390,9 @@ const TokenExternal = ({
                             useShorterExpression: true,
                           }) + '%'}
                     </p>
-                    <p className="text-sm text-content">3m</p>
+                    <p className="text-content text-sm">3m</p>
                   </div>{' '}
-                  <div className="flex flex-col items-center gap-1 rounded-lg bg-input p-2">
+                  <div className="bg-input flex flex-col items-center gap-1 rounded-lg p-2">
                     <p
                       className={cn('text-base font-medium', {
                         'text-green-600': performanceData?.y1 && Number(performanceData.y1) > 0,
@@ -406,7 +406,7 @@ const TokenExternal = ({
                             useShorterExpression: true,
                           }) + '%'}
                     </p>
-                    <p className="text-sm text-content">1y</p>
+                    <p className="text-content text-sm">1y</p>
                   </div>
                 </div>
               </>
@@ -423,7 +423,7 @@ const TokenExternal = ({
               <p className="text-2xl font-bold">
                 {formatNumberShort(communityMetrics?.twitterFollowers)}
               </p>
-              <p className="text-sm text-content">Twitter Followers</p>
+              <p className="text-content text-sm">Twitter Followers</p>
             </div>
           </CardContent>
         </Card>
@@ -433,7 +433,7 @@ const TokenExternal = ({
               <p className="text-2xl font-bold">
                 {formatNumberShort(communityMetrics?.discordMembers)}
               </p>
-              <p className="text-sm text-content">Discord Members</p>
+              <p className="text-content text-sm">Discord Members</p>
             </div>
           </CardContent>
         </Card>
@@ -443,7 +443,7 @@ const TokenExternal = ({
               <p className="text-2xl font-bold">
                 {formatNumberShort(communityMetrics?.telegramMembers)}
               </p>
-              <p className="text-sm text-content">Telegram Members</p>
+              <p className="text-content text-sm">Telegram Members</p>
             </div>
           </CardContent>
         </Card>
@@ -453,7 +453,7 @@ const TokenExternal = ({
               <p className="text-2xl font-bold">
                 {formatNumberShort(communityMetrics?.githubStars)}
               </p>
-              <p className="text-sm text-content">GitHub Stars</p>
+              <p className="text-content text-sm">GitHub Stars</p>
             </div>
           </CardContent>
         </Card>
@@ -476,7 +476,7 @@ const TokenExternal = ({
                 ))}
               </div>
             ) : (
-              <div className="py-4 text-center text-content">
+              <div className="text-content py-4 text-center">
                 <p>--</p>
               </div>
             )}
@@ -496,7 +496,7 @@ const TokenExternal = ({
                 {exchanges.slice(0, 5).map((exchange, index) => (
                   <div
                     key={index}
-                    className="flex items-center justify-between rounded-lg border border-line p-3"
+                    className="flex items-center justify-between rounded-lg border border-border p-3"
                   >
                     <div className="flex items-center gap-3">
                       {exchange.logoUrl && (
@@ -511,18 +511,18 @@ const TokenExternal = ({
                       )}
                       <div>
                         <p className="font-medium">{exchange.exchangeName || '--'}</p>
-                        <p className="text-sm text-content">{exchange.tradingPairName || '--'}</p>
+                        <p className="text-content text-sm">{exchange.tradingPairName || '--'}</p>
                       </div>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold">{formatCurrency(exchange.price)}</p>
-                      <p className="text-sm text-content">Vol: {formatCurrency(exchange.vol24h)}</p>
+                      <p className="text-content text-sm">Vol: {formatCurrency(exchange.vol24h)}</p>
                     </div>
                   </div>
                 ))}
               </div>
             ) : (
-              <div className="py-4 text-center text-content">
+              <div className="text-content py-4 text-center">
                 <p>--</p>
               </div>
             )}
@@ -541,17 +541,17 @@ const TokenExternal = ({
         <CardContent>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-              <span className="text-sm text-content">TGE Date</span>
+              <span className="text-content text-sm">TGE Date</span>
               <p className="font-semibold">
                 {tgeInfo?.tgeDate ? new Date(tgeInfo.tgeDate).toLocaleDateString() : '--'}
               </p>
             </div>
             <div>
-              <span className="text-sm text-content">TGE Exchange</span>
+              <span className="text-content text-sm">TGE Exchange</span>
               <p className="font-semibold">{tgeInfo?.tgeExchange || '--'}</p>
             </div>
             <div>
-              <span className="text-sm text-content">Initial Market Cap</span>
+              <span className="text-content text-sm">Initial Market Cap</span>
               <p className="font-semibold">{formatCurrency(tgeInfo?.initialMarketcap)}</p>
             </div>
           </div>
@@ -581,7 +581,7 @@ const InvestorItem = ({ investor }: { investor: Investor }) => {
         )}
         <div>
           <p className="text-sm font-medium">{investor.name}</p>
-          <p className="text-xs text-content">{investor.type}</p>
+          <p className="text-content text-xs">{investor.type}</p>
         </div>
       </div>
       <Badge variant="outline">{investor.tier}</Badge>
