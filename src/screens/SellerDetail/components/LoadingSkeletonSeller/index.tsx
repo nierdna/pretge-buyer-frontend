@@ -15,7 +15,7 @@ export default function SellerDetailPageSkeleton() {
         {/* 2-column grid layout matching the actual layout */}
         <div>
           {/* Column 1: Seller Detail Hero Skeleton */}
-          <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
+          <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
             <CardHeader className="p-6 pb-4">
               <CardTitle className="text-xl">
                 <Skeleton className="h-6 w-32" />
@@ -35,7 +35,7 @@ export default function SellerDetailPageSkeleton() {
                 </div>
               </div>
               <Skeleton className="h-[1px] w-full bg-gray-200" />
-              <div className="grid gap-2 text-base text-gray-700">
+              <div className="text-secondary-foreground grid gap-2 text-base">
                 <Skeleton className="h-6 w-40" />
                 <Skeleton className="h-4 w-full" />
                 <Skeleton className="h-4 w-[90%]" />
@@ -48,7 +48,7 @@ export default function SellerDetailPageSkeleton() {
         </div>
 
         {/* Full width: Seller Offers List Skeleton */}
-        <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
+        <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
           <CardHeader className="p-6 pb-4">
             <CardTitle className="text-xl">
               <Skeleton className="h-6 w-48" />
@@ -59,7 +59,7 @@ export default function SellerDetailPageSkeleton() {
               {Array.from({ length: 6 }).map((_, index) => (
                 <div
                   key={index}
-                  className="flex flex-col rounded-lg border-border bg-white/95 shadow-2xl backdrop-blur-md"
+                  className="flex flex-col rounded-lg border-border bg-foreground/50 shadow-2xl backdrop-blur-md"
                 >
                   <div className="p-6 pb-4">
                     <div className="flex items-start justify-between gap-4">
@@ -105,7 +105,7 @@ export default function SellerDetailPageSkeleton() {
         </Card>
 
         {/* Review items skeleton */}
-        <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
+        <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
           <CardHeader className="p-6 pb-4">
             <CardTitle className="text-xl">
               <Skeleton className="h-6 w-40" />

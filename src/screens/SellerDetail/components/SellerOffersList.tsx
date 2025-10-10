@@ -20,7 +20,7 @@ export default function SellerOffersList({
   isLoading,
 }: SellerOffersListProps) {
   return (
-    <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Offers by this Seller</CardTitle>
       </CardHeader>

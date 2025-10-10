@@ -13,7 +13,7 @@ interface SellerDetailHeroProps {
 
 export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
   return (
-    <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Seller Profile</CardTitle>
       </CardHeader>
@@ -44,8 +44,8 @@ export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
         </div>
 
         <Separator />
-        <div className="grid gap-2 text-base text-gray-700">
-          <h3 className="text-xl font-bold text-gray-800">About {seller?.name}</h3>
+        <div className="text-secondary-foreground grid gap-2 text-base">
+          <h3 className="text-secondary-foreground text-xl font-bold">About {seller?.name}</h3>
           <p>{seller?.description}</p>
         </div>
         <Button className="mt-4 w-full md:hidden">Contact Seller</Button>

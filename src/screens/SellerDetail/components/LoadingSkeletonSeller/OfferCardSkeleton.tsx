@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function OfferCardSkeleton() {
   return (
-    <Card className="flex flex-col border-border bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="flex flex-col border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">

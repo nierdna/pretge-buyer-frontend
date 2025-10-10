@@ -24,7 +24,7 @@ export default function SellerReviews({
   isLoading,
 }: SellerReviewsProps) {
   return (
-    <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-0">
         <CardTitle className="text-xl">Customer Reviews</CardTitle>
       </CardHeader>
@@ -64,9 +64,9 @@ export default function SellerReviews({
                   {dayjs(review.createdAt).fromNow()}
                 </span>
               </div>
-              <p className="text-base text-gray-700">{review.comment}</p>
+              <p className="text-secondary-foreground text-base">{review.comment}</p>
               {review.reply && (
-                <div className="text-sm text-gray-700">
+                <div className="text-secondary-foreground text-sm">
                   <span className="font-bold">Seller Reply:</span> {review.reply}
                 </div>
               )}

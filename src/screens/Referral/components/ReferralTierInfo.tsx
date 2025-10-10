@@ -47,7 +47,7 @@ export default function ReferralTierInfo() {
           <div className="flex items-start gap-2">
             <span className="text-yellow-600 mt-0.5">ℹ️</span>
             <div>
-              <p className="text-sm text-gray-700">
+              <p className="text-secondary-foreground text-sm">
                 <span className="font-medium">How it works:</span> When someone uses your referral
                 code and makes trades, you automatically earn 10% of their trading fees, while they
                 get 10% bonus points on their account.

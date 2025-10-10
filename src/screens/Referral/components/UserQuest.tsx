@@ -364,9 +364,9 @@ function QuestCard({ quest }: { quest: QuestWithStatus }) {
                   {quest.title}
                 </h3>
                 {quest.description && (
-                  <p className="mt-1 line-clamp-2 text-sm text-content">{quest.description}</p>
+                  <p className="text-content mt-1 line-clamp-2 text-sm">{quest.description}</p>
                 )}
-                <div className="mt-2 flex items-center gap-4 text-xs text-content">
+                <div className="text-content mt-2 flex items-center gap-4 text-xs">
                   <span className="flex items-center gap-1">
                     <Trophy className="h-3 w-3" />
                     {quest.points} points
@@ -419,12 +419,12 @@ function QuestHistoryCard({ userQuest }: { userQuest: UserQuestWithQuest }) {
             </div>
             <div className="flex-1">
               <h3 className="font-medium text-gray-900">{userQuest.quest.title}</h3>
-              <p className="mt-1 text-sm text-content">
+              <p className="text-content mt-1 text-sm">
                 Submitted {new Date(userQuest.submittedAt).toLocaleDateString()}
               </p>
               <div className="mt-2 flex items-center gap-1">
-                <Trophy className="h-3 w-3 text-content" />
-                <span className="text-sm text-content">{userQuest.quest.points} points</span>
+                <Trophy className="text-content h-3 w-3" />
+                <span className="text-content text-sm">{userQuest.quest.points} points</span>
               </div>
               {/* Metadata Display */}
               {metadataDisplay && (
@@ -489,7 +489,7 @@ export default function UserQuest() {
   }, [questsData, filterType]);
 
   return (
-    <Card className="bg-white/95">
+    <Card className="bg-foreground/50">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -545,8 +545,8 @@ export default function UserQuest() {
           ) : (
             <div className="py-8 text-center">
               <Target className="mx-auto h-12 w-12 text-gray-300" />
-              <p className="mt-2 text-content">No quests available</p>
-              <p className="text-sm text-content">Check back later for new quests!</p>
+              <p className="text-content mt-2">No quests available</p>
+              <p className="text-content text-sm">Check back later for new quests!</p>
             </div>
           )}
         </div>

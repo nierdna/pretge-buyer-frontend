@@ -13,7 +13,7 @@ import { formatNumberShort } from '@/utils/helpers/number';
 export default function BalanceSection() {
   const { data } = useMyBalance();
   return (
-    <Card className="h-fit border-border bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="h-fit border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Your Balances</CardTitle>
       </CardHeader>

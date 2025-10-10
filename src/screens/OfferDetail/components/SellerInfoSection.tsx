@@ -33,7 +33,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
                 <Star className="fill-yellow-400 text-yellow-400 h-5 w-5 pb-1" />
               </div>
             </div>
-            <div className="grid gap-2 text-sm text-gray-700">
+            <div className="text-secondary-foreground grid gap-2 text-sm">
               <p className="text-content">
                 <span className="font-medium">Member since:</span>{' '}
                 {dayjs(seller?.user?.createdAt).format('MMM D, YYYY')}

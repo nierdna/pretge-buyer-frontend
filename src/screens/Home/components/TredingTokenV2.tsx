@@ -146,7 +146,7 @@ export default function TredingTokenV2({
                 <CarouselItem key={index} className="basis-full pl-4 md:basis-1/2 lg:basis-1/3">
                   <Link
                     href={`/token/${token?.symbol?.toLowerCase()}`}
-                    className="group relative flex h-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-border bg-white/80 p-3 pt-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-gray-100"
+                    className="group relative flex h-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-border bg-foreground/50 p-3 pt-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-gray-100"
                   >
                     <Image
                       src={

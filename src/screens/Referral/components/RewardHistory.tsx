@@ -56,7 +56,7 @@ export default function RewardHistory() {
   };
 
   return (
-    <Card className="bg-white/95">
+    <Card className="bg-foreground/50">
       <CardHeader>
         <div className="flex items-center gap-2">
           <RotateCcw className="h-5 w-5 text-gray-900" />
@@ -109,7 +109,7 @@ export default function RewardHistory() {
             <TableBody>
               {rewardRecords.map((record, index) => (
                 <TableRow key={index} className="border-border hover:bg-card/50">
-                  <TableCell className="text-sm font-medium text-gray-700">
+                  <TableCell className="text-secondary-foreground text-sm font-medium">
                     {record.timestamp}
                   </TableCell>
                   <TableCell className="text-sm">

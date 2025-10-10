@@ -12,7 +12,7 @@ interface FlashSaleCardProps {
 
 export default function FlashSaleCard({ offer }: FlashSaleCardProps) {
   return (
-    <Card className="relative flex w-full max-w-[calc(90%)] flex-shrink-0 flex-col border-border bg-white/95 shadow-lg backdrop-blur-md transition-shadow hover:shadow-xl">
+    <Card className="relative flex w-full max-w-[calc(90%)] flex-shrink-0 flex-col border-border bg-foreground/50 shadow-lg backdrop-blur-md transition-shadow hover:shadow-xl">
       {/* Discount Badge - now absolute */}
       <Badge className="absolute right-2 top-2 z-10 bg-orange-500 px-2 py-0.5 text-xs font-bold text-primary hover:bg-orange-600">
         -{offer.promotion?.discountPercent}%

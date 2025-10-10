@@ -125,7 +125,7 @@ const Topbar = () => {
                   className={`flex flex-shrink-0 items-center gap-2 whitespace-nowrap border-x px-2 py-1 text-sm ${
                     isNewOrder
                       ? 'border-green-400 bg-green-50 text-green-800 shadow-md ring-2 ring-green-200'
-                      : 'border-border text-gray-700'
+                      : 'text-secondary-foreground border-border'
                   }`}
                 >
                   <span

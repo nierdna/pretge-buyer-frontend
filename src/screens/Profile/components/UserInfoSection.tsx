@@ -35,7 +35,7 @@ export default function UserInfoSection() {
   };
 
   return (
-    <Card className="h-fit border-border bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="h-fit border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">User Information</CardTitle>
       </CardHeader>
@@ -56,7 +56,7 @@ export default function UserInfoSection() {
                 variant="ghost"
                 size="icon"
                 onClick={handleOpenEditModal}
-                className="text-content h-6 w-6 hover:text-gray-700"
+                className="text-content hover:text-secondary-foreground h-6 w-6"
               >
                 <Edit className="h-4 w-4" />
                 <span className="sr-only">Edit profile</span>
@@ -70,8 +70,8 @@ export default function UserInfoSection() {
           </div>
         </div>
         <Separator className="bg-border" />
-        <div className="grid gap-2 text-base text-gray-700">
-          <h3 className="text-xl font-bold text-gray-800">About {user?.name}</h3>
+        <div className="text-secondary-foreground grid gap-2 text-base">
+          <h3 className="text-secondary-foreground text-xl font-bold">About {user?.name}</h3>
           <p>{user?.description}</p>
         </div>
       </CardContent>

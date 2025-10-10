@@ -253,7 +253,7 @@ export default function FilterContent({
         {/* <div className="flex justify-center">
           <button
             onClick={handleToggleTutorialSection}
-            className="flex items-center gap-2 rounded-full border border-border px-3 py-1 text-sm text-gray-600 transition-colors hover:border-border hover:text-gray-800"
+            className="flex items-center gap-2 rounded-full border border-border px-3 py-1 text-sm text-gray-600 transition-colors hover:border-border hover:text-secondary-foreground"
           >
             {showTutorialSection ? (
               <>

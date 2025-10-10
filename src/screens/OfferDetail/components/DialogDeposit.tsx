@@ -46,8 +46,8 @@ const DialogDeposit = ({
                    </DialogDescription> */}
         </DialogHeader>
         <div className="grid gap-2 py-4">
-          <div className="flex items-center justify-center gap-2 text-center text-base font-bold text-gray-800 sm:text-lg">
-            <Wallet className="h-5 w-5 text-content" />
+          <div className="text-secondary-foreground flex items-center justify-center gap-2 text-center text-base font-bold sm:text-lg">
+            <Wallet className="text-content h-5 w-5" />
             <span>Required Deposit:</span>
             <span className="">
               {formatNumberShort(minus(totalValue, balance))}
@@ -65,7 +65,7 @@ const DialogDeposit = ({
               Cancel
             </Button>
           </DialogClose>
-          <div className="flex-1 text-center text-gray-700">
+          <div className="text-secondary-foreground flex-1 text-center">
             {/* Deposit modal logic */}
             {allowance !== undefined && totalValue !== undefined ? (
               allowance < totalValue ? (
