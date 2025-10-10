@@ -4,23 +4,23 @@ import { FaDiscord, FaHeadset } from 'react-icons/fa';
 const SupportFixed = () => {
   return (
     <div className="group fixed left-0 top-1/2 z-50 -translate-x-[calc(100%-30px)] -translate-y-1/2 transition-all duration-300 hover:translate-x-0">
-      <div className="flex overflow-hidden rounded-r-lg bg-white shadow-lg">
+      <div className="flex overflow-hidden rounded-r-lg bg-card shadow-lg">
         {/* Expanded content */}
         <div className="flex flex-col">
           <a
             href="https://discord.gg/pretgemarket"
             target="_blank"
-            className="flex items-center gap-3 px-3 py-2 text-black transition-colors hover:bg-gray-100"
+            className="flex items-center gap-3 px-3 py-2 text-white transition-colors hover:bg-foreground/50"
           >
-            <FaDiscord className="h-4 w-4 text-black" />
+            <FaDiscord className="h-4 w-4 text-white" />
             <span className="text-sm font-normal">Discord</span>
           </a>
           <a
             href="https://x.com/pretgemarket"
             target="_blank"
-            className="flex items-center gap-3 border-t border-border px-3 py-2 text-black transition-colors hover:bg-gray-100"
+            className="flex items-center gap-3 border-t border-border px-3 py-2 text-white transition-colors hover:bg-foreground/50"
           >
-            <div className="h-[18px] w-[18px] text-gray-900">
+            <div className="h-[18px] w-[18px] text-secondary-text">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <title>social_x_line</title>
                 <g id="social_x_line" fill="none" fillRule="evenodd">
@@ -37,15 +37,15 @@ const SupportFixed = () => {
           <a
             href="https://x.com/pretgemarket"
             target="_blank"
-            className="flex items-center gap-3 border-t border-border px-3 py-2 text-black transition-colors hover:bg-gray-100"
+            className="flex items-center gap-3 border-t border-border px-3 py-2 text-white transition-colors hover:bg-foreground/50"
           >
-            <BookOpen className="h-[18px] w-[18px] text-gray-900" />
+            <BookOpen className="h-[18px] w-[18px] text-secondary-text" />
             <span className="text-sm font-normal">Help Center</span>
           </a>
         </div>
         {/* Support Icon - visible when collapsed */}
-        <div className="flex w-[30px] items-center justify-center border-l text-white">
-          <FaHeadset className="h-4 w-4 text-black" />
+        <div className="flex w-[30px] items-center justify-center border-l border-border text-white">
+          <FaHeadset className="h-4 w-4 text-white" />
         </div>
       </div>
     </div>

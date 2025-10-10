@@ -125,7 +125,7 @@ export default function TredingTokenV2({
   const activeDotIndex = getActiveDotIndex();
 
   return (
-    <div className="p-4">
+    <div className="p-6">
       <Carousel
         opts={{
           align: 'start',
