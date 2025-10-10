@@ -68,10 +68,10 @@ const Topbar = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-[28px] w-full items-center bg-gray-100">
+      <div className="flex h-[28px] w-full items-center bg-background">
         <div className="flex animate-pulse gap-2">
           {[...Array(10)].map((_, index) => (
-            <div key={index} className="h-4 w-[220px] flex-shrink-0 rounded bg-gray-300" />
+            <div key={index} className="h-4 w-[220px] flex-shrink-0 rounded bg-card" />
           ))}
         </div>
       </div>
