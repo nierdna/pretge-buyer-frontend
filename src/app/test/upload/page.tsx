@@ -52,7 +52,7 @@ export default function UploadTestPage() {
                   <Avatar className="h-16 w-16">
                     <AvatarImage src={uploadedUrl} alt="Uploaded image" />
                   </Avatar>
-                  <div className="container flex-1 p-6">
+                  <div className="flex-1">
                     <p className="break-all text-sm text-green-700">{uploadedUrl}</p>
                   </div>
                 </div>

@@ -417,7 +417,7 @@ function QuestHistoryCard({ userQuest }: { userQuest: UserQuestWithQuest }) {
             <div className="rounded-full bg-blue-100 p-2">
               {questTypeIcons[userQuest.quest.type]}
             </div>
-            <div className="container flex-1 p-6">
+            <div className="flex-1">
               <h3 className="font-medium text-gray-900">{userQuest.quest.title}</h3>
               <p className="text-content mt-1 text-sm">
                 Submitted {new Date(userQuest.submittedAt).toLocaleDateString()}

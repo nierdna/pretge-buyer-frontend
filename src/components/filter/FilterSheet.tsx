@@ -31,7 +31,7 @@ export default function FilterSheet({
           side="bottom"
           className="flex max-h-[80vh] w-full flex-col gap-0 rounded-t-lg p-0"
         >
-          <SheetHeader className="border-b p-4">
+          <SheetHeader className="border-b border-border p-4">
             <SheetTitle>Filters</SheetTitle>
           </SheetHeader>
           <div className="grow overflow-y-auto p-0">
