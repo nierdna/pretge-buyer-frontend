@@ -55,7 +55,7 @@ export default function ReviewModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md sm:max-w-[425px]">
+      <DialogContent className="border-border bg-white/95 shadow-2xl backdrop-blur-md sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Review Order for {order?.offer?.sellerWallet?.user?.name}</DialogTitle>
           <DialogDescription>Share your experience with this order.</DialogDescription>

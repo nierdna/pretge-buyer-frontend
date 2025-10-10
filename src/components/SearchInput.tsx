@@ -133,7 +133,7 @@ export default function SearchInput({
 
       {/* Search Status */}
       {value && (
-        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border border-gray-700 bg-gray-800 p-2 text-xs text-primary">
+        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border border-border bg-gray-800 p-2 text-xs text-primary">
           {isLoading ? (
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 animate-spin rounded-full border-b-2 border-blue-400"></div>

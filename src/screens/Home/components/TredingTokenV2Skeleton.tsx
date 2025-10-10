@@ -48,7 +48,7 @@ export default function TredingTokenV2Skeleton() {
             <CarouselContent>
               {Array.from({ length: totalItems }).map((_, index) => (
                 <CarouselItem key={index} className="basis-full pl-4 md:basis-1/2 lg:basis-1/3">
-                  <div className="relative flex h-full flex-col items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white/80 p-3 pt-6 shadow-sm backdrop-blur-sm">
+                  <div className="relative flex h-full flex-col items-center justify-center gap-2 rounded-lg border border-border bg-white/80 p-3 pt-6 shadow-sm backdrop-blur-sm">
                     <div className="relative">
                       <Skeleton className="h-12 w-12 rounded-full" />
                     </div>

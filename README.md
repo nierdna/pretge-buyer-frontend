@@ -1328,7 +1328,7 @@ export const ExampleTable = ({ title = 'Examples' }: ExampleTableProps) => {
   };
 
   return (
-    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>

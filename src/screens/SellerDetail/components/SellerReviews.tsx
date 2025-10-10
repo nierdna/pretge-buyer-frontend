@@ -24,7 +24,7 @@ export default function SellerReviews({
   isLoading,
 }: SellerReviewsProps) {
   return (
-    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-0">
         <CardTitle className="text-xl">Customer Reviews</CardTitle>
       </CardHeader>

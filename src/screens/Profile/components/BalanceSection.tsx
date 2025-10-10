@@ -13,7 +13,7 @@ import { formatNumberShort } from '@/utils/helpers/number';
 export default function BalanceSection() {
   const { data } = useMyBalance();
   return (
-    <Card className="h-fit border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="h-fit border-border bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Your Balances</CardTitle>
       </CardHeader>
@@ -22,8 +22,8 @@ export default function BalanceSection() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-sm text-content">Token</TableHead>
-                <TableHead className="text-right text-sm text-content">Amount</TableHead>
+                <TableHead className="text-content text-sm">Token</TableHead>
+                <TableHead className="text-content text-right text-sm">Amount</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -40,7 +40,7 @@ export default function BalanceSection() {
             </TableBody>
           </Table>
         ) : (
-          <p className="py-4 text-center text-content">No balances found.</p>
+          <p className="text-content py-4 text-center">No balances found.</p>
         )}
       </CardContent>
     </Card>

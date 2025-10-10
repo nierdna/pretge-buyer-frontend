@@ -405,7 +405,7 @@ const ChartSection = ({
             }}
           >
             <div className="space-y-2 text-xs">
-              <div className="border-b border-gray-100 pb-2">
+              <div className="border-b border-border pb-2">
                 <span className="font-medium text-gray-600">{tooltipData.time}</span>
               </div>
               <div className="flex justify-between gap-4">

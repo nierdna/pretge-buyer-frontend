@@ -20,7 +20,7 @@ export default function SellerOffersList({
   isLoading,
 }: SellerOffersListProps) {
   return (
-    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Offers by this Seller</CardTitle>
       </CardHeader>
@@ -40,7 +40,7 @@ export default function SellerOffersList({
           </div>
         )}
         {!isLoading && offers.length === 0 && (
-          <p className="py-4 text-center text-content">
+          <p className="text-content py-4 text-center">
             This seller currently has no active offers.
           </p>
         )}

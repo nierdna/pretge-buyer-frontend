@@ -35,7 +35,7 @@ export default function UserInfoSection() {
   };
 
   return (
-    <Card className="h-fit border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="h-fit border-border bg-white/95 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">User Information</CardTitle>
       </CardHeader>
