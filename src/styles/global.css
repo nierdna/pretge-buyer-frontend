@@ -54,91 +54,44 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 9%;
-
-    --primary: 0 0% 20%; /* Dark gray for primary elements */
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 0 0% 96.1%;
-    --secondary-foreground: 0 0% 9%;
-
-    --muted: 0 0% 96.1%;
-    --muted-foreground: 0 0% 45.1%;
-
-    --accent: 0 0% 96.1%;
-    --accent-foreground: 0 0% 9%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 89.1%;
-    --input: 0 0% 89.1%;
-    --ring: 0 0% 3.9%;
-
+    --background: 0 0% 0%;
+    --foreground: 210 5% 16%;
+    --card: 0 0% 8%;
+    --primary: 22 78% 59%;
+    --border: 210 5% 16%;
+    --primary-text: 60 50% 99%;
+    --secondary-text: 210 2% 55%;
+    --success: 143 77% 65%;
+    --icon-primary: 60 50% 99%;
+    --icon-tertiary: 160 1% 50%, --inverse: 0 0% 0%;
+    --yellow: 46 100% 48%;
+    --warning: 36 88% 64%;
+    --info: 217 91% 60%;
     --radius: 0.5rem;
-
-    /* Subtle background gradient for a sophisticated European feel */
-    --gradient-page-bg: linear-gradient(
-      135deg,
-      hsl(200 80% 95%) 0%,
-      hsl(270 70% 95%) 50%,
-      hsl(160 80% 95%) 100%
-    );
-
-    --primary-0: #29e597;
-    --avocado: 155 90% 58%;
-    --cyan-0: 185 85% 56%;
   }
 
   .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 95%;
-
-    --card: 24 9.8% 10%;
-    --card-foreground: 0 0% 95%;
-
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 0 0% 95%;
-
-    --primary: 0 0% 95%;
-    --primary-foreground: 24 9.8% 10%;
-
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 0 0% 95%;
-
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 0 0% 95%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 95%;
-
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 24 9.8% 10%;
-
-    /* Subtle background gradient for dark mode */
-    --gradient-page-bg: linear-gradient(
-      135deg,
-      hsl(200 80% 10%) 0%,
-      hsl(270 70% 10%) 50%,
-      hsl(160 80% 10%) 100%
-    );
+    --background: 0 0% 0%;
+    --foreground: 210 5% 16%;
+    --card: 0 0% 8%;
+    --primary: 22 78% 59%;
+    --border: 210 5% 16%;
+    --primary-text: 60 50% 99%;
+    --secondary-text: 210 2% 55%;
+    --success: 143 77% 65%;
+    --icon-primary: 60 50% 99%;
+    --icon-tertiary: 160 1% 50%;
+    --inverse: 0 0% 0%;
+    --yellow: 46 100% 48%;
+    --warning: 36 88% 64%;
+    --danger: 1 82% 66%;
+    --info: 217 91% 60%;
   }
 }
 
 @layer base {
   body {
-    @apply bg-primary align-middle text-secondary;
+    @apply bg-background text-primary-text;
     /* font-family: 'Helvetica Neue', sans-serif; */
     font-family: 'SF Pro Display', sans-serif;
   }
