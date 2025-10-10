@@ -181,7 +181,7 @@ export default function OfferList({
       <div
         ref={searchBarRef}
         className={cn(
-          'sticky top-[26px] z-30 flex h-fit flex-col items-center justify-between gap-4 p-4 transition-colors duration-300 sm:flex-row',
+          'sticky top-[91px] z-30 flex h-fit flex-col items-center justify-between gap-4 p-4 transition-colors duration-300 sm:flex-row',
           'border-b border-border bg-background'
         )}
       >
