@@ -160,7 +160,7 @@ export default function RootLayout({
             <div className="flex min-h-screen flex-col">
               <Topbar />
               <Header />
-              <main className="relative flex-grow pt-[92px]">{children}</main>
+              <main className="relative flex-grow pt-[91px]">{children}</main>
               <Separator />
               <Footer />
               <SupportFixed />
