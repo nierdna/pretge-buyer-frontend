@@ -15,7 +15,7 @@ interface OfferListItemProps {
 
 export default function OfferListItem({ offer }: OfferListItemProps) {
   return (
-    <Card className="bg-primary-foreground flex flex-col items-center gap-4 border-border p-4 transition-all duration-300 hover:scale-[1.01] sm:flex-row">
+    <Card className="flex flex-col items-center gap-4 border-border bg-card p-4 transition-all duration-300 hover:scale-[1.01] sm:flex-row">
       {/* Token Info */}
       <div className="flex w-full flex-shrink-0 items-center gap-4 sm:w-40 xl:w-48">
         <div className="relative h-8 w-8 xl:h-12 xl:w-12">

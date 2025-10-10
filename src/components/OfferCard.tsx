@@ -48,7 +48,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
 
   return (
     <Link href={`/offers/${offerId}`} className="cursor-pointer">
-      <Card className="hover:bg-primary-foreground relative flex flex-col p-3 backdrop-blur-md transition-all duration-300 hover:scale-[1.015]">
+      <Card className="relative flex flex-col p-3 backdrop-blur-md transition-all duration-300 hover:scale-[1.015] hover:bg-card">
         {/* {offer?.promotion?.isActive && (
         <div className="absolute -top-3 -right-0">
           <Badge className="text-xs bg-orange-500 text-primary">

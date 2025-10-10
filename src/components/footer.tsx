@@ -13,7 +13,7 @@ export default function Footer() {
   };
 
   return (
-    <footer id="footer-section" className="border-t border-border bg-white px-3 py-4 font-sans">
+    <footer id="footer-section" className="border-t border-border bg-card px-3 py-4 font-sans">
       <div className="container px-4 lg:px-8">
         <div className="flex items-center justify-between">
           <Image
