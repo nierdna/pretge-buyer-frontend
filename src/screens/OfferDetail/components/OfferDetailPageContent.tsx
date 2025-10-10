@@ -322,9 +322,9 @@ export default function OfferDetailPageContent({
 
   return (
     <Card className="flex h-fit flex-col gap-8 px-4 py-6 md:flex-row md:px-8">
-      <div className="flex h-fit w-full flex-col gap-4 rounded-2xl border border-gray-200 p-4 md:w-[40%]">
+      <div className="flex h-fit w-full flex-col gap-4 rounded-2xl border border-border p-4 md:w-[40%]">
         {/* Event details */}
-        <div className="rounded-2xl border border-gray-200">
+        <div className="rounded-2xl border border-border">
           <div className="relative">
             <img
               src={

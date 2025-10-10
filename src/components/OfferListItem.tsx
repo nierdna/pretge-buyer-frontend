@@ -15,7 +15,7 @@ interface OfferListItemProps {
 
 export default function OfferListItem({ offer }: OfferListItemProps) {
   return (
-    <Card className="flex flex-col items-center gap-4 border-gray-200 bg-primary-foreground p-4 transition-all duration-300 hover:scale-[1.01] sm:flex-row">
+    <Card className="bg-primary-foreground flex flex-col items-center gap-4 border-border p-4 transition-all duration-300 hover:scale-[1.01] sm:flex-row">
       {/* Token Info */}
       <div className="flex w-full flex-shrink-0 items-center gap-4 sm:w-40 xl:w-48">
         <div className="relative h-8 w-8 xl:h-12 xl:w-12">
@@ -26,14 +26,14 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
                 alt={offer?.tokens?.symbol || 'Token Image'}
                 width={48}
                 height={48}
-                className="rounded-full border border-content"
+                className="border-content rounded-full border"
               />
               <Image
                 src={offer?.exToken?.network?.logo || '/logo-mb.png'}
                 alt={offer?.exToken?.network?.name || 'Token Image'}
                 width={20}
                 height={20}
-                className="absolute bottom-0 right-0 rounded-full border border-content"
+                className="border-content absolute bottom-0 right-0 rounded-full border"
               />
             </div>
           </div>
@@ -49,7 +49,7 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
 
         <div className="flex w-full items-end gap-4">
           <div className="relative flex max-w-[calc(60%)] flex-1 flex-col gap-2">
-            <div className="inline-flex items-center text-xs text-content">
+            <div className="text-content inline-flex items-center text-xs">
               <span>
                 {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
                   maxDecimalCount: 0,
@@ -115,9 +115,9 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
           </Avatar>
           <div className="grid gap-0.5">
             <div className="truncate text-sm font-bold">{offer.sellerWallet?.user?.name}</div>
-            <div className="flex items-center gap-0.5 text-sm text-content">
+            <div className="text-content flex items-center gap-0.5 text-sm">
               <span className="font-bold">{Number(offer.sellerWallet?.user?.rating || 0)}</span>
-              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+              <Star className="fill-yellow-400 text-yellow-400 h-3 w-3" />
             </div>
           </div>
         </div>

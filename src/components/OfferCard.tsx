@@ -218,7 +218,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
               </div>
             </span>
           </div>
-          {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+          {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Total Amount</span>
           <span className="text-base font-bold text-primary">
             {formatNumberShort(offer.quantity, {
@@ -227,7 +227,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </span>
         </div>
 
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Payment with</span>
           <div className="flex items-end gap-1 h-6 font-bold">
             <Image
@@ -243,14 +243,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </div>
         </div>
 
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Collateral</span>
           <span
             className={cn('text-base font-bold', getColorFromCollateral(offer.collateralPercent))}
           >{`${offer.collateralPercent}%`}</span>
         </div>
 
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Settle After TGE</span>
           <span className="text-base font-bold">
             {offer.settleDuration > 0
@@ -321,7 +321,7 @@ function OfferCardSkeleton() {
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="flex flex-col rounded-md border border-gray-200 bg-neutral-800/5 p-3 shadow-md"
+            className="flex flex-col rounded-md border border-border bg-neutral-800/5 p-3 shadow-md"
           >
             <Skeleton className="mb-1 h-3 w-[60px]" />
             <Skeleton className="h-5 w-[80px]" />

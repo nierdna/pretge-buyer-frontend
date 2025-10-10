@@ -18,7 +18,7 @@ const SupportFixed = () => {
           <a
             href="https://x.com/pretgemarket"
             target="_blank"
-            className="flex items-center gap-3 border-t border-gray-200 px-3 py-2 text-black transition-colors hover:bg-gray-100"
+            className="flex items-center gap-3 border-t border-border px-3 py-2 text-black transition-colors hover:bg-gray-100"
           >
             <div className="h-[18px] w-[18px] text-gray-900">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -37,7 +37,7 @@ const SupportFixed = () => {
           <a
             href="https://x.com/pretgemarket"
             target="_blank"
-            className="flex items-center gap-3 border-t border-gray-200 px-3 py-2 text-black transition-colors hover:bg-gray-100"
+            className="flex items-center gap-3 border-t border-border px-3 py-2 text-black transition-colors hover:bg-gray-100"
           >
             <BookOpen className="h-[18px] w-[18px] text-gray-900" />
             <span className="text-sm font-normal">Help Center</span>

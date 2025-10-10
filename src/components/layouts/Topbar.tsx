@@ -83,7 +83,7 @@ const Topbar = () => {
   }
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 flex h-[28px] w-full items-center border-b border-gray-200 bg-white">
+    <div className="fixed left-0 right-0 top-0 z-50 flex h-[28px] w-full items-center border-b border-border bg-white">
       <div className="scrollbar-hide flex w-full overflow-x-auto">
         <AnimatePresence mode="popLayout">
           {dataLatestOrders.data.map((item: LatestOrder) => {
@@ -125,7 +125,7 @@ const Topbar = () => {
                   className={`flex flex-shrink-0 items-center gap-2 whitespace-nowrap border-x px-2 py-1 text-sm ${
                     isNewOrder
                       ? 'border-green-400 bg-green-50 text-green-800 shadow-md ring-2 ring-green-200'
-                      : 'border-gray-200 text-gray-700'
+                      : 'border-border text-gray-700'
                   }`}
                 >
                   <span

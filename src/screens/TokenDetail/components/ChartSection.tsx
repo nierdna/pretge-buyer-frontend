@@ -392,13 +392,13 @@ const ChartSection = ({
         )}
         <div
           ref={chartContainerRef}
-          className="h-[400px] w-full rounded-lg border border-gray-200 bg-white"
+          className="h-[400px] w-full rounded-lg border border-border bg-white"
         />
 
         {/* Custom Tooltip */}
         {tooltipData.visible && (
           <div
-            className="pointer-events-none absolute z-20 rounded-lg border border-gray-200 bg-white p-3 shadow-lg"
+            className="pointer-events-none absolute z-20 rounded-lg border border-border bg-white p-3 shadow-lg"
             style={{
               left: tooltipData.x > 200 ? tooltipData.x - 180 : tooltipData.x + 10,
               top: tooltipData.y > 100 ? tooltipData.y - 100 : tooltipData.y + 10,

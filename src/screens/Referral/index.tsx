@@ -68,7 +68,7 @@ export default function ReferralScreen() {
           <div className="flex w-full flex-col gap-4">
             {/* Your Referral Link */}
             <div
-              className={`flex items-center gap-2 rounded-lg border border-gray-200 p-3 py-1 ${
+              className={`flex items-center gap-2 rounded-lg border border-border p-3 py-1 ${
                 data?.referralLink ? '' : 'bg-gray-100'
               }`}
             >

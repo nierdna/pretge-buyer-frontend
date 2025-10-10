@@ -81,7 +81,7 @@ export default function SellerDetailPageSkeleton() {
                     {Array.from({ length: 2 }).map((_, i) => (
                       <div
                         key={i}
-                        className="flex flex-col rounded-md border border-gray-200 bg-neutral-800/5 p-3 shadow-md"
+                        className="flex flex-col rounded-md border border-border bg-neutral-800/5 p-3 shadow-md"
                       >
                         <Skeleton className="mb-1 h-3 w-[60px]" />
                         <Skeleton className="h-5 w-[80px]" />
