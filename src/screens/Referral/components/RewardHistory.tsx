@@ -108,7 +108,7 @@ export default function RewardHistory() {
           ) : (
             <TableBody>
               {rewardRecords.map((record, index) => (
-                <TableRow key={index} className="border-border hover:bg-gray-50/50">
+                <TableRow key={index} className="border-border hover:bg-card/50">
                   <TableCell className="text-sm font-medium text-gray-700">
                     {record.timestamp}
                   </TableCell>

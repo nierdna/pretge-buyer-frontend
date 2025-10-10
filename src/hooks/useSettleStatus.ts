@@ -168,13 +168,13 @@ export const getSettleStatusDisplay = (status: SettleStatus) => {
       return {
         icon: '⏰',
         title: 'Token Ended',
-        className: 'border-border bg-gray-50 text-gray-700',
+        className: 'border-border bg-card text-gray-700',
       };
     case 'cancelled':
       return {
         icon: '❌',
         title: 'Token Cancelled',
-        className: 'border-border bg-gray-50 text-gray-700',
+        className: 'border-border bg-card text-gray-700',
       };
     case 'purchase':
       return {
@@ -198,7 +198,7 @@ export const getSettleStatusDisplay = (status: SettleStatus) => {
       return {
         icon: '⏰',
         title: 'Settle Period Ended',
-        className: 'border-border bg-gray-50 text-gray-700',
+        className: 'border-border bg-card text-gray-700',
       };
     default:
       return {

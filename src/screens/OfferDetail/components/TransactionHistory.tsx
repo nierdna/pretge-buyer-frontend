@@ -142,7 +142,9 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
 
           {/* Status notification using the new hook */}
           {settleStatus.message && (
-            <div className={`mt-2 rounded-lg border p-3 text-sm ${statusInfo.className}`}>
+            <div
+              className={`mt-2 rounded-lg border border-border p-3 text-sm ${statusInfo.className}`}
+            >
               <p className="font-medium">
                 {statusInfo.icon} {statusInfo.title}
               </p>
@@ -260,10 +262,10 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
                             });
                           }}
                         >
-                          <ArrowUpRight className="h-4 w-4 text-content" />
+                          <ArrowUpRight className="text-content h-4 w-4" />
                         </Button>
                       ) : (
-                        <span className="text-xs text-content">-</span>
+                        <span className="text-content text-xs">-</span>
                       )}
                     </TableCell>
                     <TableCell colSpan={1} className="text-right" width={160}>
@@ -276,8 +278,8 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
           )}
           {!isLoading && orders.length === 0 && (
             <div className="flex flex-col items-center justify-center py-8">
-              <div className="text-lg font-medium text-content">No orders found</div>
-              <div className="text-sm text-content">
+              <div className="text-content text-lg font-medium">No orders found</div>
+              <div className="text-content text-sm">
                 You haven't placed any orders for this offer yet.
               </div>
             </div>
