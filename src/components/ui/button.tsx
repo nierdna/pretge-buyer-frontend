@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary-text text-inverse shadow hover:bg-primary-text/90',
+        default: 'bg-primary text-inverse shadow hover:bg-primary/90',
         primary: 'bg-primary text-inverse shadow hover:bg-primary/90',
 
         outline: 'border border-border bg-card shadow-sm hover:bg-foreground/60',

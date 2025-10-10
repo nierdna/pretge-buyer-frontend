@@ -588,7 +588,7 @@ export default function OfferDetailPageContent({
               {offer?.status === EOfferStatus.OPEN && (
                 <Button
                   onClick={handleBuy}
-                  size="xl"
+                  size="lg"
                   className="w-full"
                   disabled={
                     buyQuantity === 0 ||
@@ -609,7 +609,7 @@ export default function OfferDetailPageContent({
               )}
               {offer?.status === EOfferStatus.CLOSED && (
                 <Button
-                  size="xl"
+                  size="lg"
                   variant={'danger'}
                   className="w-full disabled:bg-danger/80 disabled:opacity-100"
                   disabled
