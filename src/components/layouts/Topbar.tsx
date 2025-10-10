@@ -83,7 +83,7 @@ const Topbar = () => {
   }
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50 flex h-[28px] w-full items-center border-b border-border bg-white">
+    <div className="sticky left-0 right-0 top-0 z-50 flex h-[28px] w-full items-center border-b border-border bg-background">
       <div className="scrollbar-hide flex w-full overflow-x-auto">
         <AnimatePresence mode="popLayout">
           {dataLatestOrders.data.map((item: LatestOrder) => {
@@ -129,13 +129,13 @@ const Topbar = () => {
                   }`}
                 >
                   <span
-                    className={`font-semibold ${isNewOrder ? 'text-green-900' : 'text-gray-900'}`}
+                    className={`font-semibold ${isNewOrder ? 'text-green-900' : 'text-secondary-text'}`}
                   >
                     {item.buyer.address.slice(0, 6)}...{item.buyer.address.slice(-4)}
                   </span>
                   <span className={isNewOrder ? 'text-green-600' : 'text-gray-500'}>bought</span>
                   <span
-                    className={`font-medium ${isNewOrder ? 'text-green-900' : 'text-gray-900'}`}
+                    className={`font-medium ${isNewOrder ? 'text-green-900' : 'text-secondary-text'}`}
                   >
                     {item.offer.title}
                   </span>
