@@ -176,7 +176,7 @@ export default function FilterContent({
               <AccordionTrigger className="text-base">Token</AccordionTrigger>
               <AccordionContent className="flex grid-cols-2 flex-wrap gap-2 pt-2 lg:grid">
                 {isLoadingTokens ? (
-                  <div className="text-sm text-content">Loading tokens...</div>
+                  <div className="text-content text-sm">Loading tokens...</div>
                 ) : tokensData?.data?.length > 0 ? (
                   tokensData.data.map((token: IToken) => (
                     <div className="flex items-center gap-2" key={token.id}>
@@ -201,7 +201,7 @@ export default function FilterContent({
                     </div>
                   ))
                 ) : (
-                  <div className="text-sm text-content">No tokens available</div>
+                  <div className="text-content text-sm">No tokens available</div>
                 )}
               </AccordionContent>
             </AccordionItem>
@@ -243,7 +243,7 @@ export default function FilterContent({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        {/* <Separator className="bg-gray-200" /> */}
+        {/* <Separator className="bg-border" /> */}
         {/* <Button className="lg:hidden" variant="outline">
           Apply Filters
         </Button> */}

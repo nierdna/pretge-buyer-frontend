@@ -85,7 +85,7 @@ const OfferDetailContentSkeleton = () => {
               </div>
               <Skeleton className="h-8 w-16" />
             </div>
-            <Separator className="bg-gray-200" />
+            <Separator className="bg-border" />
           </div>
 
           {/* Purchase Form */}

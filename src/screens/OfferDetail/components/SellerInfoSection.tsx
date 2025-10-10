@@ -30,7 +30,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
               <Dot className="text-content" size={16} />
               <div className="flex items-center gap-0.5 text-base">
                 <span className="">{formatNumberShort(seller?.user?.rating)}</span>
-                <Star className="h-5 w-5 fill-yellow-400 pb-1 text-yellow-400" />
+                <Star className="fill-yellow-400 text-yellow-400 h-5 w-5 pb-1" />
               </div>
             </div>
             <div className="grid gap-2 text-sm text-gray-700">
@@ -41,7 +41,7 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
             </div>
           </div>
         </div>
-        {/* <Separator className="bg-gray-200" /> */}
+        {/* <Separator className="bg-border" /> */}
         <div className="flex flex-col gap-2">
           <Link
             href={`/sellers/${seller?.userId}`}

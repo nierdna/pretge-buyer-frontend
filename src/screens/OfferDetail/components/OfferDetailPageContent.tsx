@@ -480,7 +480,7 @@ export default function OfferDetailPageContent({
         <div className="flex w-full flex-col gap-6 md:w-[90%]">
           <div>
             <SellerInfoSection seller={offer?.sellerWallet} />
-            <Separator className="bg-gray-200" />
+            <Separator className="bg-border" />
           </div>
           <div>
             {/* Quantity selector */}
@@ -620,7 +620,7 @@ export default function OfferDetailPageContent({
             </div>
 
             {/* Note section explaining settle duration and collateral */}
-            <Separator className="mt-6 bg-gray-200" />
+            <Separator className="mt-6 bg-border" />
             <div className="py-2d to-yellow-50 mt-4 rounded-xl border border-orange-200 bg-gradient-to-r from-orange-50 p-4 shadow-sm">
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1" className="!border-none">

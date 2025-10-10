@@ -19,7 +19,7 @@ export default function OfferCardSkeleton() {
           </div>
         </div>
       </CardHeader>
-      <div className="mx-6 h-[1px] bg-gray-200" /> {/* Separator skeleton */}
+      <div className="mx-6 h-[1px] bg-border" /> {/* Separator skeleton */}
       <CardContent className="grid flex-grow grid-cols-2 gap-4 p-6 text-sm">
         {[...Array(2)].map((_, i) => (
           <div
@@ -31,7 +31,7 @@ export default function OfferCardSkeleton() {
           </div>
         ))}
       </CardContent>
-      {/* <div className="mx-6 h-[1px] bg-gray-200" />  */}
+      {/* <div className="mx-6 h-[1px] bg-border" />  */}
       {/* Separator skeleton */}
       {/* <CardFooter className="flex flex-col items-start gap-4 px-6">
         <div className="flex w-full items-center gap-2">

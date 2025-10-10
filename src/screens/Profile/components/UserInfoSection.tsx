@@ -56,20 +56,20 @@ export default function UserInfoSection() {
                 variant="ghost"
                 size="icon"
                 onClick={handleOpenEditModal}
-                className="h-6 w-6 text-content hover:text-gray-700"
+                className="text-content h-6 w-6 hover:text-gray-700"
               >
                 <Edit className="h-4 w-4" />
                 <span className="sr-only">Edit profile</span>
               </Button>
             </div>
-            <div className="text-sm text-content">{truncateAddress(walletAddress)}</div>
-            <p className="mt-1 text-content">
+            <div className="text-content text-sm">{truncateAddress(walletAddress)}</div>
+            <p className="text-content mt-1">
               <span className="text-sm font-medium">Member since:</span>{' '}
               {dayjs(user?.createdAt).format('DD/MM/YYYY')}
             </p>
           </div>
         </div>
-        <Separator className="bg-gray-200" />
+        <Separator className="bg-border" />
         <div className="grid gap-2 text-base text-gray-700">
           <h3 className="text-xl font-bold text-gray-800">About {user?.name}</h3>
           <p>{user?.description}</p>
