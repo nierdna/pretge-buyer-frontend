@@ -576,7 +576,7 @@ export default function ExamplePage() {
   }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 container p-6">
       <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
         <FilterSidebar filters={filters} setFilters={setFilters} />
         <ExampleList
@@ -1093,7 +1093,7 @@ export default function ExamplePage() {
   }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 container p-6">
       <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
         <FilterSidebar filters={filters} setFilters={setFilters} />
         <ExampleList

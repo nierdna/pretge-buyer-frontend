@@ -52,7 +52,7 @@ export const ReferralBanner = ({ className }: ReferralBannerProps) => {
           <div className="flex-shrink-0">
             <Gift className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </div>
-          <div className="flex-1">
+          <div className="container flex-1 p-6">
             <p className="text-blue-900 dark:text-blue-100">
               Validating referral code: <strong>{referralCode}</strong>...
             </p>
@@ -70,7 +70,7 @@ export const ReferralBanner = ({ className }: ReferralBannerProps) => {
       >
         <CardContent className="flex items-center gap-4 p-4">
           <X className="h-6 w-6 text-red-600 dark:text-red-400" />
-          <div className="flex-1">
+          <div className="container flex-1 p-6">
             <p className="text-red-900 dark:text-red-100">
               Invalid referral code: <strong>{referralCode}</strong>
               <p className="mt-1 text-sm text-red-700 dark:text-red-300">{error}</p>

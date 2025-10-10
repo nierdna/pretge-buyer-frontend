@@ -255,7 +255,7 @@ const DialogOrderPurchase = ({
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline" className="flex-1" disabled={depositLoading}>
+            <Button variant="outline" className="container flex-1 p-6" disabled={depositLoading}>
               Cancel
             </Button>
           </DialogClose>

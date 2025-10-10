@@ -240,7 +240,7 @@ export default function OfferList({
             </Select>
           </div>
 
-          <div className="flex-1">
+          <div className="container flex-1 p-6">
             <SearchInput
               value={inputSearch}
               onChange={handleEnhancedSearch}
