@@ -66,20 +66,22 @@ export async function GET(req: NextRequest) {
       )
       .eq('status', status);
 
-    const { data: tokenIdsFind, error: tokensErrors } = await supabase
-      .from('tokens')
-      .select('id')
-      .eq('status', status);
-
-    if (tokensErrors) {
-      console.error('Error fetching tokens:', tokensErrors);
-      return NextResponse.json(
-        { success: false, message: 'Failed to fetch tokens' },
-        { status: 500 }
-      );
-    }
     if (statusToken) {
-      query = query.in('token_id', tokenIdsFind);
+      const { data: tokenIdsFind, error: tokensErrors } = await supabase
+        .from('tokens')
+        .select('id')
+        .eq('status', statusToken);
+
+      if (tokensErrors) {
+        console.error('Error fetching tokens:', tokensErrors);
+        return NextResponse.json(
+          { success: false, message: 'Failed to fetch tokens' },
+          { status: 500 }
+        );
+      }
+
+      const tokensIds = tokenIdsFind?.map((item) => item.id);
+      query = query.in('token_id', tokensIds);
     }
 
     if (tokenIds) {
