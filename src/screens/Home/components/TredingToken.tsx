@@ -37,7 +37,7 @@ export default function TrendingTokenSection({
   }
   return (
     <section className="">
-      <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+      <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
         <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
           <CardTitle className="text-xl">Trending Tokens</CardTitle>
           <TrendingUp className="h-6 w-6 text-green-500" />
@@ -52,7 +52,7 @@ export default function TrendingTokenSection({
                 <Link
                   key={index}
                   href={`/token/${token?.symbol?.toLowerCase()}`} // Link to token detail page
-                  className="relative flex h-full min-w-[120px] flex-shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white/80 p-3 pt-6 shadow-sm backdrop-blur-sm transition-colors hover:bg-gray-100"
+                  className="relative flex h-full min-w-[120px] flex-shrink-0 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border border-border bg-foreground/50 p-3 pt-6 shadow-sm backdrop-blur-sm transition-colors hover:bg-gray-100"
                 >
                   <div className="relative">
                     {renderBadge(token)}
@@ -75,7 +75,9 @@ export default function TrendingTokenSection({
                       />
                     </div>
                   </div>
-                  <span className="text-lg font-bold text-gray-800">{token?.symbol}</span>
+                  <span className="text-secondary-foreground text-lg font-bold">
+                    {token?.symbol}
+                  </span>
                 </Link>
               )
             )}

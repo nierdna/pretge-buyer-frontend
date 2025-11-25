@@ -48,7 +48,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
 
   return (
     <Link href={`/offers/${offerId}`} className="cursor-pointer">
-      <Card className="relative flex flex-col p-3 backdrop-blur-md transition-all duration-300 hover:scale-[1.015] hover:bg-primary-foreground">
+      <Card className="relative flex flex-col p-3 backdrop-blur-md transition-all duration-300 hover:scale-[1.015] hover:bg-card">
         {/* {offer?.promotion?.isActive && (
         <div className="absolute -top-3 -right-0">
           <Badge className="text-xs bg-orange-500 text-primary">
@@ -60,7 +60,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
           <img
             src={offer?.imageUrl || offer.tokens?.bannerUrl || offer.tokens?.logo || '/logo-mb.png'}
             alt={`${offer.tokens?.symbol} symbol`}
-            className="h-48 w-full rounded-2xl border border-line object-cover"
+            className="h-48 w-full rounded-2xl border border-border object-cover"
           />
           <Badge className="absolute left-2 top-2 z-10">
             {normalizeNetworkName(offer.exToken?.network?.name)}
@@ -88,7 +88,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
               {offer?.title || offer?.tokens?.symbol}
             </CardTitle>
 
-            <CardDescription className="line-clamp-2 truncate text-sm text-content">
+            <CardDescription className="text-content line-clamp-2 truncate text-sm">
               {offer?.description || 'No description'}
             </CardDescription>
           </div>
@@ -175,7 +175,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
         <CardContent className="flex flex-col gap-4 p-3 text-sm">
           <div className="flex items-end justify-between gap-4">
             <div className="relative flex max-w-[calc(60%)] flex-1 flex-col gap-2">
-              <div className="inline-flex items-center text-xs text-content">
+              <div className="text-content inline-flex items-center text-xs">
                 <span>
                   {formatNumberShort(div(Number(offer.filled), Number(offer.quantity)) * 100, {
                     maxDecimalCount: 0,
@@ -212,13 +212,13 @@ export default function OfferCard({ offer }: OfferCardProps) {
                   alt={offer?.tokens?.symbol || 'Token Image'}
                   width={16}
                   height={16}
-                  className="min-h-4 min-w-4 rounded-full border border-line"
+                  className="min-h-4 min-w-4 rounded-full border border-border"
                 />
-                <span className="text-xs leading-none text-content">{offer.tokens?.symbol}</span>
+                <span className="text-content text-xs leading-none">{offer.tokens?.symbol}</span>
               </div>
             </span>
           </div>
-          {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+          {/* <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Total Amount</span>
           <span className="text-base font-bold text-primary">
             {formatNumberShort(offer.quantity, {
@@ -227,7 +227,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </span>
         </div>
 
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Payment with</span>
           <div className="flex items-end gap-1 h-6 font-bold">
             <Image
@@ -243,14 +243,14 @@ export default function OfferCard({ offer }: OfferCardProps) {
           </div>
         </div>
 
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Collateral</span>
           <span
             className={cn('text-base font-bold', getColorFromCollateral(offer.collateralPercent))}
           >{`${offer.collateralPercent}%`}</span>
         </div>
 
-        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-gray-200 shadow-md h-fit">
+        <div className="flex flex-col bg-neutral-800/5 p-3 rounded-md border border-border shadow-md h-fit">
           <span className="text-2xs text-content">Settle After TGE</span>
           <span className="text-base font-bold">
             {offer.settleDuration > 0
@@ -300,7 +300,7 @@ export default function OfferCard({ offer }: OfferCardProps) {
 
 function OfferCardSkeleton() {
   return (
-    <Card className="flex flex-col border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="flex flex-col border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -316,19 +316,19 @@ function OfferCardSkeleton() {
           </div>
         </div>
       </CardHeader>
-      <div className="mx-6 h-[1px] bg-gray-200" /> {/* Separator skeleton */}
+      <div className="mx-6 h-[1px] bg-border" /> {/* Separator skeleton */}
       <CardContent className="grid flex-grow grid-cols-2 gap-4 p-6 text-sm">
         {[...Array(4)].map((_, i) => (
           <div
             key={i}
-            className="flex flex-col rounded-md border border-gray-200 bg-neutral-800/5 p-3 shadow-md"
+            className="flex flex-col rounded-md border border-border bg-neutral-800/5 p-3 shadow-md"
           >
             <Skeleton className="mb-1 h-3 w-[60px]" />
             <Skeleton className="h-5 w-[80px]" />
           </div>
         ))}
       </CardContent>
-      <div className="mx-6 h-[1px] bg-gray-200" /> {/* Separator skeleton */}
+      <div className="mx-6 h-[1px] bg-border" /> {/* Separator skeleton */}
       <CardFooter className="flex flex-col items-start gap-4 p-6 pt-4">
         <div className="flex w-full items-center gap-2">
           <Skeleton className="h-8 w-8 rounded-full" />

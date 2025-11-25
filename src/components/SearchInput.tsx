@@ -109,7 +109,7 @@ export default function SearchInput({
   return (
     <div className={`relative ${className} w-full`}>
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-content" />
+        <Search className="text-content absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform" />
         <Input
           ref={inputRef}
           value={value}
@@ -123,7 +123,7 @@ export default function SearchInput({
         {value && (
           <button
             onClick={handleClear}
-            className="hover:text-foreground absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform rounded-full p-1 text-content transition-all duration-200 hover:bg-gray-100"
+            className="text-content absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform rounded-full p-1 transition-all duration-200 hover:bg-gray-100 hover:text-foreground"
             type="button"
           >
             <X className="h-4 w-4" />
@@ -133,7 +133,7 @@ export default function SearchInput({
 
       {/* Search Status */}
       {value && (
-        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border border-gray-700 bg-gray-800 p-2 text-xs text-primary">
+        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border border-border bg-gray-800 p-2 text-xs text-primary">
           {isLoading ? (
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 animate-spin rounded-full border-b-2 border-blue-400"></div>
@@ -153,7 +153,7 @@ export default function SearchInput({
       {showSuggestions && (
         <div
           ref={suggestionsRef}
-          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-64 overflow-y-auto rounded-md border border-gray-200 bg-white shadow-lg"
+          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-64 overflow-y-auto rounded-md border border-border bg-white shadow-lg"
         >
           {/* Token Suggestions */}
           {suggestions.length > 0 && (
@@ -179,7 +179,7 @@ export default function SearchInput({
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col">
                     <div className="truncate font-medium">{suggestion.symbol}</div>
-                    <div className="truncate text-xs text-content">{suggestion.name}</div>
+                    <div className="text-content truncate text-xs">{suggestion.name}</div>
                   </div>
                   {suggestion.network && (
                     <div className="flex-shrink-0 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">
@@ -193,7 +193,7 @@ export default function SearchInput({
 
           {/* Recent Searches */}
           {recentSearches.length > 0 && (
-            <div className="border-t border-gray-200 p-2">
+            <div className="border-t border-border p-2">
               <div className="mb-2 flex items-center gap-1 text-xs font-medium text-gray-600">
                 <Clock className="h-3 w-3" />
                 Recent Searches
@@ -213,7 +213,7 @@ export default function SearchInput({
 
           {/* No Results */}
           {suggestions.length === 0 && recentSearches.length === 0 && value.length > 0 && (
-            <div className="p-4 text-center text-sm text-content">
+            <div className="text-content p-4 text-center text-sm">
               No suggestions found for "{value}"
             </div>
           )}

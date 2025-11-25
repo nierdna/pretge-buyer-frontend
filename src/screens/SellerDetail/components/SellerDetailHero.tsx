@@ -13,7 +13,7 @@ interface SellerDetailHeroProps {
 
 export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
   return (
-    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">Seller Profile</CardTitle>
       </CardHeader>
@@ -28,13 +28,13 @@ export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
 
               <div className="flex items-center justify-center gap-1 text-base sm:justify-start">
                 <span className="font-bold">{Number(seller?.rating || 0)}</span>
-                <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                <Star className="fill-yellow-400 text-yellow-400 h-5 w-5" />
                 <span className="text-content">
                   ({Number(seller?.rating || 0) * 10} reviews)
                 </span>{' '}
                 {/* Mock review count */}
               </div>
-              <p className="mt-2 text-content">
+              <p className="text-content mt-2">
                 <span className="font-medium">Member since:</span>{' '}
                 {dayjs(seller?.createdAt).format('DD/MM/YYYY')}
               </p>
@@ -44,8 +44,8 @@ export default function SellerDetailHero({ seller }: SellerDetailHeroProps) {
         </div>
 
         <Separator />
-        <div className="grid gap-2 text-base text-gray-700">
-          <h3 className="text-xl font-bold text-gray-800">About {seller?.name}</h3>
+        <div className="text-secondary-foreground grid gap-2 text-base">
+          <h3 className="text-secondary-foreground text-xl font-bold">About {seller?.name}</h3>
           <p>{seller?.description}</p>
         </div>
         <Button className="mt-4 w-full md:hidden">Contact Seller</Button>

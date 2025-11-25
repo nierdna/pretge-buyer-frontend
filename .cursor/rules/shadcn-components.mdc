@@ -7,12 +7,12 @@ alwaysApply: false
 
 ## Background Classes
 
-- `bg-background` → `bg-primary-foreground`
+- `bg-background` → `bg-card`
 - `bg-muted` → `bg-content`
 
 ## Border Classes
 
-- `border-border` → `border-line`
+- `border-border` → `border-border`
 
 ## Text Classes
 
@@ -94,7 +94,7 @@ const componentVariants = cva(
     variants: {
       variant: {
         default: 'bg-primary text-secondary hover:bg-primary/90',
-        outline: 'border border-line text-head bg-transparent hover:bg-primary-hover',
+        outline: 'border border-border text-head bg-transparent hover:bg-primary-hover',
       },
     },
     defaultVariants: {
@@ -108,7 +108,7 @@ const componentVariants = cva(
 
 Đảm bảo tất cả UI components tuân thủ:
 
-1. Sử dụng class mapping mới (bg-primary-foreground, border-line, text-secondary, text-content)
+1. Sử dụng class mapping mới (bg-card, border-border, text-secondary, text-content)
 2. Luôn có `outline-none ring-0` trong className chính
 3. Không sử dụng bất kỳ class nào liên quan đến ring/outline/focus-visible
 4. Duy trì tính nhất quán trong toàn bộ ứng dụng

@@ -86,12 +86,12 @@ export default function HomePage() {
   return (
     // <div className="min-h-screen text-gray-900">
     //   <Header />
-    <div className="flex-1">
+    <div className="container flex-1 divide-y divide-border border-x border-border">
       {/* Applied the main page background gradient here */}
       <TredingTokenV2 trendingTokens={tokens?.data || []} isLoading={isLoadingTokens} />
       {/* <FlashSale /> */}
-      <div className="w-full sm:px-4">
-        <div className="grid w-full gap-4 lg:grid-cols-[280px_1fr]">
+      <div className="w-full">
+        <div className="grid w-full divide-x divide-border lg:grid-cols-[280px_1fr]">
           <FilterSidebar filters={filters} setFilters={setFilters} />
           <OfferList
             inputSearch={inputSearch}

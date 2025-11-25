@@ -154,15 +154,13 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`bg-gradient-page-bg flex min-h-screen flex-col`}>
+      <body className={`flex min-h-screen flex-col bg-background`}>
         <SocketProvider>
           <Provider>
             <div className="flex min-h-screen flex-col">
               <Topbar />
               <Header />
-              <main className="flex-grow">
-                <div className="container mx-auto px-4 py-4 lg:px-4 lg:py-6">{children}</div>
-              </main>
+              <main className="relative flex-grow">{children}</main>
               <Separator />
               <Footer />
               <SupportFixed />

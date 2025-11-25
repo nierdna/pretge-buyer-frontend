@@ -1,4 +1,3 @@
-import { Card } from '@/components/ui/card';
 import { IOfferFilter } from '@/service/offer.service';
 import FilterContent from './FilterContent'; // Import the new FilterContent
 
@@ -14,13 +13,13 @@ export default function FilterSidebar({
   hideTokenFilter?: boolean;
 }) {
   return (
-    <Card className="sticky top-[6.5rem] hidden h-fit overflow-y-auto lg:block">
+    <div className="sticky top-[6.5rem] hidden h-fit overflow-y-auto lg:block">
       <FilterContent
         filters={filters}
         setFilters={setFilters}
         hideNetworkFilter={hideNetworkFilter}
         hideTokenFilter={hideTokenFilter}
       />
-    </Card>
+    </div>
   );
 }

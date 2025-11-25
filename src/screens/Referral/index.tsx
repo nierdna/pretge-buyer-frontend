@@ -59,7 +59,7 @@ export default function ReferralScreen() {
           <RewardHistory />
         </div>
         {/* Two Column Layout */}
-        <Card className="flex flex-col gap-4 bg-white/95 p-6">
+        <Card className="flex flex-col gap-4 bg-foreground/50 p-6">
           <div className="flex items-center gap-2">
             <ChartNoAxesCombined className="h-5 w-5" />
             <div className="text-2xl font-bold text-gray-900">Referral Info</div>
@@ -68,7 +68,7 @@ export default function ReferralScreen() {
           <div className="flex w-full flex-col gap-4">
             {/* Your Referral Link */}
             <div
-              className={`flex items-center gap-2 rounded-lg border border-gray-200 p-3 py-1 ${
+              className={`flex items-center gap-2 rounded-lg border border-border p-3 py-1 ${
                 data?.referralLink ? '' : 'bg-gray-100'
               }`}
             >

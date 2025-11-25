@@ -576,7 +576,7 @@ export default function ExamplePage() {
   }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 container p-6">
       <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
         <FilterSidebar filters={filters} setFilters={setFilters} />
         <ExampleList
@@ -1093,7 +1093,7 @@ export default function ExamplePage() {
   }, [isLoading, isFetching, hasNextPage, fetchNextPage]);
 
   return (
-    <div className="flex-1">
+    <div className="flex-1 container p-6">
       <div className="grid gap-4 lg:grid-cols-[280px_1fr]">
         <FilterSidebar filters={filters} setFilters={setFilters} />
         <ExampleList
@@ -1328,7 +1328,7 @@ export const ExampleTable = ({ title = 'Examples' }: ExampleTableProps) => {
   };
 
   return (
-    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-4">
         <CardTitle className="text-xl">{title}</CardTitle>
       </CardHeader>

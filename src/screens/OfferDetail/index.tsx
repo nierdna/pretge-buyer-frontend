@@ -27,10 +27,10 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
   // }
 
   return (
-    <section className="flex-1">
+    <section className="container flex-1 p-6">
       <Breadcrumb className="mb-6 flex items-center gap-2 px-4 text-sm font-medium">
         <BreadcrumbItem>
-          <BreadcrumbLink href="/" className="text-content transition-colors hover:text-head">
+          <BreadcrumbLink href="/" className="text-content hover:text-head transition-colors">
             Home
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -39,7 +39,7 @@ export default function OfferDetail({ id }: OfferDetailPageProps) {
         <BreadcrumbSeparator className="flex items-center" /> */}
         <BreadcrumbLink
           href={`/token/${offer?.tokens?.symbol?.toLowerCase()}`}
-          className="text-content transition-colors hover:text-head"
+          className="text-content hover:text-head transition-colors"
         >
           {offer?.tokens?.symbol.toUpperCase()}
         </BreadcrumbLink>

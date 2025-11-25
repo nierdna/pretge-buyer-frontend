@@ -613,7 +613,7 @@ className = 'bg-green-gd';
 className = 'bg-yellow-gd';
 
 // Utility colors
-className = 'border-line';
+className = 'border-border';
 className = 'text-head';
 className = 'text-content';
 className = 'bg-input';
@@ -751,7 +751,7 @@ className = 'w-full md:w-1/2 lg:w-1/3';
 
 ```typescript
 // Sử dụng CSS variables cho dark mode
-className = 'bg-primary-foreground text-secondary';
+className = 'bg-card text-secondary';
 ```
 
 ### 4. Component Composition

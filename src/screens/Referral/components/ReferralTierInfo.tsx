@@ -4,13 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function ReferralTierInfo() {
   return (
-    <Card className="bg-card border-gray-200">
+    <Card className="border-border bg-card">
       <CardHeader>
         <div className="flex items-center gap-2">
           <div className="text-blue-400">🎁</div>
           <CardTitle className="text-gray-900">Referral Rewards</CardTitle>
         </div>
-        <p className="text-sm text-content">
+        <p className="text-content text-sm">
           Earn rewards by inviting friends to join our platform. Both you and your friends will
           benefit from our referral program.
         </p>
@@ -23,7 +23,7 @@ export default function ReferralTierInfo() {
               <span className="text-lg">💰</span>
               <h3 className="font-medium text-gray-900">For You (Referrer)</h3>
             </div>
-            <p className="mb-1 text-sm text-content">
+            <p className="text-content mb-1 text-sm">
               Receive <span className="font-semibold text-blue-600">10% of trading fees</span> from
               your referred friends
             </p>
@@ -35,7 +35,7 @@ export default function ReferralTierInfo() {
               <span className="text-lg">⭐</span>
               <h3 className="font-medium text-gray-900">For Your Friend (Referee)</h3>
             </div>
-            <p className="mb-1 text-sm text-content">
+            <p className="text-content mb-1 text-sm">
               Your friend receives{' '}
               <span className="font-semibold text-green-600">10% bonus points</span> on their
               activities
@@ -43,11 +43,11 @@ export default function ReferralTierInfo() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
+        <div className="border-yellow-200 bg-yellow-50 rounded-lg border p-3">
           <div className="flex items-start gap-2">
-            <span className="mt-0.5 text-yellow-600">ℹ️</span>
+            <span className="text-yellow-600 mt-0.5">ℹ️</span>
             <div>
-              <p className="text-sm text-gray-700">
+              <p className="text-secondary-foreground text-sm">
                 <span className="font-medium">How it works:</span> When someone uses your referral
                 code and makes trades, you automatically earn 10% of their trading fees, while they
                 get 10% bonus points on their account.

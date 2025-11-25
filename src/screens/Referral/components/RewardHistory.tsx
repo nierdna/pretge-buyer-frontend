@@ -56,7 +56,7 @@ export default function RewardHistory() {
   };
 
   return (
-    <Card className="bg-white/95">
+    <Card className="bg-foreground/50">
       <CardHeader>
         <div className="flex items-center gap-2">
           <RotateCcw className="h-5 w-5 text-gray-900" />
@@ -66,11 +66,11 @@ export default function RewardHistory() {
       <CardContent>
         <Table>
           <TableHeader>
-            <TableRow className="border-line hover:bg-transparent">
-              <TableHead className="w-[120px] text-xs font-medium text-content">Date</TableHead>
-              <TableHead className="w-[100px] text-xs font-medium text-content">Points</TableHead>
-              <TableHead className="text-xs font-medium text-content">Quest</TableHead>
-              <TableHead className="w-[150px] text-xs font-medium text-content">User</TableHead>
+            <TableRow className="border-border hover:bg-transparent">
+              <TableHead className="text-content w-[120px] text-xs font-medium">Date</TableHead>
+              <TableHead className="text-content w-[100px] text-xs font-medium">Points</TableHead>
+              <TableHead className="text-content text-xs font-medium">Quest</TableHead>
+              <TableHead className="text-content w-[150px] text-xs font-medium">User</TableHead>
               {/* <TableHead className="w-[100px] text-xs font-medium text-content">TX ID</TableHead> */}
             </TableRow>
           </TableHeader>
@@ -78,7 +78,7 @@ export default function RewardHistory() {
           {isLoading ? (
             <TableBody>
               {[...Array(4)].map((_, index) => (
-                <TableRow key={index} className="border-line hover:bg-transparent">
+                <TableRow key={index} className="border-border hover:bg-transparent">
                   <TableCell>
                     <Skeleton className="h-4 w-20" />
                   </TableCell>
@@ -99,8 +99,8 @@ export default function RewardHistory() {
             </TableBody>
           ) : rewardRecords.length === 0 ? (
             <TableBody>
-              <TableRow className="border-line hover:bg-transparent">
-                <TableCell colSpan={4} className="py-16 pt-24 text-center text-content">
+              <TableRow className="border-border hover:bg-transparent">
+                <TableCell colSpan={4} className="text-content py-16 pt-24 text-center">
                   No reward history found
                 </TableCell>
               </TableRow>
@@ -108,8 +108,8 @@ export default function RewardHistory() {
           ) : (
             <TableBody>
               {rewardRecords.map((record, index) => (
-                <TableRow key={index} className="border-line hover:bg-gray-50/50">
-                  <TableCell className="text-sm font-medium text-gray-700">
+                <TableRow key={index} className="border-border hover:bg-card/50">
+                  <TableCell className="text-secondary-foreground text-sm font-medium">
                     {record.timestamp}
                   </TableCell>
                   <TableCell className="text-sm">

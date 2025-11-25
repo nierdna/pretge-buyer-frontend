@@ -18,7 +18,7 @@ export default function ReferralStats({
   tier,
 }: ReferralStatsProps) {
   return (
-    <Card className="grid gap-6 bg-white/95 p-6">
+    <Card className="grid gap-6 bg-foreground/50 p-6">
       {/* Header */}
       <div className="flex flex-col gap-4">
         <div className="text-2xl font-bold text-gray-900">Referral</div>
@@ -28,7 +28,7 @@ export default function ReferralStats({
               <div className="text-2xl font-bold text-gray-900">
                 {formatNumberShort(totalReferrals)}
               </div>
-              <div className="text-sm text-content">Total Referee</div>
+              <div className="text-content text-sm">Total Referee</div>
             </div>
 
             <div className="w-full text-center">
@@ -38,7 +38,7 @@ export default function ReferralStats({
                 </div>
                 <Image src={'/point.png'} height={24} width={24} alt="points" />
               </div>
-              <div className="text-sm text-content">Total Points from Quests</div>
+              <div className="text-content text-sm">Total Points from Quests</div>
             </div>
           </div>
         </div>

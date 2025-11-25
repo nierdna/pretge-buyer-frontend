@@ -123,12 +123,12 @@ export default function FilterContent({
       <CardHeader className="hidden pb-0 lg:block">
         <CardTitle className="text-xl">Filters</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-6">
+      <CardContent className="grid gap-6 px-0">
         <Accordion type="multiple" defaultValue={['network', 'token', 'settle-time', 'collateral']}>
           {!hideNetworkFilter && (
             <AccordionItem value="network">
-              <AccordionTrigger className="text-base">Network</AccordionTrigger>
-              <AccordionContent className="grid gap-2 pt-2">
+              <AccordionTrigger className="px-6 text-base">Network</AccordionTrigger>
+              <AccordionContent className="grid gap-2 px-6 pt-2">
                 {chains.map((chain) => (
                   <div className="flex items-center gap-2" key={chain.id}>
                     <Checkbox
@@ -173,10 +173,10 @@ export default function FilterContent({
 
           {!hideTokenFilter && (
             <AccordionItem value="token">
-              <AccordionTrigger className="text-base">Token</AccordionTrigger>
-              <AccordionContent className="flex grid-cols-2 flex-wrap gap-2 pt-2 lg:grid">
+              <AccordionTrigger className="px-6 text-base">Token</AccordionTrigger>
+              <AccordionContent className="flex grid-cols-2 flex-wrap gap-2 px-6 pt-2 lg:grid">
                 {isLoadingTokens ? (
-                  <div className="text-sm text-content">Loading tokens...</div>
+                  <div className="text-content text-sm">Loading tokens...</div>
                 ) : tokensData?.data?.length > 0 ? (
                   tokensData.data.map((token: IToken) => (
                     <div className="flex items-center gap-2" key={token.id}>
@@ -201,15 +201,15 @@ export default function FilterContent({
                     </div>
                   ))
                 ) : (
-                  <div className="text-sm text-content">No tokens available</div>
+                  <div className="text-content text-sm">No tokens available</div>
                 )}
               </AccordionContent>
             </AccordionItem>
           )}
 
           <AccordionItem value="settle-time">
-            <AccordionTrigger className="text-base">Settle Duration</AccordionTrigger>
-            <AccordionContent className="flex flex-wrap gap-4 pt-2">
+            <AccordionTrigger className="px-6 text-base">Settle Duration</AccordionTrigger>
+            <AccordionContent className="flex flex-wrap gap-4 px-6 pt-2">
               {listSettleTime.map((item) => (
                 <div className="flex items-center gap-2" key={item.id}>
                   <Checkbox
@@ -226,8 +226,8 @@ export default function FilterContent({
           </AccordionItem>
 
           <AccordionItem value="collateral">
-            <AccordionTrigger className="text-base">Percent Collateral</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-2 gap-2 pt-2">
+            <AccordionTrigger className="px-6 text-base">Percent Collateral</AccordionTrigger>
+            <AccordionContent className="grid grid-cols-2 gap-2 px-6 pt-2">
               {listCollateral.map((item) => (
                 <div className="flex items-center gap-2" key={item.id}>
                   <Checkbox
@@ -243,17 +243,21 @@ export default function FilterContent({
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        {/* <Separator className="bg-gray-200" /> */}
+        {/* <Separator className="bg-border" /> */}
         {/* <Button className="lg:hidden" variant="outline">
           Apply Filters
         </Button> */}
-        <Button onClick={handleClearFilters}>Clear Filters</Button>
+        <div className="px-6">
+          <Button onClick={handleClearFilters} className="w-full">
+            Clear Filters
+          </Button>
+        </div>
 
         {/* Tutorial Section Toggle Button */}
         {/* <div className="flex justify-center">
           <button
             onClick={handleToggleTutorialSection}
-            className="flex items-center gap-2 rounded-full border border-gray-300 px-3 py-1 text-sm text-gray-600 transition-colors hover:border-gray-400 hover:text-gray-800"
+            className="flex items-center gap-2 rounded-full border border-border px-3 py-1 text-sm text-gray-600 transition-colors hover:border-border hover:text-secondary-foreground"
           >
             {showTutorialSection ? (
               <>

@@ -6,9 +6,9 @@ const OfferDetailContentSkeleton = () => {
   return (
     <Card className="flex h-fit flex-col gap-8 rounded-3xl px-4 py-6 shadow-lg md:flex-row md:px-8">
       {/* Left Column: Event Details Card (40%) */}
-      <div className="flex w-full flex-col gap-4 rounded-2xl border border-line p-4 md:w-[40%]">
+      <div className="flex w-full flex-col gap-4 rounded-2xl border border-border p-4 md:w-[40%]">
         {/* Event details card */}
-        <div className="rounded-2xl border border-line">
+        <div className="rounded-2xl border border-border">
           {/* Image section */}
           <div className="relative">
             <Skeleton className="h-40 w-full rounded-2xl sm:h-52" />
@@ -85,13 +85,13 @@ const OfferDetailContentSkeleton = () => {
               </div>
               <Skeleton className="h-8 w-16" />
             </div>
-            <Separator className="bg-gray-200" />
+            <Separator className="bg-border" />
           </div>
 
           {/* Purchase Form */}
           <div>
             {/* Quantity selector */}
-            <div className="mb-4 flex items-center justify-between rounded-xl border border-line p-2 px-3">
+            <div className="mb-4 flex items-center justify-between rounded-xl border border-border p-2 px-3">
               <Skeleton className="h-4 w-16" />
               <Skeleton className="h-10 w-20 rounded-lg" />
             </div>

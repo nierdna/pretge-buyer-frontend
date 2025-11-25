@@ -46,11 +46,11 @@ export default function TokenDetail({ symbol }: { symbol: string }) {
   const offersForToken = offers?.pages.flatMap((page) => page.data) || [];
 
   return (
-    <section className="flex-1">
+    <section className="container flex-1 p-6">
       <div className="mb-4 flex items-center justify-between pl-2 lg:px-4 lg:pl-6">
         <Breadcrumb className="flex items-center gap-2 text-sm font-medium">
           <BreadcrumbItem>
-            <BreadcrumbLink className="text-content transition-colors hover:text-head" href="/">
+            <BreadcrumbLink className="text-content hover:text-head transition-colors" href="/">
               Home
             </BreadcrumbLink>
           </BreadcrumbItem>

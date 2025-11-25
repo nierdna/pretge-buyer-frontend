@@ -24,11 +24,11 @@ export default function SellerReviews({
   isLoading,
 }: SellerReviewsProps) {
   return (
-    <Card className="border-gray-300 bg-white/95 shadow-2xl backdrop-blur-md">
+    <Card className="border-border bg-foreground/50 shadow-2xl backdrop-blur-md">
       <CardHeader className="p-6 pb-0">
         <CardTitle className="text-xl">Customer Reviews</CardTitle>
       </CardHeader>
-      <CardContent className="grid gap-6 divide-y divide-line p-6 pt-0">
+      <CardContent className="grid gap-6 divide-y divide-border p-6 pt-0">
         {isLoading && (
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 12 }).map((_, index) => (
@@ -48,7 +48,7 @@ export default function SellerReviews({
                 </Avatar>
                 <div className="grid gap-0.5">
                   <div className="font-bold">{review.buyer?.name}</div>
-                  <div className="flex items-center gap-1 text-sm text-content">
+                  <div className="text-content flex items-center gap-1 text-sm">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
@@ -60,13 +60,13 @@ export default function SellerReviews({
                     <span>{review.rating.toFixed(1)}</span>
                   </div>
                 </div>
-                <span className="ml-auto text-sm text-content">
+                <span className="text-content ml-auto text-sm">
                   {dayjs(review.createdAt).fromNow()}
                 </span>
               </div>
-              <p className="text-base text-gray-700">{review.comment}</p>
+              <p className="text-secondary-foreground text-base">{review.comment}</p>
               {review.reply && (
-                <div className="text-sm text-gray-700">
+                <div className="text-secondary-foreground text-sm">
                   <span className="font-bold">Seller Reply:</span> {review.reply}
                 </div>
               )}
@@ -75,7 +75,7 @@ export default function SellerReviews({
           ))}
 
         {!isLoading && reviews.length === 0 && (
-          <p className="py-4 text-center text-content">No reviews for this seller.</p>
+          <p className="text-content py-4 text-center">No reviews for this seller.</p>
         )}
       </CardContent>
       {totalPages > 1 && (

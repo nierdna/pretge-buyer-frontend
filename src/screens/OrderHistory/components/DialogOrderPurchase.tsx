@@ -239,8 +239,8 @@ const DialogOrderPurchase = ({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-2 py-4 pt-2">
-          <div className="flex items-center justify-center gap-2 text-center text-base font-bold text-gray-800 sm:text-lg">
-            <Wallet className="h-5 w-5 text-content" />
+          <div className="text-secondary-foreground flex items-center justify-center gap-2 text-center text-base font-bold sm:text-lg">
+            <Wallet className="text-content h-5 w-5" />
             <span>Required Purchase:</span>
             <span className="">
               {formatNumberShort(estimatedCost)} {order?.offer?.exToken?.symbol}
@@ -259,7 +259,7 @@ const DialogOrderPurchase = ({
               Cancel
             </Button>
           </DialogClose>
-          <div className="flex-1 text-center text-gray-700">
+          <div className="text-secondary-foreground flex-1 text-center">
             {/* Deposit modal logic */}
             {renderButton()}
           </div>

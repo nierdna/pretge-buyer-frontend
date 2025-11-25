@@ -75,7 +75,7 @@ export default function SearchTestPage() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-gray-700">
+                  <label className="text-secondary-foreground mb-2 block text-sm font-medium">
                     Search Tokens
                   </label>
                   <SearchInput
@@ -88,7 +88,9 @@ export default function SearchTestPage() {
                 </div>
 
                 <div className="border-t pt-4">
-                  <h3 className="mb-2 text-sm font-medium text-gray-700">Current Filters</h3>
+                  <h3 className="text-secondary-foreground mb-2 text-sm font-medium">
+                    Current Filters
+                  </h3>
                   <div className="space-y-2 text-sm text-gray-600">
                     <div>Search: {inputSearch || 'None'}</div>
                     <div>

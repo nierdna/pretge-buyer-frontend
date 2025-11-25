@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export default function FlashSaleCardSkeleton() {
   return (
-    <div className="w-full space-y-4 border border-gray-300 bg-white/95 p-4 shadow-2xl backdrop-blur-md">
+    <div className="w-full space-y-4 border border-border bg-foreground/50 p-4 shadow-2xl backdrop-blur-md">
       <div className="flex items-center justify-between">
         <Skeleton className="h-12 w-12 rounded-full" />
         <Skeleton className="h-6 w-24" />

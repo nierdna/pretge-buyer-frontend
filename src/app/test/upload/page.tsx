@@ -75,7 +75,7 @@ export default function UploadTestPage() {
                     <Avatar className="mx-auto mb-2 h-20 w-20">
                       <AvatarImage src={item.url} alt={`Upload ${index + 1}`} />
                     </Avatar>
-                    <p className="text-center text-xs text-content">
+                    <p className="text-content text-center text-xs">
                       {item.timestamp.toLocaleString()}
                     </p>
                     <p className="mt-1 break-all text-center text-xs text-blue-600">{item.url}</p>

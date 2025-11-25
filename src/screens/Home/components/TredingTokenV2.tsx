@@ -1,7 +1,6 @@
 'use client';
 
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { IToken } from '@/types/token';
 import Image from 'next/image';
@@ -126,83 +125,75 @@ export default function TredingTokenV2({
   const activeDotIndex = getActiveDotIndex();
 
   return (
-    <section className="pb-4 pt-0 sm:px-4 md:pb-6">
-      <Card>
-        {/* <CardHeadper className="p-4 pb-2 flex flex-row items-center justify-between">
-          <CardTitle className="text-xl">Trending Tokens</CardTitle>
-          <TrendingUp className="h-6 w-6 text-green-500" />
-        </CardHeadper> */}
-        <CardContent className="p-4 pt-8">
-          <Carousel
-            opts={{
-              align: 'start',
-              loop: true,
-            }}
-            setApi={setApi}
-            className="w-full px-4"
-          >
-            <CarouselContent>
-              {trendingTokens.map((token, index) => (
-                <CarouselItem key={index} className="basis-full pl-4 md:basis-1/2 lg:basis-1/3">
-                  <Link
-                    href={`/token/${token?.symbol?.toLowerCase()}`}
-                    className="group relative flex h-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-gray-300 bg-white/80 p-3 pt-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-gray-100"
-                  >
+    <div className="p-6">
+      <Carousel
+        opts={{
+          align: 'start',
+          loop: true,
+        }}
+        setApi={setApi}
+        className="w-full"
+      >
+        <CarouselContent>
+          {trendingTokens.map((token, index) => (
+            <CarouselItem key={index} className="basis-full pl-4 md:basis-1/2 lg:basis-1/3">
+              <Link
+                href={`/token/${token?.symbol?.toLowerCase()}`}
+                className="group relative flex h-full cursor-pointer flex-col items-center justify-center gap-2 overflow-hidden rounded-lg border border-border bg-foreground/50 p-3 pt-6 shadow-sm backdrop-blur-sm transition-all duration-300 hover:bg-gray-100"
+              >
+                <Image
+                  src={
+                    token?.bannerUrl ||
+                    // 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
+                    'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Polygon_POS_logo.svg/1200px-Polygon_POS_logo.svg.png'
+                  }
+                  alt={`${token?.symbol} banner`}
+                  fill
+                  className="absolute left-0 top-0 z-0 rounded-lg object-cover transition-all duration-300 group-hover:blur-sm"
+                />
+                <div className="relative z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  {renderBadge(token)}
+                  <div className="relative h-12 w-12 min-w-12 flex-shrink-0 rounded-full bg-gray-300">
                     <Image
                       src={
-                        token?.bannerUrl ||
-                        // 'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
-                        'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Polygon_POS_logo.svg/1200px-Polygon_POS_logo.svg.png'
+                        token?.logo ||
+                        'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
                       }
-                      alt={`${token?.symbol} banner`}
+                      alt={`${token?.symbol} symbol`}
                       fill
-                      className="absolute left-0 top-0 z-0 rounded-lg object-cover transition-all duration-300 group-hover:blur-sm"
+                      className="rounded-full border border-border object-cover"
                     />
-                    <div className="relative z-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      {renderBadge(token)}
-                      <div className="relative h-12 w-12 min-w-12 flex-shrink-0 rounded-full bg-gray-300">
-                        <Image
-                          src={
-                            token?.logo ||
-                            'https://upload.wikimedia.org/wikipedia/en/thumb/b/b9/Solana_logo.png/252px-Solana_logo.png'
-                          }
-                          alt={`${token?.symbol} symbol`}
-                          fill
-                          className="rounded-full border border-gray-500 object-cover"
-                        />
-                        {token?.networks?.logo && (
-                          <Image
-                            src={token.networks.logo}
-                            alt={`${token?.symbol} network`}
-                            width={20}
-                            height={20}
-                            className="absolute -bottom-0 -right-0 z-10 min-h-5 min-w-5 rounded-full object-cover"
-                          />
-                        )}
-                      </div>
-                    </div>
-                    <span className="z-10 text-lg font-medium text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      {token?.symbol}
-                    </span>
-                  </Link>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="mt-4 flex items-center justify-center gap-1">
-              {Array.from({ length: numberOfDots }).map((_, i) => (
-                <button
-                  key={i}
-                  className={`h-2 w-2 rounded-full transition-colors ${
-                    i === activeDotIndex ? 'w-4 bg-secondary' : 'bg-secondary-foreground/50'
-                  }`}
-                  onClick={() => handleDotClick(i)}
-                  aria-label={`Go to slide group ${i + 1}`}
-                />
-              ))}
-            </div>
-          </Carousel>
-        </CardContent>
-      </Card>
-    </section>
+                    {token?.networks?.logo && (
+                      <Image
+                        src={token.networks.logo}
+                        alt={`${token?.symbol} network`}
+                        width={20}
+                        height={20}
+                        className="absolute -bottom-0 -right-0 z-10 min-h-5 min-w-5 rounded-full object-cover"
+                      />
+                    )}
+                  </div>
+                </div>
+                <span className="z-10 text-lg font-medium text-primary opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  {token?.symbol}
+                </span>
+              </Link>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <div className="mt-4 flex items-center justify-center gap-1">
+          {Array.from({ length: numberOfDots }).map((_, i) => (
+            <button
+              key={i}
+              className={`h-2 w-2 rounded-full transition-colors ${
+                i === activeDotIndex ? 'w-4 bg-secondary-text' : 'bg-secondary-foreground/50'
+              }`}
+              onClick={() => handleDotClick(i)}
+              aria-label={`Go to slide group ${i + 1}`}
+            />
+          ))}
+        </div>
+      </Carousel>
+    </div>
   );
 }
