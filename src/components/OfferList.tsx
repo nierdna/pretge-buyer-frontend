@@ -177,7 +177,7 @@ export default function OfferList({
   }, [isMobile]);
 
   return (
-    <div className="grid h-fit w-full">
+    <div className="grid h-full w-full">
       <div
         ref={searchBarRef}
         className={cn(
