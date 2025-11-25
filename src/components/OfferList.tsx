@@ -331,7 +331,7 @@ export default function OfferList({
           )}
         </div>
       ) : (
-        <div className="grid gap-4">
+        <div className="grid gap-4 p-6">
           {isLoading && (
             <div className="col-span-full flex items-center justify-center">
               <Loader2 className="h-4 w-4 animate-spin" />

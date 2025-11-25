@@ -68,7 +68,7 @@ const Topbar = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-[28px] w-full items-center bg-background">
+      <div className="sticky left-0 right-0 top-0 z-50 flex min-h-[28px] w-full items-center bg-background">
         <div className="flex animate-pulse gap-2">
           {[...Array(10)].map((_, index) => (
             <div key={index} className="h-4 w-[220px] flex-shrink-0 rounded bg-card" />
@@ -79,11 +79,13 @@ const Topbar = () => {
   }
 
   if (isError || !dataLatestOrders?.data) {
-    return null;
+    return (
+      <div className="sticky left-0 right-0 top-0 z-50 flex min-h-[28px] w-full items-center bg-background"></div>
+    );
   }
 
   return (
-    <div className="sticky left-0 right-0 top-0 z-50 flex h-[28px] w-full items-center border-b border-border bg-background">
+    <div className="sticky left-0 right-0 top-0 z-50 flex min-h-[28px] w-full items-center border-b border-border bg-background">
       <div className="scrollbar-hide flex w-full overflow-x-auto">
         <AnimatePresence mode="popLayout">
           {dataLatestOrders.data.map((item: LatestOrder) => {

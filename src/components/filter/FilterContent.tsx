@@ -119,7 +119,7 @@ export default function FilterContent({
     });
   };
   return (
-    <>
+    <div className="scrollbar-hide h-[calc(100dvh-6rem)] overflow-y-auto">
       <CardHeader className="hidden pb-0 lg:block">
         <CardTitle className="text-xl">Filters</CardTitle>
       </CardHeader>
@@ -306,6 +306,6 @@ export default function FilterContent({
           </div>
         )} */}
       </CardContent>
-    </>
+    </div>
   );
 }
