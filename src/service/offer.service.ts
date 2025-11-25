@@ -483,6 +483,7 @@ export interface IOfferFilter {
   sortOrder?: string;
   search?: string;
   tokenId?: string;
+  status?: string;
 }
 
 export class OfferService {
@@ -527,6 +528,7 @@ export class OfferService {
     // Always include page and limit with defaults
     params.page = filters?.page || 1;
     params.limit = filters?.limit || 10;
+    params.status = filters?.status;
 
     // Handle sort parameters
     if (sortField) {

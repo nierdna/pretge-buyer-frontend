@@ -19,6 +19,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
       sortField: 'updated_at',
       sortOrder: 'desc',
       tokenId: '',
+      status: 'open',
     },
   });
   const [inputSearch, setInputSearch] = useState('');
@@ -46,6 +47,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
         collateralPercents: filters.collateralPercents,
         settleDurations: filters.settleDurations,
         tokenId: filters.tokenId,
+        status: filters.status,
       });
       return response.data;
     },

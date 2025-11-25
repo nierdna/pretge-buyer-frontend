@@ -11,6 +11,7 @@ export async function GET(req: NextRequest) {
     const sort = searchParams.get('sort_field') || 'price';
     const sort_order = searchParams.get('sort_order') || 'desc';
     const tokenId = searchParams.get('token_id') || '';
+    const statusToken = searchParams.get('status_token') || 'active';
 
     // New filter parameters
     const networkIds = searchParams.get('network_ids') || '';
@@ -64,6 +65,21 @@ export async function GET(req: NextRequest) {
         { count: 'exact' }
       )
       .eq('status', status);
+
+    const { data: tokenIdsFind, error: tokensErrors } = await supabase
+      .from('tokens')
+      .select('id')
+      .eq('status', status);
+
+    if (tokensErrors) {
+      console.error('Error fetching tokens:', tokensErrors);
+      return NextResponse.json(
+        { success: false, message: 'Failed to fetch tokens' },
+        { status: 500 }
+      );
+    }
+
+    query = query.in('token_id', tokenIdsFind);
 
     if (tokenIds) {
       query = query.in('token_id', tokenIds);
