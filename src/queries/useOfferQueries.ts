@@ -49,6 +49,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
         settleDurations: filters.settleDurations,
         tokenId: filters.tokenId,
         status: filters.status,
+        status_token: filters.status_token,
       });
       return response.data;
     },
