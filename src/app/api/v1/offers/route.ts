@@ -78,8 +78,9 @@ export async function GET(req: NextRequest) {
         { status: 500 }
       );
     }
-
-    query = query.in('token_id', tokenIdsFind);
+    if (statusToken) {
+      query = query.in('token_id', tokenIdsFind);
+    }
 
     if (tokenIds) {
       query = query.in('token_id', tokenIds);
