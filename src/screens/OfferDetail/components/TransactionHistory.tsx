@@ -89,7 +89,7 @@ const TransactionHistory = forwardRef<TransactionHistoryRef, TransactionHistoryP
         case EOrderStatus.CANCELLED:
           return <Badge>Cancelled</Badge>;
         case EOrderStatus.SETTLING:
-          return <Badge variant={'warning'}>Settling</Badge>;
+          return <Badge variant={'danger'}>Settling</Badge>;
         default:
           return <Badge>Unknown</Badge>;
       }
