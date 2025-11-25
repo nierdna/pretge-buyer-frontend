@@ -38,7 +38,7 @@ export default function Header() {
         </nav>
 
         {/* Connect Wallet Button */}
-        <div className="shrink-0">
+        <div className="flex shrink-0 items-center">
           <ButtonConnectWallet />
         </div>
       </div>

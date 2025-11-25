@@ -59,7 +59,9 @@ const config = {
           tertiary: 'hsl(var(--icon-tertiary))',
         },
         inverse: 'hsl(var(--inverse))',
-        yellow: 'hsl(var(--yellow))',
+        yellow: {
+          DEFAULT: 'hsl(var(--yellow))',
+        },
         warning: 'hsl(var(--warning))',
         danger: 'hsl(var(--danger))',
         info: 'hsl(var(--info))',

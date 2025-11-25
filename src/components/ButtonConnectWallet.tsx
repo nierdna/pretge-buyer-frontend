@@ -11,9 +11,10 @@ import { useCopy } from '@/hooks/use-copy';
 import { useAuth } from '@/hooks/useAuth';
 import { truncateAddress } from '@/utils/helpers/string';
 import { useAppKit, useAppKitAccount } from '@reown/appkit/react';
-import { ChevronDown, Copy, LogOut, User } from 'lucide-react';
+import { ChevronDown, Copy, LogOut } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import UserAvatar from './UserAvatar';
 
 export const ButtonConnectWallet = () => {
   const { address } = useAppKitAccount();
@@ -41,10 +42,10 @@ export const ButtonConnectWallet = () => {
         /* User Dropdown Menu */
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button>
-              <User className="h-4 w-4" />
-              <span className="hidden lg:block">{truncateAddress(address || '', 4)}</span>
-              <ChevronDown className="h-4 w-4" />
+            <Button variant={'ghost'} className="group">
+              <UserAvatar walletAddress={address} />
+              {truncateAddress(address || '', 4)}
+              <ChevronDown className="h-4 w-4 text-icon-tertiary group-hover:text-icon-primary" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">

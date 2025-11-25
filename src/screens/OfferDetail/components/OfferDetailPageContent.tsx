@@ -45,9 +45,9 @@ interface OfferDetailPageContentProps {
 
 // Color functions for styling
 export const getSettleDurationColor = (settleDuration: number) => {
-  if (settleDuration <= 2) return 'bg-green-500/90 text-primary'; // 1h, 2h - green (fast)
-  if (settleDuration <= 6) return 'bg-yellow-500/90 text-primary'; // 4h, 6h - yellow (medium)
-  return 'bg-red-500/90 text-primary'; // 12h - red (slow)
+  if (settleDuration <= 2) return 'bg-green-500/20 text-primary'; // 1h, 2h - green (fast)
+  if (settleDuration <= 6) return 'bg-yellow-500/20 text-primary'; // 4h, 6h - yellow (medium)
+  return 'bg-red-500/20 text-primary'; // 12h - red (slow)
 };
 
 export const getSettleDurationTextColor = (settleDuration: number) => {
@@ -57,10 +57,10 @@ export const getSettleDurationTextColor = (settleDuration: number) => {
 };
 
 export const getColorFromCollateral = (collateral: number) => {
-  if (collateral >= 100) return 'bg-green-500/90 text-primary'; // 100% - green (most reliable)
-  if (collateral >= 75) return 'bg-cyan-500/90 text-primary'; // 75% - cyan (very reliable)
-  if (collateral >= 50) return 'bg-orange-500/90 text-primary'; // 50% - orange (moderate)
-  return 'bg-red-500/90 text-primary';
+  if (collateral >= 100) return 'bg-green-500/20 text-primary'; // 100% - green (most reliable)
+  if (collateral >= 75) return 'bg-cyan-500/20 text-primary'; // 75% - cyan (very reliable)
+  if (collateral >= 50) return 'bg-orange-500/20 text-primary'; // 50% - orange (moderate)
+  return 'bg-red-500/20 text-primary';
 };
 export const getTextColorFromCollateral = (collateral: number) => {
   if (collateral >= 100) return 'text-green-500'; // 100% - green (most reliable)
@@ -339,20 +339,14 @@ export default function OfferDetailPageContent({
                 Discount
               </Badge>
             )}
-            <Badge
-              className={`absolute bottom-2 left-2 z-10 ${getSettleDurationColor(
-                offer?.settleDuration || 0
-              )}`}
-            >
-              {formatSettleDuration(offer?.settleDuration || 0)}
-            </Badge>
-            <Badge
-              className={`absolute bottom-2 left-12 z-10 ${getColorFromCollateral(
-                offer?.collateralPercent || 0
-              )}`}
-            >
-              {formatCollateralPercent(offer?.collateralPercent || 0)}
-            </Badge>
+            <div className="absolute bottom-2 left-2 z-10 flex items-center gap-1">
+              <Badge className={`${getSettleDurationColor(offer?.settleDuration || 0)}`}>
+                {formatSettleDuration(offer?.settleDuration || 0)}
+              </Badge>
+              <Badge className={`${getColorFromCollateral(offer?.collateralPercent || 0)}`}>
+                {formatCollateralPercent(offer?.collateralPercent || 0)}
+              </Badge>
+            </div>
           </div>
 
           <div className="p-4">
@@ -493,7 +487,7 @@ export default function OfferDetailPageContent({
                   pattern="[0-9]*"
                   value={buyQuantity}
                   onChange={handleQuantityInputChange}
-                  className="rounded-lg bg-primary text-center focus:bg-primary"
+                  className="rounded-lg text-center"
                   min={1}
                 />
               </div>
@@ -621,30 +615,30 @@ export default function OfferDetailPageContent({
 
             {/* Note section explaining settle duration and collateral */}
             <Separator className="mt-6 bg-border" />
-            <div className="py-2d to-yellow-50 mt-4 rounded-xl border border-orange-200 bg-gradient-to-r from-orange-50 p-4 shadow-sm">
+            <div className="py-2d mt-4 rounded-xl border border-orange-200 bg-gradient-to-r from-card to-yellow-50 p-4 shadow-sm">
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1" className="!border-none">
                   <AccordionTrigger className="hover:no-underline">
                     <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 rounded-full bg-orange-500"></div>
-                      <h4 className="font-semibold text-orange-800">Key Information</h4>
+                      <div className="h-2 w-2 rounded-full bg-primary"></div>
+                      <h4 className="font-semibold text-primary">Key Information</h4>
                     </div>
                   </AccordionTrigger>
                   <AccordionContent>
-                    <div className="space-y-3 text-sm text-orange-700">
+                    <div className="space-y-3 text-sm text-secondary-text">
                       <div className="flex items-start gap-2">
-                        <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500"></div>
+                        <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/80"></div>
                         <div>
-                          <span className="font-medium text-orange-800">Settle Duration:</span>
+                          <span className="font-medium text-primary">Settle Duration:</span>
                           <span className="ml-1">
                             Shorter times reduce price volatility at TGE, protecting buyers.
                           </span>
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500"></div>
+                        <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/80"></div>
                         <div>
-                          <span className="font-medium text-orange-800">Collateral Percent:</span>
+                          <span className="font-medium text-primary">Collateral Percent:</span>
                           <span className="ml-1">
                             Higher reduces default risk, but trusted sellers may not need
                             collateral.
@@ -652,9 +646,9 @@ export default function OfferDetailPageContent({
                         </div>
                       </div>
                       <div className="flex items-start gap-2">
-                        <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-orange-500"></div>
+                        <div className="mt-2 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary/80"></div>
                         <div>
-                          <span className="font-medium text-orange-800">Collateral Percent:</span>
+                          <span className="font-medium text-primary">Collateral Percent:</span>
                           <span className="ml-1">
                             Collateral percent is paid upfront. The rest is due 24h before TGE. Miss
                             the deadline, and the collateral goes to the seller. Questions?{' '}
