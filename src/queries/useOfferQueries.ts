@@ -20,6 +20,7 @@ export const useGetOffers = (queryKey: any[] = []) => {
       sortOrder: 'desc',
       tokenId: '',
       status: 'open',
+      status_token: 'active',
     },
   });
   const [inputSearch, setInputSearch] = useState('');
