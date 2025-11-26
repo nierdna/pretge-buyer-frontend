@@ -14,22 +14,23 @@ export default function Header() {
 
         {/* Navigation - Centered */}
         <nav className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-8 md:flex">
-          <Link
+          {/* <Link
             href="/trade"
             className="whitespace-nowrap text-sm font-medium leading-5 text-white transition-colors hover:text-primary"
             prefetch={false}
           >
             Trade
-          </Link>
+          </Link> */}
           <Link
-            href="/list-token"
+            href="https://point.pretgemarket.xyz/"
             className="whitespace-nowrap text-sm font-medium leading-5 text-white transition-colors hover:text-primary"
             prefetch={false}
+            target="_blank"
           >
-            List Token
+            Points Market
           </Link>
           <Link
-            href="/analysis"
+            href="#"
             className="whitespace-nowrap text-sm font-medium leading-5 text-white transition-colors hover:text-primary"
             prefetch={false}
           >
