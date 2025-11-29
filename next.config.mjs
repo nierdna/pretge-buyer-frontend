@@ -16,7 +16,12 @@ const nextConfig = {
     ];
   },
   async rewrites() {
-    return [];
+    return [
+      {
+        source: '/favicon.ico',
+        destination: '/icon23.png',
+      },
+    ];
   },
   async headers() {
     return [

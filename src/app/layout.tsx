@@ -43,6 +43,11 @@ export const metadata: Metadata = {
   authors: [{ name: 'PreTGE Market Team' }],
   creator: 'PreTGE Market',
   publisher: 'PreTGE Market',
+  icons: {
+    icon: '/icon23.png',
+    shortcut: '/icon23.png',
+    apple: '/icon23.png',
+  },
   formatDetection: {
     email: false,
     address: false,
