@@ -11,6 +11,8 @@ import {
   base,
   baseSepolia,
   mainnet,
+  monad,
+  monadTestnet,
   solana,
   solanaDevnet,
 } from '@reown/appkit/networks';
@@ -25,8 +27,8 @@ const metadata = {
   icons: ['https://avatars.mywebsite.com/'],
 };
 
-const listMainnet = [mainnet, base, solana, arbitrum];
-const listTestnet = [baseSepolia, solanaDevnet, arbitrumSepolia];
+const listMainnet = [mainnet, base, solana, arbitrum, monad];
+const listTestnet = [baseSepolia, solanaDevnet, arbitrumSepolia, monadTestnet];
 
 // 3. Create the AppKit instance
 createAppKit({
