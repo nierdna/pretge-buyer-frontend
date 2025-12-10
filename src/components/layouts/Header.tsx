@@ -5,7 +5,7 @@ import { ButtonConnectWallet } from '../ButtonConnectWallet';
 
 export default function Header() {
   return (
-    <header className="sticky top-[26px] z-20 w-full border-b border-solid border-border bg-background">
+    <header className="sticky top-[26px] z-50 w-full border-b border-solid border-border bg-background">
       <div className="flex items-center justify-between px-6 py-4">
         {/* Logo */}
         <Link href="/" className="shrink-0" prefetch={false}>
@@ -35,6 +35,14 @@ export default function Header() {
             prefetch={false}
           >
             Analysis
+          </Link>
+
+          <Link
+            href="https://task.pretgemarket.xyz"
+            className="whitespace-nowrap text-sm font-medium leading-5 text-white transition-colors hover:text-primary"
+            prefetch={false}
+          >
+            Tasks
           </Link>
         </nav>
 
