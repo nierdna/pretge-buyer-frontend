@@ -615,7 +615,7 @@ export default function OfferDetailPageContent({
 
             {/* Note section explaining settle duration and collateral */}
             <Separator className="mt-6 bg-border" />
-            <div className="py-2d mt-4 rounded-xl border border-orange-200 bg-gradient-to-r from-card to-yellow-50 p-4 shadow-sm">
+            <div className="mt-4 rounded-xl border border-orange-100 bg-gradient-to-r from-card to-card/50 px-4 py-2 shadow-sm">
               <Accordion type="single" collapsible>
                 <AccordionItem value="item-1" className="!border-none">
                   <AccordionTrigger className="hover:no-underline">

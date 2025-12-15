@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import { IOffer } from '@/types/offer';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { div, formatNumberShort, minus } from '@/utils/helpers/number';
+import { truncateAddress } from '@/utils/helpers/string';
 import { Dot, Star } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -119,7 +120,9 @@ export default function OfferListItem({ offer }: OfferListItemProps) {
             </AvatarFallback> */}
             </Avatar>
             <div className="grid gap-0.5">
-              <div className="truncate text-sm font-bold">{offer.sellerWallet?.user?.name}</div>
+              <div className="truncate text-sm font-bold">
+                {truncateAddress(offer.sellerWallet?.address)}
+              </div>
               <div className="text-content flex items-center gap-0.5 text-sm">
                 <span className="font-bold">{Number(offer.sellerWallet?.user?.rating || 0)}</span>
                 <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />

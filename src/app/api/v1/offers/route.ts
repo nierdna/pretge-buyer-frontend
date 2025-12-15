@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     const sort = searchParams.get('sort_field') || 'price';
     const sort_order = searchParams.get('sort_order') || 'desc';
     const tokenId = searchParams.get('token_id') || '';
-    const statusToken = searchParams.get('status_token') || 'active';
+    const statusToken = searchParams.get('status_token');
 
     // New filter parameters
     const networkIds = searchParams.get('network_ids') || '';

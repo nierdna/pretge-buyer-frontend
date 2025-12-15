@@ -22,7 +22,7 @@ import { useAuthStore } from '@/store/authStore';
 import { EOrderStatus, IOrder } from '@/types/order';
 import { handleLinkTxHash } from '@/utils/helpers/getBlockUrlLink';
 import { formatNumberShort } from '@/utils/helpers/number';
-import { normalizeNetworkName } from '@/utils/helpers/string';
+import { normalizeNetworkName, truncateAddress } from '@/utils/helpers/string';
 import { useAppKit } from '@reown/appkit/react';
 import dayjs from 'dayjs';
 import { ArrowUpRight } from 'lucide-react';
@@ -208,7 +208,7 @@ export default function FilledOrdersList() {
                         href={`/sellers/${order.offer?.sellerWallet?.user?.id}`}
                         className="hover:underline"
                       >
-                        {order.offer?.sellerWallet?.user?.name}
+                        {truncateAddress(order.offer?.sellerWallet?.address)}
                       </Link>
                     </TableCell>
                     <TableCell className="text-center">{formatNumberShort(order.amount)}</TableCell>

@@ -145,6 +145,7 @@ export const useGetOffersByToken = (tokenId: string) => {
       page: 1,
       sortField: 'price',
       sortOrder: 'asc',
+      status: 'open',
     },
   });
   const [inputSearch, setInputSearch] = useState('');

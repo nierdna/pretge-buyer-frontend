@@ -29,13 +29,13 @@ export default function Header() {
           >
             Points Market
           </Link>
-          <Link
+          {/* <Link
             href="#"
             className="whitespace-nowrap text-sm font-medium leading-5 text-white transition-colors hover:text-primary"
             prefetch={false}
           >
             Analysis
-          </Link>
+          </Link> */}
 
           <Link
             href="https://task.pretgemarket.xyz"

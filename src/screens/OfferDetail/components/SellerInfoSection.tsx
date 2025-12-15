@@ -3,9 +3,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { WalletWithUser } from '@/types/user';
 import { getFallbackAvatar } from '@/utils/helpers/getFallbackAvatar';
 import { formatNumberShort } from '@/utils/helpers/number';
+import { truncateAddress } from '@/utils/helpers/string';
 import dayjs from 'dayjs';
 import { Dot, Star } from 'lucide-react';
-import Link from 'next/link'; // Import Link
 
 interface SellerInfoSectionProps {
   seller?: WalletWithUser;
@@ -26,11 +26,12 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
           </Avatar>
           <div className="grid gap-1">
             <div className="flex items-center text-xl">
-              {seller?.user?.name}
+              {/* {seller?.user?.name} */}
+              {truncateAddress(seller?.address)}
               <Dot className="text-content" size={16} />
               <div className="flex items-center gap-0.5 text-base">
                 <span className="">{formatNumberShort(seller?.user?.rating)}</span>
-                <Star className="fill-yellow-400 text-yellow-400 h-5 w-5 pb-1" />
+                <Star className="h-5 w-5 fill-yellow-400 pb-1 text-yellow-400" />
               </div>
             </div>
             <div className="text-secondary-foreground grid gap-2 text-sm">
@@ -43,12 +44,12 @@ export default function SellerInfoSection({ seller }: SellerInfoSectionProps) {
         </div>
         {/* <Separator className="bg-border" /> */}
         <div className="flex flex-col gap-2">
-          <Link
+          {/* <Link
             href={`/sellers/${seller?.userId}`}
             className="w-full text-start underline md:text-end"
           >
             View Seller
-          </Link>
+          </Link> */}
         </div>
       </CardContent>
     </Card>
