@@ -123,7 +123,7 @@ export default function SearchInput({
         {value && (
           <button
             onClick={handleClear}
-            className="text-content absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform rounded-full p-1 transition-all duration-200 hover:bg-gray-100 hover:text-foreground"
+            className="text-content absolute right-3 top-1/3 h-4 w-4 -translate-y-1/2 transform rounded-full p-1 transition-all duration-200 hover:bg-card hover:text-white"
             type="button"
           >
             <X className="h-4 w-4" />
@@ -133,7 +133,7 @@ export default function SearchInput({
 
       {/* Search Status */}
       {value && (
-        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border border-border bg-gray-800 p-2 text-xs text-primary">
+        <div className="absolute left-0 right-0 top-full z-10 mt-1 rounded-md border border-border bg-card p-2 text-xs text-primary">
           {isLoading ? (
             <div className="flex items-center gap-2">
               <div className="h-3 w-3 animate-spin rounded-full border-b-2 border-blue-400"></div>
@@ -153,7 +153,7 @@ export default function SearchInput({
       {showSuggestions && (
         <div
           ref={suggestionsRef}
-          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-64 overflow-y-auto rounded-md border border-border bg-white shadow-lg"
+          className="absolute left-0 right-0 top-full z-20 mt-1 max-h-64 overflow-y-auto rounded-md border border-border bg-card shadow-lg"
         >
           {/* Token Suggestions */}
           {suggestions.length > 0 && (
@@ -166,7 +166,7 @@ export default function SearchInput({
                 <button
                   key={suggestion.id}
                   onClick={() => handleSuggestionClick(suggestion)}
-                  className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm transition-colors duration-200 hover:bg-blue-50 hover:text-blue-700"
+                  className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm transition-colors duration-200 hover:bg-background hover:text-white"
                 >
                   <div className="relative h-6 w-6 flex-shrink-0">
                     <Image
@@ -182,7 +182,7 @@ export default function SearchInput({
                     <div className="text-content truncate text-xs">{suggestion.name}</div>
                   </div>
                   {suggestion.network && (
-                    <div className="flex-shrink-0 rounded bg-gray-100 px-2 py-1 text-xs text-gray-600">
+                    <div className="flex-shrink-0 rounded bg-card px-2 py-1 text-xs text-white">
                       {suggestion.network}
                     </div>
                   )}
@@ -202,7 +202,7 @@ export default function SearchInput({
                 <button
                   key={index}
                   onClick={() => handleRecentSearchClick(search)}
-                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors duration-200 hover:bg-blue-50 hover:text-blue-700"
+                  className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors duration-200 hover:bg-background hover:text-white"
                 >
                   <Clock className="h-3 w-3 text-gray-400" />
                   {search}
