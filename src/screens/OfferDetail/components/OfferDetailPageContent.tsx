@@ -45,9 +45,9 @@ interface OfferDetailPageContentProps {
 
 // Color functions for styling
 export const getSettleDurationColor = (settleDuration: number) => {
-  if (settleDuration <= 2) return 'bg-green-500/20 text-primary'; // 1h, 2h - green (fast)
-  if (settleDuration <= 6) return 'bg-yellow-500/20 text-primary'; // 4h, 6h - yellow (medium)
-  return 'bg-red-500/20 text-primary'; // 12h - red (slow)
+  if (settleDuration <= 2) return 'bg-card text-primary'; // 1h, 2h - green (fast)
+  if (settleDuration <= 6) return 'bg-card text-primary'; // 4h, 6h - yellow (medium)
+  return 'bg-card text-primary'; // 12h - red (slow)
 };
 
 export const getSettleDurationTextColor = (settleDuration: number) => {
@@ -57,10 +57,10 @@ export const getSettleDurationTextColor = (settleDuration: number) => {
 };
 
 export const getColorFromCollateral = (collateral: number) => {
-  if (collateral >= 100) return 'bg-green-500/20 text-primary'; // 100% - green (most reliable)
-  if (collateral >= 75) return 'bg-cyan-500/20 text-primary'; // 75% - cyan (very reliable)
-  if (collateral >= 50) return 'bg-orange-500/20 text-primary'; // 50% - orange (moderate)
-  return 'bg-red-500/20 text-primary';
+  if (collateral >= 100) return 'bg-card text-primary'; // 100% - green (most reliable)
+  if (collateral >= 75) return 'bg-card text-primary'; // 75% - cyan (very reliable)
+  if (collateral >= 50) return 'bg-card text-primary'; // 50% - orange (moderate)
+  return 'bg-card text-primary';
 };
 export const getTextColorFromCollateral = (collateral: number) => {
   if (collateral >= 100) return 'text-green-500'; // 100% - green (most reliable)
@@ -333,9 +333,14 @@ export default function OfferDetailPageContent({
               alt={offer?.tokens?.symbol || 'Offer Image'}
               className="h-40 w-full rounded-2xl object-cover sm:h-52"
             />
-            <Badge className="absolute left-2 top-2 z-10">{offer?.exToken?.network?.name}</Badge>
+            <Badge className="absolute left-2 top-2 z-10 bg-card text-primary">
+              {offer?.exToken?.network?.name}
+            </Badge>
             {!!offer?.promotion?.isActive && (
-              <Badge variant={'danger'} className="absolute right-2 top-2 z-10">
+              <Badge
+                variant={'danger'}
+                className="absolute right-2 top-2 z-10 bg-card text-primary"
+              >
                 Discount
               </Badge>
             )}
