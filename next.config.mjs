@@ -53,16 +53,8 @@ const nextConfig = {
       },
     ];
   },
-  webpack: (config) => {
-    // Custom webpack config
-    return config;
-  },
-  // Disable ESLint during development
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
+  // Turbopack configuration for Next.js 16
+  turbopack: {},
 };
 
 export default nextConfig;

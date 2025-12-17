@@ -3,9 +3,8 @@ import FormData from 'form-data';
 import fs from 'fs';
 import { NextResponse } from 'next/server';
 
-export const config = {
-  api: { bodyParser: false },
-};
+// Note: bodyParser is automatically disabled for App Router API routes
+// No need for export const config in Next.js 13+
 
 export async function POST(req: Request) {
   try {

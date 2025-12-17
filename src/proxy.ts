@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   // Handle preflight requests
   if (request.method === 'OPTIONS') {
     return new NextResponse(null, {
